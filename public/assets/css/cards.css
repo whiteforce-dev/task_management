@@ -1,0 +1,287 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+.cards{
+    width: 98%;
+    margin: 20px auto;
+    background-color: white !important;
+    border: 1px solid rgb(233, 218, 226);
+    box-shadow: 5px 5px 10px -2px rgb(156, 165, 172);
+    border-radius:10px;
+}
+.main-card{
+    width: 96%;
+    display: flex;
+    align-items: start;
+    justify-content: center;
+    margin: 5px auto;
+    position: relative;
+}
+.long-width{
+    width: 70% !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.short-width{
+    width: 30% !important;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border-left: 2px solid #f5eff1;
+    margin-top: 70px;
+}
+.form-control {
+ 
+}
+.up-box{
+    width: 92%;
+    margin: 10px auto;
+    margin-top: 22px !important;
+    margin-bottom: 30px !important;
+}
+.up-box h1{
+    width: 100%;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #040713;
+    font-family: Poppins, sans-serif;
+    letter-spacing: 0.2px;
+    }
+.low-box{
+    width: 92%;
+    margin: 4px auto;
+}
+.low-box h3{
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #1a1d29;
+    font-family: Poppins, sans-serif;
+    letter-spacing: 0.2px;
+}
+.low-box p{
+    width: 100%;
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: #61636b;
+    margin-top: -3px;
+    font-family: Poppins, sans-serif;
+    }
+    .box-one{
+        width: 90%;
+        margin: 6px auto;
+        display: flex;
+        align-items: start;
+        justify-content: start;
+    }
+
+    .box-one span{
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: #1a1d29;
+        width: 60% !important;
+        font-family: Poppins, sans-serif;
+        letter-spacing: 0.2px;
+    }
+    .box-one p{
+        font-size: 0.85rem;
+        font-weight: 400;
+        color: #212227;
+        width: 40% !important;
+        font-family: Poppins, sans-serif;
+        margin-bottom: 0 !important;
+    }
+    .fa-circle{
+      margin-top: 8px;
+    }
+    .box-btn{
+      width: 28%;
+        position: absolute;
+        top: 5%;
+        right: 1%;
+    }
+    .dropbtn{
+        width: 120px;
+        height: 32px;
+        font-size: 0.85rem;
+        border: none;
+        font-family: Poppins, sans-serif;
+        font-weight: 500;
+        background-color:#cb0c9f;
+        color: white;
+        border-radius: 3px;
+        font-family: Poppins, sans-serif;
+    }
+   
+.dropbtn {
+    /* background-color: #4CAF50; */
+  
+    cursor: pointer;
+  }
+  
+  .dropdown {
+    /* position: relative; */
+    display: inline-block;
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 160px;
+    font-size: 0.85rem;
+    border: 1px solid #c8d4e7;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    font-family: Poppins, sans-serif;
+  }
+  
+  .dropdown-content a:hover {background-color: #f1f1f1}
+  
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+
+
+  /* shiv code */
+  select{
+    border:none;
+    padding: 0px 20px;
+    border-radius:5px;
+  }
+
+  select:focus{
+    outline:none;
+  }
+
+  .dropbtn1{
+    width: 138px;
+    height: 32px;
+    font-size: 0.85rem;
+    border: none;
+    font-family: Poppins, sans-serif;
+    font-weight: 500;
+    background-color:#cb0c9f;
+    color: white;
+    border-radius: 3px;
+    font-family: Poppins, sans-serif;
+  }
+
+ .content1 {
+  width: 120px;
+  height: 20px;
+  font-size: 0.85rem;
+  border: none;
+  font-family: Poppins, sans-serif;
+  font-weight: 500;
+  background-color:#FFF;
+  color: #000;
+  border-radius: 3px;
+  font-family: Poppins, sans-serif;
+
+  } 
+
+  .priorty {
+    width: 80px;
+    /* background: #ded7dc; */
+    font-size: 12px;
+    color: #cb0c9f;
+    font-size: 12px;
+    border-radius: 17%;
+    display: inline-block;
+    font-weight: bold;
+    float:right;
+    margin-top: 5px;
+    margin-left: 5px;
+    margin-right: 10px;
+    text-align: center;
+}
+
+
+.custom-select {
+  position: relative;
+  font-family: Arial;
+}
+
+.custom-select select {
+  display: none; /*hide original SELECT element:*/
+}
+
+.select-selected {
+  background-color: #f20a95;
+  color: white;
+}
+
+/*style the arrow inside the select element:*/
+.select-selected:after {
+  position: absolute;
+  content: "";
+  top: 14px;
+  right: 8px;
+  width: 0;
+  height: 0;
+  border: 9px solid transparent;
+  border-color: #fff transparent transparent transparent;
+}
+
+/*point the arrow upwards when the select box is open (active):*/
+.select-selected.select-arrow-active:after {
+  border-color: transparent transparent #fff transparent;
+  top: 3px;
+}
+
+/*style the items (options), including the selected item:*/
+
+.select-items div{
+    color: black;
+    text-align: center;
+}
+.select-selected {
+  color: #ffffff;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+  cursor: pointer;
+  user-select: none;
+}
+
+/*style items (options):*/
+.select-items {
+  position: absolute;
+  background-color: rgb(255, 255, 255);
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  color: black;
+}
+
+/*hide the items when the select box is closed:*/
+.select-hide {
+  display: none;
+}
+.custom-select select option{
+    color: black;
+}
+
+.select-items div:hover, .same-as-selected {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+select{
+    background-color: red;
+    color: white;
+}
+select option{
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
