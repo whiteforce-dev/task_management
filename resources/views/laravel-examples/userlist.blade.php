@@ -84,7 +84,7 @@
                                 @foreach ($users as $i => $user)
                                     <tr>
                                         <th scope="row">{{ ++$i }}</th>
-                                        <td><img src="{{ url($user->image) }}" class="avatar avatar-sm me-3"></td>
+                                        <td><img src="{{ url($user->image ?? 'NA') }}" class="avatar avatar-sm me-3"></td>
                                         <td>{{ ucfirst($user->name) }}</td>
                                         <td>{{ $user->email }}</td>
                                         @php

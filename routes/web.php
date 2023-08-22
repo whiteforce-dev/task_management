@@ -59,7 +59,7 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::get('changestatus', [TaskManagmentController::class, 'changestatus']);
 		Route::post('savechangestatus/{id}', [TaskManagmentController::class, 'savechangestatus']);
 		Route::get('updatedetails', [TaskManagmentController::class, 'updatedetails']);
-		Route::post('search/{id}', [TaskManagmentController::class, 'search']);
+		Route::get('search', [TaskManagmentController::class, 'search']);
 		Route::get('dashbordcompletetask/{id}', [TaskManagmentController::class, 'dashbordcompletetask']);
 		Route::get('dashboardpending/{id}', [TaskManagmentController::class, 'dashboardpending']);
 		Route::get('dashboardproccess/{id}', [TaskManagmentController::class, 'dashboardproccess']);
@@ -84,19 +84,17 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::get('delete-account/{id}', [AccountController::class, 'AccountDelete']);
 		Route::get('changepriority/{tak_id}', [TaskManagmentController::class, 'changepriority']);
 		Route::get('report', [TaskManagmentController::class, 'report']);
-		Route::post('search-report', [TaskManagmentController::class, 'searchReport']);
+		Route::get('search-report', [TaskManagmentController::class, 'searchReport']);
 		Route::get('pipeline', [PipelineController::class, 'pipeline']);
 		Route::get('pipelinestatus/{task_id}/{status_id}', [PipelineController::class, 'pipelinestatus']);
+		Route::get('index', [PipelineController::class, 'index1']);
 
 	});
 		Route::post('loginauth', [SessionsController::class, 'loginauth']);				
 		// Route::get('login', function () {
 		// return view('session/login-session');
 		// })->name('login');
-
-
-
-		
+	
 	Route::group(['middleware' => 'guest'], function () 
 	{
 		Route::get('/', function(){

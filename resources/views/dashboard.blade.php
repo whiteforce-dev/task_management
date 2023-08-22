@@ -29,38 +29,38 @@
         } elseif(Auth::user()->type == 'manager') {
             $users = \App\Models\User::where('software_catagory', Auth::user()->software_catagory)->get();
             $totaltask = \App\Models\Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('alloted_by', Auth::user()->id)
-                ->orwhere('task_handler', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)
+                ->orwhere('alloted_to', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)
                 ->count();
             $complettask = \App\Models\Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('status', '3')
                 ->where('alloted_by', Auth::user()->id)
-                ->orwhere('task_handler', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)
+                ->orwhere('alloted_to', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)
                 ->count();
             $pendingtask = \App\Models\Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('status', '1')
                 ->where('alloted_by', Auth::user()->id)
-                ->orwhere('task_handler', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)
+                ->orwhere('alloted_to', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)
                 ->where('status', '1')
                 ->count();
             $proccesstask = \App\Models\Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('status', '2')
                 ->where('alloted_by', Auth::user()->id)
-                ->orwhere('task_handler', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)
+                ->orwhere('alloted_to', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)
                 ->count();
             $totaltask_m = \App\Models\Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('alloted_by', Auth::user()->id)
-                ->orwhere('task_handler', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)
+                ->orwhere('alloted_to', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)
                 ->whereMonth('created_at', '=', date('m'))
                 ->count();
             $complettask_m = \App\Models\Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('status', '3')
                 ->where('alloted_by', Auth::user()->id)
-                ->orwhere('task_handler', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)
+                ->orwhere('alloted_to', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)
                 ->whereMonth('created_at', '=', date('m'))
                 ->count();
             $pendingtask_m = \App\Models\Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('status', '1')
                 ->where('alloted_by', Auth::user()->id)
-                ->orwhere('task_handler', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)
+                ->orwhere('alloted_to', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)
                 ->whereMonth('created_at', '=', date('m'))
                 ->count();
             $proccesstask_m = \App\Models\Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('status', '2')
                 ->where('alloted_by', Auth::user()->id)
-                ->orwhere('task_handler', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)
+                ->orwhere('alloted_to', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)
                 ->whereMonth('created_at', '=', date('m'))
                 ->count();
                 if($totaltask > 0){
@@ -71,36 +71,37 @@
             $per_PP = ($proccesstask / $totaltask) * 100;
             $per_PP = number_format($per_PP, 2);
                 }
-        }else{        
+        }else{  
+
             $totaltask = \App\Models\Taskmaster::where('software_catagory', Auth::user()->software_catagory)
-                ->where('task_handler', Auth::user()->id)
+                ->where('alloted_to', Auth::user()->id)
                 ->count();
 
             $complettask = \App\Models\Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('status', '3')
-                ->where('task_handler', Auth::user()->id)
+                ->where('alloted_to', Auth::user()->id)
                 ->count();
                
             $pendingtask = \App\Models\Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('status', '1')
-                ->where('task_handler', Auth::user()->id)
+                ->where('alloted_to', Auth::user()->id)
                 ->where('status', '1')
                 ->count();
             $proccesstask = \App\Models\Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('status', '2')
-                ->where('task_handler', Auth::user()->id)
+                ->where('alloted_to', Auth::user()->id)
                 ->count();
             $totaltask_m = \App\Models\Taskmaster::where('software_catagory', Auth::user()->software_catagory)
-                ->where('task_handler', Auth::user()->id)
+                ->where('alloted_to', Auth::user()->id)
                 ->whereMonth('created_at', '=', date('m'))
                 ->count();
             $complettask_m = \App\Models\Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('status', '3')
-                ->where('task_handler', Auth::user()->id)
+                ->where('alloted_to', Auth::user()->id)
                 ->whereMonth('created_at', '=', date('m'))
                 ->count();
             $pendingtask_m = \App\Models\Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('status', '1')
-                ->where('task_handler', Auth::user()->id)
+                ->where('alloted_to', Auth::user()->id)
                 ->whereMonth('created_at', '=', date('m'))
                 ->count();
             $proccesstask_m = \App\Models\Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('status', '2')
-                ->where('task_handler', Auth::user()->id)
+                ->where('alloted_to', Auth::user()->id)
                 ->whereMonth('created_at', '=', date('m'))
                 ->count();
         }
