@@ -50,17 +50,19 @@ class TaskManagmentController extends Controller
         $managerId = [];
         $EmployeeId = [];
         $priority = "";
+        $managers = User::where('software_catagory', Auth::user()->software_catagory)->where('type', 'manager')->where('is_active', '1')->get();
+        $employees = User::where('software_catagory', Auth::user()->software_catagory)->where('type', 'employee')->where('is_active', '1')->get();
+        $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory);
 
-        if (Auth::user()->type == "admin") {
-            $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->orderBy('id', 'Desc')->paginate('10');
-            $managers = User::where('software_catagory', Auth::user()->software_catagory)->where('type', 'manager')->where('is_active', '1')->get();
-            $employees = User::where('software_catagory', Auth::user()->software_catagory)->where('type', 'employee')->where('is_active', '1')->get();
-        } else {
-            $teamId = User::where('software_catagory', Auth::user()->software_catagory)->where('parent_id', Auth::user()->id)->pluck('id')->ToArray();
-            $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('alloted_by', Auth::user()->id)->orwhere('task_handler', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)->orwhere('alloted_by', $teamId)->where('software_catagory', Auth::user()->software_catagory)->orderBy('id', 'Desc')->paginate(20);
-            $managers = User::where('software_catagory', Auth::user()->software_catagory)->where('type', 'manager')->where('is_active', '1')->get();
-            $employees = User::where('software_catagory', Auth::user()->software_catagory)->where('type', 'employee')->where('is_active', '1')->get();
+        if (Auth::user()->type == "employee") {
+            $tasklist = $tasklist->where('alloted_by',Auth::user()->id)->orWhereRaw("FIND_IN_SET(".Auth::user()->id.", alloted_to)");
+        } elseif(Auth::user()->type == "manager"){
+            $teamId = User::where('software_catagory', Auth::user()->software_catagory)->where('parent_id', Auth::user()->id)->pluck('id')->toArray();
+            $all_users_ids = [Auth::user()->id,...$teamId];
+            $pattern = implode('|', array_map('preg_quote', explode(',', $all_users_ids)));
+            $tasklist = $tasklist->whereIn('alloted_by',$all_users_ids)->orWhereRaw("alloted_to REGEXP '{$pattern}'");
         }
+        $tasklist = $tasklist->orderBy('id', 'Desc')->get();
         return view('task.taskList', compact('tasklist', 'managers', 'employees', 'managerId', 'EmployeeId', 'status_search', 'from', 'to', 'priority'));
     }
 
