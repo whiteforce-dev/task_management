@@ -1,9 +1,20 @@
 @extends('layouts.user_type.auth')
 @section('content')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.css"/>
+<meta name="_token" content="{{ csrf_token() }}">
+
+
+
     @php
         $managers = \App\Models\User::where('type', 'manager')->where('software_catagory', Auth::user()->software_catagory)->get();
     @endphp
-    <div>
+
         <div class="container-fluid">
             <div class="page-header min-height-300 border-radius-xl mt-4"
                 style="background-image: url('assets/img/curved-images/curved0.jpg'); background-position-y: 50%;">
@@ -151,14 +162,12 @@
                                 </div>
                             </div>
 
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="about">{{ 'Photo' }}</label>
-                                    <div class="@error('user.image')border border-danger rounded-3 @enderror">
-                                        <input type="file" class="form-control" name="image">
-                                    </div>
+                            <div class="input-group ">
+                                <div class="form-file">
+                                    @include('cropper.cropper')
                                 </div>
                             </div>
+
                         </div>
                         <div class="row">
                             <div class="col-md-12">
@@ -172,8 +181,7 @@
                 </div>
             </div>
         </div>
-    </div>
-
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.slim.min.js"></script>
     <script>
         function toggleDropdown() {
             var dropdown1 = document.getElementById("type");

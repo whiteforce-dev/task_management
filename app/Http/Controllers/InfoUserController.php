@@ -7,12 +7,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\View;
-
-
+use App\Models\Designation;
+use Illuminate\Support\Facades\Session;
 
 class InfoUserController extends Controller
 {
-
     public function create()
     {
         return view('laravel-examples/user-profile');
@@ -35,7 +34,6 @@ class InfoUserController extends Controller
             'email' => ['required', 'email', 'max:50', Rule::unique('users')],
             'phone'  => ['max:10'],
             'type' => ['max:50'],
-            'image' => ['required'],
             'password' => ['required', 'max:50'],
         ]);
 
@@ -44,32 +42,19 @@ class InfoUserController extends Controller
         $savedata->email = $request['email'];
         $savedata->phone = $request['phone'];
         $savedata->type = $request['type'];
-
         if($request->type == 'manager'){
-        $savedata->parent_id = '1';
+            $savedata->parent_id = '1';
         }elseif($request->type !== 'manager'){
-        $savedata->parent_id = $request['managerId'];
+            $savedata->parent_id = $request['managerId'];
         }
-
         $savedata->password = bcrypt($request['password']);
         $savedata->software_catagory = Auth::user()->software_catagory;
-        // if ($request->hasFile('image')) {
-        //     $image = $request->file('image');
-        //     $name = time() . '.' . $image->getClientOriginalExtension();
-        //     $destinationPath = 'profile_images/';
-        //     $path = $image->move($destinationPath, $name);
-        //     $savedata->image = $path;
-        // }
-        $file = request('image');
-        if ($request->hasFile('image')) {
-            $temp = $file->getClientOriginalName();
-            $image_name = $temp;
-            $destinationPath = 'profile_images' . '/';
-            $file->move($destinationPath, $temp);
-            $savedata->image = 'profile_images/' . $image_name;
-        }
-
-        $savedata->save();
+          $image_code = $request->imageBaseString;
+          $basePath = "profile_images/";
+          $fileName = uploadImageWithBase64($image_code, $basePath);
+          $image_path = $basePath . $fileName;
+          $savedata->image = $image_path;
+          $savedata->save();
         return redirect('/user-profile')->with('success', 'Profile save successfully');
     }
 

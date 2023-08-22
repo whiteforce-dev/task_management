@@ -100,7 +100,7 @@
     <div class="modal-content" style="overflow-X:hidden; overflow-Y:visible;">
         <!-- Modal Header -->
         <div class="modal-header">
-            <h6 class="modal-title">Team remark</h6>
+            <h6 class="modal-title">Team remark </h6>
             <button type="button" class="btn-close" data-bs-dismiss="modal">&#10060;</button>
         </div>
 
@@ -110,42 +110,46 @@
                 @php
                     $managerData = \App\Models\User::where('id', $remark->userid)->first();
                 @endphp
+               
                 <div class="row">
-                    <div class="col-sm-5">
-                        @if ($remark->team_remark > 0)
-                            <div class="msg left-msg mt-3">
-                                <div class="msg-img">
-                                    <img src="{{ url($managerData->image) }}" class="avatar avatar-lg me-3"
-                                        height="100" width="100" />
-                                </div>
-                                <div class="msg-bubble" style="margin-left:8px;">
-                                    <div class="msg-info">
-                                        <div class="msg-info-name">{{ ucfirst($managerData->name) }}</div>
-                                        <div class="msg-info-time">{{ $remark->created_at->format('d-m-y h:i A') }}</div>
-                                    </div>
-                                    <div class="msg-text">{{ $remark->team_remark }}</div>
-                                    <div id="response1"></div>
-                                </div>
-                            </div>
-                        @endif
-                    </div>
-
-                    @if ($remark->manager_remark > 0)
-                        <div class="msg right-msg mt-3">
+                   
+                    <div class="col-sm-5">                     
+                        <div class="msg left-msg mt-3">
+                            @if($remark->userid !== Auth::user()->id)
                             <div class="msg-img">
-                                <img src="{{ url($managerData->image) }}" class="avatar avatar-lg me-3" height="100" width="100" />
+                                <img src="{{ url($managerData->image) }}" class="avatar avatar-lg me-3"
+                                    height="100" width="100" />
                             </div>
-                            <div class="msg-bubble">
+                            <div class="msg-bubble" style="margin-left:8px;">
                                 <div class="msg-info">
-                                    <div class="msg-info-name">{{ ucfirst($remark->GetUser->name) }}</div>
+                                    <div class="msg-info-name">{{ ucfirst($managerData->name) }}</div>
                                     <div class="msg-info-time">{{ $remark->created_at->format('d-m-y h:i A') }}</div>
                                 </div>
-                                <div class="msg-text"> {{ $remark->manager_remark }} </div>
-                                
+                                <div class="msg-text">{{ $remark->remark }}</div>
+                                <div id="response1"></div>
                             </div>
+                            @endif
+                        </div>                   
+                    </div>
+                    
+               
+               
+                    <div class="msg right-msg mt-3">
+                        @if($remark->userid == Auth::user()->id)
+                        <div class="msg-img">
+                            <img src="{{ url($managerData->image) }}" class="avatar avatar-lg me-3" height="100" width="100" />
                         </div>
-                    @endif
+                        <div class="msg-bubble">
+                            <div class="msg-info">
+                                <div class="msg-info-name">{{ ucfirst($remark->GetUser->name) }}</div>
+                                <div class="msg-info-time">{{ $remark->created_at->format('d-m-y h:i A') }}</div>
+                            </div>
+                            <div class="msg-text"> {{ $remark->remark }} </div>                     
+                        </div>
+                        @endif
+                    </div>                                        
                 </div>
+                
             @endforeach
         </div>
 

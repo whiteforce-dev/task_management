@@ -27,7 +27,7 @@ $employees = \App\Models\User::where('type', 'employee')->get();
                 <div class="col-auto my-auto">
                     <div class="h-100">
                         <h5 class="mb-1">
-                            {{ __('User list') }}
+                            {{ __('Task list') }}
                         </h5>
                         <p class="mb-0 font-weight-bold text-sm">
 
@@ -43,8 +43,7 @@ $employees = \App\Models\User::where('type', 'employee')->get();
         <div class="container-fluid py-4">
 
             <div class="alert alert-white mx-1">
-                <form name="search" action="{{ url('search-report') }}" method="post">
-                    @csrf
+                <form id="searchForm" action="{{ url('search-report') }}" method="get">
                     <div class="row">                       
                        <div class="col-3">
                             <label>Assigned To</label>
@@ -135,6 +134,7 @@ $employees = \App\Models\User::where('type', 'employee')->get();
                         </div>
                     </div>
                 </form>
+
             </div>
 
             <div class="alert alert-secondary mx-1" role="alert">
@@ -142,6 +142,10 @@ $employees = \App\Models\User::where('type', 'employee')->get();
                     <strong>Search ..</strong>
                    
                 </span>
+            </div>
+
+            <div id="searchResults">
+                @include('task.reportSearch')
             </div>
 
             <div class="row mt-4">
@@ -222,6 +226,26 @@ $employees = \App\Models\User::where('type', 'employee')->get();
             </div>      
         </div>
     </main>
+
+    <script>
+        $(document).ready(function() {
+            $('#searchForm').submit(function(event) {
+                event.preventDefault();
+                var formData = $(this).serialize();
+                $.ajax({
+                    type: 'GET',
+                    url: $(this).attr('action'),
+                    data: formData,
+                    success: function(response) {
+                        $('#searchResults').html(response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
 
     <script src="assets/table/vendor/simple-datatables/simple-datatables.js"></script>
     <script src="assets/table/vendor/tinymce/tinymce.min.js"></script>

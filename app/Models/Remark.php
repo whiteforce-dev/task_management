@@ -10,7 +10,7 @@ class Remark extends Model
 {
     public function GetTask()
     {
-         return $this->belongsTo('App\Models\Taskmaster', 'task_Id');
+         return $this->belongsTo('App\Models\Taskmaster', 'task_id');
     }
     public function GetUser()
     {

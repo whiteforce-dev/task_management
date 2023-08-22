@@ -80,7 +80,7 @@
                                 @foreach ($tasklist as $i => $user)                           
                                 <tr>
                                     <td>{{ ++$i }}</td>
-                                    <td><img src="{{ url($user->userGet->image) }}" class="avatar avatar-sm me-3"></td>
+                                    <td><img src="{{ url($user->userGet->image ?? 'NA') }}" class="avatar avatar-sm me-3"></td>
                                     <td>{!! nl2br(e($user->task_name)) !!}</td>
                                     <?php $employeename = \App\Models\User::where('id', $user->allote_to)->first(); ?>
                                     <td>{{ $user->userGet->name ?? 'Na' }}</td>   
