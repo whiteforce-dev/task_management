@@ -59,10 +59,10 @@ class TaskManagmentController extends Controller
         } elseif(Auth::user()->type == "manager"){
             $teamId = User::where('software_catagory', Auth::user()->software_catagory)->where('parent_id', Auth::user()->id)->pluck('id')->toArray();
             $all_users_ids = [Auth::user()->id,...$teamId];
-            $pattern = implode('|', array_map('preg_quote', explode(',', $all_users_ids)));
+            $pattern = implode('|', array_map('preg_quote', explode(',', implode(',',$all_users_ids))));
             $tasklist = $tasklist->whereIn('alloted_by',$all_users_ids)->orWhereRaw("alloted_to REGEXP '{$pattern}'");
         }
-        $tasklist = $tasklist->orderBy('id', 'Desc')->get();
+        $tasklist = $tasklist->orderBy('id', 'Desc')->paginate(25);
         return view('task.taskList', compact('tasklist', 'managers', 'employees', 'managerId', 'EmployeeId', 'status_search', 'from', 'to', 'priority'));
     }
 

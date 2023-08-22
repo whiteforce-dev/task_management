@@ -139,7 +139,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="d-flex justify-content-center">
-                                <button type="submit" class="btn btn-primary">{{ 'Create Task' }}</button>
+                                <button type="submit" class="btn btn-primary" id="createTaskBtn">{{ 'Create Task' }}</button>
                             </div>
                         </div>
                     </div>
@@ -174,6 +174,7 @@
                         error.insertAfter(element);
                     },
                     submitHandler: function(form) {
+                        $("#createTaskBtn").prop( "disabled", true );
                         form.submit();
                     }
                 });
