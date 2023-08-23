@@ -488,4 +488,8 @@ class TaskManagmentController extends Controller
 
         return view('task.report', compact('tasklist',  'EmployeeId', 'priority', 'status_search', 'to', 'from', 'from_deadline', 'to_deadline', 'from_enddate', 'to_enddate', 'priority'));
     }
+    public function created_Task1()
+    {
+        return view('task.created_task');
+    }
 }

@@ -5,8 +5,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     @php
-        $managers = \App\Models\User::where('type', 'manager')->where('software_catagory', Auth::user()->software_catagory)->get();
-        $teams = \App\Models\User::where('type', 'employee')->where('software_catagory', Auth::user()->software_catagory)->get();
+        $managers = \App\Models\User::where('type','!=', 'admin')->where('software_catagory', Auth::user()->software_catagory)->get();
     @endphp
     <div>
         <div class="container-fluid">
@@ -81,22 +80,27 @@
                                     </div>
                                 </div>
                             </div>
-                            
+                            @php
+                              $selectedIDs = explode(',', $task->alloted_to);
+                              $users = \App\Models\User::select('id', 'name')->get();
+                              foreach ($users as $user) {
+                                    $options[] = [
+                                        'id' => $user->id,
+                                        'name' => $user->name,
+                                        'selected' => in_array($user->id, $selectedIDs),
+                                    ];
+                                }
+                            @endphp
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="user.type" class="form-control-label">{{ __('Alloted to') }}</label>
                                     <div class="@error('user.type')border border-danger rounded-3 @enderror">                                       
-                                            <select class="selectpicker form-control" multiple data-live-search="true" name="alloted_to[]">
-                                            <optgroup label="Manager">
-                                                @foreach ($managers as $manager)                                                                                   
-                                                        <option value="{{ $manager->id }}" {{$manager->id == $task->task_handler ? 'selected' : '' }} >{{ $manager->name }}</option>
-                                                @endforeach                                           
-                                            </optgroup>
-                                            <optgroup label="Employee">                                              
-                                                @foreach ($teams as $team)                                           
-                                                    <option value="{{ $team->id }}" {{$team->id == $task->task_handler ? 'selected' : '' }} >{{ $team->name }}</option>
+                                            <select class="selectpicker form-control" multiple data-live-search="true" name="alloted_to[]">                                           
+                                                @foreach ($options as $option)
+                                                <option value="{{ $option['id'] }}" {{ $option['selected'] ? 'selected' : '' }}>
+                                                    {{ $option['name'] }}
+                                                </option>
                                                 @endforeach
-                                            </optgroup>
                                         </select>
                                         @error('type')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>

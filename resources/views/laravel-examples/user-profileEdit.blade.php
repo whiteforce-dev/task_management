@@ -117,7 +117,9 @@
                             </div> 
                         </div>
                         </div>
+                       
                         <div class="row">
+                        @if(auth::user()->type !=='employee')
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="user.type" class="form-control-label">{{ __('Type') }}</label>
@@ -125,8 +127,8 @@
                                         <select name="type" class="form-control" placeholder="Please enter gender"
                                             id="type" onchange="toggleDropdown()">
                                             <option value="">--select--</option>
-                                            <option value="manager">Manager</option>
-                                            <option value="employee">Employee</option>
+                                            <option value="manager"{{ 'manager' == $edituser->type ? 'selected' : ''}}>Manager</option>
+                                            <option value="employee" {{ 'employee' == $edituser->type ? 'selected' : ''}}>Employee</option>
                                         </select>
                                         @error('type')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
@@ -143,7 +145,7 @@
                                             id="manager" style="display: none;">
                                             <option value="">--select--</option>
                                             @foreach ($managers as $manager)
-                                                <option value="{{ $manager->id }}">{{ $manager->name }}</option>
+                                                <option value="{{ $manager->id }}"{{ $manager->id == $edituser->parent_id ?'selected' : ''}}>{{ $manager->name }}</option>
                                             @endforeach
                                         </select>
                                         @error('type')
@@ -152,7 +154,9 @@
                                     </div>
                                 </div>
                             </div>
-
+                           @else
+                           <input type="hidden" name="managerId" value="{{$edituser->parent_id}}">                            
+                        @endif
                             <div class="col-md-6">                                                               
                                     <div class="form-group"><label for="about">{{ 'Photo' }}</label>
                                         <img src="{{ url($edituser->image) }}"
@@ -163,9 +167,22 @@
                                         </div>
                                     </div>                              
                             </div>
+
                         </div>
-                        <div class="row">                            
-                            <div class="col-md-12">
+                        <div class="row"> 
+                            <div class="col-md-6">                                                               
+                                <div class="form-group"><label for="about">{{ '' }}</label>                              
+                                    <div class="@error('user.image')border border-danger rounded-3 @enderror">
+                                        @if($edituser->can_allot_to_others == '1')
+                                        <input type="checkbox"  name="can_allot_to_others" value="1" checked> <label>Can allot to others</label>
+                                        @else
+                                        <input type="checkbox"  name="can_allot_to_others" value="1" > <label>Can allot to others</label>
+                                        @endif
+                                    </div>
+                                </div>                              
+                            </div>
+
+                            <div class="col-md-6">
                                 <div class="d-flex justify-content-center mt-2">
                                     <button type="submit"
                                         class="btn bg-gradient-dark btn-md mt-4 mb-4">{{ 'Update user' }}</button>

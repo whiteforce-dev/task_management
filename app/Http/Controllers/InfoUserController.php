@@ -28,7 +28,7 @@ class InfoUserController extends Controller
     }
 
     public function store(Request $request)
-    {
+    { 
         $attributes = request()->validate([
             'name' => ['required', 'max:50'],
             'email' => ['required', 'email', 'max:50', Rule::unique('users')],
@@ -54,6 +54,7 @@ class InfoUserController extends Controller
           $fileName = uploadImageWithBase64($image_code, $basePath);
           $image_path = $basePath . $fileName;
           $savedata->image = $image_path;
+        $savedata->can_allot_to_others = $request['can_allot_to_others']; 
           $savedata->save();
         return redirect('/user-profile')->with('success', 'Profile save successfully');
     }
@@ -65,12 +66,17 @@ class InfoUserController extends Controller
     }
 
     public function edituserProfile(request $request, $id)
-    {
+    {  
         $edituser = User::where('id', $id)->first();
         $edituser->name = $request['name'];
         $edituser->email = $request['email'];
         $edituser->phone = $request['phone'];
-        $edituser->type = $request['type'];
+        if(Auth::user()->type=='employee')
+        {
+        $edituser->type = 'employee';}
+        else{
+            $edituser->type = $request['type'];  
+        }
         $edituser->parent_id = $request['managerId'];
         $edituser->password = bcrypt($request['password']);
         $edituser->software_catagory = Auth::user()->software_catagory;
@@ -83,8 +89,9 @@ class InfoUserController extends Controller
             $file->move($destinationPath, $temp);
             $edituser->image = 'profile_images/' . $image_name;
         }
+        $edituser->can_allot_to_others = $request->can_allot_to_others ?? '0'; 
         $edituser->update();
-        return redirect('user-profile')->with(['success' => 'You are successfull updated.']);
+        return redirect('user-management')->with(['success' => 'You are successfull updated.']);
     }
     public function deleteUser($id)
     {

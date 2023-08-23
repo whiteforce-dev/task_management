@@ -40,6 +40,7 @@ Route::group(['middleware' => 'auth'], function ()
 		// Route::get('/login', function () {
 		// 	return view('dashboard');
 		// 	})->name('login');
+		Route::get('create-task1', [TaskManagmentController::class, 'created_Task1']);
 		Route::get('create-task', [TaskManagmentController::class, 'created_Task']);
 		Route::post('create-task', [TaskManagmentController::class, 'createdTask']);
 		Route::get('task-list', [TaskManagmentController::class, 'taskList']);
@@ -88,6 +89,7 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::get('pipeline', [PipelineController::class, 'pipeline']);
 		Route::get('pipelinestatus/{task_id}/{status_id}', [PipelineController::class, 'pipelinestatus']);
 		Route::get('index', [PipelineController::class, 'index1']);
+		Route::get('sendtask-email/{task_id}', [PipelineController::class, 'sendTaskEmail']);
 
 	});
 		Route::post('loginauth', [SessionsController::class, 'loginauth']);				

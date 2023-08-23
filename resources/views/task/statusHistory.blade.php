@@ -9,23 +9,23 @@
         </div>
         <div class="modal-body"> 
             <div class="row">
-                <div class="col-sm-1" style="text-align:center;">S.no</div>
-                <div class="col-sm-5" style="text-align:center;">End Date</div>
-                <div class="col-sm-3" style="text-align:center;">Status</div>
-                <div class="col-sm-3" style="text-align:center;">Update date</div>
+                <div class="col-sm-2" style="text-align:center;">S.no</div>
+                <div class="col-sm-5" style="text-align:center;">Updated Date</div>
+                <div class="col-sm-5" style="text-align:center;">Status</div>
+
             </div>
             @foreach ($statushistorys as $i=> $statushistory)         
             <div class="row">
-                <div class="col-sm-1" style="text-align:center;">{{ ++$i }}.</div>
-                <div class="col-sm-5" style="text-align:center;"><p> {{ \Carbon\Carbon::parse($statushistory->end_date)->format('d/m/Y')}}</p></div>
+                <div class="col-sm-2" style="text-align:center;">{{ ++$i }}.</div>
+                <div class="col-sm-5" style="text-align:center;">{{ $statushistory->created_at->format("d/m/y  H:i A") }}</div>
                 @if($statushistory->status == '1')
-                <div class="col-sm-3" style="text-align:center;"><p>Pending</p></div>
+                <div class="col-sm-5" style="text-align:center;"><p>Pending</p></div>
                 @elseif($statushistory->status == '2')
-                <div class="col-sm-3" style="text-align:center;"><p>Progress</p></div>
+                <div class="col-sm-5" style="text-align:center;"><p>Progress</p></div>
                 @else
-                <div class="col-sm-3" style="text-align:center;"><p>Completed</p></div>
+                <div class="col-sm-5" style="text-align:center;"><p>Completed</p></div>
                 @endif
-                <div class="col-sm-3" style="text-align:center;">{{ $statushistory->created_at->format("d/m/y  H:i A") }}</div>
+                
             </div>
             @endforeach             
         </div>

@@ -143,12 +143,12 @@
                             </div>
                         </div>
                     </div>
-            </div>
+                </div>
             </form>
         </div>
-        {{-- <div class="modal-footer">
+        <div class="modal-footer">
                   <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-                </div> --}}
+        </div>
 
         <script src="{{ url('assets') }}/jquery-validation/jquery.validate.min.js"></script>
         <script>

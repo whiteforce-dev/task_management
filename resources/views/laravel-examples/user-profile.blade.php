@@ -162,6 +162,18 @@
                                 </div>
                             </div>
 
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="user.type" class="form-control-label">{{ __('') }}</label>
+                                    <div class="@error('user.Can allot task to others')border border-danger rounded-3 @enderror">
+                                        <input type="checkbox" name="can_allot_to_others" id="1" value="1" /><label>Can allot task to others</label>
+                                        @error('can_allot_to_others')
+                                            <p class="text-danger text-xs mt-2">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="input-group ">
                                 <div class="form-file">
                                     @include('cropper.cropper')

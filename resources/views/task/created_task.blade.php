@@ -1,8 +1,7 @@
 @extends('layouts.user_type.auth')
 @section('content')
     @php
-        $managers = \App\Models\User::where('type', 'manager')->where('software_catagory', Auth::user()->software_catagory)->get();
-        $teams = \App\Models\User::where('type', 'employee')->where('software_catagory', Auth::user()->software_catagory)->get();
+        $managers = \App\Models\User::where('software_catagory', Auth::user()->software_catagory)->where('type', '!=', 'admin')->get();
     @endphp
     <div>
         <div class="container-fluid">
@@ -37,8 +36,8 @@
                     <h6 class="mb-0">{{ __('Task Details') }}</h6>
                 </div>
                 <div class="card-body pt-4 p-3">
-                    <form action="{{ url('create-task') }}" method="POST" role="form text-left" enctype="multipart/form-data" id="createdtask">
-                        @csrf
+                    <form action="{{ url('create-task') }}" method="POST" role="form text-left"
+                    enctype="multipart/form-data" id="createdtask">
                         @if ($errors->any())
                             <div class="mt-3  alert alert-primary alert-dismissible fade show" role="alert">
                                 <span class="alert-text text-white">
@@ -64,7 +63,7 @@
                                     <label for="user-name" class="form-control-label">{{ __('Task name') }}</label>
                                     <div class="@error('user.name')border border-danger rounded-3 @enderror">
                                         <input class="form-control" value="" type="text" placeholder="Task Name"
-                                            id="task-name" name="task_name">
+                                        id="task-name" name="task_name">
                                         @error('task_name')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                         @enderror
@@ -75,21 +74,17 @@
                                 <div class="form-group">
                                     <label for="user.type" class="form-control-label">{{ __('Alloted to') }}</label>
                                     <div class="@error('user.type')border border-danger rounded-3 @enderror">
-                                        <select name="alloted_to" class="form-control" placeholder="Please enter gender"
-                                            id="alloted_to">
-                                            <option value="">--select--</option>
-                                            <optgroup label="Manager">
-                                                @foreach ($managers as $manager)
-                                                    <option value="{{ $manager->id }}">{{ $manager->name }}</option>
-                                                @endforeach
-                                            </optgroup>
+                                        <select class="selectpicker form-control" multiple data-live-search="true"
+                                name="alloted_to[]">
+                                <option value="">--select--</option>
+                           
+                                    @foreach ($managers as $manager)
+                                        <option value="{{ $manager->id }}">{{ $manager->name }}</option>
+                                    @endforeach
+                               
 
-                                            <optgroup label="Team Member">
-                                                @foreach ($teams as $manager)
-                                                    <option value="{{ $manager->id }}">{{ $manager->name }}</option>
-                                                @endforeach
-                                            </optgroup>
-                                        </select>
+                               
+                            </select>
                                         @error('type')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                         @enderror
@@ -102,8 +97,8 @@
                                     <div class="form-group">
                                         <label for="user-email" class="form-control-label">{{ __('Start date') }}</label>
                                         <div class="@error('start_date')border border-danger rounded-3 @enderror">
-                                            <input class="form-control" value="" type="date"
-                                                 id="start_date" name="start_date">
+                                            <input class="form-control" value="" type="date" id="start_date"
+                                        name="start_date">
                                             @error('task_date')
                                                 <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                             @enderror
@@ -114,8 +109,8 @@
                                 <div class="form-group">
                                     <label for="about">{{ 'Deadline date' }}</label>
                                     <div class="@error('user.EndDate')border border-danger rounded-3 @enderror">
-                                        <input class="form-control" value="" type="date"
-                                            placeholder="@example.com" id="deadline_date" name="deadline_date">
+                                        <input class="form-control" value="" type="date" placeholder="@example.com"
+                                        id="deadline_Date" name="deadline_Date">
                                     </div>
                                 </div>
                             </div>
@@ -126,7 +121,7 @@
                                     <label for="user.team_comments"
                                         class="form-control-label">{{ __('Task details') }}</label>
                                     <div class="@error('user.team_comments')border border-danger rounded-3 @enderror">
-                                        <textarea class="form-control" id="about" rows="3" placeholder="Comments by team..." name="task_details"></textarea>
+                                        <textarea class="form-control" id="about" rows="3" placeholder="Comments by team..." name="Task_details"></textarea>
                                         @error('Task_details')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                         @enderror
@@ -140,7 +135,12 @@
                                 <div class="form-group">
                                     <label for="about">{{ 'Priority' }}</label>
                                     <div class="@error('user.priority')border border-danger rounded-3 @enderror">
-                                        <input class="form-control" value="" type="text" name="priority">
+                                        <select class="form-control" name="priority">
+                                            <option value="highest">Highest</option>
+                                            <option value="high">High</option>
+                                            <option value="medium">Medium</option>
+                                            <option value="low">Low</option>
+                                        </select>
                                     </div>
                                 </div>                           
                             </div>
@@ -148,8 +148,7 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="d-flex justify-content-center">
-                                    <button type="submit"
-                                        class="btn bg-gradient-dark btn-md mt-4 mb-4">{{ 'Create Task' }}</button>
+                                    <button type="submit" class="btn btn-primary" id="createTaskBtn">{{ 'Create Task' }}</button>
                                 </div>
                             </div>
                         </div>
@@ -160,10 +159,15 @@
     </div>
     </div>
 
+<link rel="stylesheet" href="{{ url('assets/css/multiselect.css') }}">
+<link rel="stylesheet" href="{{ url('assets/css/multiselectdrop.css') }}">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.slim.min.js"></script>
     <script src="{{ url('assets') }}/jquery-validation/jquery.validate.min.js"></script>
+
     <script>
         $(document).ready(function($) {
             $("#createdtask").validate({
@@ -171,20 +175,23 @@
                     task_name: 'required',
                     alloted_to: 'required',
                     start_date: 'required',
-                    deadline_date: 'required',
-                    task_details: 'required',                    
+                    deadline_Date: 'required',
+                    Task_details: 'required',
+                    priority: 'required',
                 },
                 messages: {
                     task_name: '*Please Enter Task Name',
                     alloted_to: '*Please Select Alloted To',
                     start_date: '*Please Select Start Date',
-                    deadline_date: '*Please Select Deadline Date',
-                    task_details: '*Please Select Task Details',                  
+                    deadline_Date: '*Please Select Deadline Date',
+                    Task_details: '*Please Select Task Details',
+                    priority: '*Please Select Task Details ',
                 },
                 errorPlacement: function(error, element) {
                     error.insertAfter(element);
                 },
                 submitHandler: function(form) {
+                    $("#createTaskBtn").prop( "disabled", true );
                     form.submit();
                 }
             });

@@ -8,7 +8,7 @@
     <div class="main-card">
         <div class="long-width" style="width: 70%;">
             <div class="up-box">
-                <h1>{{ $task->task_name }}</h1>
+                <h1>{{ ucfirst($task->task_name) }}</h1>
                 <hr
                     style="height: 4px; width: 100%; border: none;opacity:unset; margin-top: 10px; margin-bottom: -5px; background-color: #cb0c9f;">
             </div>
@@ -36,7 +36,7 @@
                     color: #242527;
                     font-weight: 600;
                     font-family: Poppins, sans-serif">
-                                Read more</span>
+                                Add remark</span>
                     @endif
                     </a>
                 </p>
@@ -60,7 +60,7 @@
                         color: #242527;
                         font-weight: 600;
                         font-family: Poppins, sans-serif">
-                                Read more</span>
+                                Add remark</span>
                         </a>
                     @endif
                 </p>
