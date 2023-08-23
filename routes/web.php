@@ -37,13 +37,11 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::get('/logout', [SessionsController::class, 'destroy']);
 		Route::get('/user-profile', [InfoUserController::class, 'create']);
 		Route::post('/user-profile', [InfoUserController::class, 'store']);
-		// Route::get('/login', function () {
-		// 	return view('dashboard');
-		// 	})->name('login');
+		Route::get('task-list', [TaskManagmentController::class, 'taskList']);
 		Route::get('create-task1', [TaskManagmentController::class, 'created_Task1']);
 		Route::get('create-task', [TaskManagmentController::class, 'created_Task']);
 		Route::post('create-task', [TaskManagmentController::class, 'createdTask']);
-		Route::get('task-list', [TaskManagmentController::class, 'taskList']);
+		Route::post('search-task', [TaskManagmentController::class, 'searchTask']);
 		Route::get('task-edit-page/{id}', [TaskManagmentController::class, 'taskEditPage']);
 		Route::post('update-task/{id}', [TaskManagmentController::class, 'UpdateTask']);
 		Route::get('manager-remark', [TaskManagmentController::class, 'managerRemark']);
@@ -108,8 +106,8 @@ Route::group(['middleware' => 'auth'], function ()
 	Route::post('/session', [SessionsController::class, 'store']);
 	Route::get('/login/forgot-password', [ResetController::class, 'create']);
 	Route::post('/forgot-password', [ResetController::class, 'sendEmail']);
-	Route::get('/reset-password/{token}', [ResetController::class, 'resetPass'])->name('password.reset');
-	Route::post('/reset-password', [ChangePasswordController::class, 'changePassword'])->name('password.update');
+	// Route::get('/reset-password/{token}', [ResetController::class, 'resetPass'])->name('password.reset');
+	// Route::post('/reset-password', [ChangePasswordController::class, 'changePassword'])->name('password.update');
 	});
 
 	Route::Post('comment-bymanager', [TaskManagmentController::class, 'commentBYmanager']);

@@ -32,6 +32,12 @@
     <!-- CSS Files -->
     <link id="pagestyle" href="{{ url('assets/css/soft-ui-dashboard.css?v=1.0.3') }}" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,900&family=Rubik:wght@300;400;600;700&display=swap"
+        rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/66f2518709.js" crossorigin="anonymous"></script>
+    
     <style>
         .error{
             color:#ce1616;

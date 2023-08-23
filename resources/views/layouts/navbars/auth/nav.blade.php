@@ -25,21 +25,19 @@
                         </li>
                     </ol>
                 @endif
-                <a href="" class="nav-link text-body font-weight-bold px-0">
-                    Hi <span class="d-sm-inline d-none"
-                        style="margin-right: 20px;color:#E4088F;">{{ Auth::user()->name }}</span>
-                </a>
-                <img src="{{ url(Auth::user()->image) }}" class="avatar">
+                
+                   
             </li>
 
 
             &nbsp;
-            <i class="fa fa-cog fixed-plugin-button-nav cursor-pointer" aria-hidden="true"></i>&nbsp;
             <li class="nav-item dropdown pe-2 d-flex align-items-center">&nbsp;
                 
                 <a href="javascript:;" class="nav-link text-body p-0 nav-link text-body font-weight-bold px-0"
                     id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                    Profile setting
+                    <span class="d-sm-inline d-none" style="margin-right: 20px;color:#E4088F;"><b>{{ Auth::user()->name }}</b></span>
+                    <img src="{{ url(Auth::user()->image) }}" class="avatar">
+                   
                 </a>
 
                 <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
@@ -50,7 +48,7 @@
                                 <i class="fa fa-user me-sm-1"></i>
                                 &nbsp;&nbsp;
                                 <div class="d-flex flex-column justify-content-center">
-                                    Password Setting
+                                    Profile Setting
                                 </div>
                             </div>
                         </a>

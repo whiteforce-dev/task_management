@@ -1,12 +1,7 @@
 @extends('layouts.user_type.auth')
 @section('content')
     <link rel="stylesheet" href="{{ url('assets/css/cards.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,900&family=Rubik:wght@300;400;600;700&display=swap"
-        rel="stylesheet" />
-    <script src="https://kit.fontawesome.com/66f2518709.js" crossorigin="anonymous"></script>
-
+    
     <style>
         .box-one span {
             width: 55% !important;
@@ -52,13 +47,13 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
         <div class="container-fluid py-4">
-                <form id="searchForm" action="{{ url('search/') }}" method="get">
+                
                 <div class="alert alert-white mx-1">
                     <div class="row">
                         @if (auth::user()->type !== 'employee')
                             <div class="col-3">
                                 <label>Created By</label>
-                                <select name="managerId" class="form-control" style="border:1px solid #cb0c9f;"
+                                <select name="created_by" id="created_by" class="form-control" style="border:1px solid #cb0c9f;"
                                     id="dataField">
                                     <option value="">Select</option>
                                     @foreach ($managers as $user)
@@ -71,7 +66,7 @@
                             <div class="col-3">
                                 <label>Alloted To</label>
                                 <select class="selectpicker form-control" multiple data-live-search="true"
-                                    name="multiuser[]">
+                                    name="alloted_to[]" id="alloted_to">
                                     <option value="">Select</option>
                                     @php
                                         $users = \App\Models\User::where('type', '!=', 'admin')
@@ -87,7 +82,7 @@
                         @if(Auth::user()->type == 'employee')
                         <div class="col-3">
                             <label>Alloted To</label>
-                            <select name="EmployeeId" class="form-control" style="border:1px solid #cb0c9f;">
+                            <select name="alloted_to[]" id="alloted_to" class="form-control" style="border:1px solid #cb0c9f;">
                                 <option value="{{ Auth::user()->id }}"
                                     {{ Auth::user()->id == Auth::user()->id ? 'selected' : '' }}>
                                     {{ ucfirst(Auth::user()->name) }}</option>
@@ -96,7 +91,7 @@
                         @endif
                         <div class="col-3">
                             <label>Status</label>
-                            <select name="status" class="form-control" style="border:1px solid #cb0c9f;">
+                            <select name="status" id="status" class="form-control" style="border:1px solid #cb0c9f;">
                                 <option value="">Select</option>
                                 @foreach ($statuss as $status)
                                     <option value="{{ $status->id }}"
@@ -106,48 +101,31 @@
                                 @endforeach
                             </select>
                         </div>
+                        
+                        
+                        <div class="col-sm-2">
+                            <label>Priority</label>
+                            <select name="priority" id="priority" class="form-control" style="border:1px solid #cb0c9f;">
+                                <option value="">Select</option>
+                                <option value="highest">Highest</option>
+                                <option value="high">High</option>
+                                <option value="medium">Medium</option>
+                                <option value="low">Low</option>
+                            </select>
+                        </div>
+                        
+                        <div class="col-sm-3">
+                            <label>Create Date</label>
+                            <input name="created_date" id="created_date"  class="form-control datepicker" style="border:1px solid #cb0c9f;">
+                        </div>
                         <div class="col-3">
                             <label>Deadline Date</label>
-                            <input name="deadline" type="date" class="form-control" style="border:1px solid #cb0c9f;"
+                            <input name="deadline_date" id="deadline_date" class="form-control datepicker" style="border:1px solid #cb0c9f;"
                                 value="">
-                        </div>
-                        @if(auth::user()->type== 'admin')
-                        <div class="col-sm-2">
-                            <label>Priority</label>
-                            <select name="priority" class="form-control" style="border:1px solid #cb0c9f;">
-                                <option value="">Select</option>
-                                <option value="highest">Highest</option>
-                                <option value="high">High</option>
-                                <option value="medium">Medium</option>
-                                <option value="low">Low</option>
-                            </select>
-                        </div>
-                        @else
-                        <div class="col-sm-2">
-                            <label>Priority</label>
-                            <select name="priority" class="form-control" style="border:1px solid #cb0c9f;">
-                                <option value="">Select</option>
-                                <option value="highest">Highest</option>
-                                <option value="high">High</option>
-                                <option value="medium">Medium</option>
-                                <option value="low">Low</option>
-                            </select>
-                        </div>
-                        @endif
-                        <div class="col-sm-3">
-                            <label>From Date</label>
-                            <input name="fromdate" type="date" class="form-control" style="border:1px solid #cb0c9f;"
-                                value="{{ $from }}">
-                        </div>
-                        <div class="col-sm-3">
-                            <label>To Date</label>
-                            <input name="todate" type="date" class="form-control" style="border:1px solid #cb0c9f;"
-                                value="{{ $to }}">
                         </div>
 
                         <div class="col-sm-1">
-                            <button type="submit" class="btn btn-primary" style="margin-top:31px;"
-                                id="submitButton">Search</button>
+                            <button type="button" class="btn btn-primary" style="margin-top:31px;" id="submitButton" onclick="searchTask()">Search</button>
                         </div>
                         <div class="col-sm-1">
                             <a href="{{ url('task-list') }}" class="btn btn-primary"
@@ -160,7 +138,7 @@
                     </div>
                     
                 </div>
-            </form>
+            
             <div id="searchResults">
                 @include('task.searchTaskResult')
             </div>
@@ -177,7 +155,30 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.min.js"></script>
     <script>
+
+        function searchTask(){
+            $.ajax({
+                type : 'POST',
+                url : "{{ url('search-task') }}",
+                data : {
+                    created_by : $('#created_by').val(),
+                    alloted_to : $('#alloted_to').val(),
+                    status : $('#status').val(),
+                    priority : $('#priority').val(),
+                    created_date : $('#created_date').val(),
+                    deadline_date : $('#deadline_date').val(),
+                    '_token' : "{{ csrf_token() }}"
+                },
+                success : function(response){
+                    console.log(response)
+                }
+            })
+        }
+
         function selectstatus1(task_id) {
             var selectstatus = $('#selectstatus').val();
             $.get("{{ url('selectstatus') }}" + '/' + task_id, {
@@ -186,8 +187,7 @@
                 $('#status').html(response);
             });
         };
-    </script>
-    <script>
+    
         function selectstatus2(task_id) {
             var selectstatus = $('#priority').val();
             $.get("{{ url('changepriority') }}" + '/' + task_id, {
@@ -196,66 +196,36 @@
                 $('#priority1').html(response);
             });
         };
-    </script>
-
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
-        integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
- {{-- searching ajax --}}
-
-        <script>
-        $(document).ready(function() {
-            $('#searchForm').submit(function(event) {
-                event.preventDefault();
-                var formData = $(this).serialize();
-                $.ajax({
-                    type: 'GET',
-                    url: $(this).attr('action'),
-                    data: formData,
-                    success: function(response) {
-                        $('#searchResults').html(response);
-                    },
-                    error: function(xhr, status, error) {
-                        console.log(xhr.responseText);
-                    }
-                });
-            });
-        });
-    </script>
-    <script>
+        
         function managerRemark(url, id) {
             $.get(url, id, function(rs) {
                 $('#myModal').html(rs);
                 $('#myModal').modal('show');
             });
         }
-    </script>
-
-    <script>
+    
         function mgrRemark(url, id) {
             $.get(url, id, function(rs) {
                 $('#myModal4').html(rs);
                 $('#myModal4').modal('show');
             });
         }
-    </script>
-
-    <script>
+    
         function statushistory(url, id) {
             $.get(url, id, function(rs) {
                 $('#myModal8').html(rs);
                 $('#myModal8').modal('show');
             });
         }
-    </script>
-
-    <script>
+   
         function createTask(url, id) {
             $.get(url, id, function(rs) {
                 $('#myModal10').html(rs);
                 $('#myModal10').modal('show');
             });
         }
+
+        $('.datepicker').daterangepicker();
     </script>
 
     <div class="modal" id="myModal10">
@@ -268,8 +238,8 @@
     <div class="modal" id="myModal4">
     </div>
 
-    <script src="{{ url('assets/js/core/popper.min.js') }}"></script>
-    <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script>
+   
+   
 
   
 @endsection
