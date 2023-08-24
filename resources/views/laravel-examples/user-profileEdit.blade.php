@@ -1,5 +1,12 @@
 @extends('layouts.user_type.auth')
 @section('content')
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.css"/>
     @php
         $managers = \App\Models\User::where('type', 'manager')->where('software_catagory', Auth::user()->software_catagory)->get();
     @endphp
@@ -109,7 +116,7 @@
                                 <label for="user.type" class="form-control-label">{{ __('Password') }}</label>
                                 <div class="@error('user.password')border border-danger rounded-3 @enderror">
                                     <input class="form-control" type="password" placeholder="Enter Password"
-                                        id="pass" name="password" value="{{ $edituser->password }}">
+                                        id="pass" name="password" value="">
                                     @error('password')
                                         <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                     @enderror
@@ -154,24 +161,9 @@
                                     </div>
                                 </div>
                             </div>
-                           @else
-                           <input type="hidden" name="managerId" value="{{$edituser->parent_id}}">                            
-                        @endif
-                            <div class="col-md-6">                                                               
-                                    <div class="form-group"><label for="about">{{ 'Photo' }}</label>
-                                        <img src="{{ url($edituser->image) }}"
-                                            class="avatar avatar-sm me-3" />
-                                        You can change this image
-                                        <div class="@error('user.image')border border-danger rounded-3 @enderror">
-                                            <input type="file" class="form-control" name="image">
-                                        </div>
-                                    </div>                              
-                            </div>
-
-                        </div>
-                        <div class="row"> 
-                            <div class="col-md-6">                                                               
-                                <div class="form-group"><label for="about">{{ '' }}</label>                              
+                                                   
+                            <div class="col-md-6">                                                                                     
+                                    <div class="form-group"><label for="about">{{ '' }}</label>                              
                                     <div class="@error('user.image')border border-danger rounded-3 @enderror">
                                         @if($edituser->can_allot_to_others == '1')
                                         <input type="checkbox"  name="can_allot_to_others" value="1" checked> <label>Can allot to others</label>
@@ -179,10 +171,24 @@
                                         <input type="checkbox"  name="can_allot_to_others" value="1" > <label>Can allot to others</label>
                                         @endif
                                     </div>
-                                </div>                              
+                                </div>                                                               
                             </div>
+                        @else
+                        <input type="hidden" name="managerId" value="{{$edituser->parent_id}}">   
 
-                            <div class="col-md-6">
+                        @endif    
+                            <div class="input-group ">
+                                <div class="form-file">
+                                    @include('cropper.cropper')
+                                </div>
+                            </div>
+                            <input type="hidden" name="old_image" value="{{ $edituser->image }}">
+
+                        </div>
+                        <div class="row"> 
+                            
+
+                            <div class="col-md-12">
                                 <div class="d-flex justify-content-center mt-2">
                                     <button type="submit"
                                         class="btn bg-gradient-dark btn-md mt-4 mb-4">{{ 'Update user' }}</button>

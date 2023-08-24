@@ -94,13 +94,17 @@
     .right-msg .msg-img {
         margin: 0 0 0 10px;
     }
+    .modal-content {
+    overflow: auto;
+    max-height: 800px; /* Set a value that makes sense for your design */
+    }
 </style>
 
 <div class="modal-dialog modal-xl" style="overflow-X:hidden; overflow-Y:visible;">
     <div class="modal-content" style="overflow-X:hidden; overflow-Y:visible;">
         <!-- Modal Header -->
         <div class="modal-header">
-            <h6 class="modal-title">Team remark </h6>
+            <h6 class="modal-title">Remark </h6>
             <button type="button" class="btn-close" data-bs-dismiss="modal">&#10060;</button>
         </div>
 

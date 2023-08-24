@@ -39,7 +39,7 @@
             </li>
 
 
-            <li class="nav-item pb-2">
+            <li class="nav-item">
                 <a class="nav-link {{ Request::is('user-management') ? 'active' : '' }}"
                     href="{{ url('user-management') }}">
                     <div

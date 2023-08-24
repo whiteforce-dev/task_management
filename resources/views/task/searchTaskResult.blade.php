@@ -36,7 +36,7 @@
                     color: #242527;
                     font-weight: 600;
                     font-family: Poppins, sans-serif">
-                                Add remark</span>
+                                Add Remark</span>
                     @endif
                     </a>
                 </p>
@@ -60,7 +60,7 @@
                         color: #242527;
                         font-weight: 600;
                         font-family: Poppins, sans-serif">
-                                Add remark</span>
+                                Add Remark</span>
                         </a>
                     @endif
                 </p>
@@ -85,9 +85,11 @@
                         <i style="font-size: 1.2rem; margin-left: 5px; margin-top: -12px;"
                             class="fa-solid fa-sort-down"></i></button>
                     <div class="dropdown-content">
+                        @if(Auth::user()->id == $task->alloted_by)
                         <a href="{{ url('task-edit-page', $task->id) }}"
                             class="dropdown-item border-radius-md" href="javascript:;">Edit
                         </a>
+                        @endif
                         <a onclick="statushistory('{{ url('statushistory' . '?id=' . $task->id) }}')"
                             class="dropdown-item border-radius-md" href="javascript:;">Status History
                         </a>
@@ -108,18 +110,18 @@
                 <i class="fa-solid fa-circle"
                     style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Priority:
                 </span>
-                @if ($task->priority == 'highest')
+                @if ($task->priority == '1')
                     <P class="priorty" style="background-color: #900; color:#fff;">
-                        {{ ucfirst($task->priority) }}</P>
-                @elseif($task->priority == 'high')
+                        Highest</P>
+                @elseif($task->priority == '2')
                     <P class="priorty" style="background-color:#F63; color:#fff;">
-                        {{ ucfirst($task->priority) }}</P>
-                @elseif($task->priority == 'medium')
+                        High</P>
+                @elseif($task->priority == '3')
                     <P class="priorty" style="background-color: #fc0; color:#fff;">
-                        {{ ucfirst($task->priority) }}</P>
+                        Medium</P>
                 @else
                     <P class="priorty" style="background-color: #036; color:#fff;">
-                        {{ ucfirst($task->priority) }}</P>
+                        Low</P>
                 @endif
 
             </div>

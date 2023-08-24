@@ -13,7 +13,7 @@ use App\Models\StatusHistory;
 use App\Models\Teamremark;
 use App\Models\Status;
 use App\Models\Priority;
-
+use Illuminate\Support\Facades\Session;
 
 class TaskManagmentController extends Controller
 {
@@ -50,8 +50,7 @@ class TaskManagmentController extends Controller
         $managerId = [];
         $EmployeeId = [];
         $priority = "";
-        $managers = User::where('software_catagory', Auth::user()->software_catagory)->where('type', 'manager')->where('is_active', '1')->get();
-        $employees = User::where('software_catagory', Auth::user()->software_catagory)->where('type', 'employee')->where('is_active', '1')->get();
+
         $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory);
 
         if (Auth::user()->type == "employee") {
@@ -63,7 +62,15 @@ class TaskManagmentController extends Controller
             $tasklist = $tasklist->whereIn('alloted_by',$all_users_ids)->orWhereRaw("alloted_to REGEXP '{$pattern}'");
         }
         $tasklist = $tasklist->orderBy('id', 'Desc')->paginate(25);
-        return view('task.taskList', compact('tasklist', 'managers', 'employees', 'managerId', 'EmployeeId', 'status_search', 'from', 'to', 'priority'));
+        $users = User::where('software_catagory', Auth::user()->software_catagory)->where('type','!=', 'admin')->get();
+        $statuss = Status::get();
+        $prioritys = Priority::get();
+        $deadline = Taskmaster::where('alloted_to', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)->where('priority', '1')->count();
+            if($deadline > 0){
+                Session::flash('deadline', 'The task deadline has passed of highest priority task.');
+            }
+        return view('task.taskList', compact('tasklist', 'managerId', 'EmployeeId', 'status_search', 'from', 'to', 'priority', 'statuss', 'deadline', 'users', 'prioritys'));
+        
     }
 
     public function taskEditPage($id)
@@ -73,14 +80,14 @@ class TaskManagmentController extends Controller
     }
 
     public function UpdateTask(request $request, $id)
-    {
+    {   //return $request;
         $newtask = Taskmaster::find($id);
         $newtask->task_name = $request->task_name;
         $newtask->alloted_to = implode(',', $request->alloted_to);
         $newtask->Task_details = $request->Task_details;
         $newtask->start_date = $request->task_date;
         $newtask->deadline_date = $request->deadline_date;
-        $newtask->alloted_by = Auth::user()->id;
+        $newtask->alloted_by = $request->managerId;
         $newtask->status = $request->status;
         $newtask->software_catagory = Auth::user()->software_catagory;
         $newtask->priority = $request->priority;
@@ -181,33 +188,35 @@ class TaskManagmentController extends Controller
         return view('task.update', compact('updates', 'task_id'));
     }
     public function search(Request $request)
-    {      
+    {   
         $managers = User::where('software_catagory', Auth::user()->software_catagory)->where('type', 'manager')->where('is_active', '1')->get();
         $employees = User::where('software_catagory', Auth::user()->software_catagory)->where('type', 'employee')->where('is_active', '1')->get();
         $managerId = $request->managerId;
         $EmployeeId = $request->EmployeeId;
         $status = $request->status;
         $from = $request->fromdate;
-        $to = $request->tomdate;
+        $to = $request->todate;
         $priority = $request->priority;
         $deadline = $request->deadline;
 
+        $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory);
+
         if ($request->managerId) {
             if (Auth::user()->type !== 'employee') {
-                $tasklist = Taskmaster::where('alloted_by', $request->managerId)->orderBy('id', 'DESC')->paginate('10');
+                $tasklist = $tasklist->where('alloted_by', $request->managerId);
             }else{
-                $tasklist = Taskmaster::where('alloted_by', $request->managerId)->where('alloted_to', Auth::user()->id)->orderBy('id', 'DESC')->paginate('10');   
+                $tasklist = $tasklist->where('alloted_by', $request->managerId)->where('alloted_to', Auth::user()->id);   
             }
         }
         if ($request->EmployeeId) {
-            $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('alloted_to', $request->EmployeeId)->orderBy('id', 'DESC')->paginate('10');
+            $tasklist = $tasklist->where('alloted_to', $request->EmployeeId);
         }
 
         if ($request->status) {
             if (Auth::user()->type !== 'employee') {
-                $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('status', $request->status)->orderBy('id', 'DESC')->paginate('10');
+                $tasklist = $tasklist->where('status', $request->status);
             } else {
-                $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('status', $request->status)->where('alloted_to', Auth::user()->id)->orderBy('id', 'DESC')->paginate('10');
+                $tasklist = $tasklist->where('status', $request->status)->where('alloted_to', Auth::user()->id);
             }
         }
 
@@ -215,50 +224,50 @@ class TaskManagmentController extends Controller
             $from = $request->fromdate;
             $to = $request->todate;
             if(Auth::user()->type !== 'employee') {
-                $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->whereBetween('created_at', [$from, $to])->orderBy('id', 'DESC')->paginate('10');
+                $tasklist = $tasklist->whereBetween('created_at', [$from, $to]);
             }else{
-                $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->whereBetween('created_at', [$from, $to])->where('alloted_to', Auth::user()->id)->orderBy('id', 'DESC')->paginate('10');  
+                $tasklist = $tasklist->whereBetween('created_at', [$from, $to])->where('alloted_to', Auth::user()->id);  
             }
         }
 
         if ($request->managerId && $request->status) {
-            $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('alloted_by', $request->managerId)->where('status', $request->status)->orderBy('id', 'DESC')->paginate('10');
+            $tasklist = $tasklist->where('alloted_by', $request->managerId)->where('status', $request->status);
         }
 
         if ($request->EmployeeId && $request->status) {
-            $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('alloted_to', $request->EmployeeId)->where('status', $request->status)->orderBy('id', 'DESC')->paginate('10');
+            $tasklist = $tasklist->where('alloted_to', $request->EmployeeId)->where('status', $request->status);
         }
 
         if ($request->status && $request->managerId && $request->fromdate) {
-            $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('alloted_by', $request->managerId)->where('status', $request->status)->whereBetween('created_at', [$from, $to])->orderBy('id', 'DESC')->get();
+            $tasklist = $tasklist->where('alloted_by', $request->managerId)->where('status', $request->status)->whereBetween('created_at', [$from, $to]);
         }
 
         if ($request->EmployeeId && $request->status && $request->fromdate) {
-            $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('alloted_to', $request->EmployeeId)->where('status', $request->status)->whereBetween('created_at', [$from, $to])->orderBy('id', 'DESC')->paginate('10');
+            $tasklist = $tasklist->where('alloted_to', $request->EmployeeId)->where('status', $request->status)->whereBetween('created_at', [$from, $to]);
         }
         if ($request->deadline) {
             if(Auth::user()->type !== 'employee') {
-                $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('deadline_date', $request->deadline)->orderBy('id', 'DESC')->paginate('10');
+                $tasklist = $tasklist->where('deadline_date', $request->deadline);
             }else{
-                $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('deadline_date', $request->deadline)->where('alloted_to', Auth::user()->id)->orderBy('id', 'DESC')->paginate('10');  
+                $tasklist = $tasklist->where('deadline_date', $request->deadline)->where('alloted_to', Auth::user()->id);  
             }
         }
         if ($request->managerId == "" && $request->EmployeeId == "" && $request->status == "" && $request->fromdate == "" && $request->deadline == "") {
-            $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->orderBy('id', 'DESC')->paginate('10');
+            $tasklist = $tasklist->where('software_catagory', Auth::user()->software_catagory);
         }
         if ($request->priority) {
             if(Auth::user()->type !== 'employee') {
-                $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('priority', $request->priority)->orderBy('id', 'DESC')->paginate('10');
+                $tasklist = $tasklist->where('priority', $request->priority);
             }else{
-                $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('priority', $request->priority)->where('alloted_to', Auth::user()->id)->orderBy('id', 'DESC')->paginate('10');  
+                $tasklist = $tasklist->where('priority', $request->priority)->where('alloted_to', Auth::user()->id);  
             }
         }
             $status_search = $status;
             if ($request->multiuser) {
                 $ids = implode(',', $request->multiuser);
-                $tasklist = Taskmaster::where('alloted_to', $ids)->orderBy('id', 'DESC')->paginate('10');
+                $tasklist = $tasklist->where('alloted_to', $ids);
             }
-
+            $tasklist = $tasklist->orderBy('id', 'DESC')->paginate('10');
             if ($request->ajax()) {
                 return view('task.searchTaskResult', compact('tasklist', 'managers', 'employees', 'managerId', 'EmployeeId', 'status_search', 'from', 'to', 'priority', 'deadline'));
             }
@@ -375,8 +384,9 @@ class TaskManagmentController extends Controller
     }
 
     public function created_Task(request $request)
-    {
-        return view('task.create_task_model');
+    {   $users = User::where('type', '!=', 'admin')->where('software_catagory', Auth::user()->software_catagory)->get();
+        $prioritys = Priority::get();
+        return view('task.create_task_model', compact('users', 'prioritys'));
     }
 
     public function task_delete($id)
@@ -386,22 +396,23 @@ class TaskManagmentController extends Controller
         return redirect('task-list')->with(['success' => 'Your task successfuly deleted']);
     }
 
-    public function selectstatus(Request $request, $task_id)
+    public function selectstatus(Request $request)
     { 
-        $statuss = Status::where('id', $request->selectstatus)->get();
-        if (isset($request->selectstatus)) {
+        
+        $taskId = $request->input('taskId');
+        $newStatus = $request->input('newStatus');
+        Taskmaster::where('id', $taskId)->update(['status' => $newStatus, 'end_date' => date('y-m-d')]);
+        if (isset($newStatus)) {
             $status = new StatusHistory();
-            $status->task_id = $task_id;
-            $status->status = $request->selectstatus;
+            $status->task_id = $taskId;
+            $status->status = $newStatus;
             $status->software_catagory = Auth::user()->software_catagory;
-            $status->end_date = date('y-m-d');
             $status->save();
         }
-        Taskmaster::where('id', $task_id)->update(array('status' => $request->selectstatus, 'end_date' => date('y-m-d')));
-        foreach ($statuss as $status) {
-            echo '<option value="' . $status->id . '">' . $status->status . '</option>';
-        }
+        return response()->json(['message' => 'Status updated successfully']);
     }
+
+
     public function changepriority(Request $request, $task_id)
     {
         $statuss = Priority::where('id', $request->selectstatus)->get();
@@ -422,7 +433,10 @@ class TaskManagmentController extends Controller
         $to_deadline = "";
         $from_enddate = "";
         $to_enddate = "";
-        return view('task.report', compact('managerId', 'EmployeeId', 'priority', 'status_search', 'to', 'from', 'from_deadline', 'to_deadline', 'from_enddate', 'to_enddate'));
+
+        $prioritys = Priority::get();
+
+        return view('task.report', compact('managerId', 'EmployeeId', 'priority', 'status_search', 'to', 'from', 'from_deadline', 'to_deadline', 'from_enddate', 'to_enddate', 'prioritys'));
     }
 
     public function searchReport(Request $request)
@@ -433,63 +447,60 @@ class TaskManagmentController extends Controller
         $EmployeeId = $request->EmployeeId;
         $status = $request->status;
         $from = $request->fromdate;
-        $to = $request->tomdate;
+        $to = $request->todate;
         $priority = $request->priority;
         $from_deadline = $request->from_deadline;
         $to_deadline = $request->to_deadline;
         $from_enddate = $request->from_enddate;
         $to_enddate = $request->to_enddate;
 
+        $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory);
+
         if ($request->from_deadline) {
             $from = $request->from_deadline;
             $to = $request->to_deadline;
-            $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->whereBetween('deadline_date', [$from, $to])->orderBy('id', 'DESC')->paginate('10');
+            $tasklist = $tasklist->whereBetween('deadline_date', [$from, $to]);
         }
 
         if ($request->from_enddate) {
             $from = $request->from_enddate;
             $to = $request->to_enddate;
-            $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->whereBetween('end_date', [$from, $to])->orderBy('id', 'DESC')->paginate('10');
+            $tasklist = $tasklist->whereBetween('end_date', [$from, $to]);
         }
 
         if ($request->today_assigned) {
-            $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->whereDate('start_date', $request->today_assigned)->paginate('10');
+            $tasklist = $tasklist->whereDate('start_date', $request->today_assigned);
         }
         if ($request->today_deadline) {
-            $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->whereDate('deadline_date', $request->today_deadline)->paginate('10');
+            $tasklist = $tasklist->whereDate('deadline_date', $request->today_deadline);
         }
         if ($request->EmployeeId) {
-            $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('alloted_to', $request->EmployeeId)->orderBy('id', 'DESC')->paginate('10');
+            $tasklist = $tasklist->where('alloted_to', $request->EmployeeId);
         }
         if ($request->status) {
-            $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('status', $request->status)->orderBy('id', 'DESC')->paginate('10');
+            $tasklist = $tasklist->where('status', $request->status);
         }
         if ($request->fromdate) {
             $from = $request->fromdate;
             $to = $request->todate;
-            $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->whereBetween('created_at', [$from, $to])->orderBy('id', 'DESC')->paginate('10');
+            $tasklist = $tasklist->whereBetween('created_at', [$from, $to]);
         }
 
         if ($request->EmployeeId && $request->status && $request->fromdate) {
-            $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('alloted_to', $request->EmployeeId)->where('status', $request->status)->whereBetween('created_at', [$from, $to])->orderBy('id', 'DESC')->paginate('10');
+            $tasklist = $tasklist->where('alloted_to', $request->EmployeeId)->where('status', $request->status)->whereBetween('created_at', [$from, $to]);
         }
 
         if ($request->priority) {
-            $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('priority', $request->priority)->orderBy('id', 'DESC')->paginate('10');
+            $tasklist = $tasklist->where('priority', $request->priority);
         }
         $status_search = $status;
         if ($request->EmployeeId == "" && $request->from_deadline == "" && $request->to_deadline == "" && $request->status == "" && $request->from_enddate == "" && $request->to_enddate == "" && $request->today_assigned == "" && $request->today_deadline == "" && $request->priority == "" && $request->fromdate == "" && $request->todate == "") {
-            return redirect()->back()->with(['success' => 'Your status successfully updated.']);
+            return redirect()->back()->with(['success' => 'please fill any one filter .']);
         }
-
+        $tasklist = $tasklist->OrderBy('id', 'DESC')->paginate('25');
         if ($request->ajax()) {
             return view('task.reportSearch', compact('tasklist',  'EmployeeId', 'priority', 'status_search', 'to', 'from', 'from_deadline', 'to_deadline', 'from_enddate', 'to_enddate', 'priority'));
         }
-
         return view('task.report', compact('tasklist',  'EmployeeId', 'priority', 'status_search', 'to', 'from', 'from_deadline', 'to_deadline', 'from_enddate', 'to_enddate', 'priority'));
-    }
-    public function created_Task1()
-    {
-        return view('task.created_task');
     }
 }
