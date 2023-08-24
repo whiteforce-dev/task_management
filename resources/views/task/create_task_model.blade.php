@@ -14,10 +14,13 @@
             <form action="{{ url('create-task') }}" method="POST"  enctype="multipart/form-data" id="createdtask">
                 @csrf
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <label>Task name</label>
                         <input class="form-control" value="" type="text" placeholder="Task Name" id="task_name" name="task_name">
                     </div>
+                </div> 
+                <br>
+                <div class="row">
                     <div class="col-md-6">
                         <label>Alloted To</label>
                         <select class="form-control selectpicker" multiple data-live-search="true" name="alloted_to[]" id="alloted_to">
@@ -27,7 +30,16 @@
                             @endforeach
                         </select>
                     </div>
-                </div> 
+                    <div class="col-sm-6">
+                        <label>Priority</label>
+                        <select class="form-control" name="priority" id="priority">
+                            <option value="">Select</option>
+                            @foreach ($prioritys as $priority )
+                             <option value="{{ $priority->id }}">{{ ucfirst($priority->priority) }}   
+                            @endforeach                          
+                        </select>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-sm-6">
                         <label>Start Date</label>
@@ -38,31 +50,21 @@
                         <input class="form-control" value="" type="date" id="deadline_Date" name="deadline_Date">    
                     </div>    
                 </div>   
-
+                <br>
                 <div class="row">
                     <div class="col-sm-12">
                         <label>Task Details</label>
                         <textarea class="form-control" id="about" rows="3" placeholder="Comments by team..." name="Task_details" id="Task_details"></textarea>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-sm-6">
-                        <label>Priority</label>
-                        <select class="form-control" name="priority" id="priority">
-                            <option value="">Select</option>
-                            @foreach ($prioritys as $priority )
-                             <option value="{{ $priority->id }}">{{ ucfirst($priority->priority) }}   
-                            @endforeach                          
-                        </select>
-                    </div>
-                  <div class="col-sm-6">
-                    <button type="submit" class="btn btn-primary" style="margin-top: 30px;" id="createTaskBtn">Create Task</button>
-                  </div>
-                </div>
+                
             </form>
         </div>
         <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            <div class="col-md-6 offset-3">
+                <button type="submit" class="btn btn-primary col-md-12" style="margin-top: 30px;" id="createTaskBtn">Create Task</button>
+            </div>
+            <div class="col-md-3"></div>
         </div>
     </div>
 </div>
