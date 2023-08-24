@@ -1,7 +1,12 @@
 @extends('layouts.user_type.auth')
 @section('content')
     <link rel="stylesheet" href="{{ url('assets/css/cards.css') }}">
-    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,900&family=Rubik:wght@300;400;600;700&display=swap"
+        rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/66f2518709.js" crossorigin="anonymous"></script>
+
     <style>
         .box-one span {
             width: 55% !important;
@@ -52,98 +57,81 @@
 
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
         <div class="container-fluid py-4">
-                
-                <div class="alert alert-white mx-1">
-                    <div class="row">
-                        @if (auth::user()->type !== 'employee')
-                            <div class="col-3">
-                                <label>Created By</label>
-                                <select name="created_by" id="created_by" class="form-control" style="border:1px solid #cb0c9f;"
-                                    id="dataField">
-                                    <option value="">Select</option>
-                                    @foreach ($managers as $user)
-                                        <option value="{{ $user->id }}" {{ $user->id == $managerId ? 'selected' : '' }}>
-                                            {{ ucfirst($user->name) }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                                <div class="col-3">
-                                    <label>Alloted To</label>
-                                    <select class="selectpicker form-control" multiple data-live-search="true" name="multiuser[]">
-                                        <option value="">Select</option>
-                                        @foreach ($users as $user)
-                                            <option value="{{ $user->id }}">{{ ucfirst($user->name) }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            @endif
-                            @if(Auth::user()->type == 'employee')
-                            <div class="col-3">
-                                <label>Alloted To</label>
-                                <select class="selectpicker form-control" multiple data-live-search="true"
-                                    name="alloted_to[]" id="alloted_to">
-                                    <option value="">Select</option>
-                                    @foreach ($statuss as $status)
-                                        <option value="{{ $status->id }}"
-                                            {{ $status->id == "$status_search" ? 'selected' : '' }}>
-                                            {{ ucfirst($status->status) }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        @endif
-                        @if(Auth::user()->type == 'employee')
-                        <div class="col-3">
-                            <label>Alloted To</label>
-                            <select name="alloted_to[]" id="alloted_to" class="form-control" style="border:1px solid #cb0c9f;">
-                                <option value="{{ Auth::user()->id }}"
-                                    {{ Auth::user()->id == Auth::user()->id ? 'selected' : '' }}>
-                                    {{ ucfirst(Auth::user()->name) }}</option>
-                            </select>
-                        </div>
-                        @endif
-                        <div class="col-3">
-                            <label>Status</label>
-                            <select name="status" id="status" class="form-control" style="border:1px solid #cb0c9f;">
-                                <option value="">Select</option>
-                                @foreach ($statuss as $status)
-                                    <option value="{{ $status->id }}"
-                                        {{ $status->id == "$status_search" ? 'selected' : '' }}>
-                                        {{ ucfirst($status->status) }}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
-                        
-                        
-                        <div class="col-sm-2">
-                            <label>Priority</label>
-                            <select name="priority" id="priority" class="form-control" style="border:1px solid #cb0c9f;">
-                                <option value="">Select</option>
-                                <option value="highest">Highest</option>
-                                <option value="high">High</option>
-                                <option value="medium">Medium</option>
-                                <option value="low">Low</option>
-                            </select>
-                        </div>
-                        
-                        <div class="col-sm-3">
-                            <label>Create Date</label>
-                            <input name="created_date" id="created_date"  class="form-control datepicker" style="border:1px solid #cb0c9f;">
-                        </div>
-                        <div class="col-3">
-                            <label>Deadline Date</label>
-                            <input name="deadline_date" id="deadline_date" class="form-control datepicker" style="border:1px solid #cb0c9f;"
-                                value="">
-                        </div>
-
-                        <div class="col-sm-1">
-                            <button type="button" class="btn btn-primary" style="margin-top:31px;" id="submitButton" onclick="searchTask()">Search</button>
-                        </div>
-                        
+            <div class="row">
+                @if (auth::user()->type !== 'employee')
+                <div class="col-3">
+                    <label>Created By</label>
+                    <select name="created_by" id="created_by" class="form-control" style="border:1px solid #cb0c9f;"
+                        id="dataField">
+                        <option value="">Select</option>
+                        @foreach ($users as $user)
+                            <option value="{{ $user->id }}" {{ $user->id == $managerId ? 'selected' : '' }}>
+                                {{ ucfirst($user->name) }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                @endif
+                @if(Auth::user()->can_allot_to_others)
+                    <div class="col-3">
+                        <label>Alloted To</label>
+                        <select class="selectpicker form-control" multiple data-live-search="true" name="alloted_to[]" id="alloted_to">
+                            <option value="">Select</option>
+                            @foreach ($users as $user)
+                                <option value="{{ $user->id }}">{{ ucfirst($user->name) }}</option>
+                            @endforeach
+                        </select>
                     </div>
-                </form>
+                @endif
+                
+            
+            <div class="col-3">
+                <label>Status</label>
+                <select name="status" id="status" class="form-control" style="border:1px solid #cb0c9f;">
+                    <option value="">Select</option>
+                    @foreach ($statuss as $status)
+                        <option value="{{ $status->id }}"
+                            {{ $status->id == "$status_search" ? 'selected' : '' }}>
+                            {{ ucfirst($status->status) }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+            
+            
+            <div class="col-sm-2">
+                <label>Priority</label>
+                <select name="priority" id="priority" class="form-control" style="border:1px solid #cb0c9f;">
+                    <option value="">Select</option>
+                    <option value="1">Highest</option>
+                    <option value="2">High</option>
+                    <option value="3">Medium</option>
+                    <option value="4">Low</option>
+                </select>
+            </div>
+            
+            <div class="col-sm-3">
+                <label>Create Date</label>
+                <input name="created_date" id="created_date"  class="form-control datepicker" autocomplete="off" style="border:1px solid #cb0c9f;">
+            </div>
+            <div class="col-3">
+                <label>Deadline Date</label>
+                <input name="deadline_date" id="deadline_date" class="form-control datepicker" autocomplete="off" style="border:1px solid #cb0c9f;"
+                    value="">
+            </div>
+
+            <div class="col-sm-1">
+                <button type="button" class="btn btn-primary" style="margin-top:31px;" id="submitButton" onclick="searchTask()">Search</button>
+            </div>
+            <div class="col-sm-1">
+                <a href="{{ url('task-list') }}" class="btn btn-primary"
+                    style="margin-top:30px;margin-left:20px">Reset</a>
+            </div>
+            <div class="col-sm-2">
+                <a href="javascript:" class="btn btn-primary" onclick="createTask('{{ url('create-task') }}')"
+                    style="margin-top:30px; margin-left:30px;">New task</a>
+            </div>
+            </div>
+                            
             <div id="searchResults">
                 @foreach ($tasklist as $i => $task)
                 @php
@@ -289,7 +277,7 @@
                             </div>
                             <div class="box-one">
                                 <i class="fa-solid fa-circle"
-                                    style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i> <span>complete Date :
+                                    style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i> <span>Complete Date :
                                 </span>
                                 @if ($task->status == '3')
                                     <P>{{ \Carbon\Carbon::parse($task->end_date)->format('d-m-Y') }}</P>
@@ -317,20 +305,12 @@
                             </div>
                         </div>
                     </div>
-                    
-                </div>
-            
-            <div id="searchResults">
-                @include('task.searchTaskResult')
+                </section>
+                @endforeach
             </div>
         </div>
       
     </main>
-
-
-
-
-
     <link rel="stylesheet" href="{{ url('assets/css/multiselect.css') }}">
     <link rel="stylesheet" href="{{ url('assets/css/multiselectdrop.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>
@@ -340,8 +320,9 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.min.js"></script>
-    <script>
+ {{-- searching ajax --}}
 
+        <script>
         function searchTask(){
             $.ajax({
                 type : 'POST',
@@ -356,36 +337,18 @@
                     '_token' : "{{ csrf_token() }}"
                 },
                 success : function(response){
-                    console.log(response)
+                    $('#searchResults').html(response)
                 }
             })
         }
-
-        function selectstatus1(task_id) {
-            var selectstatus = $('#selectstatus').val();
-            $.get("{{ url('selectstatus') }}" + '/' + task_id, {
-                selectstatus: selectstatus,
-            }, function(response) {
-                $('#status').html(response);
-            });
-        };
     
-        function selectstatus2(task_id) {
-            var selectstatus = $('#priority').val();
-            $.get("{{ url('changepriority') }}" + '/' + task_id, {
-                selectstatus: selectstatus,
-            }, function(response) {
-                $('#priority1').html(response);
-            });
-        };
-        
         function managerRemark(url, id) {
             $.get(url, id, function(rs) {
                 $('#myModal').html(rs);
                 $('#myModal').modal('show');
             });
         }
-    
+   
         function mgrRemark(url, id) {
             $.get(url, id, function(rs) {
                 $('#myModal4').html(rs);
@@ -399,7 +362,7 @@
                 $('#myModal8').modal('show');
             });
         }
-   
+    
         function createTask(url, id) {
             $.get(url, id, function(rs) {
                 $('#myModal10').html(rs);
@@ -407,20 +370,6 @@
             });
         }
 
-        $('.datepicker').daterangepicker();
-    </script>
-
-    <div class="modal" id="myModal10">
-    </div>
-
-    <div class="modal" id="myModal8">
-    </div>
-    <div class="modal" id="myModal">
-    </div>
-    <div class="modal" id="myModal4">
-    </div>
-
-    <script>
         $(document).ready(function () {
             $('.status-dropdown').on('change', function () {
                 var taskId = $(this).data('task-id');
@@ -445,7 +394,36 @@
                 });
             });
         });
+        $('.datepicker').daterangepicker(
+            {
+                autoUpdateInput: false,
+                locale: {
+                    cancelLabel: 'Clear'
+                }
+            }
+        );
+
+        $('.datepicker').on('apply.daterangepicker', function(ev, picker) {
+            $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+        });
+
+        $('.datepicker').on('cancel.daterangepicker', function(ev, picker) {
+            $(this).val('');
+        });
+
     </script>
+
+    <div class="modal" id="myModal10">
+    </div>
+
+    <div class="modal" id="myModal8">
+    </div>
+    <div class="modal" id="myModal">
+    </div>
+    <div class="modal" id="myModal4">
+    </div>
+
+    
 
     <script src="{{ url('assets/js/core/popper.min.js') }}"></script>
     <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script> 

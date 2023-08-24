@@ -112,6 +112,17 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
+                                    <label for="user-email" class="form-control-label">{{ __('Start date') }}</label>
+                                    <div class="@error('email')border border-danger rounded-3 @enderror">
+                                        <input class="form-control" value="{{ $task->start_date }}" type="date" name="task_date">
+                                        @error('task_date')
+                                            <p class="text-danger text-xs mt-2">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
                                     <label for="about">{{ 'Deadline date' }}</label>
                                     <div class="@error('user.EndDate')border border-danger rounded-3 @enderror">
                                         <input class="form-control" value="{{ $task->deadline_date }}" type="date"
@@ -122,17 +133,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="user-email" class="form-control-label">{{ __('Start date') }}</label>
-                                    <div class="@error('email')border border-danger rounded-3 @enderror">
-                                        <input class="form-control" value="{{ $task->start_date }}" type="date" name="task_date">
-                                        @error('task_date')
-                                            <p class="text-danger text-xs mt-2">{{ $message }}</p>
-                                        @enderror
-                                    </div>
-                                </div>
-                            </div>
+                            
                         </div>
 
                         <div class="row">

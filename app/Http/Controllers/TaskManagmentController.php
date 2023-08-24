@@ -74,12 +74,14 @@ class TaskManagmentController extends Controller
     }
 
     public function searchTask(Request $request){
+
         $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory);
         if(!empty($request->created_by)){
             $tasklist = $tasklist->where('alloted_by',$request->created_by);
         }
         if(!empty($request->alloted_to)){
-            $tasklist = $tasklist->whereIn('alloted_to',$request->alloted_to);
+            $pattern = implode('|', array_map('preg_quote', explode(',', implode(',',$request->alloted_to))));
+            $tasklist = $tasklist->whereRaw("alloted_to REGEXP '{$pattern}'")->where('alloted_by',Auth::user()->id);
         }
         if(!empty($request->status)){
             $tasklist = $tasklist->where('status',$request->status);
@@ -88,20 +90,26 @@ class TaskManagmentController extends Controller
             $tasklist = $tasklist->where('priority',$request->priority);
         }
         if(!empty($request->created_date)){
-            $tasklist = $tasklist->where('created_date',$request->created_date);
+            $created_date = explode(' - ',$request->created_date);
+            
+            $start_created_date_parts = explode('/',$created_date[0]);
+            $end_created_date_parts = explode('/',$created_date[1]);
+            $start_created_date = $start_created_date_parts[2].'-'.$start_created_date_parts[1].'-'.$start_created_date_parts[0];
+            $end_created_date = $end_created_date_parts[2].'-'.$end_created_date_parts[1].'-'.$end_created_date_parts[0];
+            
+            $tasklist = $tasklist->whereBetween('created_at',[$start_created_date.' 00:00:00',$end_created_date.' 23:59:59']);
         }
         if(!empty($request->deadline_date)){
-            $tasklist = $tasklist->where('deadline_date',$request->deadline_date);
-        }
-        if (Auth::user()->type == "employee") {
-            $tasklist = $tasklist->where('alloted_by',Auth::user()->id)->orWhereRaw("FIND_IN_SET(".Auth::user()->id.", alloted_to)");
-        } elseif(Auth::user()->type == "manager"){
-            $teamId = User::where('software_catagory', Auth::user()->software_catagory)->where('parent_id', Auth::user()->id)->pluck('id')->toArray();
-            $all_users_ids = [Auth::user()->id,...$teamId];
-            $pattern = implode('|', array_map('preg_quote', explode(',', implode(',',$all_users_ids))));
-            $tasklist = $tasklist->whereIn('alloted_by',$all_users_ids)->orWhereRaw("alloted_to REGEXP '{$pattern}'");
+            $deadline_date = explode(' - ',$request->deadline_date);
+            $start_deadline_date_parts = explode('/',$deadline_date[0]);
+            $end_deadline_date_parts = explode('/',$deadline_date[1]);
+            $start_dedaline_date = $start_deadline_date_parts[2].'-'.$start_deadline_date_parts[1].'-'.$start_deadline_date_parts[0];
+            $end_dedaline_date = $end_deadline_date_parts[2].'-'.$end_deadline_date_parts[1].'-'.$end_deadline_date_parts[0];
+            
+            $tasklist = $tasklist->whereBetween('deadline_date',[$start_dedaline_date,$end_dedaline_date]);
         }
         $tasklist = $tasklist->orderBy('id', 'Desc')->paginate(25);
+        return view('task.searchTaskResult',compact('tasklist'));
     }
 
     public function taskEditPage($id)

@@ -1,3 +1,4 @@
+
 @foreach ($tasklist as $i => $task)
 @php
     $date1 = Carbon\Carbon::parse($task->EndDate);
@@ -44,7 +45,7 @@
             <div class="low-box">
                 <h3><i class="fa-solid fa-user-shield" style="margin-right: 5px; color:#cb0c9f;"></i>Manager
                     Remark</h3>
-                   
+                    
                     @if(Auth::user()->type !=='employee')
                     <?php $text =  mb_strimwidth($task->GetEmployee->remark ?? 'null', 0, 120, '...'); ?>                                   
                     @else
@@ -55,7 +56,7 @@
                     @if (Auth::user()->type !== 'employee')
                         <a href="javascript:"
                             onclick="managerRemark('{{ url('managerremark' . '?id=' . $task->id) }}')">
-                           <span
+                            <span
                                 style="float:right;
                         color: #242527;
                         font-weight: 600;
@@ -69,8 +70,7 @@
         <div class="short-width" style="width: 30%;">
             <div class="box-one box-btn">
                 <div class="dropdown" style=" margin-right: 10px;">
-                    <select class="dropbtn1" name="selectstatus" id="selectstatus"
-                        onchange="selectstatus1({{ $task->id }})">
+                    <select class="dropbtn1 status-dropdown" name="selectstatus" data-task-id="{{ $task->id }}">
                         <option value="1" {{ '1' == $task->status ? 'selected' : '' }}>Pending
                         </option>
                         <option value="2" {{ '2' == $task->status ? 'selected' : '' }}>Progress
@@ -173,3 +173,4 @@
     </div>
 </section>
 @endforeach
+            
