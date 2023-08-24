@@ -27,10 +27,10 @@ $employees = \App\Models\User::where('type', 'employee')->get();
                 <div class="col-auto my-auto">
                     <div class="h-100">
                         <h5 class="mb-1">
-                            {{ __('Task list') }}
+                            {{ ucwords(Auth::user()->name) }}
                         </h5>
                         <p class="mb-0 font-weight-bold text-sm">
-
+                            {{ ucwords(Auth::user()->type) }}
                         </p>
                     </div>
                 </div>
@@ -108,10 +108,9 @@ $employees = \App\Models\User::where('type', 'employee')->get();
                             <label>Priority</label>
                             <select name="priority" class="form-control" style="border:1px solid #cb0c9f;">
                                 <option value="">Select</option>
-                                <option value="highest"{{ "highest"== $priority ? 'selected' : '' }}>Highest</option>
-                                <option value="high" {{ "high"== $priority ? 'selected' : '' }}>High</option>
-                                <option value="medium" {{"medium" == $priority ? 'selected' : ''}}>Medium</option>
-                                <option value="low" {{ "low" == $priority ? 'selected' : ''}}>Low</option>
+                                    @foreach ($prioritys as $priority)
+                                        <option value="{{ $priority->id }}">{{ ucfirst($priority->priority) }}</option>
+                                    @endforeach
                             </select>
                         </div>
 
@@ -134,12 +133,11 @@ $employees = \App\Models\User::where('type', 'employee')->get();
                         </div>
                     </div>
                 </form>
-
             </div>
 
             <div class="alert alert-secondary mx-1" role="alert">
                 <span class="text-white">
-                    <strong>Search ..</strong>
+                    <strong>Task Search ..</strong>
                    
                 </span>
             </div>
@@ -190,7 +188,7 @@ $employees = \App\Models\User::where('type', 'employee')->get();
                                         @if($task->status !== "3")
                                         <span class="dot">{{$daysDifference}}</span>
                                         @endif
-                                    </td>  
+                                     </td>  
                                       
                                       {{-- <td>{{ $task->GetManagerName->name ?? 'Na' }}</td>   --}}
 
@@ -215,7 +213,18 @@ $employees = \App\Models\User::where('type', 'employee')->get();
                                       <td><span style="color:#090 !important; font-weight:500;">Completed</span></td>
                                       @endif
                         
-                                      <td>{{ $task->priority }}</td>
+                                      <td>
+                                          @if($task->priority == '1')
+                                         <p> Highest </p>
+                                          @elseif($task->priority == '2')
+                                         <p> High </p>
+                                         @elseif($task->priority == '3')
+                                          <p> Medium</p>
+                                         @else
+                                         <p>Low</p>
+                                          @endif
+                                      </td>
+
                                     </tr>
                                 @endforeach                                  
                             </tbody>

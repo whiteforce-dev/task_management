@@ -171,10 +171,10 @@
                                     <div class="@error('user.team_comments')border border-danger rounded-3 @enderror">
                                         <select name="priority" class="form-control">
                                             <option value="">Select</option>
-                                            <option value="highest" {{ 'highest' == $task->priority ? 'selected' : '' }}>Highest</option>
-                                            <option value="high" {{ 'high' == $task->priority ? 'selected' : '' }}>High</option>
-                                            <option value="medium" {{ 'medium' == $task->priority ? 'selected' : '' }}>Medium</option>
-                                            <option value="low" {{ 'low' == $task->priority ? 'selected' : '' }}>Low</option>
+                                            <option value="1" {{ '1' == $task->priority ? 'selected' : '' }}>Highest</option>
+                                            <option value="2" {{ '2' == $task->priority ? 'selected' : '' }}>High</option>
+                                            <option value="3" {{ '3' == $task->priority ? 'selected' : '' }}>Medium</option>
+                                            <option value="4" {{ '4' == $task->priority ? 'selected' : '' }}>Low</option>
                                         </select>
                                         @error('priority')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
@@ -182,6 +182,7 @@
                                     </div>
                                 </div>                              
                             </div>
+                            <input type="hidden" name="managerId" value="{{ $task->alloted_by }}">
                             <div class="col-md-6">
                                 <div class="d-flex justify-content-left mt-2">
                                     <button type="submit"

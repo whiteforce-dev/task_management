@@ -4,9 +4,6 @@ href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,6
 rel="stylesheet"/>
 @extends('layouts.user_type.auth')
 @section('content')
-@php
-    $users = \App\Models\User::where('software_catagory', Auth::user()->software_catagory)->where('type','!=', 'admin')->get(); 
-@endphp
 <body style=" font-family: Poppins, sans-serif;">
     <div id="response"></div>
     <section class="pipeline">
@@ -164,16 +161,6 @@ rel="stylesheet"/>
         </div>
     </section>
 
-    <link rel="stylesheet" href="{{ url('assets/css/multiselect.css') }}">
-    <link rel="stylesheet" href="{{ url('assets/css/multiselectdrop.css') }}">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>
-
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
-        integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
         function selectstatus11(task_id, status_id) {
@@ -207,6 +194,4 @@ rel="stylesheet"/>
 </div>
 
 </body>
-<script src="{{ url('assets/js/core/popper.min.js') }}"></script>
-<script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script> 
 @endsection

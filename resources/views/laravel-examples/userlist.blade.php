@@ -39,10 +39,10 @@
                 <div class="col-auto my-auto">
                     <div class="h-100">
                         <h5 class="mb-1">
-                            {{ __('User list') }}
+                            {{ __('User List') }}
                         </h5>
                         <p class="mb-0 font-weight-bold text-sm">
-
+                            {{ ucfirst(Auth::user()->type) }}
                         </p>
                     </div>
                 </div>
@@ -75,9 +75,10 @@
                                     <th scope="col"><b>Name</b></th>
                                     <th scope="col"><b>Email</b></th>
                                     <th scope="col"><b>Manager</b></th>
-                                    <th scope="col"><b>Type</b></th>
-                                    
+                                    <th scope="col"><b>Type</b></th> 
+                                    @if(Auth::user()->type !== 'employee')                                  
                                     <th>Action</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody>

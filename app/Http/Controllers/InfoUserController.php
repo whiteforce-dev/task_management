@@ -80,14 +80,14 @@ class InfoUserController extends Controller
         $edituser->parent_id = $request['managerId'];
         $edituser->password = bcrypt($request['password']);
         $edituser->software_catagory = Auth::user()->software_catagory;
-
-        $file = request('image');
-        if ($request->hasFile('image')) {
-            $temp = $file->getClientOriginalName();
-            $image_name = $temp;
-            $destinationPath = 'profile_images' . '/';
-            $file->move($destinationPath, $temp);
-            $edituser->image = 'profile_images/' . $image_name;
+        if($request->image) {
+            $image_code = $request->imageBaseString;
+            $basePath = "profile_images/";
+            $fileName = uploadImageWithBase64($image_code, $basePath);
+            $image_path = $basePath . $fileName;
+            $edituser->image = $image_path;
+        }else{
+            $edituser->image = $request->old_image;
         }
         $edituser->can_allot_to_others = $request->can_allot_to_others ?? '0'; 
         $edituser->update();

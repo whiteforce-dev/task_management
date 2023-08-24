@@ -26,7 +26,6 @@
                             </p>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -136,10 +135,10 @@
                                     <label for="about">{{ 'Priority' }}</label>
                                     <div class="@error('user.priority')border border-danger rounded-3 @enderror">
                                         <select class="form-control" name="priority">
-                                            <option value="highest">Highest</option>
-                                            <option value="high">High</option>
-                                            <option value="medium">Medium</option>
-                                            <option value="low">Low</option>
+                                            <option value="1">Highest</option>
+                                            <option value="2">High</option>
+                                            <option value="3">Medium</option>
+                                            <option value="4">Low</option>
                                         </select>
                                     </div>
                                 </div>                           
@@ -163,11 +162,8 @@
 <link rel="stylesheet" href="{{ url('assets/css/multiselectdrop.css') }}">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-    <script src="{{ url('assets') }}/jquery-validation/jquery.validate.min.js"></script>
-
+<script src="{{ url('assets') }}/jquery-validation/jquery.validate.min.js"></script>
     <script>
         $(document).ready(function($) {
             $("#createdtask").validate({

@@ -7,13 +7,15 @@ use App\Models\Taskmaster;
 use App\Mail\TaskEmail;
 use Illuminate\Support\Facades\Mail;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 class PipelineController extends Controller
 {
    public function pipeline(){
       $pendingtasks = Taskmaster::where('status', '1')->get();
       $progresstasks = Taskmaster::where('status', '2')->get();
       $completedtasks = Taskmaster::where('status', '3')->get();
-    return view('pipeline.pipeline', compact('pendingtasks', 'progresstasks', 'completedtasks'));
+      $users = User::where('software_catagory', Auth::user()->software_catagory)->where('type','!=', 'admin')->get();
+    return view('pipeline.pipeline', compact('pendingtasks', 'progresstasks', 'completedtasks', 'users'));
    }
 
    public function pipelinestatus(Request $request, $task_id, $status_id){

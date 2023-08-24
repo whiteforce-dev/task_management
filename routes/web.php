@@ -74,7 +74,7 @@ Route::group(['middleware' => 'auth'], function ()
 		});
 		Route::get('employeedetails', [TaskManagmentController::class, 'employeedetails']);
 		Route::get('task-delete/{id}', [TaskManagmentController::class, 'task_delete']);
-		Route::get('selectstatus/{task_id}', [TaskManagmentController::class, 'selectstatus']);
+		Route::post('selectstatus', [TaskManagmentController::class, 'selectstatus']);
 		Route::get('account-create', [AccountController::class, 'accountCreate']);
 		Route::post('create-account', [AccountController::class, 'CreateAccount']);
 		Route::get('account-list', [AccountController::class, 'accountList']);

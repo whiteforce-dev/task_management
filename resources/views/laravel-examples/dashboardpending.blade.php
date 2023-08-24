@@ -41,10 +41,10 @@
                 <div class="col-auto my-auto">
                     <div class="h-100">
                         <h5 class="mb-1">
-                            {{ __('Pending Task') }}
+                            {{ ucwords(Auth::user()->name) }}
                         </h5>
                         <p class="mb-0 font-weight-bold text-sm">
-
+                            {{ ucwords(Auth::user()->type) }}
                         </p>
                     </div>
                 </div>
@@ -55,7 +55,7 @@
         <div class="container-fluid py-4">
             <div class="alert alert-secondary mx-1" role="alert">
                 <span class="text-white">
-                    <strong>Show All User Report!</strong>
+                    <strong>Pending Task Report !</strong>
                     {{-- <a href="" class="btn bg-gradient-primary btn-sm mb-0" type="button"
                         style="float:right;"> </a> --}}
                 </span>

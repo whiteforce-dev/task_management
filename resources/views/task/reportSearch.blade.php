@@ -65,7 +65,17 @@
                                       <td><span style="color:#090 !important; font-weight:500;">Completed</span></td>
                                       @endif
                         
-                                      <td>{{ $task->priority }}</td>
+                                      <td>
+                                        @if($task->priority == '1')
+                                         <p> Highest </p>
+                                          @elseif($task->priority == '2')
+                                         <p> High </p>
+                                         @elseif($task->priority == '3')
+                                          <p> Medium</p>
+                                         @else
+                                         <p>Low</p>
+                                          @endif    
+                                    </td>
                                     </tr>
                                 @endforeach                                  
                             </tbody>
