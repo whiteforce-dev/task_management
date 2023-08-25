@@ -22,24 +22,13 @@ function uploadImageWithBase64($fileName, $path = '')
 
             // Save the original image
             $filePath = $path . '/' . $name;
+            $fullPath = base_path();
+            $filePath = str_replace("src", $filePath, $fullPath);
             $img = Image::make($file);
             $img->resize(800, null, function ($constraint) {
                 $constraint->aspectRatio();
-            })->save(public_path($filePath));
-
-            // // Save the thumbnail
-            // $thumbFilePath = $path . '/thumb/' . $name;
-            // $thumbImg = Image::make($file);
-            // $thumbImg->resize(100, null, function ($constraint) {
-            //     $constraint->aspectRatio();
-            // })->save(public_path($thumbFilePath));
-        } else {
-            // Handle the case when $fileName does not contain the expected data
-            // Log an error, throw an exception, or handle it as appropriate for your application
-            // For example:
-            // Log::error("Invalid data format in \$fileName: " . $fileName);
-            // throw new Exception("Invalid data format in \$fileName");
-        }
+            })->save($filePath);
+        } else { }
     }
     return $name;
 }
