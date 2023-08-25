@@ -26,6 +26,7 @@
                 </div> 
                 <br>
                 <div class="row">
+                    @if(!empty(Auth::user()->can_allot_to_others))
                     <div class="col-md-6">
                         <label>Alloted To</label>
                         <select class="form-control selectpicker" multiple data-live-search="true" name="alloted_to[]" id="alloted_to">
@@ -35,6 +36,14 @@
                             @endforeach
                         </select>
                     </div>
+                    @else
+                    <div class="col-md-6">
+                        <label>Alloted To</label>
+                        <select class="form-control selectpicker" multiple data-live-search="true" name="alloted_to[]" id="alloted_to">
+                            <option value="{{ Auth::user()->id }}" selected>{{ Auth::user()->name }}</option>
+                        </select>
+                    </div>
+                    @endif
                     <div class="col-sm-6">
                         <label>Priority</label>
                         <select class="form-control" name="priority" id="priority">
