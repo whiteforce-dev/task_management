@@ -471,9 +471,7 @@ class TaskManagmentController extends Controller
         $to_deadline = "";
         $from_enddate = "";
         $to_enddate = "";
-
         $prioritys = Priority::get();
-
         return view('task.report', compact('managerId', 'EmployeeId', 'priority', 'status_search', 'to', 'from', 'from_deadline', 'to_deadline', 'from_enddate', 'to_enddate', 'prioritys'));
     }
 
@@ -533,7 +531,7 @@ class TaskManagmentController extends Controller
         }
         $status_search = $status;
         if ($request->EmployeeId == "" && $request->from_deadline == "" && $request->to_deadline == "" && $request->status == "" && $request->from_enddate == "" && $request->to_enddate == "" && $request->today_assigned == "" && $request->today_deadline == "" && $request->priority == "" && $request->fromdate == "" && $request->todate == "") {
-            return redirect()->back()->with(['success' => 'please fill any one filter .']);
+            return redirect('report')->back()->with(['success' => 'please fill any one filter .']);
         }
         $tasklist = $tasklist->OrderBy('id', 'DESC')->paginate('25');
         if ($request->ajax()) {

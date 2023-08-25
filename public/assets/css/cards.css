@@ -3,7 +3,9 @@
     padding: 0;
     box-sizing: border-box;
   }
-
+.dot{
+  width: 5%;
+}
 .cards{
     width: 98%;
     margin: 20px auto;
@@ -83,7 +85,7 @@
         font-size: 0.9rem;
         font-weight: 600;
         color: #1a1d29;
-        width: 60% !important;
+        width: 50% !important;
         font-family: Poppins, sans-serif;
         letter-spacing: 0.2px;
     }

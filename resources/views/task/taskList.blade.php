@@ -13,7 +13,7 @@
         }
 
         .box-one p {
-            width: 45% !important;
+            width: 35% !important;
         }
 
         .dott {
@@ -236,13 +236,13 @@
                 
                             <div class="box-one">
                                 <i class="fa-solid fa-circle"
-                                    style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Created Date :
+                                    style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Created Date &nbsp;&nbsp; :
                                 </span>
                                 <P>{{ \Carbon\Carbon::parse($task->created_at)->format('d-m-Y') }}</P>
                             </div>
                             <div class="box-one">
                                 <i class="fa-solid fa-circle"
-                                    style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Priority:
+                                    style="margin-right:4px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Priority &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;:
                                 </span>
                                 @if ($task->priority == '1')
                                     <P class="priorty" style="background-color: #900; color:#fff;">
@@ -261,7 +261,7 @@
                             </div>
                             <div class="box-one" style="position: relative;">
                                 <i class="fa-solid fa-circle"
-                                    style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i> <span>Deadline Date :
+                                    style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i> <span>Deadline Date &nbsp; :
                                 </span>
                                 <p style="margin-left: 0px;">
                                     {{ \Carbon\Carbon::parse($task->deadline_date)->format('d-m-Y') }} </p>
@@ -287,7 +287,7 @@
                             <div class="box-one" style="position: relative;">
                                 <i class="fa-solid fa-circle"
                                     style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Created By
-                                    :</span>
+                                        &nbsp; &nbsp; &nbsp; &nbsp; :</span>
                                 <P>{{ $task->GetManagerName->name ?? 'Na' }}</P>
                             </div>
                 
@@ -398,6 +398,7 @@
                 });
             });
         });
+        
         $('.datepicker').daterangepicker(
             {
                 autoUpdateInput: false,
@@ -414,12 +415,10 @@
         $('.datepicker').on('cancel.daterangepicker', function(ev, picker) {
             $(this).val('');
         });
-
     </script>
 
     <div class="modal" id="myModal10">
     </div>
-
     <div class="modal" id="myModal8">
     </div>
     <div class="modal" id="myModal">
@@ -428,7 +427,5 @@
     </div>
     <script src="{{ url('assets/js/core/popper.min.js') }}"></script>
     <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script>
-    
-
-
+   
 @endsection
