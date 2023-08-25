@@ -1,6 +1,11 @@
-
+<style>
+    .modal-content {
+    overflow: auto;
+    max-height: 650px; 
+    }
+</style>
 <div class="modal-dialog modal-lg">
-    <div class="modal-content">
+    <div class="modal-content"  style="overflow-X:hidden; overflow-Y:visible;">
 
         <!-- Modal Header -->
         <div class="modal-header">
@@ -54,24 +59,28 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <label>Task Details</label>
-                        <textarea class="form-control" id="about" rows="3" placeholder="Comments by team..." name="Task_details" id="Task_details"></textarea>
+                        <textarea class="form-control" id="about" rows="3" placeholder="Comments by team..." name="task_details" id="task_details"></textarea>
                     </div>
                 </div>
-                
+                <div class="modal-footer">
+                    <div class="col-md-6 offset-3">
+                        <button type="submit" class="btn btn-primary col-md-12" style="margin-top: 30px;" id="createTaskBtn">Create Task</button>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
             </form>
         </div>
-        <div class="modal-footer">
-            <div class="col-md-6 offset-3">
-                <button type="submit" class="btn btn-primary col-md-12" style="margin-top: 30px;" id="createTaskBtn">Create Task</button>
-            </div>
-            <div class="col-md-3"></div>
-        </div>
+        
     </div>
 </div>
 
 <link rel="stylesheet" href="{{ url('assets/css/multiselect.css') }}">
 <link rel="stylesheet" href="{{ url('assets/css/multiselectdrop.css') }}">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.slim.min.js"></script>
+<script src="{{ url('assets/jquery-validation/jquery.validate.min.js') }}"></script>
+
 <script>
     $(document).ready(function() {
         $('.selectpicker').selectpicker();
@@ -86,7 +95,7 @@
                 alloted_to: 'required',
                 start_date: 'required',
                 deadline_Date: 'required',
-                Task_details: 'required',
+                task_details: 'required',
                 priority: 'required',
             },
             messages: {
@@ -94,7 +103,7 @@
                 alloted_to: '*Please Select Alloted To',
                 start_date: '*Please Select Start Date',
                 deadline_Date: '*Please Select Deadline Date',
-                Task_details: '*Please Select Task Details',
+                task_details: '*Please Select Task Details',
                 priority: '*Please Select Task Details ',
             },
             errorPlacement: function(error, element) {

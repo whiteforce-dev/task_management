@@ -229,8 +229,8 @@
             <div class="upload_caption">
             </div>
             <div class="btn-group" data-toggle="modal" data-target="#modal_crop">
-                <img style="height:300px; width:auto" src=" {{ !empty($preview) ? url($preview) : 'https://cdn.dribbble.com/users/1753953/screenshots/3818675/media/b376f45b3edd274a18c6296df22854fb.gif' }}" alt=""
-                    id="myresultimage">
+                {{-- <img style="height:300px; width:auto" src=" {{ !empty($preview) ? url($preview) : 'https://cdn.dribbble.com/users/1753953/screenshots/3818675/media/b376f45b3edd274a18c6296df22854fb.gif' }}" alt=""
+                    id="myresultimage"> --}}
 
             </div>
             <br>

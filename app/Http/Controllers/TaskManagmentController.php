@@ -22,10 +22,9 @@ class TaskManagmentController extends Controller
 
         $attributes = request()->validate([
             'task_name' => ['required', 'max:50'],
-            'alloted_to' => ['required'],
             'start_date'  =>  ['required'],
             'deadline_Date' => ['required'],
-            'Task_details' => ['required', 'max:300'],
+            'task_details' => ['required', 'max:300'],
             'priority' => ['required'],
         ]);
 
@@ -33,7 +32,7 @@ class TaskManagmentController extends Controller
         $newtask->task_name = $request->task_name;
         $newtask->alloted_to = implode(',', $request->alloted_to);
         $idsArray = implode(',', $request->alloted_to);
-        $newtask->task_details = $request->Task_details;
+        $newtask->task_details = $request->task_details;
         $newtask->start_date = $request->start_date;
         $newtask->alloted_by = Auth::user()->id;
         $newtask->deadline_date = $request->deadline_Date;
@@ -123,7 +122,7 @@ class TaskManagmentController extends Controller
         $newtask = Taskmaster::find($id);
         $newtask->task_name = $request->task_name;
         $newtask->alloted_to = implode(',', $request->alloted_to);
-        $newtask->Task_details = $request->Task_details;
+        $newtask->task_details = $request->task_details;
         $newtask->start_date = $request->task_date;
         $newtask->deadline_date = $request->deadline_date;
         $newtask->alloted_by = $request->managerId;

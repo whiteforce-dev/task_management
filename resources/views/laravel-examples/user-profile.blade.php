@@ -174,13 +174,15 @@
                                 </div>
                             </div>
 
-                            <div class="input-group ">
-                                <div class="form-file">
-                                    @include('cropper.cropper')
+                            <div class=col-md-6>
+                                <label  class="form-control-label">Upload Image</label>
+                                <div class="input-group ">
+                                    <div class="form-file">
+                                        @include('cropper.cropper')
+                                    </div>
                                 </div>
                             </div>
 
-                        </div>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="d-flex justify-content-center mt-2">

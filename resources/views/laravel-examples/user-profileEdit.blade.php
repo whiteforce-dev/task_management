@@ -177,11 +177,14 @@
                         <input type="hidden" name="managerId" value="{{$edituser->parent_id}}">   
 
                         @endif    
+                        <div class=col-md-6>
+                            <label  class="form-control-label">Upload Image</label>
                             <div class="input-group ">
                                 <div class="form-file">
                                     @include('cropper.cropper')
                                 </div>
                             </div>
+                        </div>
                             <input type="hidden" name="old_image" value="{{ $edituser->image }}">
 
                         </div>

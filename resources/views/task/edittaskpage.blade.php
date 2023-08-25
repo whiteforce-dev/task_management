@@ -158,7 +158,7 @@
                                     <label for="user.team_comments"
                                         class="form-control-label">{{ __('Task details') }}</label>
                                     <div class="@error('user.team_comments')border border-danger rounded-3 @enderror">
-                                        <textarea class="form-control" id="about" rows="3" placeholder="Task deatils..." name="Task_details">{{ $task->task_details }}</textarea>
+                                        <textarea class="form-control" id="about" rows="3" placeholder="Task deatils..." name="task_details">{{ $task->task_details }}</textarea>
                                         @error('phone')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                         @enderror
