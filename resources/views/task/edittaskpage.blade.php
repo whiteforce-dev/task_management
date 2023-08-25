@@ -67,7 +67,11 @@
                                 </button>
                             </div>
                         @endif
-                        <div class="row">
+
+
+                        
+                        @if(Auth::user()->can_allot_to_others == '1')
+                        <div class="row">                           
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="user-name" class="form-control-label">{{ __('Task name') }}</label>
@@ -90,25 +94,40 @@
                                         'selected' => in_array($user->id, $selectedIDs),
                                     ];
                                 }
-                            @endphp
-                            <div class="col-md-6">
+                            @endphp                         
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="user.type" class="form-control-label">{{ __('Alloted to') }}</label>
+                                        <div class="@error('user.type')border border-danger rounded-3 @enderror">                                       
+                                                <select class="selectpicker form-control" multiple data-live-search="true" name="alloted_to[]">                                           
+                                                    @foreach ($options as $option)
+                                                    <option value="{{ $option['id'] }}" {{ $option['selected'] ? 'selected' : '' }}>
+                                                        {{ $option['name'] }}
+                                                    </option>
+                                                    @endforeach
+                                            </select>
+                                            @error('type')
+                                                <p class="text-danger text-xs mt-2">{{ $message }}</p>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>                         
+                         </div>
+                         @else<div class="row">                           
+                            <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="user.type" class="form-control-label">{{ __('Alloted to') }}</label>
-                                    <div class="@error('user.type')border border-danger rounded-3 @enderror">                                       
-                                            <select class="selectpicker form-control" multiple data-live-search="true" name="alloted_to[]">                                           
-                                                @foreach ($options as $option)
-                                                <option value="{{ $option['id'] }}" {{ $option['selected'] ? 'selected' : '' }}>
-                                                    {{ $option['name'] }}
-                                                </option>
-                                                @endforeach
-                                        </select>
-                                        @error('type')
+                                    <label for="user-name" class="form-control-label">{{ __('Task name') }}</label>
+                                    <div class="@error('user.name')border border-danger rounded-3 @enderror">
+                                        <input class="form-control" value="{{ $task->task_name }}" type="text"
+                                            placeholder="Task Name" id="task-name" name="task_name">
+                                        @error('task_name')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                         @enderror
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        @endif
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
