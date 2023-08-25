@@ -161,21 +161,22 @@
                                     </div>
                                 </div>
                             </div>
-                                                   
+                                             
                             <div class="col-md-6">                                                                                     
                                     <div class="form-group"><label for="about">{{ '' }}</label>                              
                                     <div class="@error('user.image')border border-danger rounded-3 @enderror">
                                         @if($edituser->can_allot_to_others == '1')
                                         <input type="checkbox"  name="can_allot_to_others" value="1" checked> <label>Can allot to others</label>
                                         @else
-                                        <input type="checkbox"  name="can_allot_to_others" value="1" > <label>Can allot to others</label>
+                                        <input type="checkbox"  name="can_allot_to_others" value="1" > <label>Can allot to others</label> 
                                         @endif
                                     </div>
                                 </div>                                                               
                             </div>
+                           
                         @else
                         <input type="hidden" name="managerId" value="{{$edituser->parent_id}}">   
-
+                        <input type="hidden" name="can_allot_to_others" value="{{$edituser->can_allot_to_others}}">   
                         @endif    
                         <div class=col-md-6>
                             <label  class="form-control-label">Upload Image</label>

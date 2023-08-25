@@ -30,8 +30,11 @@ class TaskManagmentController extends Controller
 
         $newtask = new Taskmaster();
         $newtask->task_name = $request->task_name;
-        $newtask->alloted_to = implode(',', $request->alloted_to);
-        $idsArray = implode(',', $request->alloted_to);
+            if(isset($request->alloted_to)) {
+                $newtask->alloted_to = implode(',', $request->alloted_to);
+                $idsArray = implode(',', $request->alloted_to);
+            }
+        
         $newtask->task_details = $request->task_details;
         $newtask->start_date = $request->start_date;
         $newtask->alloted_by = Auth::user()->id;
@@ -121,7 +124,12 @@ class TaskManagmentController extends Controller
     {   //return $request;
         $newtask = Taskmaster::find($id);
         $newtask->task_name = $request->task_name;
-        $newtask->alloted_to = implode(',', $request->alloted_to);
+        
+        if(isset($request->alloted_to)) {
+            $newtask->alloted_to = implode(',', $request->alloted_to);
+        }
+
+
         $newtask->task_details = $request->task_details;
         $newtask->start_date = $request->task_date;
         $newtask->deadline_date = $request->deadline_date;

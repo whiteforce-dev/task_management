@@ -26,16 +26,27 @@
                 </div> 
                 <br>
                 <div class="row">
-                    <div class="col-md-6">
-                        <label>Alloted To</label>
-                        <select class="form-control selectpicker" multiple data-live-search="true" name="alloted_to[]" id="alloted_to">
-                            <option value="">--select--</option>
-                            @foreach ($users as $user)
-                                <option value="{{ $user->id }}">{{ $user->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="col-sm-6">
+                    @if(Auth::user()->can_allot_to_others == '1')
+                        <div class="col-md-6">
+                            <label>Alloted To</label>
+                            <select class="form-control selectpicker" multiple data-live-search="true" name="alloted_to[]" id="alloted_to">
+                                <option value="">--select--</option>
+                                @foreach ($users as $user)
+                                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="col-sm-6">
+                            <label>Priority</label>
+                            <select class="form-control" name="priority" id="priority">
+                                <option value="">Select</option>
+                                @foreach ($prioritys as $priority )
+                                 <option value="{{ $priority->id }}">{{ ucfirst($priority->priority) }}   
+                                @endforeach                          
+                            </select>
+                        </div>
+                    @endif
+                    <div class="col-sm-12">
                         <label>Priority</label>
                         <select class="form-control" name="priority" id="priority">
                             <option value="">Select</option>

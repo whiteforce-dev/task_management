@@ -89,7 +89,7 @@ class InfoUserController extends Controller
         }else{
             $edituser->image = $request->old_image;
         }
-        $edituser->can_allot_to_others = $request->can_allot_to_others ?? '0'; 
+        $edituser->can_allot_to_others = $request->can_allot_to_others ; 
         $edituser->update();
         return redirect('user-management')->with(['success' => 'You are successfull updated.']);
     }
