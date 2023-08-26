@@ -24,10 +24,9 @@ use App\Http\Controllers\PipelineController;
 |
 */
 
-
+date_default_timezone_set("Asia/kolkata");
 Route::group(['middleware' => 'auth'], function ()
 	{
-		
 		Route::get('dashboard', function () {
 			return view('dashboard');
 		})->name('dashboard');

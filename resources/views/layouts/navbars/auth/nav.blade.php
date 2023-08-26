@@ -34,7 +34,7 @@
                 
                 <a href="javascript:;" class="nav-link text-body p-0 nav-link text-body font-weight-bold px-0"
                     id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                    <span class="d-sm-inline d-none" style="margin-right: 20px;color:#E4088F;"><b>{{ Auth::user()->name }}</b></span>
+                    <span class="d-sm-inline d-none" style="margin-right: 15px;color:#E4088F;"><b>{{ Auth::user()->name }}</b></span>
                     <img src="{{ url(Auth::user()->image) }}" class="avatar">
                    
                 </a>

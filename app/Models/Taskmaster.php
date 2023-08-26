@@ -29,6 +29,7 @@ class Taskmaster extends Model
     {
          return $this->hasOne('App\Models\Remark', 'task_id')->orderBy('id', 'desc')->whereNotIn('userid', [Auth::user()->id]);           
     }
+
     
 
 }

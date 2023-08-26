@@ -19,9 +19,8 @@ class TaskManagmentController extends Controller
 {
     public function createdTask(request $request)
     {
-
         $attributes = request()->validate([
-            'task_name' => ['required', 'max:50'],
+            'task_name' => ['required'],
             'start_date'  =>  ['required'],
             'deadline_Date' => ['required'],
             'task_details' => ['required', 'max:300'],
@@ -32,9 +31,7 @@ class TaskManagmentController extends Controller
         $newtask->task_name = $request->task_name;
             if(isset($request->alloted_to)) {
                 $newtask->alloted_to = implode(',', $request->alloted_to);
-                $idsArray = implode(',', $request->alloted_to);
             }
-        
         $newtask->task_details = $request->task_details;
         $newtask->start_date = $request->start_date;
         $newtask->alloted_by = Auth::user()->id;
@@ -76,7 +73,6 @@ class TaskManagmentController extends Controller
     }
 
     public function searchTask(Request $request){
-
         $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory);
         if(!empty($request->created_by)){
             $tasklist = $tasklist->where('alloted_by',$request->created_by);

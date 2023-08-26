@@ -1,14 +1,15 @@
+@extends('layouts.user_type.auth')
+@section('content')
 <link rel="stylesheet" href="{{ url('assets/css/pipeline.css') }}">
 <link
 href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,900&family=Rubik:wght@300;400;600;700&display=swap"
 rel="stylesheet"/>
-@extends('layouts.user_type.auth')
-@section('content')
+
 @php
     $users = \App\Models\User::where('software_catagory', Auth::user()->software_catagory)->where('type','!=', 'admin')->get(); 
 @endphp
-<body style=" font-family: Poppins, sans-serif;">
-    <div id="response"></div>
+
+
     <section class="pipeline">
         <div class="taskboard">
             <div class="heading">
@@ -117,7 +118,6 @@ rel="stylesheet"/>
 
                         <img src="{{ url($progresstask->userGet->image ?? 'NA') }}"  class=""
                             style="float: right; width:38px !important; border-radius:50%; position:absolute; top: 43%; right:4%;"> 
-
                     </div>
                     @endforeach                
                 </div>
@@ -159,17 +159,13 @@ rel="stylesheet"/>
                     </div>
                     @endforeach                  
                 </div>
-
             </div>
         </div>
     </section>
 
-    <link rel="stylesheet" href="{{ url('assets/css/multiselect.css') }}">
-    <link rel="stylesheet" href="{{ url('assets/css/multiselectdrop.css') }}">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>
 
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
 
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"
         integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
@@ -206,7 +202,7 @@ rel="stylesheet"/>
 <div class="modal" id="myModal10">
 </div>
 
-</body>
+
 <script src="{{ url('assets/js/core/popper.min.js') }}"></script>
 <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script> 
 @endsection

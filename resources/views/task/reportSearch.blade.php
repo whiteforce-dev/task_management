@@ -40,7 +40,7 @@
                                         @if($task->status !== "3")
                                         <span class="dot">{{$daysDifference}}</span>
                                         @endif
-                                    </td>  
+                                    </td> 
                                       
                                       {{-- <td>{{ $task->GetManagerName->name ?? 'Na' }}</td>   --}}
 
@@ -48,17 +48,17 @@
                                                                   
                                         @if(($daysDifference > 1) ||  $task->status == '1' || $task->status == '2')  
                                                                                                      
-                                        <td><span style="color:#FF359A !important; font-weight:500;"> Progess</span> </td>
+                                        <td><span style="color:#FF359A !important; font-weight:500;"> Pending</span> </td>
                                         @else
-                                        <td>Progress</td>
+                                        <td>Pending</td>
                                         @endif
 
                                      
                                       @elseif($task->status == '2')                                     
                                         @if(($daysDifference > 1) ||  $task->status == '1' || $task->status == '2')
-                                        <td><span style="color:#F33 !important; font-weight:500;">Pending</span></td>
+                                        <td><span style="color:#F33 !important; font-weight:500;">Progres</span></td>
                                         @else
-                                        <td>Pending</td>
+                                        <td>Progress</td>
                                         @endif
 
                                       @else

@@ -208,6 +208,7 @@
                 }
             });
           
+            $("#myForm textarea")[0].value = "";
            
         });
     });

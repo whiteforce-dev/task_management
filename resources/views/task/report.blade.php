@@ -3,7 +3,7 @@
 
 @php
 $managers = \App\Models\User::where('type', 'manager')->get();
-$employees = \App\Models\User::where('type', 'employee')->get();
+$employees = \App\Models\User::where('type', 'employee')->where('software_catagory', Auth::user()->software_catagory)->get();
 @endphp
   
     <link href="assets/table/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -196,17 +196,17 @@ $employees = \App\Models\User::where('type', 'employee')->get();
                                                                   
                                         @if(($daysDifference > 1) ||  $task->status == '1' || $task->status == '2')  
                                                                                                      
-                                        <td><span style="color:#FF359A !important; font-weight:500;"> Progess</span> </td>
+                                        <td><span style="color:#FF359A !important; font-weight:500;">Pending</span> </td>
                                         @else
-                                        <td>Progress</td>
+                                        <td>Pending</td>
                                         @endif
 
                                      
                                       @elseif($task->status == '2')                                     
                                         @if(($daysDifference > 1) ||  $task->status == '1' || $task->status == '2')
-                                        <td><span style="color:#F33 !important; font-weight:500;">Pending</span></td>
+                                        <td><span style="color:#F33 !important; font-weight:500;">Progress</span></td>
                                         @else
-                                        <td>Pending</td>
+                                        <td>Progress</td>
                                         @endif
 
                                       @else

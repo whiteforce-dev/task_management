@@ -135,7 +135,7 @@
             <div id="searchResults">
                 @foreach ($tasklist as $i => $task)
                 @php
-                    $date1 = Carbon\Carbon::parse($task->EndDate);
+                    $date1 = Carbon\Carbon::parse($task->end_date);
                     $date2 = Carbon\Carbon::now();
                     $difference = $date2->diffInDays($date1, false);            
                 @endphp
@@ -155,12 +155,13 @@
                             </div>
                 
                             <div class="low-box">
-                                <h3><i class="fa-solid fa-user-tag" style="margin-right: 5px; color:#cb0c9f;"></i>Employee
+                                <h3><i class="fa-solid fa-user-tag" style="margin-right: 5px; color:#cb0c9f;"></i>My
                                     Remark</h3>
-                                @if(Auth::user()->type !=='employee')
-                                <?php $remarks =  mb_strimwidth($task->GetManager->remark ?? 'null', 0, 120, '...'); ?>                                   
+                                @if(Auth::user()->type !=='employee' && Auth::user()->type !=='admin')
+                                <?php $remarks =  mb_strimwidth($task->GetManager->remark ?? 'null', 0, 120, '...'); ?>                                  
                                 @else
                                 <?php $remarks = mb_strimwidth($task->GetEmployee->remark ?? 'null', 0, 120, '...'); ?>
+                              
                                 @endif
                                 <p>{{ $remarks ?? 'na' }}
                                     @if (Auth::user()->type == 'employee')
@@ -177,7 +178,7 @@
                                 </p>
                             </div>
                             <div class="low-box">
-                                <h3><i class="fa-solid fa-user-shield" style="margin-right: 5px; color:#cb0c9f;"></i>Manager
+                                <h3><i class="fa-solid fa-user-shield" style="margin-right: 5px; color:#cb0c9f;"></i>Other
                                     Remark</h3>
                                    
                                     @if(Auth::user()->type !=='employee')
@@ -223,6 +224,10 @@
                                         <a href="{{ url('task-edit-page', $task->id) }}"
                                             class="dropdown-item border-radius-md" href="javascript:;">Edit
                                         </a>
+                                        @elseif(Auth::user()->type == 'admin')
+                                        <a href="{{ url('task-edit-page', $task->id) }}"
+                                            class="dropdown-item border-radius-md" href="javascript:;">Edit
+                                        </a>
                                         @endif
                                         <a onclick="statushistory('{{ url('statushistory' . '?id=' . $task->id) }}')"
                                             class="dropdown-item border-radius-md" href="javascript:;">Status History
@@ -242,7 +247,7 @@
                             </div>
                             <div class="box-one">
                                 <i class="fa-solid fa-circle"
-                                    style="margin-right:4px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Priority &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;:
+                                    style="margin-right:10px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Priority  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;:
                                 </span>
                                 @if ($task->priority == '1')
                                     <P class="priorty" style="background-color: #900; color:#fff;">
@@ -286,8 +291,8 @@
                             </div>
                             <div class="box-one" style="position: relative;">
                                 <i class="fa-solid fa-circle"
-                                    style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Created By
-                                        &nbsp; &nbsp; &nbsp; &nbsp; :</span>
+                                    style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Alloted By
+                                        &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp; :</span>
                                 <P>{{ $task->GetManagerName->name ?? 'Na' }}</P>
                             </div>
                 
@@ -306,6 +311,7 @@
                         </div>
                     </div>
                 </section>
+                {{ $tasklist->links() }}
                 @endforeach
             </div>
         </div>
