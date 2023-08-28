@@ -23,12 +23,7 @@
                             <div class="low-box">
                                 <h3><i class="fa-solid fa-user-tag" style="margin-right: 5px; color:#cb0c9f;"></i>My
                                     Remark</h3>
-                                @if(Auth::user()->type !=='employee' && Auth::user()->type !=='admin')
-                                <?php $remarks =  mb_strimwidth($task->GetManager->remark ?? 'null', 0, 120, '...'); ?>                                  
-                                @else
                                 <?php $remarks = mb_strimwidth($task->GetEmployee->remark ?? 'null', 0, 120, '...'); ?>
-                              
-                                @endif
                                 <p>{{ $remarks ?? 'na' }}
                                     @if (Auth::user()->type == 'employee')
                                         <a href="javascript:"
@@ -46,11 +41,10 @@
                             <div class="low-box">
                                 <h3><i class="fa-solid fa-user-shield" style="margin-right: 5px; color:#cb0c9f;"></i>Other
                                     Remark</h3>
-                                   
-                                    @if(Auth::user()->type !=='employee')
-                                    <?php $text =  mb_strimwidth($task->GetEmployee->remark ?? 'null', 0, 120, '...'); ?>                                   
-                                    @else
+                                   @if(Auth::user()->type == 'manager' || Auth::user()->type == 'admin')
                                     <?php $text = mb_strimwidth($task->GetManager->remark ?? 'null', 0, 120, '...'); ?>
+                                    @elseif(Auth::user()->type == 'employee')
+                                    <?php $text = mb_strimwidth($task->Getparent->remark ?? 'null', 0, 120, '...'); ?>
                                     @endif
                                 {{ $text }}
                                 <p>
@@ -179,4 +173,3 @@
                 </section>
                 {{ $tasklist->links() }}
                 @endforeach
-            

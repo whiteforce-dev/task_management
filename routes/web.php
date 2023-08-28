@@ -87,6 +87,8 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::get('pipelinestatus/{task_id}/{status_id}', [PipelineController::class, 'pipelinestatus']);
 		Route::get('index', [PipelineController::class, 'index1']);
 		Route::get('sendtask-email/{task_id}', [PipelineController::class, 'sendTaskEmail']);
+		Route::patch('update-card-status/{card}', [PipelineController::class, 'updateStatus']);
+
 
 	});
 		Route::post('loginauth', [SessionsController::class, 'loginauth']);				

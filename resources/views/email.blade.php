@@ -60,8 +60,8 @@
   </head><body><div class="studio-hero small">
   <div class="container w-container">
   <div class="home-hero">
-  <h1 class="product-page-heading small">Update your Task</h1>
-  <p class="product-hero-text">Update your Task<br/></p>
+  <h1 class="product-page-heading small">Please Update your Task</h1>
+  <p class="product-hero-text">{{ $position_name ?? 'N/A' }}<br/></p>
   <div id="input-root" class="featured-template-categories">whiteforce</div>
 
 
