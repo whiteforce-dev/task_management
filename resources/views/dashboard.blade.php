@@ -27,43 +27,19 @@
             $per_PP = number_format($per_PP, 2);
         }
         } elseif(Auth::user()->type == 'manager') {
-            $users = \App\Models\User::where('software_catagory', Auth::user()->software_catagory)->get();
-            $totaltask = \App\Models\Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('alloted_by', Auth::user()->id)
-                ->orwhere('alloted_to', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)
+            $teamId = \App\Models\User::where('software_catagory', Auth::user()->software_catagory)->where('id', Auth::user()->id)->orwhere('parent_id',Auth::user()->id)->pluck('id')->ToArray();
+            $totaltask = \App\Models\Taskmaster::whereIn('alloted_to', $teamId)->count();
+            $complettask = \App\Models\Taskmaster::whereIn('alloted_to', $teamId)->where('status', '3')->count();
+            $pendingtask = \App\Models\Taskmaster::whereIn('alloted_to', $teamId)->where('status', '1')->count();
+            $proccesstask = \App\Models\Taskmaster::whereIn('alloted_to', $teamId)->where('status', '2')->count();
+            $totaltask_m = \App\Models\Taskmaster::whereIn('alloted_to', $teamId)->whereMonth('created_at', '=', date('m'))->count();
+            $complettask_m = \App\Models\Taskmaster::whereIn('alloted_to', $teamId)->whereMonth('created_at', '=', date('m'))->where('status', '3')
                 ->count();
-            $complettask = \App\Models\Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('status', '3')
-                ->where('alloted_by', Auth::user()->id)
-                ->orwhere('alloted_to', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)
+            $pendingtask_m = \App\Models\Taskmaster::whereIn('alloted_to', $teamId)->whereMonth('created_at', '=', date('m'))->where('status', '2')
                 ->count();
-            $pendingtask = \App\Models\Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('status', '1')
-                ->where('alloted_by', Auth::user()->id)
-                ->orwhere('alloted_to', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)
-                ->where('status', '1')
+            $proccesstask_m = \App\Models\Taskmaster::whereIn('alloted_to', $teamId)->whereMonth('created_at', '=', date('m'))->where('status', '1')
                 ->count();
-            $proccesstask = \App\Models\Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('status', '2')
-                ->where('alloted_by', Auth::user()->id)
-                ->orwhere('alloted_to', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)
-                ->count();
-            $totaltask_m = \App\Models\Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('alloted_by', Auth::user()->id)
-                ->orwhere('alloted_to', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)
-                ->whereMonth('created_at', '=', date('m'))
-                ->count();
-            $complettask_m = \App\Models\Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('status', '3')
-                ->where('alloted_by', Auth::user()->id)
-                ->orwhere('alloted_to', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)
-                ->whereMonth('created_at', '=', date('m'))
-                ->count();
-            $pendingtask_m = \App\Models\Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('status', '1')
-                ->where('alloted_by', Auth::user()->id)
-                ->orwhere('alloted_to', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)
-                ->whereMonth('created_at', '=', date('m'))
-                ->count();
-            $proccesstask_m = \App\Models\Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('status', '2')
-                ->where('alloted_by', Auth::user()->id)
-                ->orwhere('alloted_to', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)
-                ->whereMonth('created_at', '=', date('m'))
-                ->count();
-                if($totaltask > 0){
+            if($totaltask > 0){
             $per_T = ($complettask / $totaltask) * 100;
             $per_T = number_format($per_T, 2);
             $per_p = ($pendingtask / $totaltask) * 100;

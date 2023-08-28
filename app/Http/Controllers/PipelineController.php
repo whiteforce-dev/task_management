@@ -7,6 +7,7 @@ use App\Models\Taskmaster;
 use App\Mail\TaskEmail;
 use Illuminate\Support\Facades\Mail;
 use App\Models\User;
+use App\Models\Status;
 use Illuminate\Support\Facades\Auth;
 class PipelineController extends Controller
 {
@@ -14,8 +15,10 @@ class PipelineController extends Controller
       $pendingtasks = Taskmaster::where('status', '1')->get();
       $progresstasks = Taskmaster::where('status', '2')->get();
       $completedtasks = Taskmaster::where('status', '3')->get();
+      $holdingtasks  = Taskmaster::where('status', '4')->get();
+      $stages = Status::get();
       $users = User::where('software_catagory', Auth::user()->software_catagory)->where('type','!=', 'admin')->get();
-    return view('pipeline.pipeline', compact('pendingtasks', 'progresstasks', 'completedtasks', 'users'));
+    return view('pipeline.pipeline', compact('pendingtasks', 'progresstasks', 'completedtasks', 'users', 'holdingtasks', 'stages'));
    }
 
    public function pipelinestatus(Request $request, $task_id, $status_id){
@@ -48,6 +51,21 @@ class PipelineController extends Controller
        });
        return back()->with('success', 'Mail Has Been Sent To ' . $name);
    }
+
+   public function updateStatus(Request $request, $cardId)
+    {
+        $oldStatus = $request->input('oldStatus');
+        $newStatus = $request->input('newStatus');
+
+        $card = Card::find($cardId);
+        if ($card) {
+            $card->status = $newStatus;
+            $card->save();
+        }
+
+        return response()->json(['message' => 'Card status updated successfully']);
+    }
+
 
 }
 

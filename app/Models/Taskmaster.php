@@ -23,12 +23,20 @@ class Taskmaster extends Model
 
     public function GetEmployee()
     {
-         return $this->hasOne('App\Models\Remark', 'task_id')->orderBy('id', 'desc')->where('userid', '=', Auth::user()->id);
+         return $this->hasOne('App\Models\Remark', 'task_id')->orderBy('id', 'desc')->where('userid', Auth::user()->id);
     }
     public function GetManager()
-    {
-         return $this->hasOne('App\Models\Remark', 'task_id')->orderBy('id', 'desc')->whereNotIn('userid', [Auth::user()->id]);           
+    {   $chiedId = User::where('type', 'admin')->pluck('id')->ToArray();
+        $chieId2 = User::whereIn('parent_id', $chiedId)->pluck('id')->ToArray();
+        $chieId3 = User::where('parent_id', $chieId2)->value('id');
+         return $this->hasOne('App\Models\Remark', 'task_id')->orderBy('id', 'desc')->where('userid', [$chieId3]);           
     }
-    
+    public function Getparent(){
+        return $this->hasOne('App\Models\Remark', 'task_id')->orderBy('id', 'desc')->where('userid', [Auth::user()->parent_id, Auth::user()->parent_id]);
+    }
+    public function Getadmin(){
+        $adminId = User::where('type', 'admin')->value('id');
+        return $this->hasOne('App\Models\Remark', 'task_id')->orderBy('id', 'desc')->where('userid', $adminId);
+    }
 
 }

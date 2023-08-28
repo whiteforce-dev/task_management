@@ -19,7 +19,6 @@ class TaskManagmentController extends Controller
 {
     public function createdTask(request $request)
     {
-
         $attributes = request()->validate([
             'task_name' => ['required'],
             'start_date'  =>  ['required'],
@@ -32,9 +31,7 @@ class TaskManagmentController extends Controller
         $newtask->task_name = $request->task_name;
             if(isset($request->alloted_to)) {
                 $newtask->alloted_to = implode(',', $request->alloted_to);
-                $idsArray = implode(',', $request->alloted_to);
             }
-        
         $newtask->task_details = $request->task_details;
         $newtask->start_date = $request->start_date;
         $newtask->alloted_by = Auth::user()->id;
@@ -76,7 +73,6 @@ class TaskManagmentController extends Controller
     }
 
     public function searchTask(Request $request){
-
         $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory);
         if (Auth::user()->type == "employee") {
             $tasklist = $tasklist->where('alloted_by',Auth::user()->id)->orWhereRaw("FIND_IN_SET(".Auth::user()->id.", alloted_to)");
@@ -479,80 +475,97 @@ class TaskManagmentController extends Controller
     {
         $to = "";
         $from = "";
-        $status_search = "";
+        $search_status = "";
         $managerId = [];
         $EmployeeId = [];
-        $priority = "";
+        $priority_search = "";
         $from_deadline = "";
         $to_deadline = "";
         $from_enddate = "";
         $to_enddate = "";
         $prioritys = Priority::get();
-        return view('task.report', compact('managerId', 'EmployeeId', 'priority', 'status_search', 'to', 'from', 'from_deadline', 'to_deadline', 'from_enddate', 'to_enddate', 'prioritys'));
+        $statuss = Status::get();
+        $users = User::where('type','!=','admin')->where('software_catagory', Auth::user()->software_catagory)->get();
+        return view('task.report', compact('managerId', 'EmployeeId', 'priority_search', 'search_status', 'to', 'from', 'from_deadline', 'to_deadline', 'from_enddate', 'to_enddate', 'users', 'statuss', 'prioritys'));
     }
 
     public function searchReport(Request $request)
-    {
-
-        $managers = User::where('software_catagory', Auth::user()->software_catagory)->where('type', 'manager')->where('is_active', '1')->get();
-        $employees = User::where('software_catagory', Auth::user()->software_catagory)->where('type', 'employee')->where('is_active', '1')->get();
+    {   
+        $users = User::where('type','!=','admin')->where('software_catagory', Auth::user()->software_catagory)->get();
         $EmployeeId = $request->EmployeeId;
-        $status = $request->status;
-        $from = $request->fromdate;
-        $to = $request->todate;
-        $priority = $request->priority;
-        $from_deadline = $request->from_deadline;
-        $to_deadline = $request->to_deadline;
-        $from_enddate = $request->from_enddate;
-        $to_enddate = $request->to_enddate;
+        $search_status = $request->status;
+        $created_date = $request->created_date;
+        $deadline_date = $request->deadline_date;
+        $priority_search = $request->priority;
+        $complete_date = $request->complete_date;
 
         $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory);
+        $statuss = Status::get();
+        $prioritys = Priority::get();
+        
+        if(!empty($request->created_date)){
 
-        if ($request->from_deadline) {
-            $from = $request->from_deadline;
-            $to = $request->to_deadline;
-            $tasklist = $tasklist->whereBetween('deadline_date', [$from, $to]);
+            $created_date = explode(' - ',$request->created_date);
+            
+            $start_created_date_parts = explode('/',$created_date[0]);
+            $end_created_date_parts = explode('/',$created_date[1]);
+            $start_created_date = $start_created_date_parts[2].'-'.$start_created_date_parts[1].'-'.$start_created_date_parts[0];
+            $end_created_date = $end_created_date_parts[2].'-'.$end_created_date_parts[1].'-'.$end_created_date_parts[0];
+            
+            $tasklist = $tasklist->whereBetween('created_at',[$start_created_date.' 00:00:00',$end_created_date.' 23:59:59']);
+           
         }
-
-        if ($request->from_enddate) {
-            $from = $request->from_enddate;
-            $to = $request->to_enddate;
-            $tasklist = $tasklist->whereBetween('end_date', [$from, $to]);
+        if(!empty($request->deadline_date)){
+           // return $deadline_date;
+            $deadline_date = explode(' - ',$request->deadline_date);
+            $start_deadline_date_parts = explode('/',$deadline_date[0]);
+            $end_deadline_date_parts = explode('/',$deadline_date[1]);
+            $start_dedaline_date = $start_deadline_date_parts[2].'-'.$start_deadline_date_parts[1].'-'.$start_deadline_date_parts[0];
+            $end_dedaline_date = $end_deadline_date_parts[2].'-'.$end_deadline_date_parts[1].'-'.$end_deadline_date_parts[0];
+            
+            $tasklist = $tasklist->whereBetween('deadline_date',[$start_dedaline_date,$end_dedaline_date]);
+        }
+        if(!empty($request->complete_date)){
+            $complete_date = explode(' - ',$request->complete_date);
+            $start_complete_date_parts = explode('/',$complete_date[0]);
+            $end_complete_date_parts = explode('/',$complete_date[1]);
+            $start_complete_date = $start_complete_date_parts[2].'-'.$start_complete_date_parts[1].'-'.$start_complete_date_parts[0];
+            $end_complete_date = $end_complete_date_parts[2].'-'.$end_complete_date_parts[1].'-'.$end_complete_date_parts[0];
+            
+            $tasklist = $tasklist->whereBetween('deadline_date',[$start_complete_date,$end_complete_date]);
         }
 
         if ($request->today_assigned) {
-            $tasklist = $tasklist->whereDate('start_date', $request->today_assigned);
+            $tasklist = $tasklist->whereDate('created_at', $request->today_assigned);
         }
-        if ($request->today_deadline) {
-            $tasklist = $tasklist->whereDate('deadline_date', $request->today_deadline);
-        }
+
         if ($request->EmployeeId) {
             $tasklist = $tasklist->where('alloted_to', $request->EmployeeId);
         }
         if ($request->status) {
             $tasklist = $tasklist->where('status', $request->status);
         }
-        if ($request->fromdate) {
-            $from = $request->fromdate;
-            $to = $request->todate;
-            $tasklist = $tasklist->whereBetween('created_at', [$from, $to]);
-        }
 
-        if ($request->EmployeeId && $request->status && $request->fromdate) {
-            $tasklist = $tasklist->where('alloted_to', $request->EmployeeId)->where('status', $request->status)->whereBetween('created_at', [$from, $to]);
+
+        if ($request->EmployeeId && $request->status) {
+            $tasklist = $tasklist->where('alloted_to', $request->EmployeeId)->where('status', $request->status);
         }
 
         if ($request->priority) {
             $tasklist = $tasklist->where('priority', $request->priority);
         }
-        $status_search = $status;
-        if ($request->EmployeeId == "" && $request->from_deadline == "" && $request->to_deadline == "" && $request->status == "" && $request->from_enddate == "" && $request->to_enddate == "" && $request->today_assigned == "" && $request->today_deadline == "" && $request->priority == "" && $request->fromdate == "" && $request->todate == "") {
-            return redirect('report')->back()->with(['success' => 'please fill any one filter .']);
+        if ($request->today_deadline) {
+            $tasklist = $tasklist->whereDate('deadline_date', $request->today_deadline);
         }
+
+        // if ($request->EmployeeId == "" && $request->from_deadline == "" && $request->to_deadline == "" && $request->status == "" && $request->from_enddate == "" && $request->to_enddate == "" && $request->today_assigned == "" && $request->today_deadline == "" && $request->priority == "" && $request->fromdate == "" && $request->todate == "") {
+        //     return redirect('report')->back()->with(['success' => 'please fill any one filter .']);
+        // }
+
         $tasklist = $tasklist->OrderBy('id', 'DESC')->paginate('25');
         if ($request->ajax()) {
-            return view('task.reportSearch', compact('tasklist',  'EmployeeId', 'priority', 'status_search', 'to', 'from', 'from_deadline', 'to_deadline', 'from_enddate', 'to_enddate', 'priority'));
+            return view('task.reportSearch', compact('tasklist',  'EmployeeId', 'priority_search', 'deadline_date', 'complete_date', 'created_date', 'statuss', 'users', 'prioritys', 'search_status'));
         }
-        return view('task.report', compact('tasklist',  'EmployeeId', 'priority', 'status_search', 'to', 'from', 'from_deadline', 'to_deadline', 'from_enddate', 'to_enddate', 'priority'));
+        return view('task.report', compact('tasklist',  'EmployeeId', 'priority_search', 'deadline_date', 'complete_date', 'created_date', 'statuss', 'users', 'prioritys', 'search_status'));
     }
 }

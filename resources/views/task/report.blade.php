@@ -1,10 +1,7 @@
 @extends('layouts.user_type.auth')
 @section('content')
 
-@php
-$managers = \App\Models\User::where('type', 'manager')->get();
-$employees = \App\Models\User::where('type', 'employee')->get();
-@endphp
+
   
     <link href="assets/table/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="assets/table/vendor/simple-datatables/style.css" rel="stylesheet">
@@ -45,75 +42,57 @@ $employees = \App\Models\User::where('type', 'employee')->get();
             <div class="alert alert-white mx-1">
                 <form id="searchForm" action="{{ url('search-report') }}" method="get">
                     <div class="row">                       
-                       <div class="col-3">
+                       <div class="col-2">
                             <label>Assigned To</label>
-                            <select name="EmployeeId" class="form-control" style="border:1px solid #cb0c9f;">
+                            <select name="EmployeeId" class="form-control" style="border:1px solid #cb0c9f;" id="alloted_to">
                                 <option value="">Select</option>
-                                @foreach ($employees as $employee)
-                                    <option value="{{ $employee->id }}"
-                                        {{ $employee->id == $EmployeeId ? 'selected' : '' }}>{{ ucfirst($employee->name) }}</option>
+                                @foreach ($users as $user)
+                                    <option value="{{ $user->id }}"
+                                        {{ $user->id == $EmployeeId ? 'selected' : '' }}>{{ ucfirst($user->name) }}</option>
                                 @endforeach
                             </select>
                         </div>
 
-                        <div class="col-3">
-                            <label>From Deadline Date</label>                         
-                                <input name="from_deadline" type="date" class="form-control" style="border:1px solid #cb0c9f;"
-                                value="{{ $from_deadline }}">                            
-                        </div>
-
-                        <div class="col-3">
-                            <label>To Deadline Date</label>
-                            <input name="to_deadline" type="date" class="form-control" style="border:1px solid #cb0c9f;"
-                            value="{{ $to_deadline }}">                         
-                        </div>
-
-                        <div class="col-3">
+                        <div class="col-2">
                             <label>Status</label>
-                            <select name="status" class="form-control" style="border:1px solid #cb0c9f;">
+                            <select name="status" class="form-control" style="border:1px solid #cb0c9f;" id="statusId">
                                 <option value="">Select</option>
-                                @php $statuss = \App\Models\Status::get(); @endphp
                                 @foreach ($statuss as $status)                            
-                                <option value="{{ $status->id }}" {{ $status->id == "$status_search" ? 'selected' : '' }}>{{ ucfirst($status->status) }}</option>
+                                <option value="{{ $status->id }}" {{ $status->id == "$search_status" ? 'selected' : '' }}>{{ ucfirst($status->status) }}</option>
                                 @endforeach
                             </select>
                         </div>
-                        
-                    </div>
-                    <div class="row">
-                        <div class="col-3">
-                            <label>From Complete Date</label>
-                            <input name="from_enddate" type="date" class="form-control" style="border:1px solid #cb0c9f;"
-                                 value="{{ $from }}">
+
+                        <div class="col-2">
+                            <label> Deadline Date</label>                                                    
+                                <input name="deadline_date" autocomplete="off" class="form-control datepicker" style="border:1px solid #cb0c9f;" id="deadline_date"
+                                value="" placeholder="Select Deadline Date">                            
                         </div>
-                        <div class="col-3">
-                            <label> To Complete Date</label>
-                            <input name="to_enddate" type="date" class="form-control" style="border:1px solid #cb0c9f;"
-                               value="{{ $to }}">
+
+                        <div class="col-2">
+                            <label>Complete Date</label>
+                            <input name="complete_date" autocomplete="off" class="form-control datepicker" style="border:1px solid #cb0c9f;" id="complete_date"
+                                 value="" placeholder="Select Complete Date">
                         </div>
-                        <div class="col-sm-3">
-                            <label>Create From Date</label>
-                            <input name="fromdate" type="date" class="form-control" style="border:1px solid #cb0c9f;"
-                                value="{{ $from_enddate }}">
+
+                        <div class="col-sm-2">
+                            <label>Create Date</label>
+                            <input name="created_date" autocomplete="off" class="form-control datepicker" style="border:1px solid #cb0c9f;" id="created_date"
+                                value="" placeholder="Select Created Date">
                         </div>
-                        <div class="col-sm-3">
-                            <label>Create To Date</label>
-                            <input name="todate" type="date" class="form-control" style="border:1px solid #cb0c9f;"
-                                value="{{ $to_enddate }}">
-                        </div>
-                  
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-3">
+
+                        <div class="col-sm-2">
                             <label>Priority</label>
-                            <select name="priority" class="form-control" style="border:1px solid #cb0c9f;">
+                            <select name="priority" class="form-control" style="border:1px solid #cb0c9f;" id="priority">
                                 <option value="">Select</option>
                                     @foreach ($prioritys as $priority)
-                                        <option value="{{ $priority->id }}">{{ ucfirst($priority->priority) }}</option>
+                                        <option value="{{ $priority->id }}"{{ $priority->id == $priority_search ? 'selected' :'' }}>{{ ucfirst($priority->priority) }}</option>
                                     @endforeach
                             </select>
-                        </div>
+                        </div>           
+                    </div>
 
+                    <div class="row">                       
                         <div class="col-3">
                             <input type="checkbox" name="today_assigned" id="checkbox" value="<?php echo date('Y-m-d');?>" style="border:1px solid #cb0c9f;"/> 
                             <label style="margin-top: 45px;"> Today's Assigned task </label>
@@ -125,7 +104,7 @@ $employees = \App\Models\User::where('type', 'employee')->get();
                         </div>
                   
                         <div class="col-sm-1">
-                            <button type="submit" class="btn btn-primary" style="margin-top:31px;">search</button>
+                            <button type="submit" class="btn btn-primary" style="margin-top:31px;" onclick="searchTask();">search</button>
                         </div>
                         
                         <div class="col-sm-2">
@@ -168,8 +147,6 @@ $employees = \App\Models\User::where('type', 'employee')->get();
                             
                             <tbody>
                                 @foreach ($tasklist as $i => $task)
-
-
                                 @php
                                 $currentDate = now(); 
                                 $deadlineDate = \Carbon\Carbon::parse($task->deadline_date); 
@@ -196,17 +173,17 @@ $employees = \App\Models\User::where('type', 'employee')->get();
                                                                   
                                         @if(($daysDifference > 1) ||  $task->status == '1' || $task->status == '2')  
                                                                                                      
-                                        <td><span style="color:#FF359A !important; font-weight:500;"> Progess</span> </td>
+                                        <td><span style="color:#FF359A !important; font-weight:500;">Pending</span> </td>
                                         @else
-                                        <td>Progress</td>
+                                        <td>Pending</td>
                                         @endif
 
                                      
                                       @elseif($task->status == '2')                                     
                                         @if(($daysDifference > 1) ||  $task->status == '1' || $task->status == '2')
-                                        <td><span style="color:#F33 !important; font-weight:500;">Pending</span></td>
+                                        <td><span style="color:#F33 !important; font-weight:500;">Progress</span></td>
                                         @else
-                                        <td>Pending</td>
+                                        <td>Progress</td>
                                         @endif
 
                                       @else
@@ -236,6 +213,19 @@ $employees = \App\Models\User::where('type', 'employee')->get();
         </div>
     </main>
 
+    <script src="{{ url('assets/js/core/popper.min.js') }}"></script>
+    <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script> 
+
+    <link rel="stylesheet" href="{{ url('assets/css/multiselect.css') }}">
+    <link rel="stylesheet" href="{{ url('assets/css/multiselectdrop.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.min.js"></script>
+
     <script>
         $(document).ready(function() {
             $('#searchForm').submit(function(event) {
@@ -254,16 +244,31 @@ $employees = \App\Models\User::where('type', 'employee')->get();
                 });
             });
         });
+
+    
+        $('.datepicker').daterangepicker(
+            {
+                autoUpdateInput: false,
+                locale: {
+                    cancelLabel: 'Clear'
+                }
+            }
+        );
+
+        $('.datepicker').on('apply.daterangepicker', function(ev, picker) {
+            $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+        });
+
+        $('.datepicker').on('cancel.daterangepicker', function(ev, picker) {
+            $(this).val('');
+        });
     </script>
 
     <script src="assets/table/vendor/simple-datatables/simple-datatables.js"></script>
     <script src="assets/table/vendor/tinymce/tinymce.min.js"></script>
     <script src="assets/table/js/main.js"></script>
-    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
-        integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-   
+
     <script src="{{ url('assets/js/core/popper.min.js') }}"></script>
     <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script>
     <script src="{{ url('assets/js/plugins/perfect-scrollbar.min.js') }}"></script>
@@ -293,12 +298,6 @@ $employees = \App\Models\User::where('type', 'employee')->get();
         }
     </script>
 
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
-    <script src="{{ url('assets/js/soft-ui-dashboard.min.js?v=1.1.0') }}"></script>
-    <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v52afc6f149f6479b8c77fa569edb01181681764108816"
-        integrity="sha512-jGCTpDpBAYDGNYR5ztKt4BQPGef1P0giN6ZGVUi835kFF88FOmmn8jBQWNgrNd8g/Yu421NdgWhwQoaOPFflDw=="
-        data-cf-beacon='{"rayId":"7e5f9443adf741fd","version":"2023.4.0","r":1,"token":"1b7cbb72744b40c580f8633c6b62637e","si":100}'
-        crossorigin="anonymous">
-    </script>
+
 
 @endsection
