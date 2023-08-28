@@ -27,7 +27,9 @@ use App\Http\Controllers\PipelineController;
 
 Route::group(['middleware' => 'auth'], function ()
 	{
-		
+		Route::get('/', function(){
+			return redirect('dashboard');
+		});
 		Route::get('dashboard', function () {
 			return view('dashboard');
 		})->name('dashboard');
@@ -82,27 +84,24 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::post('edit-account/{id}', [AccountController::class, 'editAccount']);
 		Route::get('delete-account/{id}', [AccountController::class, 'AccountDelete']);
 		Route::get('changepriority/{tak_id}', [TaskManagmentController::class, 'changepriority']);
-		Route::get('report', [TaskManagmentController::class, 'report']);
-		Route::get('search-report', [TaskManagmentController::class, 'searchReport']);
-		Route::get('pipeline', [PipelineController::class, 'pipeline']);
-		Route::get('pipelinestatus/{task_id}/{status_id}', [PipelineController::class, 'pipelinestatus']);
+		// Route::get('report', [TaskManagmentController::class, 'report']);
+		// Route::get('search-report', [TaskManagmentController::class, 'searchReport']);
+		// Route::get('pipeline', [PipelineController::class, 'pipeline']);
+		// Route::get('pipelinestatus/{task_id}/{status_id}', [PipelineController::class, 'pipelinestatus']);
 		Route::get('index', [PipelineController::class, 'index1']);
 		Route::get('sendtask-email/{task_id}', [PipelineController::class, 'sendTaskEmail']);
+		
 
 	});
 		Route::post('loginauth', [SessionsController::class, 'loginauth']);				
-		// Route::get('login', function () {
-		// return view('session/login-session');
-		// })->name('login');
+		
 	
 	Route::group(['middleware' => 'guest'], function () 
 	{
-		Route::get('/', function(){
-			return redirect('/login');
-		});
+		
 	Route::get('/register', [RegisterController::class, 'create']);
 	Route::post('/register', [RegisterController::class, 'store']);
-	Route::get('/login', [SessionsController::class, 'create']);
+	Route::get('/login', [SessionsController::class, 'create'])->name('login');
 	Route::post('/session', [SessionsController::class, 'store']);
 	Route::get('/login/forgot-password', [ResetController::class, 'create']);
 	Route::post('/forgot-password', [ResetController::class, 'sendEmail']);

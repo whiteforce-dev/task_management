@@ -21,10 +21,10 @@ class TaskManagmentController extends Controller
     {
 
         $attributes = request()->validate([
-            'task_name' => ['required', 'max:50'],
+            'task_name' => ['required'],
             'start_date'  =>  ['required'],
             'deadline_Date' => ['required'],
-            'task_details' => ['required', 'max:300'],
+            'task_details' => ['required'],
             'priority' => ['required'],
         ]);
 
@@ -78,12 +78,20 @@ class TaskManagmentController extends Controller
     public function searchTask(Request $request){
 
         $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory);
+        if (Auth::user()->type == "employee") {
+            $tasklist = $tasklist->where('alloted_by',Auth::user()->id)->orWhereRaw("FIND_IN_SET(".Auth::user()->id.", alloted_to)");
+        } elseif(Auth::user()->type == "manager"){
+            $teamId = User::where('software_catagory', Auth::user()->software_catagory)->where('parent_id', Auth::user()->id)->pluck('id')->toArray();
+            $all_users_ids = [Auth::user()->id,...$teamId];
+            $pattern = implode('|', array_map('preg_quote', explode(',', implode(',',$all_users_ids))));
+            $tasklist = $tasklist->whereIn('alloted_by',$all_users_ids)->orWhereRaw("alloted_to REGEXP '{$pattern}'");
+        }
         if(!empty($request->created_by)){
             $tasklist = $tasklist->where('alloted_by',$request->created_by);
         }
         if(!empty($request->alloted_to)){
             $pattern = implode('|', array_map('preg_quote', explode(',', implode(',',$request->alloted_to))));
-            $tasklist = $tasklist->whereRaw("alloted_to REGEXP '{$pattern}'")->where('alloted_by',Auth::user()->id);
+            $tasklist = $tasklist->whereRaw("alloted_to REGEXP '{$pattern}'");
         }
         if(!empty($request->status)){
             $tasklist = $tasklist->where('status',$request->status);

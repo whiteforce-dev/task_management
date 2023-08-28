@@ -134,7 +134,7 @@
                     <span class="nav-link-text ms-1">Account list</span>
                 </a>
             </li>
-            @endif
+            
             <li class="nav-item">
                 <a class="nav-link {{ Request::is('report') ? 'active' : '' }}" href="{{ url('report') }}">
                     <div
@@ -188,6 +188,7 @@
                     <span class="nav-link-text ms-1">Pipeline</span>
                 </a>
             </li>
+            @endif
         </ul>
     </div>
     <div class="sidenav-footer mx-2 mt-5">
