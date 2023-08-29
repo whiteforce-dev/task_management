@@ -175,17 +175,8 @@
                             </div>
                             <div class="low-box">
                                 <h3><i class="fa-solid fa-user-shield" style="margin-right: 5px; color:#cb0c9f;"></i>Other
-                                    Remark</h3>
-                                   @if(Auth::user()->type == 'manager' || Auth::user()->type == 'admin')
-                                    <?php $text = mb_strimwidth($task->GetManager->remark ?? 'null', 0, 120, '...'); ?>
-                                    @elseif(Auth::user()->type == 'employee')
-                                    @if((isset($task->Getadmin->remark)))  
+                                    Remark</h3>                                  
                                     <?php $text = mb_strimwidth($task->Getparent->remark ?? 'null', 0, 120, '...'); ?>                                   
-                                    @else
-                                    {{ $task->Getadmin->remark ?? 'na' }}
-                                    <?php $text = mb_strimwidth($task->Getadmin->remark ?? 'null', 0, 120, '...'); ?>
-                                    @endif
-                                    @endif
                                 {{ $text }}
                                 <p>
                                     @if (Auth::user()->type !== 'employee')
@@ -210,7 +201,9 @@
                                         </option>
                                         <option value="2" {{ '2' == $task->status ? 'selected' : '' }}>Progress
                                         </option>
-                                        <option value="3" {{ '3' == $task->status ? 'selected' : '' }}>Completed
+                                        <option value="3" {{ '3' == $task->status ? 'selected' : '' }}>Hold
+                                        </option>
+                                        <option value="4" {{ '4' == $task->status ? 'selected' : '' }}>Completed
                                         </option>
                                     </select>
                                 </div>

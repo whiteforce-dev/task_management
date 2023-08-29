@@ -29,7 +29,7 @@ rel="stylesheet"/>
         <div class="taskboard">
             <div class="heading">
                 <div class="first-heading">
-                    <h2 style="color:#CB0C9F;">Pipeline</h2>
+                    <h2 style="color:#CB0C9F;">Task Board</h2>
                 </div>
                 <div class="create">
                     <a href="javascript:" class="btn btn-primary" onclick="createTask('{{ url('create-task') }}')" style="margin-top: 15px;">New task</a>
@@ -38,59 +38,23 @@ rel="stylesheet"/>
             <div class="todo"> 
                 <div class="new-box book">
                     <div class="uper-cont">
-                        <h3>Hold Task</h3>
+                        <h3>Pending Task</h3>
                     </div>
-                    @foreach ($holdingtasks as $holdingtask)
+                    @foreach ($pendingtasks as $pendingtask)
                     <div class="three first-bb" style="position: relative;">
                         <div class="uper">
-                            <h4 class="card-title">{{ ucfirst($holdingtask->userGet->name ??'NA')}}</h4>
-                         
+                            <h4 class="card-title">{{ ucfirst($pendingtask->userGet->name ??'NA')}}</h4>                
                             <div class="dropdown">
                                 <button class="dropbtn" style="display:flex; width:5px; !important;"><i
                                         class="fa-solid fa-ellipsis-vertical"></i></button>
                                 <div class="dropdown-content">
                               
-                                    @foreach ($stages as $status)
-                                    @if($status->status !=="hold")
-                                        <a href="javascript:void(0);"
-                                            onclick="selectstatus11({{ $status->id }},{{ $status->id }})">{{ ucfirst($status->status) }}</a>
-                                    @endif
-                                    @endforeach
-                                    <a href="{{ url('sendtask-email', $holdingtask->id) }}" >SendEmail</a>
-                                </div>
-                            </div>                        
-                        </div>
-                        @php $taskname = mb_strimwidth($holdingtask->task_name ?? 'null', 0, 20, '...'); @endphp
-                        <p><span>Task - </span>{{ $taskname }}</p>
-                        <p><span>Start - </span>{{ \Carbon\Carbon::parse($holdingtask->start_date)->format('d-m-Y') }}</p>
-                        <p><span>Deadline - </span>{{ \Carbon\Carbon::parse($holdingtask->deadline_date)->format('d-m-Y') }}</p>
-                        
-                            <img src="{{ url($holdingtask->userGet->image ?? 'NA') }}"  class=""
-                            style="float: right; width:38px !important; border-radius:50%; position:absolute; top: 63%; right:4%;">                       
-                    </div>                    
-                    @endforeach                  
-                </div>
-
-                <div class="new-box progress">
-                    <div class="uper-progress">
-                        <h3>Pending Task</h3>
-                    </div>
-                    @foreach ($pendingtasks as $pendingtask)
-                    <div class="three second-cc" style="position:relative;">
-                        <div class="uper">
-                            <h4 class="card-title">{{ ucfirst($pendingtask->userGet->name ??'NA')}}</h4>
-                         
-                            <div class="dropdown">
-                                <button class="dropbtn" style="display:flex; width:5px; !important;"><i
-                                        class="fa-solid fa-ellipsis-vertical"></i></button>
-                                <div class="dropdown-content">
-
-                                    @foreach ($stages as $status)
-                                    @if($status->status !=="pending")
-                                        <a href="javascript:void(0);"
-                                            onclick="selectstatus11({{ $pendingtask->id }},{{ $status->id }})">{{ ucfirst($status->status) }}</a>
-                                    @endif
-                                    @endforeach
+                                  @foreach ($stages as $status)
+                                  @if($status->status !=="pending")
+                                      <a href="javascript:void(0);"
+                                          onclick="selectstatus11({{ $pendingtask->id }},{{ $status->id }})">{{ ucfirst($status->status) }}</a>
+                                  @endif
+                                  @endforeach
                                     <a href="{{ url('sendtask-email', $pendingtask->id) }}" >SendEmail</a>
                                 </div>
                             </div>                        
@@ -102,18 +66,19 @@ rel="stylesheet"/>
                         
                             <img src="{{ url($pendingtask->userGet->image ?? 'NA') }}"  class=""
                             style="float: right; width:38px !important; border-radius:50%; position:absolute; top: 63%; right:4%;">                       
-                     </div>   
-                    @endforeach
+                    </div>                    
+                    @endforeach                  
                 </div>
-                <div class="new-box onhold">
-                    <div class="uper-hold">
+
+               <div class="new-box book">
+                    <div class="uper-progress">
                         <h3>Progress Task</h3>
                     </div>
                     @foreach ($progresstasks as $progresstask)
-                    <div class="three third-dd" style="position:relative;">
+                    <div class="three second-cc" style="position:relative;">
                         <div class="uper">
-                            <h4>{{ $progresstask->userGet->name ?? 'NA'}}</h4>
-                            
+                            <h4 class="card-title">{{ ucfirst($progresstask->userGet->name ??'NA')}}</h4>
+                         
                             <div class="dropdown">
                                 <button class="dropbtn" style="display:flex; width:5px; !important;"><i
                                         class="fa-solid fa-ellipsis-vertical"></i></button>
@@ -127,14 +92,48 @@ rel="stylesheet"/>
                                     @endforeach
                                     <a href="{{ url('sendtask-email', $progresstask->id) }}" >SendEmail</a>
                                 </div>
-                            </div>
+                            </div>                        
                         </div>
                         @php $taskname = mb_strimwidth($progresstask->task_name ?? 'null', 0, 20, '...'); @endphp
                         <p><span>Task - </span>{{ $taskname }}</p>
-                        <p><span>Start - </span>{{ \Carbon\Carbon::parse($progresstask->start_date)->format('d-m-Y') }}</p>                    
+                        <p><span>Start - </span>{{ \Carbon\Carbon::parse($progresstask->start_date)->format('d-m-Y') }}</p>
                         <p><span>Deadline - </span>{{ \Carbon\Carbon::parse($progresstask->deadline_date)->format('d-m-Y') }}</p>
+                        
+                            <img src="{{ url($progresstask->userGet->image ?? 'NA') }}"  class=""
+                            style="float: right; width:38px !important; border-radius:50%; position:absolute; top: 63%; right:4%;">                       
+                     </div>   
+                    @endforeach
+                </div>
+                <div class="new-box onhold">
+                    <div class="uper-hold">
+                        <h3>Hold Task</h3>
+                    </div>
+                    @foreach ($holdingtasks as $holdingtask)
+                    <div class="three third-dd" style="position:relative;">
+                        <div class="uper">
+                            <h4>{{ $holdingtask->userGet->name ?? 'NA'}}</h4>
+                            
+                            <div class="dropdown">
+                              <button class="dropbtn" style="display:flex; width:5px; !important;"><i
+                                      class="fa-solid fa-ellipsis-vertical"></i></button>
+                              <div class="dropdown-content">
+                                @foreach ($stages as $status)
+                                @if($status->status !== 'hold')
+                                    <a href="javascript:void(0);"
+                                        onclick="selectstatus11({{ $holdingtask->id }},{{ $status->id }})">{{ ucfirst($status->status) }}</a>
+                                @endif
+                                @endforeach
+                                  
+                                  <a href="{{ url('sendtask-email', $holdingtask->id) }}" >SendEmail</a>
+                              </div>
+                          </div>  
+                        </div>
+                        @php $taskname = mb_strimwidth($holdingtask->task_name ?? 'null', 0, 20, '...'); @endphp
+                        <p><span>Task - </span>{{ $taskname }}</p>
+                        <p><span>Start - </span>{{ \Carbon\Carbon::parse($holdingtask->start_date)->format('d-m-Y') }}</p>                    
+                        <p><span>Deadline - </span>{{ \Carbon\Carbon::parse($holdingtask->deadline_date)->format('d-m-Y') }}</p>
 
-                        <img src="{{ url($progresstask->userGet->image ?? 'NA') }}"  class=""
+                        <img src="{{ url($holdingtask->userGet->image ?? 'NA') }}"  class=""
                             style="float: right; width:38px !important; border-radius:50%; position:absolute; top: 63%; right:4%;"> 
                     </div>
                     @endforeach                
@@ -149,40 +148,37 @@ rel="stylesheet"/>
                         <div class="uper">
                             <h4>{{ $completedtask->userGet->name ?? 'NA' }}</h4>                 
                             <div class="dropdown">
-                                <button class="dropbtn" style="display:flex; width:5px; !important;"><i
-                                        class="fa-solid fa-ellipsis-vertical"></i></button>
-                                <div class="dropdown-content">
-                                    @foreach ($stages as $status)
-                                    @if($status->status !=="completed")
-                                    <a href="javascript:void(0);"  onclick="selectstatus11({{ $completedtask->id }},{{ $status->id }})">{{ ucfirst($status->status) }}</a>
-                                    @endif
-                                    @endforeach
-                                    <a href="{{ url('sendtask-email', $completedtask->id) }}" >SendEmail</a>
-                                    {{-- <a href="javascript:void(0);"  onclick="sendemail({{ $completedtask->id }} )">Send Email</a> --}}
-                                </div>
-                            </div>             
+                              <button class="dropbtn" style="display:flex; width:5px; !important;"><i
+                                      class="fa-solid fa-ellipsis-vertical"></i></button>
+                              <div class="dropdown-content">
+
+                                 
+                                  @foreach ($stages as $status)
+                                  @if($status->status !== 'completed')
+                                      <a href="javascript:void(0);"
+                                          onclick="selectstatus11({{ $completedtask->id }},{{ $status->id }})">{{ ucfirst($status->status) }}</a>
+                                  @endif
+                                  @endforeach
+                                  <a href="{{ url('sendtask-email', $completedtask->id) }}" >SendEmail</a>
+                              </div>
+                          </div>               
                         </div>
                         @php $taskname = mb_strimwidth($completedtask->task_name ?? 'null', 0, 20, '...'); @endphp
                         <p><span>Task - </span>{{ $taskname }}</p>
                         <p><span>Start - </span>{{ \Carbon\Carbon::parse($completedtask->start_date)->format('d-m-Y') }}</p>
-                        @if($completedtask->status == "3")
+                        @if($completedtask->status == "4")
                         <p><span>End Date - </span>{{ \Carbon\Carbon::parse($completedtask->end_date)->format('d-m-Y') }}</p>
                         @else
                         <p><span>Deadline - </span>{{ \Carbon\Carbon::parse($completedtask->deadline_date)->format('d-m-Y') }}</p>
                         @endif
-
                         <img src="{{ url($completedtask->userGet->image ?? 'NA') }}"  class=""
                             style="float: right; width:38px !important; border-radius:50%; position:absolute; top: 63%; right:4%;"> 
                     </div>
                     @endforeach                  
-                </div>
+                </div> 
             </div>
         </div>
     </section>
-
-
-
-
 
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"
         integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
@@ -199,27 +195,23 @@ rel="stylesheet"/>
     </script>
     <script>  
         function sendemail(task_id) {
-            $.get("{{ url('sendtask-email') }}" + '/' + task_id, {
+            $.get("{{ url('sendtask-email') }}" + '/' + task_id, {  
             }, function(response) {
                 // location.reload()
                   $('#response').html(response);
             });
         };
     </script>
-
-<script>
+    <script>
     function createTask(url, id) {
         $.get(url, id, function(rs) {
             $('#myModal10').html(rs);
             $('#myModal10').modal('show');
         });
     }
-</script>
-
+    </script>
 <div class="modal" id="myModal10">
 </div>
-
-
 <script src="{{ url('assets/js/core/popper.min.js') }}"></script>
 <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script> 
 @endsection

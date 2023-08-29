@@ -70,7 +70,9 @@
                                         </option>
                                         <option value="2" {{ '2' == $task->status ? 'selected' : '' }}>Progress
                                         </option>
-                                        <option value="3" {{ '3' == $task->status ? 'selected' : '' }}>Completed
+                                        <option value="3" {{ '3' == $task->status ? 'selected' : '' }}>Hold
+                                        </option>
+                                        <option value="4" {{ '3' == $task->status ? 'selected' : '' }}>Completed
                                         </option>
                                     </select>
                                 </div>

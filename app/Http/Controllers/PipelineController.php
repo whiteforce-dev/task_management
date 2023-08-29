@@ -12,10 +12,24 @@ use Illuminate\Support\Facades\Auth;
 class PipelineController extends Controller
 {
    public function pipeline(){
-      $pendingtasks = Taskmaster::where('status', '1')->get();
-      $progresstasks = Taskmaster::where('status', '2')->get();
-      $completedtasks = Taskmaster::where('status', '3')->get();
-      $holdingtasks  = Taskmaster::where('status', '4')->get();
+    if(Auth::user()->type == 'admin'){
+        $pendingtasks = Taskmaster::where('status', '1')->get();
+        $progresstasks = Taskmaster::where('status', '2')->get();
+        $holdingtasks = Taskmaster::where('status', '3')->get();
+        $completedtasks  = Taskmaster::where('status', '4')->get();
+    }elseif(Auth::user()->type == 'admin'){
+        $parentId = User::where('id', Auth::user()->parent_id)->pluck('id')->ToArray();
+        $pendingtasks = Taskmaster::where('alloted_to', $parentId)->where('status', '1')->get();
+        $progresstasks = Taskmaster::where('alloted_to', $parentId)->where('status', '2')->get();
+        $holdingtasks = Taskmaster::where('alloted_to', $parentId)->where('status', '3')->get();
+        $completedtasks  = Taskmaster::where('alloted_to', $parentId)->where('status', '4')->get(); 
+    }else{
+        $pendingtasks = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '1')->get();
+        $progresstasks = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '2')->get();
+        $holdingtasks = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '3')->get();
+        $completedtasks  = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '4')->get();  
+    }
+
       $stages = Status::get();
       $users = User::where('software_catagory', Auth::user()->software_catagory)->where('type','!=', 'admin')->get();
     return view('pipeline.pipeline', compact('pendingtasks', 'progresstasks', 'completedtasks', 'users', 'holdingtasks', 'stages'));
@@ -53,19 +67,38 @@ class PipelineController extends Controller
    }
 
    public function updateStatus(Request $request, $cardId)
-    {
-        $oldStatus = $request->input('oldStatus');
-        $newStatus = $request->input('newStatus');
+   {
+       $newStatus = $request->input('newStatus');
 
-        $card = Card::find($cardId);
-        if ($card) {
-            $card->status = $newStatus;
-            $card->save();
-        }
+       $card = Card::find($cardId);
+       if ($card) {
+           $card->status = $newStatus;
+           $card->save();
+       }
 
-        return response()->json(['message' => 'Card status updated successfully']);
-    }
+       return response()->json(['message' => 'Card status updated successfully']);
+   }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   
 }
+
 
