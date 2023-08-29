@@ -29,7 +29,7 @@
                     }
                     @endphp
 
-                        <tr>
+                        <tr> 
                            <td>{{ ++$i }}</td>
                            <?php  $text = mb_strimwidth($task->task_name ?? 'null', 0, 10, '...'); ?> <td>{{ $text }}</td> 
                           <td>{{ $task->userGet->name ?? 'Na' }}</td> 
@@ -58,8 +58,9 @@
                             @else
                             <td>Progress</td>
                             @endif
-
-                          @else
+                          @elseif($task->status == '3')
+                          <td><span style="color:rgb(153, 143, 0) !important; font-weight:500;">Hold</span></td>
+                          @elseif($task->status == '4')
                           <td><span style="color:#090 !important; font-weight:500;">Completed</span></td>
                           @endif
             
@@ -82,4 +83,4 @@
             @endif                   
         </div>
     </div>
-</div>
+</div> 

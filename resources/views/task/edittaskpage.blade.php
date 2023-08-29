@@ -167,7 +167,9 @@
                                             <option value="2" {{ '2' == $task->status ? 'selected' : '' }}>
                                             Pending</option>
                                             <option value="3"
-                                                {{ '3' == $task->status ? 'selected' : '' }}>Completed</option>
+                                                {{ '3' == $task->status ? 'selected' : '' }}>Hold</option>
+                                            <option value="4"
+                                                {{ '4' == $task->status ? 'selected' : '' }}>Completed</option>
                                         </select>
                                     </div>
                                 </div>

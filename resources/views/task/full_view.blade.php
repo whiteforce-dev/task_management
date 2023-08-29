@@ -113,10 +113,8 @@
             @foreach ($remarks as $i => $remark)
                 @php
                     $managerData = \App\Models\User::where('id', $remark->userid)->first();
-                @endphp
-               
-                <div class="row">
-                   
+                @endphp               
+                <div class="row">                
                     <div class="col-sm-5">                     
                         <div class="msg left-msg mt-3">
                             @if($remark->userid !== Auth::user()->id)
@@ -135,9 +133,7 @@
                             @endif
                         </div>                   
                     </div>
-                    
-               
-               
+                                
                     <div class="msg right-msg mt-3">
                         @if($remark->userid == Auth::user()->id)
                         <div class="msg-img">
@@ -152,10 +148,11 @@
                         </div>
                         @endif
                     </div>                                        
-                </div>
-                
+                </div>                                    
             @endforeach
         </div>
+
+
 
         <form id="myForm">
             @csrf
