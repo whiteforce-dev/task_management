@@ -72,7 +72,7 @@
                                         </option>
                                         <option value="3" {{ '3' == $task->status ? 'selected' : '' }}>Hold
                                         </option>
-                                        <option value="4" {{ '3' == $task->status ? 'selected' : '' }}>Completed
+                                        <option value="4" {{ '4' == $task->status ? 'selected' : '' }}>Completed
                                         </option>
                                     </select>
                                 </div>
@@ -86,6 +86,9 @@
                                         <a href="{{ url('task-edit-page', $task->id) }}"
                                             class="dropdown-item border-radius-md" href="javascript:;">Edit
                                         </a>
+                                        <a href="{{ url('task-delete', $task->id) }}"
+                                            class="dropdown-item border-radius-md">Delete
+                                        </a>
                                         @elseif(Auth::user()->type == 'admin')
                                         <a href="{{ url('task-edit-page', $task->id) }}"
                                             class="dropdown-item border-radius-md" href="javascript:;">Edit
@@ -94,9 +97,7 @@
                                         <a onclick="statushistory('{{ url('statushistory' . '?id=' . $task->id) }}')"
                                             class="dropdown-item border-radius-md" href="javascript:;">Status History
                                         </a>
-                                        <a href="{{ url('task-delete', $task->id) }}"
-                                            class="dropdown-item border-radius-md">Delete
-                                        </a>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -146,7 +147,7 @@
                                 <i class="fa-solid fa-circle"
                                     style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i> <span>Complete Date :
                                 </span>
-                                @if ($task->status == '3')
+                                @if ($task->status == '4')
                                     <P>{{ \Carbon\Carbon::parse($task->end_date)->format('d-m-Y') }}</P>
                                 @else<p>Null</p>
                                 @endif

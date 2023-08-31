@@ -31,7 +31,7 @@
         <div class="container-fluid py-4">
             <div class="card">
                 <div class="card-header pb-0 px-3">
-                    <h6 class="mb-0">{{ __('Task Details') }}</h6>
+                    <h6 class="mb-0">{{ __('Account Details') }}</h6>
                 </div>
                 <div class="card-body pt-4 p-3">
                     <form action="{{ url('edit-account', $account->id) }}" method="POST" role="form text-left" enctype="multipart/form-data" id="createdaccount">
@@ -56,13 +56,25 @@
                             </div>
                         @endif
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="user-name" class="form-control-label">{{ __('Account name') }}</label>
                                     <div class="@error('user.account')border border-danger rounded-3 @enderror">
                                         <input class="form-control" value="{{ $account->name }}" type="text" placeholder="Account Name"
                                             id="task-name" name="account_name">
                                         @error('account_name')
+                                            <p class="text-danger text-xs mt-2">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>                               
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="user-name" class="form-control-label">{{ __('Slug') }}</label>
+                                    <div class="@error('user.account')border border-danger rounded-3 @enderror">
+                                        <input class="form-control" value="{{ $account->slug }}" type="text" placeholder="Enter Slug"
+                                            id="slig" name="slug">
+                                        @error('slug')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                         @enderror
                                     </div>

@@ -17,10 +17,10 @@
                 <div class="project-tasks">
                     <div class="project-column firstcolumn" data-count="1">
                         <div class="project-column-heading">
-                            <h2 class="project-column-heading__title">Pending</h2>
+                            <h2 class="project-column-heading__title">Task Ready</h2>
                         </div>
-                        @foreach ($pendingtasks as $pendingtask)                                                  
-                            <div class="task firstcard" draggable="true" data-id="1">                                
+                        @foreach ($pendingtasks as $pendingtask)
+                            <div class="task firstcard" draggable="true" data-id="1">
                                 <div class="uper">
                                     <h4>{{ ucfirst($pendingtask->task_name) }}</h4>
                                     <div class="dropdown">
@@ -49,7 +49,6 @@
                                         <img src="{{ url($pendingtask->userGet->image ?? 'NA') }}" alt="">
                                     </div>
                                 </div>
-
                         @endforeach
                     </div>
                 </div>
@@ -59,11 +58,9 @@
                         <h2 class="project-column-heading__title">In Progress</h2>
                     </div>
                     @foreach ($progresstasks as $progresstask)
-
-
                         <div class="task secondcard" draggable="true">
                             <div class="uper">
-                                <h4>{{ ucwords($progresstask->task_name) }}</h4>
+                                <h4>{{ $progresstask->task_name }}</h4>
                                 <div class="dropdown">
                                     <button class="dropbtn" style="display:flex; width:5px; !important;"><i
                                             class="fa-solid fa-ellipsis-vertical"></i></button>
@@ -90,7 +87,6 @@
                                 </div>
                             </div>
                         </div>
-  
                     @endforeach
                 </div>
                 <div class="project-column thirdcolumn" data-count="3">
@@ -98,10 +94,9 @@
                         <h2 class="project-column-heading__title">Hold task</h2>
                     </div>
                     @foreach ($holdingtasks as $holdingtask)
-                    
                         <div class="task thirdcard" draggable="true">
                             <div class="uper">
-                                <h4>{{ ucwords($holdingtask->task_name) }}</h4>
+                                <h4>{{ $holdingtask->task_name }}</h4>
                                 <div class="dropdown">
                                     <button class="dropbtn" style="display:flex; width:5px; !important;"><i
                                             class="fa-solid fa-ellipsis-vertical"></i></button>
@@ -129,7 +124,6 @@
                                 </div>
                             </div>
                         </div>
-                   
                     @endforeach
                 </div>
                 <div class="project-column fourthcolumn" data-count="4">
@@ -137,10 +131,9 @@
                         <h2 class="project-column-heading__title">Completed</h2>
                     </div>
                     @foreach ($completedtasks as $completedtask)
-                   
                         <div class="task forthcard" draggable="true">
                             <div class="uper">
-                                <h4>{{ ucwords($completedtask->task_name) }}</h4>
+                                <h4>{{ $completedtask->task_name }}</h4>
                                 <div class="dropdown">
                                     <button class="dropbtn" style="display:flex; width:5px; !important;"><i
                                             class="fa-solid fa-ellipsis-vertical"></i></button>
@@ -169,7 +162,6 @@
                                 </div>
                             </div>
                         </div>
-                    
                     @endforeach
                 </div>
         </div>
@@ -180,28 +172,7 @@
         </div>
 
 
-        <script>
-            function selectstatus11(task_id, status_id) {
-                $.get("{{ url('pipelinestatus') }}" + '/' + task_id + '/' + status_id, {
-                }, function(response) {
-                    location.reload()
-                    //  $('#response').html(response);
-                });
-            };
-        </script>
-<script>
-function pipelineView(url, id) {
-    $.get(url, id, function(rs) {
-        $('#myModalpipeline').html(rs);
-        $('#myModalpipeline').modal('show');
-    });
-}
-</script>
 
-<div class="modal" id="myModalpipeline">
-    
-</div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="{{ url('assets/pipeline/new.js') }}"></script>
         <script src="{{ url('assets/js/core/popper.min.js') }}"></script>
         <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script>

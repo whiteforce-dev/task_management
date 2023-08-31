@@ -18,9 +18,10 @@
                     <div class="col-auto my-auto">
                         <div class="h-100">
                             <h5 class="mb-1">
-                                {{ __('Create Account') }}
+                                {{ ucwords(Auth::user()->name) }}
                             </h5>
                             <p class="mb-0 font-weight-bold text-sm">
+                                {{ ucwords(Auth::user()->name) }}
                             </p>
                         </div>
                     </div>
@@ -56,13 +57,25 @@
                             </div>
                         @endif
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="user-name" class="form-control-label">{{ __('Account name') }}</label>
                                     <div class="@error('user.account')border border-danger rounded-3 @enderror">
                                         <input class="form-control" value="" type="text" placeholder="Account Name"
                                             id="task-name" name="account_name">
                                         @error('account_name')
+                                            <p class="text-danger text-xs mt-2">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>                               
+                            </div>  
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="user-name" class="form-control-label">{{ __('Slug') }}</label>
+                                    <div class="@error('user.account')border border-danger rounded-3 @enderror">
+                                        <input class="form-control" value="" type="text" placeholder="Enter Slug"
+                                            id="slug" name="slug" required maxlength="4">
+                                        @error('slug')
                                             <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                         @enderror
                                     </div>
@@ -92,10 +105,12 @@
         $(document).ready(function($) {
             $("#createdaccount").validate({
                 rules: {
-                    account_name: 'required',                                    
+                    account_name: 'required',
+                    slug: 'slug'                                    
                 },
                 messages: {
-                    account_name: '*Please Enter Account Name',                               
+                    account_name: '*Please Enter Account Name',
+                    slug: '*Please Enter Slug'                               
                 },
                 errorPlacement: function(error, element) {
                     error.insertAfter(element);

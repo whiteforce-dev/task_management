@@ -13,8 +13,9 @@ class AccountController extends Controller
     Public function CreateAccount(Request $request){
         $account = New Account();
         $account->name = $request->account_name;
+        $account->slug = strtoupper($request['slug']);
         $account->save();
-        return view('account.create');
+        return redirect('account-list')->with(['success' => 'You account create successfull.']);
     }
     Public function accountList(){
         $accountlist = Account::get();
@@ -27,12 +28,13 @@ class AccountController extends Controller
     Public function editAccount(Request $request, $id){
         $account = Account::find($id);
         $account->name = $request->account_name;
+        $account->slug = strtoupper($request['slug']);
         $account->save();  
         return redirect('account-list')->with(['success' => 'You are successfull updated.']);
     }
     Public function AccountDelete($id){
         $account = Account::find($id);
         $account->delete();  
-        return redirect('account-list')->with(['success' => 'You are successfull updated.']);
+        return redirect('account-list')->with(['success' => 'You account successfull deleted.']);
     }
 }

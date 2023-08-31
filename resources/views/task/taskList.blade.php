@@ -44,17 +44,6 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-@if(Session::has('deadline'))
-<div id="deadline-alert" class="alert alert-primary text-white border-radius-lg">
-    {{ Session::get('deadline') }}
-</div>
-<script>
-    setTimeout(function () {
-        document.getElementById('deadline-alert').style.display = 'none';
-    }, 2000);
-</script>
-@endif
-
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
         <div class="container-fluid py-4">
             <div class="row">
@@ -217,6 +206,9 @@
                                         <a href="{{ url('task-edit-page', $task->id) }}"
                                             class="dropdown-item border-radius-md" href="javascript:;">Edit
                                         </a>
+                                        <a href="{{ url('task-delete', $task->id) }}"
+                                            class="dropdown-item border-radius-md">Delete
+                                        </a>
                                         @elseif(Auth::user()->type == 'admin')
                                         <a href="{{ url('task-edit-page', $task->id) }}"
                                             class="dropdown-item border-radius-md" href="javascript:;">Edit
@@ -225,9 +217,7 @@
                                         <a onclick="statushistory('{{ url('statushistory' . '?id=' . $task->id) }}')"
                                             class="dropdown-item border-radius-md" href="javascript:;">Status History
                                         </a>
-                                        <a href="{{ url('task-delete', $task->id) }}"
-                                            class="dropdown-item border-radius-md">Delete
-                                        </a>
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -284,9 +274,13 @@
                             </div>
                             <div class="box-one" style="position: relative;">
                                 <i class="fa-solid fa-circle"
-                                    style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Alloted By
+                                    style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Alloted To
                                         &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp; :</span>
-                                <P>{{ $task->GetManagerName->name ?? 'Na' }}</P>
+                                        <?php $alloted_to_ids = explode(',', $task->alloted_to); ?>
+                                        @foreach ($alloted_to_ids as $alloted_to)
+                                            <?php $usersname = \App\Models\User::where('id', $alloted_to)->value('name'); ?>
+                                            {{ $usersname ?? 'Na' }},
+                                        @endforeach
                             </div>
                 
                             <div class="box-one"

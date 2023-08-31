@@ -88,8 +88,7 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::get('index', [PipelineController::class, 'index1']);
 		Route::get('sendtask-email/{task_id}', [PipelineController::class, 'sendTaskEmail']);
 		Route::patch('update-card-status/{card}', [PipelineController::class, 'updateStatus']);
-
-
+		Route::get('pipeline-view', [PipelineController::class, 'pipelineView']);
 	});
 		Route::post('loginauth', [SessionsController::class, 'loginauth']);				
 		// Route::get('login', function () {

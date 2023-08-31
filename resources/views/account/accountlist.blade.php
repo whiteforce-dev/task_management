@@ -21,7 +21,25 @@
     <link href="assets/table/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="assets/table/vendor/simple-datatables/style.css" rel="stylesheet">
     <link href="assets/table/css/style.css" rel="stylesheet">
-
+    @if ($errors->any())
+    <div class="mt-3  alert alert-primary alert-dismissible fade show" role="alert">
+        <span class="alert-text text-white">
+            {{ $errors->first() }}</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            <i class="fa fa-close" aria-hidden="true"></i>
+        </button>
+    </div>
+@endif
+@if (session('success'))
+    <div class="m-3  alert alert-success alert-dismissible fade show" id="alert-success"
+        role="alert">
+        <span class="alert-text text-white">
+            {{ session('success') }}</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            <i class="fa fa-close" aria-hidden="true"></i>
+        </button>
+    </div>
+@endif
     <div class="container-fluid">
         <div class="page-header min-height-300 border-radius-xl mt-4"
         style= "background-position-y: 1%;">
@@ -39,14 +57,13 @@
                 <div class="col-auto my-auto">
                     <div class="h-100">
                         <h5 class="mb-1">
-                            {{ __('Account list') }}
+                            {{ ucwords(Auth::user()->name) }}
                         </h5>
                         <p class="mb-0 font-weight-bold text-sm">
-
+                            {{ ucwords(Auth::user()->name) }}
                         </p>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
