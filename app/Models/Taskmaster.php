@@ -16,6 +16,7 @@ class Taskmaster extends Model
         return $this->belongsTo('App\Models\User', 'alloted_to');
     }
 
+
     public function GetManagerName()
     {
         return $this->belongsTo('App\Models\User', 'alloted_by');

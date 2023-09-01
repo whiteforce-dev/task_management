@@ -70,16 +70,17 @@ class PipelineController extends Controller
    {
        $newStatus = $request->input('newStatus');
 
-       $card = Card::find($cardId);
+       $card = Status::find($cardId);
        if ($card) {
            $card->status = $newStatus;
            $card->save();
        }
-
        return response()->json(['message' => 'Card status updated successfully']);
    }
-
-
+   public function pipelineView(Request $request){
+    $task = Taskmaster::find($request->id);
+    return view('pipeline.pipeline_view_model', compact('task')); 
+    }
 
 
 

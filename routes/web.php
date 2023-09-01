@@ -99,6 +99,7 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::post('get-task-details-div', [StandupController::class, 'getTaskDetailsDiv']);
 		Route::get('daily-standup-report', [StandupController::class, 'dailyStandupReport']);
 
+		Route::get('pipeline-view', [PipelineController::class, 'pipelineView']);
 	});
 		Route::post('loginauth', [SessionsController::class, 'loginauth']);				
 		

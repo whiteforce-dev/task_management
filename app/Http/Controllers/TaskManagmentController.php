@@ -65,11 +65,7 @@ class TaskManagmentController extends Controller
         $users = User::where('software_catagory', Auth::user()->software_catagory)->where('type','!=', 'admin')->get();
         $statuss = Status::get();
         $prioritys = Priority::get();
-        $deadline = Taskmaster::where('alloted_to', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)->where('priority', '1')->count();
-            if($deadline > 0){
-                Session::flash('deadline', 'The task deadline has passed of highest priority task.');
-            }
-        return view('task.taskList', compact('tasklist', 'managerId', 'EmployeeId', 'status_search', 'from', 'to', 'priority', 'statuss', 'deadline', 'users', 'prioritys'));
+        return view('task.taskList', compact('tasklist', 'managerId', 'EmployeeId', 'status_search', 'from', 'to', 'priority', 'statuss', 'users', 'prioritys'));
         
     }
 

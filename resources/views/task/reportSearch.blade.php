@@ -9,10 +9,8 @@
                         <th scope="col"><b>Task Name</b></th>
                         <th scope="col"><b>Alloted To</b></th>
                         <th scope="col"><b>Start Date</b></th>
-
                         <th scope="col"><b>Deadline Date</b></th>
                         <th scope="col"><b>Status</b></th>
-
                         <th scope="col"><b>Priority</b></th>
                    
                     </tr>
