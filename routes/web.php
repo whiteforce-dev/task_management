@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\PipelineController;
+use App\Http\Controllers\StandupController;
 
 /*
 |--------------------------------------------------------------------------
@@ -92,6 +93,11 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::get('sendtask-email/{task_id}', [PipelineController::class, 'sendTaskEmail']);
 		Route::patch('update-card-status/{card}', [PipelineController::class, 'updateStatus']);
 
+		Route::get('daily-standup', [StandupController::class, 'dailyStandup']);
+        Route::post('daily-standup-checkin', [StandupController::class, 'dailyStandupCheckin']);
+		Route::post('daily-standup-checkout', [StandupController::class, 'dailyStandupCheckout']);
+		Route::post('get-task-details-div', [StandupController::class, 'getTaskDetailsDiv']);
+		Route::get('daily-standup-report', [StandupController::class, 'dailyStandupReport']);
 
 	});
 		Route::post('loginauth', [SessionsController::class, 'loginauth']);				

@@ -29,9 +29,10 @@ class TaskManagmentController extends Controller
 
         $newtask = new Taskmaster();
         $newtask->task_name = $request->task_name;
-            if(isset($request->alloted_to)) {
-                $newtask->alloted_to = implode(',', $request->alloted_to);
-            }
+        $newtask->task_code = getTaskCode();
+        if(isset($request->alloted_to)) {
+            $newtask->alloted_to = implode(',', $request->alloted_to);
+        }
         $newtask->task_details = $request->task_details;
         $newtask->start_date = $request->start_date;
         $newtask->alloted_by = Auth::user()->id;
@@ -75,12 +76,18 @@ class TaskManagmentController extends Controller
     public function searchTask(Request $request){
         $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory);
         if (Auth::user()->type == "employee") {
-            $tasklist = $tasklist->where('alloted_by',Auth::user()->id)->orWhereRaw("FIND_IN_SET(".Auth::user()->id.", alloted_to)");
+            $tasklist = $tasklist->where(function($query) {
+                $query->where('alloted_by',Auth::user()->id)
+                ->orWhereRaw("FIND_IN_SET(".Auth::user()->id.", alloted_to)");
+            });
         } elseif(Auth::user()->type == "manager"){
             $teamId = User::where('software_catagory', Auth::user()->software_catagory)->where('parent_id', Auth::user()->id)->pluck('id')->toArray();
             $all_users_ids = [Auth::user()->id,...$teamId];
             $pattern = implode('|', array_map('preg_quote', explode(',', implode(',',$all_users_ids))));
-            $tasklist = $tasklist->whereIn('alloted_by',$all_users_ids)->orWhereRaw("alloted_to REGEXP '{$pattern}'");
+            $tasklist = $tasklist->where(function($query) use ($all_users_ids,$pattern) {
+                $query->whereIn('alloted_by',$all_users_ids)
+                ->orWhereRaw("alloted_to REGEXP '{$pattern}'");
+            });
         }
         if(!empty($request->created_by)){
             $tasklist = $tasklist->where('alloted_by',$request->created_by);

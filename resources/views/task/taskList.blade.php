@@ -44,16 +44,6 @@
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-@if(Session::has('deadline'))
-<div id="deadline-alert" class="alert alert-primary text-white border-radius-lg">
-    {{ Session::get('deadline') }}
-</div>
-<script>
-    setTimeout(function () {
-        document.getElementById('deadline-alert').style.display = 'none';
-    }, 2000);
-</script>
-@endif
 
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
         <div class="container-fluid py-4">
@@ -144,7 +134,8 @@
                     <div class="main-card">
                         <div class="long-width" style="width: 70%;">
                             <div class="up-box">
-                                <h1>{{ ucfirst($task->task_name) }}</h1>
+                            
+                                <h1><span class="badge badge-primary" style="background: linear-gradient(to right, #f953c6, #b91d73);">{{ $task->task_code }}</span> &nbsp;&nbsp;{{ ucfirst($task->task_name) }}</h1>
                                 <hr
                                     style="height: 4px; width: 100%; border: none;opacity:unset; margin-top: 10px; margin-bottom: -5px; background-color: #cb0c9f;">
                             </div>

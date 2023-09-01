@@ -7,6 +7,9 @@ use Hashids\Hashids;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
+use App\Models\Taskmaster;
+use App\Models\Account;
+
 function uploadImageWithBase64($fileName, $path = '')
 {
     $name = "default.png";
@@ -31,6 +34,24 @@ function uploadImageWithBase64($fileName, $path = '')
         } else { }
     }
     return $name;
+}
+
+function getTaskCode(){
+    $lastInsertedTask = Taskmaster::where('software_catagory',Auth::user()->software_catagory)->orderBy('id','desc')->value('task_code');
+    if(!empty($lastInsertedTask)){
+        $last_task_code = explode('-',$lastInsertedTask);
+        $task_code_value = !empty($last_task_code) ? $last_task_code[1] + 1 : 1;
+        if(!empty($last_task_code[0])){
+            $task_code = $last_task_code[0] . '-' . $task_code_value;
+        } else {
+            $slug = Account::where('name',Auth::user()->software_catagory)->value('slug');
+            $task_code = $slug . '-' . $task_code_value;
+        }
+    } else {
+        $slug = Account::where('name',Auth::user()->software_catagory)->value('slug');
+        $task_code = $slug . '-' . 1;
+    }
+    return $task_code;
 }
 
 
