@@ -201,6 +201,8 @@ function pipelineView(url, id) {
 <div class="modal" id="myModalpipeline">
     
 </div>
+<script src="{{ url('assets/js/core/popper.min.js') }}"></script>
+<script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="{{ url('assets/pipeline/new.js') }}"></script>
         <script src="{{ url('assets/js/core/popper.min.js') }}"></script>
