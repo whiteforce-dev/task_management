@@ -40,11 +40,11 @@
         }
 </style>
 
-@php $auth = Auth::user()->id; @endphp
+    @php $auth = Auth::user()->id; @endphp
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
+    <main class="main-content position-relative h-100 border-radius-lg ">
         <div class="container-fluid py-4">
             <div class="row">
                 @if (auth::user()->type !== 'employee')
@@ -139,10 +139,11 @@
                                     style="height: 4px; width: 100%; border: none;opacity:unset; margin-top: 10px; margin-bottom: -5px; background-color: #cb0c9f;">
                             </div>
                 
-                            <div class="low-box">
+                            <div class="low-box" style="position:relative;height:95px;overflow:hidden;">
+                            <span onclick="this.parentElement.style.height='max-content'" style="cursor:pointer;position:absolute;right:20px;bottom:0;font-size:13px;font-weight:bold;">Read More</span>
                                 <h3><i class="fa-solid fa-pen-to-square" style="margin-right: 5px; color:#cb0c9f;"></i>
                                     Description</h3>
-                                <p>{{ $task->task_details }}</p>
+                                <pre>{{ $task->task_details }}</pre>
                             </div>
                 
                             <div class="low-box">
@@ -154,8 +155,7 @@
                                         <a href="javascript:"
                                             onclick="managerRemark('{{ url('managerremark' . '?id=' . $task->id) }}')">
                                             <span
-                                                style="float:right;
-                                    color: #242527;
+                                                style="float:right;color: #242527;
                                     font-weight: 600;
                                     font-family: Poppins, sans-serif">
                                                 Add Remark</span>
@@ -170,7 +170,7 @@
                                 {{ $text }}
                                 <p>
                                     @if (Auth::user()->type !== 'employee')
-                                        <a href="javascript:"
+                                        <a href="javascript:void()"
                                             onclick="managerRemark('{{ url('managerremark' . '?id=' . $task->id) }}')">
                                            <span
                                                 style="float:right;
@@ -191,9 +191,9 @@
                                         </option>
                                         <option value="2" {{ '2' == $task->status ? 'selected' : '' }}>Progress
                                         </option>
-                                        <option value="3" {{ '3' == $task->status ? 'selected' : '' }}>Hold
+                                        <option value="4" {{ '4' == $task->status ? 'selected' : '' }}>Hold
                                         </option>
-                                        <option value="4" {{ '4' == $task->status ? 'selected' : '' }}>Completed
+                                        <option value="3" {{ '3' == $task->status ? 'selected' : '' }}>Completed
                                         </option>
                                     </select>
                                 </div>
@@ -268,7 +268,7 @@
                                 <i class="fa-solid fa-circle"
                                     style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i> <span>Complete Date :
                                 </span>
-                                @if ($task->status == '3')
+                                @if ($task->status == 3)
                                     <P>{{ \Carbon\Carbon::parse($task->end_date)->format('d-m-Y') }}</P>
                                 @else<p>Null</p>
                                 @endif
@@ -299,8 +299,9 @@
                         </div>
                     </div>
                 </section>
-                {{ $tasklist->links() }}
+                
                 @endforeach
+                {{ $tasklist->links() }}
             </div>
         </div>
       
@@ -339,11 +340,16 @@
                 }
             })
         }
-    
+        function scrollBottom(){
+            setTimeout(() => {
+                        $("#response")[0].scrollTo({ top: $("#response")[0].scrollHeight })
+                    }, 100);
+        }
         function managerRemark(url, id) {
             $.get(url, id, function(rs) {
                 $('#myModal').html(rs);
                 $('#myModal').modal('show');
+                scrollBottom()
             });
         }
    

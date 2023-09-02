@@ -42,6 +42,9 @@
         .error{
             color:#ce1616;
         }
+        pre{
+            font-family: "Poppins", sans-serif;
+        }
     </style>
 </head>
 
