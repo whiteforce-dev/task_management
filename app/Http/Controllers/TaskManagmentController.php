@@ -108,10 +108,10 @@ class TaskManagmentController extends Controller
         return view('task.searchTaskResult',compact('tasklist'));
     }
 
-    public function taskEditPage($id)
+    public function taskEditPage(request $request)
     {
-        $task = Taskmaster::find($id);
-        return view('task.edittaskpage', compact('task'));
+        $task = Taskmaster::find($request->id);
+        return view('task.edit_task', compact('task'));
     }
 
     public function UpdateTask(request $request, $id)
@@ -151,11 +151,13 @@ class TaskManagmentController extends Controller
     public function remark(Request $request)
     {  
         $task_id = $request->id;
-        if (Auth::user()->type !== 'employee') {
+        if (Auth::user()->type !== 'employee' || Auth::user()->can_allot_to_others == '1') {           
             $remarks = Remark::where('task_id', $request->id)->get();
         } else {
+            $allted_by = Taskmaster::where('id', $task_id)->pluck('alloted_by')->ToArray();
             $team = User::where('id', Auth::user()->id)->orwhere('id', Auth::user()->parent_id)->orwhere('id', '1')->pluck('id')->toArray();
-            $remarks = Remark::where('task_id', $request->id)->whereIn('userid', $team)->get();
+            $mergedArray = array_merge($allted_by, $team);
+            $remarks = Remark::where('task_id', $request->id)->whereIn('userid', $mergedArray)->get();
         }
         return view('task.full_view', compact('remarks', 'task_id'));
     }

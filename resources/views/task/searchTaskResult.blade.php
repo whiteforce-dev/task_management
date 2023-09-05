@@ -84,9 +84,12 @@
                             class="fa-solid fa-sort-down"></i></button>
                         <div class="dropdown-content">
                         @if(Auth::user()->id == $task->alloted_by)
-                        <a href="{{ url('task-edit-page', $task->id) }}"
+
+                        <a onclick="EditTask('{{ url('task-edit-page' . '?id=' . $task->id) }}')"
                             class="dropdown-item border-radius-md" href="javascript:;">Edit
                         </a>
+
+
                         <a href="{{ url('task-delete', $task->id) }}"
                             class="dropdown-item border-radius-md">Delete
                         </a>
@@ -139,10 +142,15 @@
                     $deadlineDate = \Carbon\Carbon::parse($task->deadline_date);
                     $daysDifference = $currentDate->diffInDays($deadlineDate);
                 @endphp
+
+                @if ($task->status !== 3)
                 @if ($currentDate > $deadlineDate)
                     <div class="dott" style="position: absolute; right:-21px; top:0;">
                         {{ $daysDifference }}</div>
                 @endif
+                @endif
+
+
             </div>
             <div class="box-one">
                 <i class="fa-solid fa-circle"
@@ -153,17 +161,27 @@
                 @else<p>Null</p>
                 @endif
             </div>
+            <?php $alloted_to_ids = explode(',', $task->alloted_to); ?>
+            @if(isset($alloted_to_ids[1]))
+            <div class="box-shiv" style="position: relative; margin-left:13px;">
+                <i class="fa-solid fa-circle"
+                    style="margin-right: 8px; color:#cb0c9f; font-size: 0.5rem;"></i>
+                    <span>Alloted By  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;:</span>   
+                    &nbsp; &nbsp;@foreach ($alloted_to_ids as $alloted_to)
+                            <?php $usersname = \App\Models\User::where('id', $alloted_to)->value('name');  
+                            $name = mb_strimwidth($usersname,0,10,);?>                                                                 
+                            <span style="color:#1a1d29; font-size:0.9rem; font-weight:300 !important;">{{ $name ?? 'N/A' }},  </span>                                            
+                        @endforeach
+                        
+            </div>
+            @else 
             <div class="box-one" style="position: relative;">
                 <i class="fa-solid fa-circle"
-                    style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Alloted By
-                        &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp; :</span>
-                        <?php $alloted_to_ids = explode(',', $task->alloted_to); ?>
-                        @foreach ($alloted_to_ids as $alloted_to)
-                            <?php $usersname = \App\Models\User::where('id', $alloted_to)->value('name');  ?>
-                            {{ $usersname ?? 'Na' }}
-                         
-                        @endforeach
-            </div>
+                    style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i>
+                    <span>Alloted By  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;:</span>                     
+                    <p>{{ $usersname ?? 'N/A' }} </p>
+            </div>                                    
+            @endif
 
             <div class="box-one"
                 style="width:90%; display:flex; align-items:center; justify-contect:center;">

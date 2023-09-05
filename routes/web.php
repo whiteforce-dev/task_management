@@ -37,11 +37,10 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::get('/user-profile', [InfoUserController::class, 'create']);
 		Route::post('/user-profile', [InfoUserController::class, 'store']);
 		Route::get('task-list', [TaskManagmentController::class, 'taskList']);
-		Route::get('create-task1', [TaskManagmentController::class, 'created_Task1']);
 		Route::get('create-task', [TaskManagmentController::class, 'created_Task']);
 		Route::post('create-task', [TaskManagmentController::class, 'createdTask']);
 		Route::post('search-task', [TaskManagmentController::class, 'searchTask']);
-		Route::get('task-edit-page/{id}', [TaskManagmentController::class, 'taskEditPage']);
+		Route::get('task-edit-page', [TaskManagmentController::class, 'taskEditPage']);
 		Route::post('update-task/{id}', [TaskManagmentController::class, 'UpdateTask']);
 		Route::get('manager-remark', [TaskManagmentController::class, 'managerRemark']);
 		Route::post('managerchat/{id}', [TaskManagmentController::class, 'managerchat']);

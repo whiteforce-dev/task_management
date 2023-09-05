@@ -198,6 +198,13 @@
                 $('#myModal10').modal('show');
             });
         }
+   
+        function EditTask(url, id) {
+            $.get(url, id, function(rs) {
+                $('#myModalEdit').html(rs);
+                $('#myModalEdit').modal('show');
+            });
+        }
 
         $(document).ready(function () {
             $('.status-dropdown').on('change', function () {
@@ -245,6 +252,8 @@
     <div class="modal" id="myModal">
     </div>
     <div class="modal" id="myModal4">
+    </div>
+    <div class="modal" id="myModalEdit">
     </div>
     <script src="{{ url('assets/js/core/popper.min.js') }}"></script>
     <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script>   
