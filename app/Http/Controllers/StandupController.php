@@ -8,6 +8,7 @@ use App\Models\DailyStandup;
 use App\Models\CheckoutDetails;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use App\Models\Remark;
 
 class StandupController extends Controller
 {
@@ -48,6 +49,7 @@ class StandupController extends Controller
                 $getspenthrs = 'spent_hrs_'.$task_id;
                 $getspentmins = 'spent_mins_'.$task_id;
                 $getcomment = 'comment_'.$task_id;
+                
                 $checkout_details = new CheckoutDetails();
                 $checkout_details->user_id = Auth::user()->id;
                 $checkout_details->date = date('Y-m-d');
@@ -56,7 +58,15 @@ class StandupController extends Controller
                 $checkout_details->hours = $request->$getspenthrs;
                 $checkout_details->minutes = $request->$getspentmins;
                 $checkout_details->save();
+
+                $remark = new Remark();
+                $remark->task_Id = $task_id;
+                $remark->userid = Auth::user()->id;
+                $remark->remark = $request->$getcomment;
+                $remark->software_catagory = Auth::user()->software_catagory;
+                $remark->save();
                 array_push($checkoutDetailsIds,$checkout_details->id);
+
             }
         }
         $standup->checkout = implode(',',$checkoutDetailsIds);
