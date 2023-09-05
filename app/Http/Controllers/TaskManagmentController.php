@@ -50,7 +50,7 @@ class TaskManagmentController extends Controller
         $managerId = [];
         $EmployeeId = [];
         $priority = "";
-
+        $taskcodes = [];
         $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory);
 
         if (Auth::user()->type == "employee") {
@@ -65,8 +65,7 @@ class TaskManagmentController extends Controller
         $users = User::where('software_catagory', Auth::user()->software_catagory)->where('type','!=', 'admin')->get();
         $statuss = Status::get();
         $prioritys = Priority::get();
-        return view('task.taskList', compact('tasklist', 'managerId', 'EmployeeId', 'status_search', 'from', 'to', 'priority', 'statuss', 'users', 'prioritys'));
-        
+        return view('task.taskList', compact('tasklist', 'managerId', 'EmployeeId', 'status_search', 'from', 'to', 'priority', 'statuss', 'users', 'prioritys', 'taskcodes'));        
     }
 
     public function searchTask(Request $request){
@@ -116,6 +115,9 @@ class TaskManagmentController extends Controller
             $end_dedaline_date = $end_deadline_date_parts[2].'-'.$end_deadline_date_parts[1].'-'.$end_deadline_date_parts[0];
             
             $tasklist = $tasklist->whereBetween('deadline_date',[$start_dedaline_date,$end_dedaline_date]);
+        }
+        if(!empty($request->task_code)){
+            $tasklist = $tasklist->where('task_code',$request->task_code);
         }
         $tasklist = $tasklist->orderBy('id', 'Desc')->paginate(25);
         return view('task.searchTaskResult',compact('tasklist'));
@@ -333,11 +335,15 @@ class TaskManagmentController extends Controller
         if (Auth::user()->type == 'admin') {
             $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->orderBy('id', 'DESC')->get();
         } elseif (Auth::user()->type == 'manager') {
+            $teamId = User::where('software_catagory', Auth::user()->software_catagory)->where('id', Auth::user()->id)->orwhere('parent_id',Auth::user()->id)->pluck('id')->ToArray();
+            $tasklist = Taskmaster::whereIn('alloted_to', $teamId)->get();
+        }elseif(Auth::user()->can_allot_to_others == '1'){
             $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)
-                ->where('alloted_by', Auth::user()->id)
-                ->orwhere('alloted_to', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)->orderBy('id', 'DESC')
-                ->get();
-        } else {
+            ->orderBy('id', 'DESC')
+            ->where('alloted_by', Auth::user()->id)
+            ->get(); 
+        }
+         else {
             $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)
                 ->orderBy('id', 'DESC')
                 ->where('alloted_to', Auth::user()->id)
@@ -350,12 +356,16 @@ class TaskManagmentController extends Controller
         if (Auth::user()->type == 'admin') {
             $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('status', '3')->orderBy('id', 'DESC')->get();
         } elseif (Auth::user()->type == 'manager') {
+            $teamId = User::where('software_catagory', Auth::user()->software_catagory)->where('id', Auth::user()->id)->orwhere('parent_id',Auth::user()->id)->pluck('id')->ToArray();
+            $tasklist = Taskmaster::whereIn('alloted_to', $teamId)->where('status', '3')->get();
+        }elseif(Auth::user()->can_allot_to_others == '1')
+        {
             $tasklist = Taskmaster::where('status', '3')
-                ->where('alloted_by', Auth::user()->id)
-                ->orwhere('alloted_to', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)
-                ->orderBy('id', 'DESC')
-                ->get();
-        } else {
+            ->where('alloted_by', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)
+            ->orderBy('id', 'DESC')
+            ->get();   
+        }
+         else {
             $tasklist = Taskmaster::where('status', '3')
                 ->where('alloted_to', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)
                 ->orderBy('id', 'DESC')
@@ -368,12 +378,15 @@ class TaskManagmentController extends Controller
         if (Auth::user()->type == 'admin') {
             $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->orderBy('id', 'desc')->where('status', '1')->get();
         } elseif (Auth::user()->type == 'manager') {
+            $teamId = User::where('software_catagory', Auth::user()->software_catagory)->where('id', Auth::user()->id)->orwhere('parent_id',Auth::user()->id)->pluck('id')->ToArray();
+            $tasklist = Taskmaster::whereIn('alloted_to', $teamId)->where('status', '1')->get();    
+        }elseif(Auth::user()->can_allot_to_others == '1'){
             $tasklist = Taskmaster::where('status', '1')
-                ->where('alloted_by', Auth::user()->id)
-                ->orwhere('alloted_to', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)
-                ->orderBy('id', 'DESC')
-                ->get();
-        } else {
+            ->orderBy('id', 'DESC')
+            ->where('alloted_by', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)
+            ->get(); 
+        }
+         else {
             $tasklist = Taskmaster::where('status', '1')
                 ->orderBy('id', 'DESC')
                 ->where('alloted_to', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)
@@ -386,9 +399,12 @@ class TaskManagmentController extends Controller
         if (Auth::user()->type == 'admin') {
             $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->orderBy('id', 'desc')->where('status', '2')->get();
         } elseif (Auth::user()->type == 'manager') {
+            $teamId = User::where('software_catagory', Auth::user()->software_catagory)->where('id', Auth::user()->id)->orwhere('parent_id',Auth::user()->id)->pluck('id')->ToArray();
+            $tasklist = Taskmaster::whereIn('alloted_to', $teamId)->where('status', '2')->get();
+        }elseif(Auth::user()->can_allot_to_others == '1')
+        { 
             $tasklist = Taskmaster::where('status', '2')
-                ->where('alloted_by', Auth::user()->id)
-                ->orwhere('alloted_to', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)
+                ->where('alloted_by', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)
                 ->get();
         } else {
             $tasklist = Taskmaster::where('status', '2')
@@ -410,11 +426,7 @@ class TaskManagmentController extends Controller
         return view('task.statusHistory', compact('statushistorys'));
     }
 
-    public function employeedetails(Request $request)
-    {
-        $employeedetails = Teamremark::where('software_catagory', Auth::user()->software_catagory)->where('task_id', $request->id)->orderBy('id', 'DESC')->get();
-        return view('task.employeedetails', compact('employeedetails'));
-    }
+ 
 
     public function commentBYmanager(Request $request)
     { 
@@ -570,5 +582,8 @@ class TaskManagmentController extends Controller
             return view('task.reportSearch', compact('tasklist',  'EmployeeId', 'priority_search', 'deadline_date', 'complete_date', 'created_date', 'statuss', 'users', 'prioritys', 'search_status'));
         }
         return view('task.report', compact('tasklist',  'EmployeeId', 'priority_search', 'deadline_date', 'complete_date', 'created_date', 'statuss', 'users', 'prioritys', 'search_status'));
+    }
+    public function created_Task1(){
+        return view('task.created_task');
     }
 }

@@ -26,7 +26,7 @@
             $per_PP = ($proccesstask / $totaltask) * 100;
             $per_PP = number_format($per_PP, 2);
         }
-        } elseif(Auth::user()->type == 'manager') {
+        } elseif(Auth::user()->type == 'manager') {         
             $teamId = \App\Models\User::where('software_catagory', Auth::user()->software_catagory)->where('id', Auth::user()->id)->orwhere('parent_id',Auth::user()->id)->pluck('id')->ToArray();
             $totaltask = \App\Models\Taskmaster::whereIn('alloted_to', $teamId)->count();
             $complettask = \App\Models\Taskmaster::whereIn('alloted_to', $teamId)->where('status', '3')->count();
@@ -35,9 +35,9 @@
             $totaltask_m = \App\Models\Taskmaster::whereIn('alloted_to', $teamId)->whereMonth('created_at', '=', date('m'))->count();
             $complettask_m = \App\Models\Taskmaster::whereIn('alloted_to', $teamId)->whereMonth('created_at', '=', date('m'))->where('status', '3')
                 ->count();
-            $pendingtask_m = \App\Models\Taskmaster::whereIn('alloted_to', $teamId)->whereMonth('created_at', '=', date('m'))->where('status', '2')
+            $pendingtask_m = \App\Models\Taskmaster::whereIn('alloted_to', $teamId)->whereMonth('created_at', '=', date('m'))->where('status', '1')
                 ->count();
-            $proccesstask_m = \App\Models\Taskmaster::whereIn('alloted_to', $teamId)->whereMonth('created_at', '=', date('m'))->where('status', '1')
+            $proccesstask_m = \App\Models\Taskmaster::whereIn('alloted_to', $teamId)->whereMonth('created_at', '=', date('m'))->where('status', '2')
                 ->count();
             if($totaltask > 0){
             $per_T = ($complettask / $totaltask) * 100;
@@ -47,52 +47,47 @@
             $per_PP = ($proccesstask / $totaltask) * 100;
             $per_PP = number_format($per_PP, 2);
                 }
-        }else{  
-
-            $totaltask = \App\Models\Taskmaster::where('software_catagory', Auth::user()->software_catagory)
-                ->where('alloted_to', Auth::user()->id)
+        }elseif(Auth::user()->can_allot_to_others == '1'){ 
+            $teamId = \App\Models\User::where('software_catagory', Auth::user()->software_catagory)->where('id', Auth::user()->id)->orwhere('parent_id',Auth::user()->id)->pluck('id')->ToArray();
+            $totaltask = \App\Models\Taskmaster::whereIn('alloted_by', $teamId)->count();
+            $complettask = \App\Models\Taskmaster::whereIn('alloted_by', $teamId)->where('status', '3')->count();
+            $pendingtask = \App\Models\Taskmaster::whereIn('alloted_by', $teamId)->where('status', '1')->count();
+            $proccesstask = \App\Models\Taskmaster::whereIn('alloted_by', $teamId)->where('status', '2')->count();
+            $totaltask_m = \App\Models\Taskmaster::whereIn('alloted_by', $teamId)->whereMonth('created_at', '=', date('m'))->count();
+            $complettask_m = \App\Models\Taskmaster::whereIn('alloted_by', $teamId)->whereMonth('created_at', '=', date('m'))->where('status', '3')
                 ->count();
-
-            $complettask = \App\Models\Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('status', '3')
-                ->where('alloted_to', Auth::user()->id)
+            $pendingtask_m = \App\Models\Taskmaster::whereIn('alloted_by', $teamId)->whereMonth('created_at', '=', date('m'))->where('status', '1')
                 ->count();
-               
-            $pendingtask = \App\Models\Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('status', '1')
-                ->where('alloted_to', Auth::user()->id)
-                ->where('status', '1')
+            $proccesstask_m = \App\Models\Taskmaster::whereIn('alloted_by', $teamId)->whereMonth('created_at', '=', date('m'))->where('status', '2')
                 ->count();
-            $proccesstask = \App\Models\Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('status', '2')
-                ->where('alloted_to', Auth::user()->id)
-                ->count();
-            $totaltask_m = \App\Models\Taskmaster::where('software_catagory', Auth::user()->software_catagory)
-                ->where('alloted_to', Auth::user()->id)
-                ->whereMonth('created_at', '=', date('m'))
-                ->count();
-            $complettask_m = \App\Models\Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('status', '3')
-                ->where('alloted_to', Auth::user()->id)
-                ->whereMonth('created_at', '=', date('m'))
-                ->count();
-            $pendingtask_m = \App\Models\Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('status', '1')
-                ->where('alloted_to', Auth::user()->id)
-                ->whereMonth('created_at', '=', date('m'))
-                ->count();
-            $proccesstask_m = \App\Models\Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('status', '2')
-                ->where('alloted_to', Auth::user()->id)
-                ->whereMonth('created_at', '=', date('m'))
-                ->count();
-        }
-        if($totaltask > 0){
-        if ($complettask > 0) {
+            if($totaltask > 0){
             $per_T = ($complettask / $totaltask) * 100;
             $per_T = number_format($per_T, 2);
-        } elseif ($pendingtask > 0) {
             $per_p = ($pendingtask / $totaltask) * 100;
             $per_p = number_format($per_p, 2);
-        } elseif ($proccesstask > 0) {
             $per_PP = ($proccesstask / $totaltask) * 100;
             $per_PP = number_format($per_PP, 2);
+                }
         }
-    }
+        else{  
+            $totaltask = \App\Models\Taskmaster::where('alloted_to', Auth::user()->id)->count();
+            $pendingtask = \App\Models\Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '1')->count();
+            $proccesstask = \App\Models\Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '2')->count();
+            $complettask = \App\Models\Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '3')->count();
+            $totaltask_m = \App\Models\Taskmaster::where('alloted_to', Auth::user()->id)->whereMonth('created_at', '=', date('m'))->count();
+            $pendingtask_m = \App\Models\Taskmaster::where('alloted_to', Auth::user()->id)->whereMonth('created_at', '=', date('m'))->where('status', '1')->count();
+            $proccesstask_m = \App\Models\Taskmaster::where('alloted_to', Auth::user()->id)->whereMonth('created_at', '=', date('m'))->where('status', '2')->count();
+            $complettask_m = \App\Models\Taskmaster::where('alloted_to', Auth::user()->id)->whereMonth('created_at', '=', date('m'))->where('status', '3')->count();
+
+            if($totaltask > 0){
+            $per_T = ($complettask / $totaltask) * 100;
+            $per_T = number_format($per_T, 2);
+            $per_p = ($pendingtask / $totaltask) * 100;
+            $per_p = number_format($per_p, 2);
+            $per_PP = ($proccesstask / $totaltask) * 100;
+            $per_PP = number_format($per_PP, 2);
+            }
+        }
     @endphp
     <div class="row">
         <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
@@ -224,15 +219,12 @@
         <div class="col-lg-3">
             <div class="card h-100 p-3">
                 <div class="overflow-hidden position-relative border-radius-lg bg-cover h-100">
-                    {{-- style="background-image: url('../assets/img/ivancik.jpg');"> --}}
                     <span class="mask bg-gradient-dark"><img src="{{ url(Auth::user()->image) }}"
                             height="250" width="250" class="sm me-3"></span>
                     <div class="card-body position-relative z-index-1 d-flex flex-column h-100 p-3">
                         <h5 class="text-white font-weight-bolder mb-4 pt-2"></h5>
                         <p class="text-white"></p>
                         <a class="text-white text-sm font-weight-bold mb-0 icon-move-right mt-auto" href="javascript:;">
-
-                            {{-- <i class="fas fa-arrow-right text-sm ms-1" aria-hidden="true"></i> --}}
                         </a>
                     </div>
                 </div>

@@ -1,9 +1,5 @@
-<style>
-    .modal-content {
-    overflow: auto;
-    max-height: 650px; 
-    }
-</style>
+
+<script src="https://cdn.tiny.cloud/1/thgk8f0to7oi2t6derx6bol4wejbnd7ngq0zaenp7yzt5p1s/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 <div class="modal-dialog modal-lg">
     <div class="modal-content"  style="overflow-X:hidden; overflow-Y:visible;">
 
@@ -30,7 +26,6 @@
                     <div class="col-md-6">
                         <label>Alloted To</label>
                         <select class="form-control selectpicker" multiple data-live-search="true" name="alloted_to[]" id="alloted_to">
-                            <option value="">--select--</option>
                             @foreach ($users as $user)
                                 <option value="{{ $user->id }}">{{ $user->name }}</option>
                             @endforeach
@@ -79,17 +74,29 @@
                 </div>
             </form>
         </div>
-        
     </div>
 </div>
 
+<script>
+    tinymce.init({
+      selector: 'textarea',
+      plugins: 'ai tinycomments mentions anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss',
+      toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+      tinycomments_mode: 'embedded',
+      tinycomments_author: 'Author name',
+      mergetags_list: [
+        { value: 'First.Name', title: 'First Name' },
+        { value: 'Email', title: 'Email' },
+      ],
+      ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
+    });
+</script>
+
 <link rel="stylesheet" href="{{ url('assets/css/multiselect.css') }}">
 <link rel="stylesheet" href="{{ url('assets/css/multiselectdrop.css') }}">
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.slim.min.js"></script>
 <script src="{{ url('assets/jquery-validation/jquery.validate.min.js') }}"></script>
-
 <script>
     $(document).ready(function() {
         $('.selectpicker').selectpicker();
@@ -125,3 +132,4 @@
         });
     });
 </script>
+

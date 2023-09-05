@@ -98,6 +98,7 @@
     /* overflow-y:auto; */
     /* height: 800px; Set a value that makes sense for your design */
     }
+
 </style>
 
 <div class="modal-dialog modal-xl" style="max-height:calc(100vh - 56px);">
@@ -158,7 +159,7 @@
                 <div class="col-sm-10" style="width: 90%">
                     <textarea name="manager_comments" cols="" rows="" class="form-control" placeholder="Please enter comments..."></textarea>
                     <input type="hidden" value="{{ $task_id }}" name="task_id" id="task_id">
-                </div>
+                </div>             
                 <div class="col-sm-2" style="width: 7%">
                     <button type="submit" class="btn btn-primary" style="margin-top: 12px;">Send</button>
                 </div>
@@ -201,13 +202,10 @@
                     console.log(response);
                 }
             });
-          
             $("#myForm textarea")[0].value = "";
-           
         });
     });
 </script>
-
 
 
 

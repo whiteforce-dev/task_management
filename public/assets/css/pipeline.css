@@ -45,10 +45,7 @@
 }
 
 
-
-
 .dropbtn {
-  /* background-color: #4CAF50; */
   background: transparent;
   border: none;
   cursor: pointer;
@@ -60,7 +57,6 @@
 }
 
 .dropdown {
-  /* position: relative; */
   display: inline-block;
 }
 
@@ -68,7 +64,7 @@
   display: none;
   position: absolute;
   background-color: white;
-width: 180px;
+  width: 180px;
   font-size: 0.85rem;
   border: 1px solid #c8d4e7;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
@@ -200,10 +196,10 @@ width: 180px;
     background-color: #ecf2ff;
   }
   .second-cc{
-background-color: #fef5e5;
+    background-color: #fef5e5;
   }
   .third-dd{
-background-color: #fdede8;
+    background-color: #fdede8;
   }
   .four-ee{
    background-color:  #e6fffa;
