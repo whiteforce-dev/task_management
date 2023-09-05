@@ -94,14 +94,18 @@
     .right-msg .msg-img {
         margin: 0 0 0 10px;
     }
-    .modal-content {
-    overflow: auto;
-    max-height: 800px; /* Set a value that makes sense for your design */
+
+    .modal-content{
+    overflow: auto; /* or overflow: scroll; */
+    height: 100%; /* Set an appropriate height */
+    overflow-X:hidden;
+    
     }
+
 </style>
 
-<div class="modal-dialog modal-xl" style="overflow-X:hidden; overflow-Y:visible;">
-    <div class="modal-content" style="overflow-X:hidden; overflow-Y:visible;">
+<div class="modal-dialog modal-xl" >
+    <div class="modal-content">
         <!-- Modal Header -->
         <div class="modal-header">
             <h6 class="modal-title">Remark </h6>
@@ -109,7 +113,7 @@
         </div>
 
         <!-- Modal body -->
-        <div class="modal-body" id="response" style="overflow-X:hidden; overflow-Y:visible;">
+        <div class="modal-body" id="response">
             @foreach ($remarks as $i => $remark)
                 @php
                     $managerData = \App\Models\User::where('id', $remark->userid)->first();
@@ -144,7 +148,7 @@
                                 <div class="msg-info-name">{{ ucfirst($remark->GetUser->name) }}</div>
                                 <div class="msg-info-time">{{ $remark->created_at->format('d-m-y h:i A') }}</div>
                             </div>
-                            <div class="msg-text"> {{ $remark->remark }} </div>                     
+                            <div class="msg-text"> {{ $remark->remark }}   </div>                     
                         </div>
                         @endif
                     </div>                                        
@@ -153,15 +157,13 @@
         </div>
 
 
-
         <form id="myForm">
             @csrf
-        {{-- <form id="data-form"> @csrf --}}
             <div class="row px-2">
                 <div class="col-sm-10" style="width: 90%">
                     <textarea name="manager_comments" cols="" rows="" class="form-control" placeholder="Please enter comments..."></textarea>
                     <input type="hidden" value="{{ $task_id }}" name="task_id" id="task_id">
-                </div>
+                </div>             
                 <div class="col-sm-2" style="width: 7%">
                     <button type="submit" class="btn btn-primary" style="margin-top: 12px;">Send</button>
                 </div>
@@ -204,13 +206,10 @@
                     console.log(response);
                 }
             });
-          
             $("#myForm textarea")[0].value = "";
-           
         });
     });
 </script>
-
 
 
 

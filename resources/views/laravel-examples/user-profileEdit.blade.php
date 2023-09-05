@@ -113,7 +113,7 @@
                             </div>
                             <div class="col-md-6">
                             <div class="form-group">
-                                <label for="user.type" class="form-control-label">{{ __('Password') }}</label>
+                                <label for="user.password" class="form-control-label">{{ __('Password') }}</label>
                                 <div class="@error('user.password')border border-danger rounded-3 @enderror">
                                     <input class="form-control" type="password" placeholder="Enter Password"
                                         id="pass" name="password" value="">
@@ -187,11 +187,8 @@
                             </div>
                         </div>
                             <input type="hidden" name="old_image" value="{{ $edituser->image }}">
-
                         </div>
-                        <div class="row"> 
-                            
-
+                        <div class="row">                   
                             <div class="col-md-12">
                                 <div class="d-flex justify-content-center mt-2">
                                     <button type="submit"

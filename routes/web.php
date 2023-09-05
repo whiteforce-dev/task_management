@@ -63,7 +63,7 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::get('dashboardproccess/{id}', [TaskManagmentController::class, 'dashboardproccess']);
 		Route::get('dashbordtotaltask/{id}', [TaskManagmentController::class, 'dashbordtotaltask']);
 		Route::get('statushistory', [TaskManagmentController::class, 'statushistory']);
-		// Route::get('/register', [RegisterController::class, 'create']);
+
 		Route::get('static-sign-up', [ChangePasswordController::class, 'changePassword'])->name('password.update');
 		Route::get('/edituser/{id}', [InfoUserController::class, 'editUser']);
 		Route::post('/edituser-profile/{id}', [InfoUserController::class, 'edituserProfile']);
@@ -83,18 +83,16 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::get('changepriority/{tak_id}', [TaskManagmentController::class, 'changepriority']);
 		Route::get('report', [TaskManagmentController::class, 'report']);
 		Route::get('search-report', [TaskManagmentController::class, 'searchReport']);
-		Route::get('pipeline', [PipelineController::class, 'pipeline']);
+		Route::get('task-board', [PipelineController::class, 'pipeline']);
 		Route::get('pipelinestatus/{task_id}/{status_id}', [PipelineController::class, 'pipelinestatus']);
 		Route::get('index', [PipelineController::class, 'index1']);
 		Route::get('sendtask-email/{task_id}', [PipelineController::class, 'sendTaskEmail']);
-		Route::patch('update-card-status/{card}', [PipelineController::class, 'updateStatus']);
+		Route::post('update-card-status/', [PipelineController::class, 'updateStatus']);
 		Route::get('pipeline-view', [PipelineController::class, 'pipelineView']);
+
 	});
 		Route::post('loginauth', [SessionsController::class, 'loginauth']);				
-		// Route::get('login', function () {
-		// return view('session/login-session');
-		// })->name('login');
-	
+
 	Route::group(['middleware' => 'guest'], function () 
 	{
 		Route::get('/', function(){
@@ -106,8 +104,6 @@ Route::group(['middleware' => 'auth'], function ()
 	Route::post('/session', [SessionsController::class, 'store']);
 	Route::get('/login/forgot-password', [ResetController::class, 'create']);
 	Route::post('/forgot-password', [ResetController::class, 'sendEmail']);
-	// Route::get('/reset-password/{token}', [ResetController::class, 'resetPass'])->name('password.reset');
-	// Route::post('/reset-password', [ChangePasswordController::class, 'changePassword'])->name('password.update');
 	});
 
 	Route::Post('comment-bymanager', [TaskManagmentController::class, 'commentBYmanager']);

@@ -56,9 +56,9 @@
                             @else
                             <td>Progress</td>
                             @endif
-                          @elseif($task->status == '3')
-                          <td><span style="color:rgb(153, 143, 0) !important; font-weight:500;">Hold</span></td>
                           @elseif($task->status == '4')
+                          <td><span style="color:rgb(153, 143, 0) !important; font-weight:500;">Hold</span></td>
+                          @elseif($task->status == '3')
                           <td><span style="color:#090 !important; font-weight:500;">Completed</span></td>
                           @endif
             
