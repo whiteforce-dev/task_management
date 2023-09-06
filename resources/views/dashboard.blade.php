@@ -1,7 +1,7 @@
 @extends('layouts.user_type.auth')
 @section('content')
     @php
-        if (Auth::user()->type == 'admin') { 
+        if (Auth::user()->type == 'admin') {
             $users = \App\Models\User::where('software_catagory', Auth::user()->software_catagory)->get();
             $totaltask = \App\Models\Taskmaster::where('software_catagory', Auth::user()->software_catagory)->count();
             $complettask = \App\Models\Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('status', '3')->count();
@@ -18,15 +18,15 @@
             $proccesstask_m = \App\Models\Taskmaster::where('software_catagory', Auth::user()->software_catagory)->whereMonth('created_at', '=', date('m'))
                 ->where('status', '2')
                 ->count();
-            if($totaltask > 0){
-                $per_T = ($complettask / $totaltask) * 100;
-                $per_T = number_format($per_T, 2);
-                $per_p = ($pendingtask / $totaltask) * 100;
-                $per_p = number_format($per_p, 2);
-                $per_PP = ($proccesstask / $totaltask) * 100;
-                $per_PP = number_format($per_PP, 2);
-            }
-        }   elseif(Auth::user()->type == 'manager') {         
+        if($totaltask > 0){
+            $per_T = ($complettask / $totaltask) * 100;
+            $per_T = number_format($per_T, 2);
+            $per_p = ($pendingtask / $totaltask) * 100;
+            $per_p = number_format($per_p, 2);
+            $per_PP = ($proccesstask / $totaltask) * 100;
+            $per_PP = number_format($per_PP, 2);
+        }
+        } elseif(Auth::user()->type == 'manager') {         
             $teamId = \App\Models\User::where('software_catagory', Auth::user()->software_catagory)->where('id', Auth::user()->id)->orwhere('parent_id',Auth::user()->id)->pluck('id')->ToArray();
             $totaltask = \App\Models\Taskmaster::whereIn('alloted_to', $teamId)->count();
             $complettask = \App\Models\Taskmaster::whereIn('alloted_to', $teamId)->where('status', '3')->count();
@@ -47,7 +47,7 @@
             $per_PP = ($proccesstask / $totaltask) * 100;
             $per_PP = number_format($per_PP, 2);
                 }
-        }   elseif(Auth::user()->can_allot_to_others == '1'){ 
+        }elseif(Auth::user()->can_allot_to_others == '1'){ 
             $teamId = \App\Models\User::where('software_catagory', Auth::user()->software_catagory)->where('id', Auth::user()->id)->orwhere('parent_id',Auth::user()->id)->pluck('id')->ToArray();
             $totaltask = \App\Models\Taskmaster::whereIn('alloted_by', $teamId)->count();
             $complettask = \App\Models\Taskmaster::whereIn('alloted_by', $teamId)->where('status', '3')->count();
@@ -67,9 +67,9 @@
             $per_p = number_format($per_p, 2);
             $per_PP = ($proccesstask / $totaltask) * 100;
             $per_PP = number_format($per_PP, 2);
-            }
+                }
         }
-        else{ 
+        else{  
             $totaltask = \App\Models\Taskmaster::where('alloted_to', Auth::user()->id)->count();
             $pendingtask = \App\Models\Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '1')->count();
             $proccesstask = \App\Models\Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '2')->count();
@@ -270,7 +270,7 @@
                                     </div>
                                     <p class="text-xs mt-1 mb-0 font-weight-bold">Total</p>
                                 </div>
-                                <h4 class="font-weight-bolder">{{ $totaltask_m ?? 'N/A' }}</h4>
+                                <h4 class="font-weight-bolder">{{ $totaltask_m ?? 'Na' }}</h4>
                                 <div class="progress w-75">
                                     <div class="progress-bar bg-dark w-60" role="progressbar" aria-valuenow="60"
                                         aria-valuemin="0" aria-valuemax="100"></div>
@@ -346,7 +346,7 @@
                                         aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                             </div>
-                            <div class="col-3 py-3 ps-0"></div>
+                            <div class="col-3 py-3 ps-0">
                                 <div class="d-flex mb-2">
                                     <div
                                         class="icon icon-shape icon-xxs shadow border-radius-sm bg-gradient-danger text-center me-2 d-flex align-items-center justify-content-center">
@@ -386,7 +386,25 @@
                 </div>
             </div>
         </div>
+        {{-- <div class="col-lg-6">
+            <div class="card z-index-2">
+                <div class="card-header pb-0">
+                    <h6>Performance overview</h6>
+                    <p class="text-sm">
+                        <i class="fa fa-arrow-up text-success"></i>
+                        <span class="font-weight-bold">4% more</span> in 2022
+                    </p>
+                </div>
+                <div class="card-body p-3">
+                    <div class="chart">
+                        <canvas id="chart-line" class="chart-canvas" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div> --}}
     </div>
+
+    
 @endsection
 @push('dashboard')
     <script>

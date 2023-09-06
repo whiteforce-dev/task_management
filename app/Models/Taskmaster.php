@@ -29,4 +29,7 @@ class Taskmaster extends Model
     public function Getparent(){
         return $this->hasOne('App\Models\Remark', 'task_id')->orderBy('id', 'desc')->whereNotIn('userid', [Auth::user()->id]);
     }
+
+
+
 }

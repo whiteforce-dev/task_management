@@ -150,7 +150,7 @@
     <script src="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.min.js"></script>
  {{-- searching ajax --}}
 
-        <script>
+    <script>
         function searchTask(){
             $.ajax({
                 type : 'POST',
@@ -205,6 +205,13 @@
                 $('#myModalEdit').modal('show');
             });
         }
+        
+        function descriptionMore(url, id) {
+            $.get(url, id, function(rs) {
+                $('#myModalDmore').html(rs);
+                $('#myModalDmore').modal('show');
+            });
+        }
 
         $(document).ready(function () {
             $('.status-dropdown').on('change', function () {
@@ -254,6 +261,8 @@
     <div class="modal" id="myModal4">
     </div>
     <div class="modal" id="myModalEdit">
+    </div>
+    <div class="modal" id="myModalDmore">
     </div>
     <script src="{{ url('assets/js/core/popper.min.js') }}"></script>
     <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script>   

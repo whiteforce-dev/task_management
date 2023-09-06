@@ -30,11 +30,11 @@ class InfoUserController extends Controller
     public function store(Request $request)
     { 
         $attributes = request()->validate([
-            'name' => ['required', 'max:100'],
-            'email' => ['required', 'email', 'max:100', Rule::unique('users')],
+            'name' => ['required', 'max:50'],
+            'email' => ['required', 'email', 'max:50', Rule::unique('users')],
             'phone'  => ['max:10'],
             'type' => ['max:50'],
-            'password' => ['required', 'max:100'],
+            'password' => ['required', 'max:50'],
         ]);
 
         $savedata = new User();
