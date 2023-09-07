@@ -1,5 +1,5 @@
 
-<div style="margin-top: 20px;">.</div><footer class="footer pt-3  ">
+<footer class="footer pt-3" style="margin-bottom: 22px; margin-top:50px;">
     <div class="container-fluid">
         <div class="row align-items-center justify-content-lg-between">
             <div class="col-lg-12 mb-lg-0 mb-4">
@@ -16,3 +16,4 @@
         </div>
     </div>
 </footer>
+

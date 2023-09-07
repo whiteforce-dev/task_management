@@ -1,6 +1,11 @@
 
-<div class="container">
-<div class="row">
+<style>
+ #checkoutbox   > .col-md-2 {
+    margin-bottom: 15px;
+}
+</style>
+<div class="row" style="width: 90%;
+    margin: 10px auto;">
     <div class="col-md-2">
         <label for="">Task Code</label>
     </div>
@@ -15,7 +20,8 @@
     </div>
 </div>
 
-    <div class="row">
+<div class="row" style="width: 90%;
+    margin: 10px auto;" id="checkoutbox">
         @foreach($selected_tasks as $task)
         <div class="col-md-2">
             <input type="hidden" name="selected_ids" id="selected_ids" value="{{ implode(',',$selected_ids) }}">
@@ -36,9 +42,9 @@
             </select>
         </div>
         <div class="col-md-6">
-            <textarea name="comment_{{ $task->id }}" id="comment_{{ $task->id }}" cols="37" rows="2" class="form-control"></textarea>
+            <textarea name="comment_{{ $task->id }}" id="comment_{{ $task->id }}" cols="37" rows="1" class="form-control"></textarea>
         </div>
         @endforeach
     </div>
-</div>
+
 

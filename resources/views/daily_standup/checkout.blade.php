@@ -272,7 +272,7 @@ margin-bottom: 10px;
 <body style=" font-family: Poppins, sans-serif; background-color: #f8f9fa;">
 
 
-<section class="taskpriority" style="background-color: white;">
+<section class="taskpriority" style="background-color: white; " >
     <form action="{{ url('daily-standup-checkout') }}" method="POST" role="form text-left" enctype="multipart/form-data" id="createdaccount">
       @csrf
         <div class="firsttask">

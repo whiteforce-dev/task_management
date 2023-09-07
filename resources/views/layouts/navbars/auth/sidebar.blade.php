@@ -1,3 +1,12 @@
+<style>
+    .navbar-expand-xs{
+        background: white;
+    box-shadow: 7px 7px 10px -4px #d1d1e3 !important;
+    }
+</style>
+
+
+
 <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 "
     id="sidenav-main">
     <div class="sidenav-header">
@@ -217,7 +226,7 @@
             @endif
         </ul>
     </div>
-    <!-- <div class="sidenav-footer mx-2 mt-5">
+    <div class="sidenav-footer mx-2 mt-5">
         <div class="card card-background shadow-none card-background-mask-secondary" id="sidenavCard">
             <div class="full-background"
                 style="background-image: url('assets/img/curved-images/white-curved.jpeg')"></div>
@@ -231,5 +240,5 @@
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
 </aside>
