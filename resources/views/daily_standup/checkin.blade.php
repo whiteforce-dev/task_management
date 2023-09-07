@@ -1,5 +1,7 @@
 @extends('layouts.user_type.auth')
 @section('content')
+<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,900&family=Rubik:wght@300;400;600;700&display=swap"
+        rel="stylesheet"/>
 <style>
     .wrapper {
         width: 100%;
@@ -45,52 +47,301 @@
         background: linear-gradient(to right, #f953c6, #b91d73);
         color: #fff;
     }
-</style>
-    <div>
+
+    .round {
+            position: relative;
+            width: 10%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .round label {
+            background-color: #fff;
+            /* border: 1px solid #ccc; */
+            border: 1px solid #f5baf3;
+            border-radius: 50%;
+            cursor: pointer;
+            height: 28px;
+            left: 25%;
+            position: absolute;
+            top: 31%;
+            width: 28px;
+        }
+
+        .round label:after {
+            border: 2px solid #fff;
+            border-top: none;
+            border-right: none;
+            content: "";
+            height: 6px;
+            left: 8px;
+            color: black;
+            opacity: 0;
+            position: absolute;
+            top: 10px;
+            transform: rotate(-45deg);
+            width: 12px;
+        }
+
+        .round input[type="checkbox"] {
+            visibility: hidden;
+        }
+
+        .round input[type="checkbox"]:checked+label {
+            /* background-color: #358bd7; */
+            border: none
+            ;
+            background: linear-gradient(310deg, #7928ca, #ff0080);
+            /* border-color: #dc71e6; */
+        }
+
+        .round input[type="checkbox"]:checked+label:after {
+            opacity: 1;
+        }
+
+        .taskpriority {
+            width: 94%;
+            /* padding-bottom: 30px; */
+            margin: 30px auto;
+            border-radius:20px;
+            border: 1px solid rgb(229, 213, 233);
+            box-shadow: 7px 7px 20px -2px rgb(213, 214, 219);
+        }
+  
+
+        .firsttask {
+            width: 100%;
+            margin: 10px auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .upperpriority {
+            width: 100%;
+            margin: 0px auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            /* border-bottom: 2px solid rgb(213, 173, 214); */
+            box-shadow: 0 8px 6px -7px rgb(187, 190, 194);
+        }
+        .upperpriority h3{
+            margin-bottom: 25px;
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .secondtask {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 40px;
+           
+        }
+
+        .itimage {
+            width: 22%;
+            display: flex;
+            align-items: center;
+            justify-content: start;
+            padding-left: 33px;
+        }
+
+        .workable {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            width: 42px !important;
+            height: 42px;
+            margin: 12px 0;
+            overflow: hidden;
+        }
+
+        .workable img {
+            width: 100%;
+        }
+
+        .innertask {
+            width: 93%;
+            margin: 0 auto;
+            display: flex;
+            box-shadow: 0 3px 3px -3px rgb(187, 190, 194);
+            transition: all 600ms ease;
+            cursor: pointer;
+        }
+        .innertask:hover{
+transform: scale(1.04);
+/* border: 1px solid blueviolet; */
+        } 
+
+        .paracard {
+            width: 68%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .taskname {
+            width: 65%;
+            margin: 10px auto;
+            text-align: left;
+            font-size: 0.97rem;
+        }
+
+        .paracard span {
+            width: 13%;
+    margin: 10px auto;
+    text-align: center;
+    background: linear-gradient(310deg, #7928ca, #ff0080);
+    height: 25px;
+    padding-top: 3px;
+    border-radius: 15px;
+    color: white;
+    font-size: 0.85rem;
+        }
+
+        .datetask {
+            width: 20%;
+            margin: 10px auto;
+            text-align: end;
+            font-size: 0.94rem;
+            color: #cb800b;
+        }
+        .extraimg{
+            margin-left: -6px;
+        }
+ 
+
+        .checkbutton{
+width: 100%;
+display: flex;
+align-items: center;
+justify-content: center;
+margin: 40px auto ;
+margin-bottom: 10px;
+}
+
+
+
         
-        <div class="container-fluid py-4 col-md-8">
-            <div class="card">
-                <div class="card-header pb-0 px-3">
+
+
+.pulse-button {
+    width: 27%;
+    height: 40px;
+    font-size: 1rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    text-align: center;
+    /* line-height: 100px; */
+    color: white;
+    border: none;
+    border-radius: -1px;
+    background: rgb(237 211 9);
+    background: linear-gradient(310deg, #7928ca, #ff0080);
+    color: white;
+    cursor: pointer;
+    box-shadow: 5px 5px 20px -4px #babae1;
+    transition: all 600ms ease;
+    border-radius:10px;
+}
+
+.pulse-button:hover {
+  transform: scale(1.05);
+}
+
+
+</style>
+<body style=" font-family: Poppins, sans-serif; background-color: #f8f9fa;">
+    
+
+
+<section class="taskpriority" style="background-color: white;">
+<form action="{{ url('daily-standup-checkin') }}" method="POST" role="form text-left" enctype="multipart/form-data" id="createdaccount">
+  @csrf
+        <div class="firsttask">
+            <div class="upperpriority">
+               
+                <!-- <div class="card-header pb-0 px-3">
                     <h5 class="mb-0" style="text-align:center">Daily Standup Of &nbsp;<span class="badge badge-primary" style="background: linear-gradient(to right, #f953c6, #b91d73);">{{ date('M d,Y') }}</span></h5>
                     
-                </div>
-                <div class="card-body pt-4 p-3">
-                    <form action="{{ url('daily-standup-checkin') }}" method="POST" role="form text-left" enctype="multipart/form-data" id="createdaccount">
-                        @csrf
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="user-name" class="form-control-label">On which task you are going to work today?</label><br>
-                                    @foreach($auth_user_tasks as $task)
-                                    <div class="wrapper d-flex">
-                                        <div class="custom-control custom-checkbox iconSelect ml-2">
-                                            <input type="checkbox" id="customCheck{{$task->id}}" name="selected_task_ids[]" value="{{ $task->id }}" class="custom-control-input" style="display:none">
-                                            <label class="custom-control-label" for="customCheck{{$task->id}}">
-                                                <div class="mt-1">({{ $task->task_code }}) {{ $task->task_name }}</div>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    @endforeach
-                                </div>                               
-                            </div>                                                   
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="d-flex justify-content-center">
-                                    <button type="submit" class="btn bg-gradient-dark btn-md mt-4 mb-4 col-md-4" style="background: linear-gradient(310deg, #7928ca, #ff0080);font-size: 15px;">{{ 'Checkin' }}</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
+                </div> -->
+                <h3>On which task you are going to work today?</h3>
             </div>
+            <div class="secondtask">
+                 @foreach($auth_user_tasks as $task)
+                <div class="innertask">
+                    <div class="round">
+                    <input type="checkbox" id="customCheck{{$task->id}}" name="selected_task_ids[]" value="{{ $task->id }}">
+                    <label class="custom-control-label" for="customCheck{{$task->id}}">
+                        
+                    </label>
+                                
+                    </div>
+                    <div class="paracard">
+                        <p class="taskname">
+                        ({{ $task->task_code }}) {{ $task->task_name }} 
+                        </p>
+                        <span>
+                            @if($task->priority == '1')
+                            Highest
+                            @elseif($task->priority == '2')
+                            High
+                            @elseif($task->priority == '3')
+                            Medium
+                            @elseif($task->priority == '4')
+                            Low
+                            @endif
+                        </span>
+                        <p class="datetask">
+                        {{ date('M d,Y') }}
+                        </p>
+                    </div>
+                   
+                    <div class="itimage">
+                         
+                        <?php $taskss = explode(',', $task->alloted_to); ?> 
+                        @foreach ($taskss as $index => $taskk)           
+                        <div class="workable <?php if($index != 0) echo "extraimg" ?>">
+                                <?php $userimg = \App\Models\User::where('id', $taskk)->value('image'); ?>
+                                <img src="{{ url($userimg ?? 'avatar01.png' )}}" alt="" >
+                        </div>
+                        @endforeach
+
+                    </div>
+                </div>
+                @endforeach
+
+            </div>
+                <div class="checkbutton">
+                    <button type="submit" class="pulse-button">CHECKIN</button>
+                </div>
         </div>
-    </div>
-    </div>
+</form>
+    </section>
 
 
 
+
+        <script>
+            let innerTask = document.querySelectorAll(".innertask");
+            let checkBoxes = document.querySelectorAll(".innertask .round input[type='checkbox']")
+
+            innerTask.forEach((task, taskIndex)=>{
+                task.addEventListener("click", () =>{
+                    checkBoxes[taskIndex].click()
+                })
+            })
+        </script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.slim.min.js"></script>
     <script src="{{ url('assets') }}/jquery-validation/jquery.validate.min.js"></script>
 @endsection
+</body>
