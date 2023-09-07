@@ -89,8 +89,6 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::post('update-card-status/', [PipelineController::class, 'updateStatus']);
 		Route::get('pipeline-view', [PipelineController::class, 'pipelineView']);
 		Route::get('description-more', [TaskManagmentController::class, 'description_more']);
-
-
 	});
 		Route::post('loginauth', [SessionsController::class, 'loginauth']);				
 

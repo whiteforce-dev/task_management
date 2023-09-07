@@ -25,31 +25,23 @@
             </div>
 
             <div class="low-box" style="position:relative;height:95px;overflow:hidden;">
-            <span onclick="this.parentElement.style.height='max-content'" style="cursor:pointer;position:absolute;right:20px;bottom:0;font-size:13px;font-weight:bold;">
-                <a onclick="descriptionMore('{{ url('description-more' . '?id=' . $task->id) }}')"
-                    class="dropdown-item border-radius-md" href="javascript:;">Read More
-                </a>
+            <span onclick="this.parentElement.style.height='max-content'" style="cursor:pointer;position:absolute;right:20px;bottom:0;font-size:14px;font-weight:bold;">
+                <a onclick="descriptionMore('{{ url('description-more' . '?id=' . $task->id) }}')" style="float:right; color: #242527;font-weight: 600;font-family: Poppins, sans-serif;" href="javascript:;">Read More</a>
             </span>
-                <h3><i class="fa-solid fa-pen-to-square" style="margin-right: 5px; color:#cb0c9f;"></i>
+                <h3>
                     Description</h3>
-                    <?php $taskDetails = mb_strimwidth($task->task_details ?? 'null', 0, 200, '...'); ?>
+                    <?php $taskDetails = mb_strimwidth($task->task_details ?? 'null', 0, 150, '...'); ?>
                 <pre>{{ $taskDetails }}</pre>
             </div>
 
             <div class="low-box">
-                <h3><i class="fa-solid fa-user-tag" style="margin-right: 5px; color:#cb0c9f;"></i>My
-                    Remark</h3>
+                <h3><i class="fa-solid fa-user-tag" style="margin-right: 5px; color:#cb0c9f;"></i>MyRemark</h3>
                 <?php $remarks = mb_strimwidth($task->GetEmployee->remark ?? 'null', 0, 120, '...'); ?>
                 <p>{{ $remarks ?? 'na' }}
                     @if (Auth::user()->type == 'employee')
                         <a href="javascript:"
                             onclick="managerRemark('{{ url('managerremark' . '?id=' . $task->id) }}')">
-                            <span
-                                style="float:right;
-                    color: #242527;
-                    font-weight: 600;
-                    font-family: Poppins, sans-serif">
-                                Add Remark</span>
+                            <span style="float:right;color: #242527;font-weight: 600;font-family: Poppins, sans-serif">Add Remark</span>
                     @endif
                     </a>
                 </p>
@@ -69,12 +61,7 @@
                     @if (Auth::user()->type !== 'employee')
                         <a href="javascript:"
                             onclick="managerRemark('{{ url('managerremark' . '?id=' . $task->id) }}')">
-                           <span
-                                style="float:right;
-                        color: #242527;
-                        font-weight: 600;
-                        font-family: Poppins, sans-serif">
-                                Add Remark</span>
+                           <span style="float:right;color: #242527;font-weight: 600;font-family: Poppins, sans-serif">Add Remark</span>
                         </a>
                     @endif
                 </p>

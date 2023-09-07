@@ -167,8 +167,8 @@ class TaskManagmentController extends Controller
         if (Auth::user()->type !== 'employee') {
             $remarks = Remark::where('task_id', $request->id)->get();
         } else {
-            $team = User::where('id', Auth::user()->id)->orwhere('id', Auth::user()->parent_id)->orwhere('id', '1')->pluck('id')->toArray();
-            $remarks = Remark::where('task_id', $request->id)->whereIn('userid', $team)->get();
+            $team_id = User::where('id', Auth::user()->id)->orwhere('id', Auth::user()->parent_id)->orwhere('id', '1')->pluck('id')->toArray();
+            $remarks = Remark::where('task_id', $request->id)->whereIn('userid', $team_id)->get();
         }
         return view('task.full_view', compact('remarks', 'task_id'));
     }
