@@ -30,6 +30,10 @@ class Taskmaster extends Model
         return $this->hasOne('App\Models\Remark', 'task_id')->orderBy('id', 'desc')->whereNotIn('userid', [Auth::user()->id]);
     }
 
+    public function GetmanagerData(){
+        return $this->hasOne('App\Models\Remark', 'task_id')->orderBy('id', 'desc')->whereNotIn('userid', [Auth::user()->id]);
+    }
+
 
 
 }

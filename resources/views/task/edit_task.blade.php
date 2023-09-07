@@ -1,15 +1,26 @@
-
+<!DOCTYPE html>
+<link rel="stylesheet" href="{{ url('assets/css/editor.css') }}">
+<style>
+    
+</style>
 <div class="modal-dialog modal-lg">
     <div class="modal-content"  style="overflow-X:hidden; overflow-Y:visible;">
         <div class="modal-header">
             <h4 class="modal-title">Edit Task</h4>
             <button type="button" class="btn-close" data-bs-dismiss="modal">&#10060;</button>
         </div>
-        <div class="modal-body">
-            <form action="{{ url('update-task', $task->id) }}" method="POST" enctype="multipart/form-data">
-                @csrf
-                @if ($errors->any())
-                    <div class="mt-3  alert alert-primary alert-dismissible fade show" role="alert">
+        
+
+        
+        <div class="modal-body" >            
+
+              
+              
+              
+              <form action="{{ url('update-task', $task->id) }}" method="POST" enctype="multipart/form-data">
+                  @csrf
+                  @if ($errors->any())
+                  <div class="mt-3  alert alert-primary alert-dismissible fade show" role="alert">
                         <span class="alert-text text-white">
                             {{ $errors->first() }}</span>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
@@ -19,9 +30,9 @@
                 @endif
                 @if (session('success'))
                     <div class="m-3  alert alert-success alert-dismissible fade show" id="alert-success"
-                        role="alert">
-                        <span class="alert-text text-white">
-                            {{ session('success') }}</span>
+                    role="alert">
+                    <span class="alert-text text-white">
+                        {{ session('success') }}</span>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
                             <i class="fa fa-close" aria-hidden="true"></i>
                         </button>
@@ -46,8 +57,8 @@
                       $selectedIDs = explode(',', $task->alloted_to);
                       $users = \App\Models\User::select('id', 'name')->get();
                       foreach ($users as $user) {
-                            $options[] = [
-                                'id' => $user->id,
+                          $options[] = [
+                              'id' => $user->id,
                                 'name' => $user->name,
                                 'selected' => in_array($user->id, $selectedIDs),
                             ];
@@ -80,7 +91,7 @@
                                     placeholder="Task Name" id="task-name" name="task_name">
                                 @error('task_name')
                                     <p class="text-danger text-xs mt-2">{{ $message }}</p>
-                                @enderror
+                                    @enderror
                             </div>
                         </div>
                     </div>
@@ -112,7 +123,7 @@
                     </div>
                     
                 </div>
-
+                
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -120,14 +131,9 @@
                             <div class="@error('user.status')border border-danger rounded-3 @enderror">
                                 <select class="form-control" name="status">
                                     <option value="">--select--</option>
-                                    <option value="1" {{ '1' == $task->status ? 'selected' : '' }}>
-                                        Progress</option>
-                                    <option value="2" {{ '2' == $task->status ? 'selected' : '' }}>
-                                    Pending</option>
-                                    <option value="3"
-                                        {{ '3' == $task->status ? 'selected' : '' }}>Hold</option>
-                                    <option value="4"
-                                        {{ '4' == $task->status ? 'selected' : '' }}>Completed</option>
+                                    @foreach ($status as $statu)                                       
+                                    <option value="{{ $statu->id }}"{{ $statu->id == $task->status ? 'selected' : '' }}>{{ $statu->status }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -155,10 +161,9 @@
                     <div class="row">
                         <div class="col-md-12">                                                             
                             <div class="form-group">
-                                <label for="user.team_comments"
-                                    class="form-control-label">{{ __('Task details') }}</label>
+                                <label for="user.team_comments" class="form-control-label">{{ __('Task details') }}</label>
                                 <div class="@error('user.team_comments')border border-danger rounded-3 @enderror">
-                                    <textarea class="form-control" id="about" rows="3" placeholder="Task deatils..." name="task_details">{{ $task->task_details }}</textarea>
+                                    <textarea class="form-control" rows="3" placeholder="Task deatils..." name="task_details">{{ $task->task_details }}</textarea>
                                     @error('phone')
                                         <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                     @enderror
@@ -181,46 +186,26 @@
     </div>
 </div>
 
-
-
-<link rel="stylesheet" href="{{ url('assets/css/multiselect.css') }}">
-<link rel="stylesheet" href="{{ url('assets/css/multiselectdrop.css') }}">
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>
-<script src="{{ url('assets/jquery-validation/jquery.validate.min.js') }}"></script>
+<script src="https://cdn.tiny.cloud/1/thgk8f0to7oi2t6derx6bol4wejbnd7ngq0zaenp7yzt5p1s/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+{{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
 <script>
-    $(document).ready(function() {
-        $('.selectpicker').selectpicker();
+    tinymce.init({
+      selector: 'textarea',
+      plugins: 'ai tinycomments mentions anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss',
+      toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+      tinycomments_mode: 'embedded',
+      tinycomments_author: 'Author name',
+      mergetags_list: [
+        { value: 'First.Name', title: 'First Name' },
+        { value: 'Email', title: 'Email' },
+      ],
+      ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant"))
     });
-</script>
+  </script>
+  </html>
 
-<script>
-    $(document).ready(function($) {
-        $("#createdtask").validate({
-            rules: {
-                task_name: 'required',
-                alloted_to: 'required',
-                start_date: 'required',
-                deadline_Date: 'required',
-                task_details: 'required',
-                priority: 'required',
-            },
-            messages: {
-                task_name: '*Please Enter Task Name',
-                alloted_to: '*Please Select Alloted To',
-                start_date: '*Please Select Start Date',
-                deadline_Date: '*Please Select Deadline Date',
-                task_details: '*Please Select Task Details',
-                priority: '*Please Select Task Details ',
-            },
-            errorPlacement: function(error, element) {
-                error.insertAfter(element);
-            },
-            submitHandler: function(form) {
-                $("#createTaskBtn").prop( "disabled", true );
-                form.submit();
-            }
-        });
-    });
-</script>
+
+
+
+
 

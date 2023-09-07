@@ -121,10 +121,11 @@ class TaskManagmentController extends Controller
         return view('task.searchTaskResult',compact('tasklist'));
     }
 
-    public function taskEditPage($id)
-    {
-        $task = Taskmaster::find($id);
-        return view('task.edittaskpage', compact('task'));
+    public function taskEditPage(Request $request)
+    {   $taskId = $request->id;
+        $task = Taskmaster::find($taskId);
+        $status = Status::get();
+        return view('task.edit_task', compact('task','status'));
     }
 
     public function UpdateTask(request $request, $id)
@@ -333,8 +334,8 @@ class TaskManagmentController extends Controller
         if (Auth::user()->type == 'admin') {
             $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->orderBy('id', 'DESC')->get();
         } elseif (Auth::user()->type == 'manager') {
-            $team_id = User::where('software_catagory', Auth::user()->software_catagory)->where('id', Auth::user()->id)->orwhere('parent_id', Auth::user()->id)->pluck('id')->ToArray();
-            $tasklist = Taskmaster::whereIn('alloted_to', $team_id)->get();                
+            $teamId = User::where('software_catagory', Auth::user()->software_catagory)->where('id', Auth::user()->id)->orwhere('parent_id', Auth::user()->id)->pluck('id')->ToArray();
+            $tasklist = Taskmaster::whereIn('alloted_to', $teamId)->get();                
         } else {
             $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)
                 ->orderBy('id', 'DESC')

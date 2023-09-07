@@ -16,6 +16,7 @@
     $difference = $date2->diffInDays($date1, false);            
 @endphp
 <section class="cards" id="result">
+
     <div class="main-card">
         <div class="long-width" style="width: 70%;">
             <div class="up-box">
@@ -50,7 +51,7 @@
                 <h3><i class="fa-solid fa-user-shield" style="margin-right: 5px; color:#cb0c9f;"></i>Other
                     Remark</h3>
                     @if(Auth::user()->type == 'manager')
-                    <?php $text = mb_strimwidth($task->GetManager->remark ?? 'null', 0, 120, '...'); ?>
+                    <?php $text = mb_strimwidth($task->Getparent->remark ?? 'null', 0, 120, '...'); ?>
                     @elseif(Auth::user()->type == 'admin')
                     <?php $text = mb_strimwidth($task->Getparent->remark ?? 'null', 0, 120, '...'); ?>
                     @elseif(Auth::user()->type == 'employee')
@@ -71,14 +72,10 @@
             <div class="box-one box-btn">
                 <div class="dropdown" style=" margin-right: 10px;">
                     <select class="dropbtn1 status-dropdown" name="selectstatus" data-task-id="{{ $task->id }}">
-                        <option value="1" {{ '1' == $task->status ? 'selected' : '' }}>Pending
-                        </option>
-                        <option value="2" {{ '2' == $task->status ? 'selected' : '' }}>Progress
-                        </option>
-                        <option value="4" {{ '4' == $task->status ? 'selected' : '' }}>Hold
-                        </option>
-                        <option value="3" {{ '3' == $task->status ? 'selected' : '' }}>Completed
-                        </option>
+                        <option value="1" {{ '1' == $task->status ? 'selected' : '' }}>Pending</option>
+                        <option value="2" {{ '2' == $task->status ? 'selected' : '' }}>Progress</option>
+                        <option value="4" {{ '4' == $task->status ? 'selected' : '' }}>Hold</option>
+                        <option value="3" {{ '3' == $task->status ? 'selected' : '' }}>Completed</option>
                     </select>
                 </div>
                 <div class="dropdown btn-card">
@@ -87,18 +84,16 @@
                         <i style="font-size:0.75rem; margin-left: 5px;" class="fa-solid fa-chevron-down"></i></button>
                         <div class="dropdown-content">
                         @if(Auth::user()->id == $task->alloted_by)
-
                         <a onclick="EditTask('{{ url('task-edit-page' . '?id=' . $task->id) }}')"
-                            class="dropdown-item border-radius-md" href="javascript:;">Edit
+                            class="dropdown-item border-radius-md" href="javascript:;">Edit Task
                         </a>
-
 
                         <a href="{{ url('task-delete', $task->id) }}"
                             class="dropdown-item border-radius-md">Delete
                         </a>
                         @elseif(Auth::user()->type == 'admin')
-                        <a href="{{ url('task-edit-page', $task->id) }}"
-                            class="dropdown-item border-radius-md" href="javascript:;">Edit
+                        <a onclick="EditTask('{{ url('task-edit-page' . '?id=' . $task->id) }}')"
+                            class="dropdown-item border-radius-md" href="javascript:;">Edit Task
                         </a>
                         @endif
                         <a onclick="statushistory('{{ url('statushistory' . '?id=' . $task->id) }}')"

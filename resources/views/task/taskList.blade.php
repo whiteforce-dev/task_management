@@ -39,14 +39,14 @@
             outline: 0 !important;
         }
         body {
-  overflow: hidden; /* Prevent scrolling on the background page */
-}
-</style>
+            overflow: hidden; 
+        }
+    </style>
 
 @php $auth = Auth::user()->id; @endphp
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<body>
+
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
         <div class="container-fluid py-4">
             <div class="row">
@@ -109,14 +109,12 @@
                 <input name="deadline_date" id="deadline_date" class="form-control datepicker" autocomplete="off" style="border:1px solid #cb0c9f;"
                     value="" placeholder="Select Deadline Date"> 
             </div>
-
             <div class="col-sm-3">
                 <label>Task Code</label>
                 <input name="task_code" id="task_code" class="form-control" style="border:1px solid #cb0c9f;" placeholder="Enter Task Code">
             </div>
-
             <div class="col-sm-1">
-                <button type="button" class="btn btn-primary" style="margin-top:31px;" id="submitButton" onclick="searchTask()">Search</button>
+                <button type="button" class="btn btn-primary" style="margin-top:31px;" id="submitButton load1" onclick="searchTask()"  data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>">Search</button>             
             </div>
             <div class="col-sm-1">
                 <a href="{{ url('task-list') }}" class="btn btn-primary"
@@ -126,15 +124,13 @@
                 <a href="javascript:" class="btn btn-primary" onclick="createTask('{{ url('create-task') }}')"
                     style="margin-top:30px; margin-left:30px;">New task</a>
             </div>
-            </div>
-                            
+
+            </div>                           
             <div id="searchResults">
                 @include('task/searchTaskResult')
             </div>
         </div>
     </main>
-
-
 
     <script src="{{ url('assets/js/core/popper.min.js') }}"></script>
     <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script> 
@@ -148,7 +144,6 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.min.js"></script>
- {{-- searching ajax --}}
 
     <script>
         function searchTask(){
@@ -249,7 +244,7 @@
         $('.datepicker').on('cancel.daterangepicker', function(ev, picker) {
             $(this).val('');
         });
-
+       
     </script>
 
     <div class="modal" id="myModal10">
@@ -268,4 +263,3 @@
     <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script>   
     
 @endsection
-</body>
