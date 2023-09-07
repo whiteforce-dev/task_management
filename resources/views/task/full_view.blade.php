@@ -6,11 +6,9 @@
         --left-msg-bg: #ececec;
         --right-msg-bg: #f3deee;
     }
-
     html {
         box-sizing: border-box;
     }
-
     *,
     *:before,
     *:after {
@@ -18,7 +16,6 @@
         padding: 0;
         box-sizing: inherit;
     }
-
     .msger {
         display: flex;
         flex-flow: column wrap;
@@ -32,17 +29,14 @@
         background: var(--msger-bg);
         box-shadow: 0 15px 15px -5px rgba(0, 0, 0, 0.2);
     }
-
     .msg {
         display: flex;
         align-items: flex-end;
         margin-bottom: 10px;
     }
-
     .msg:last-of-type {
         margin: 0;
     }
-
     .msg-img {
         width: 50px;
         height: 50px;
@@ -53,44 +47,36 @@
         background-size: cover;
         border-radius: 50%;
     }
-
     .msg-bubble {
         max-width: 450px;
         padding: 15px;
         border-radius: 15px;
         background: var(--left-msg-bg);
     }
-
     .msg-info {
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin-bottom: 10px;
     }
-
     .msg-info-name {
         margin-right: 10px;
         font-weight: bold;
     }
-
     .msg-info-time {
         font-size: 0.85em;
     }
-
     .left-msg .msg-bubble {
         border-bottom-left-radius: 0;
     }
-
     .right-msg {
         flex-direction: row-reverse;
     }
-
     .right-msg .msg-bubble {
         background: var(--right-msg-bg);
         color: #0c0c0c;
         border-bottom-right-radius: 0;
     }
-
     .right-msg .msg-img {
         margin: 0 0 0 10px;
     }
@@ -98,7 +84,6 @@
     /* overflow-y:auto; */
     /* height: 800px; Set a value that makes sense for your design */
     }
-
 </style>
 
 <div class="modal-dialog modal-xl" style="max-height:calc(100vh - 56px);">

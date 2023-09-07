@@ -37,5 +37,4 @@ class AccountController extends Controller
         $account->delete();  
         return redirect('account-list')->with(['success' => 'You account successfull deleted.']);
     }
-
 }

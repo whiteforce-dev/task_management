@@ -80,6 +80,13 @@
         align-items: start;
         justify-content: start;
     }
+    .box-shiv{
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #1a1d29;
+      font-family: Poppins, sans-serif;
+      letter-spacing: 0.2px;
+  }
 
     .box-one span{
         font-size: 0.9rem;

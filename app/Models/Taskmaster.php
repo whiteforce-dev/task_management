@@ -16,7 +16,6 @@ class Taskmaster extends Model
         return $this->belongsTo('App\Models\User', 'alloted_to');
     }
 
-
     public function GetManagerName()
     {
         return $this->belongsTo('App\Models\User', 'alloted_by');
@@ -30,6 +29,11 @@ class Taskmaster extends Model
     public function Getparent(){
         return $this->hasOne('App\Models\Remark', 'task_id')->orderBy('id', 'desc')->whereNotIn('userid', [Auth::user()->id]);
     }
+
+    public function GetmanagerData(){
+        return $this->hasOne('App\Models\Remark', 'task_id')->orderBy('id', 'desc')->whereNotIn('userid', [Auth::user()->id]);
+    }
+
 
 
 }
