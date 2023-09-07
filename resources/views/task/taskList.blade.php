@@ -38,10 +38,7 @@
         .dropdown-toggle:focus {
             outline: 0 !important;
         }
-        body {
-            overflow: hidden; 
-        }
-    </style>
+</style>
 
     @php $auth = Auth::user()->id; @endphp
 
@@ -53,7 +50,8 @@
                 @if (auth::user()->type !== 'employee')
                 <div class="col-3">
                     <label>Created By</label>
-                    <select name="created_by" id="created_by" class="form-control" style="border:1px solid #cb0c9f;">
+                    <select name="created_by" id="created_by" class="form-control" style="border:1px solid #cb0c9f;"
+                        id="dataField">
                         <option value="">Select</option>
                         @foreach ($users as $user)
                             <option value="{{ $user->id }}" {{ $user->id == $managerId ? 'selected' : '' }}>
@@ -64,8 +62,9 @@
                 @endif
                 @if(Auth::user()->can_allot_to_others)
                     <div class="col-3">
-                        <label>Alloted To</label>
+                        <label>Allotted To</label>
                         <select class="selectpicker form-control" multiple data-live-search="true" name="alloted_to[]" id="alloted_to">
+                            <option value="">Select</option>
                             @foreach ($users as $user)
                                 <option value="{{ $user->id }}">{{ ucfirst($user->name) }}</option>
                             @endforeach
@@ -114,7 +113,7 @@
                 <input name="task_code" id="task_code" class="form-control" style="border:1px solid #cb0c9f;" placeholder="Enter Task Code">
             </div>
             <div class="col-sm-1">
-                <button type="button" class="btn btn-primary" style="margin-top:31px;" id="submitButton load1" onclick="searchTask()"  data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>">Search</button>             
+                <button type="button" class="btn btn-primary" style="margin-top:31px;" id="submitButton load1" onclick="searchTask()"  data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>">Search</button> 
             </div>
             <div class="col-sm-1">
                 <a href="{{ url('task-list') }}" class="btn btn-primary"
@@ -124,12 +123,14 @@
                 <a href="javascript:" class="btn btn-primary" onclick="createTask('{{ url('create-task') }}')"
                     style="margin-top:30px; margin-left:30px;">New task</a>
             </div>
-
-            </div>                           
+            </div>
+                            
             <div id="searchResults">
                 @include('task/searchTaskResult')
             </div>
+            {{ $tasklist->links() }}
         </div>
+      
     </main>
 
     <script src="{{ url('assets/js/core/popper.min.js') }}"></script>
@@ -144,8 +145,9 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.min.js"></script>
+ {{-- searching ajax --}}
 
-    <script>
+        <script>
         function searchTask(){
             $.ajax({
                 type : 'POST',
@@ -198,7 +200,7 @@
                 $('#myModal10').modal('show');
             });
         }
-   
+
         function EditTask(url, id) {
             $.get(url, id, function(rs) {
                 $('#myModalEdit').html(rs);
@@ -216,7 +218,8 @@
         $(document).ready(function () {
             $('.status-dropdown').on('change', function () {
                 var taskId = $(this).data('task-id');
-                var newStatus = $(this).val();              
+                var newStatus = $(this).val();
+               
                 $.ajax({
                     url: 'selectstatus',
                     method: 'POST',
@@ -225,8 +228,10 @@
                         newStatus: newStatus,
                         _token: '{{ csrf_token() }}'
                     },
+
                     success: function (response) {
                         console.log('Status updated successfully');
+                        // Update the UI to reflect the new status if needed
                     },
                     error: function (xhr) {
                         console.log('Error updating status');
@@ -243,13 +248,14 @@
                 }
             }
         );
+
         $('.datepicker').on('apply.daterangepicker', function(ev, picker) {
             $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
         });
+
         $('.datepicker').on('cancel.daterangepicker', function(ev, picker) {
             $(this).val('');
         });
-       
     </script>
 
     <div class="modal" id="myModal10">
@@ -265,6 +271,6 @@
     <div class="modal" id="myModalDmore">
     </div>
     <script src="{{ url('assets/js/core/popper.min.js') }}"></script>
-    <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script>   
-    
+    <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script>
+   
 @endsection

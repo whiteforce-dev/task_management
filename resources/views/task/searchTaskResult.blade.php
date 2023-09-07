@@ -159,27 +159,20 @@
                 @else<p>Null</p>
                 @endif
             </div>
-            <?php $alloted_to_ids = explode(',', $task->alloted_to); ?>
-            @if(isset($alloted_to_ids[1]))
+            @php 
+            $alloted_to_ids = explode(',', $task->alloted_to);
+            $get_user_names_arr = \App\Models\User::whereIn('id', $alloted_to_ids)->pluck('name')->toArray();
+            $user_names = implode(',',$get_user_names_arr);
+            @endphp
+            
             <div class="box-shiv" style="position: relative; margin-left:13px;">
-                <i class="fa-solid fa-circle"
-                    style="margin-right: 8px; color:#cb0c9f; font-size: 0.5rem;"></i>
-                    <span>Alloted By  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;:</span>   
-                    &nbsp; &nbsp;@foreach ($alloted_to_ids as $alloted_to)
-                            <?php $usersname = \App\Models\User::where('id', $alloted_to)->value('name');  
-                            $name = mb_strimwidth($usersname,0,10,);?>                                                                 
-                            <span style="color:#1a1d29; font-size:0.9rem; font-weight:300 !important;">{{ $name ?? 'N/A' }},  </span>                                            
-                        @endforeach
-                        
+            <i class="fa-solid fa-circle"
+                    style="margin-right:10px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Allotted To  &nbsp; &nbsp; &nbsp; &nbsp; :
+                </span>
+                <P>{{ $user_names ?? 'N/A' }}</P>                                                           
+                    
             </div>
-            @else 
-            <div class="box-one" style="position: relative;">
-                <i class="fa-solid fa-circle"
-                    style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i>
-                    <span>Alloted By  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;:</span>                     
-                    <p>{{ $usersname ?? 'N/A' }} </p>
-            </div>                                    
-            @endif
+            
 
             <div class="box-one"
                 style="width:90%; display:flex; align-items:center; justify-contect:center;">
