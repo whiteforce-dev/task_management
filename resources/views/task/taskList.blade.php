@@ -108,7 +108,7 @@
                 <input name="deadline_date" id="deadline_date" class="form-control datepicker" autocomplete="off" style="border:1px solid #cb0c9f;"
                     value="" placeholder="Select Deadline Date"> 
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 <label>Task Code</label>
                 <input name="task_code" id="task_code" class="form-control" style="border:1px solid #cb0c9f;" placeholder="Enter Task Code">
             </div>

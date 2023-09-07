@@ -1,5 +1,5 @@
 
-<script src="https://cdn.tiny.cloud/1/thgk8f0to7oi2t6derx6bol4wejbnd7ngq0zaenp7yzt5p1s/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<!-- <script src="https://cdn.tiny.cloud/1/thgk8f0to7oi2t6derx6bol4wejbnd7ngq0zaenp7yzt5p1s/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script> -->
 <div class="modal-dialog modal-lg">
     <div class="modal-content"  style="overflow-X:hidden; overflow-Y:visible;">
 
@@ -63,7 +63,7 @@
                 <div class="row">
                     <div class="col-sm-12">
                         <label>Task Details</label>
-                        <textarea class="form-control" id="about" rows="3" placeholder="Comments by team..." name="task_details" id="task_details"></textarea>
+                        <textarea class="form-control" id="about" rows="3" placeholder="Description..." name="task_details" id="task_details"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -77,7 +77,7 @@
     </div>
 </div>
 
-<script>
+<!-- <script>
     tinymce.init({
       selector: 'textarea',
       plugins: 'ai tinycomments mentions anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss',
@@ -90,7 +90,7 @@
       ],
       ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
     });
-</script>
+</script> -->
 
 <link rel="stylesheet" href="{{ url('assets/css/multiselect.css') }}">
 <link rel="stylesheet" href="{{ url('assets/css/multiselectdrop.css') }}">
