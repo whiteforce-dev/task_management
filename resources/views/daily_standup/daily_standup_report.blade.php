@@ -1,9 +1,6 @@
+@extends('layouts.user_type.auth')
+@section('content')
 
-<!------ Include the above in your HEAD tag ---------->
-
-<!DOCTYPE html>
-<html>
-<head>
 
 <style>
 /*!
@@ -741,10 +738,7 @@ table.fc-header{
 	
 
 </style>
-<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
-<script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
-<link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
+
 
 <script>
 
@@ -932,8 +926,6 @@ box-shadow: 0px 0px 21px 2px rgba(0,0,0,0.18);
 		}
 
 </style>
-</head>
-<body>	
 
 <div id='wrap'>
 
@@ -7055,5 +7047,4 @@ function HorizontalPositionCache(getElement) {
 })(jQuery);
 </script>
 
-</body>
-</html>
+@endsection
