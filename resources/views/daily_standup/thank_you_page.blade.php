@@ -12,10 +12,10 @@ main {
 h1.title,
 .footer-copyright a {
     font-family: Poppins, sans-serif; 
-    font-size: 5rem;
+    font-size: 4rem;
   text-transform: uppercase;
   font-weight: 900;
-  /* color: #1a1a1a; */
+  /* color: #2d2f30; */
   color:#cb0c9f;
   margin-bottom: 0px;
   margin-top: 50px;

@@ -320,7 +320,7 @@ margin-bottom: 10px;
             @endforeach
             </div>
                 <div class="checkbutton"><button type="button" class="pulse-button proceed_btn" onclick="getDetailsDiv()">PROCEED</button></div>                 
-                <div class="task_details_div row"></div>           
+                <div class="task_details_div w-100"></div>           
         </div>
 
             <div class="row checkout_btn" style="display:none">
