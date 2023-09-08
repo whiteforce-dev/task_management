@@ -44,6 +44,7 @@
         }
         pre{
             font-family: "Poppins", sans-serif;
+            white-space: pre-wrap
         }
     </style>
 </head>

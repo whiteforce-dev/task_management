@@ -99,7 +99,7 @@
             </div>
             
             <div class="col-sm-3">
-                <label>Create Date</label>
+                <label>Created Date</label>
                 <input name="created_date" id="created_date"  class="form-control datepicker" autocomplete="off" style="border:1px solid #cb0c9f;" 
                 placeholder="Select Created Date">
             </div>
