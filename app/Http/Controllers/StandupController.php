@@ -9,6 +9,7 @@ use App\Models\CheckoutDetails;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use App\Models\Remark;
+use App\Model\User;
 
 class StandupController extends Controller
 {
@@ -81,6 +82,7 @@ class StandupController extends Controller
     }
 
     public function dailyStandupReport(){
-        return view('daily_standup.daily_standup_report');
+        $user_lists = User::where('software_category',Auth::user()->software_category)->get();
+        return view('daily_standup.daily_standup_report',compact('user_lists'));
     }
 }

@@ -143,7 +143,7 @@
 
                 @if ($task->status !== 3)
                 @if ($currentDate > $deadlineDate)
-                    <div class="dott" style="position: absolute; right:-21px; top:0;">
+                    <div class="dott" style="position: absolute; right:-10px; top:0;">
                         {{ $daysDifference }}</div>
                 @endif
                 @endif
@@ -152,12 +152,18 @@
             </div>
             <div class="box-one">
                 <i class="fa-solid fa-circle"
-                    style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i> <span>Complete Date :
+                    style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i> <span>Completed Date :
                 </span>
                 @if ($task->status == 3)
                     <P>{{ \Carbon\Carbon::parse($task->end_date)->format('d-m-Y') }}</P>
                 @else<p>Null</p>
                 @endif
+            </div>
+            <div class="box-one">
+                <i class="fa-solid fa-circle"
+                    style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i> <span>Total Hours :
+                </span>
+                <P>4H 30M</P>
             </div>
             @php 
             $alloted_to_ids = explode(',', $task->alloted_to);
