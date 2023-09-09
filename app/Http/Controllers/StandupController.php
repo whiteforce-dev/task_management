@@ -9,7 +9,10 @@ use App\Models\CheckoutDetails;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use App\Models\Remark;
-use App\Model\User;
+use App\Models\User;
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
+
 
 class StandupController extends Controller
 {
@@ -81,8 +84,36 @@ class StandupController extends Controller
         return view('daily_standup.fillDetailsDiv',compact('selected_tasks','selected_ids'));
     }
 
+    public function dailyStandupCalender(){
+        $user_lists = User::where('software_catagory',Auth::user()->software_category)->get();
+        return view('daily_standup.daily_standup_calender',compact('user_lists'));
+    }
+
     public function dailyStandupReport(){
-        $user_lists = User::where('software_category',Auth::user()->software_category)->get();
-        return view('daily_standup.daily_standup_report',compact('user_lists'));
+        $users_list = User::where('software_catagory',Auth::user()->software_catagory)->where('type','!=','admin')->get();
+        return view('daily_standup.daily_standup_report',compact('users_list'));
+    }
+
+    public function dailyStandupReportData(Request $request){
+        $daterange = explode(' - ',$request->daterange);
+        $start_date_parts = explode('/',$daterange[0]);
+        $end_date_parts = explode('/',$daterange[1]);
+        $start_date = $start_date_parts[2].'-'.$start_date_parts[1].'-'.$start_date_parts[0];
+        $end_date = $end_date_parts[2].'-'.$end_date_parts[1].'-'.$end_date_parts[0];
+
+        $startDate = Carbon::parse($start_date); // Replace with your start date
+        $endDate = Carbon::parse($end_date);
+        $period = CarbonPeriod::create($startDate, $endDate);
+        $datesInRange = [];
+        $getcollection = collect(DailyStandup::whereBetween('date',[$start_date,$end_date])->where('user_id',$request->user)->get());
+        $data = [];
+        foreach ($period as $date) {
+            $datesInRange[] = $date->toDateString();
+            $value = $getcollection->where('date',$date->toDateString())->toArray();
+            $data[$date->toDateString()] = $getcollection->where('date',$date->toDateString())->toArray();
+        }
+        $a = 0;
+        return view('daily_standup.daily_standup_report_data',compact('data','datesInRange','a'));
+
     }
 }

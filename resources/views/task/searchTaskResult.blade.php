@@ -155,7 +155,12 @@
                 <i class="fa-solid fa-circle"
                     style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i> <span>Total Hours&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :
                 </span>
-                <P>4H 30M</P>
+                @php
+                $spent_hours = \App\Models\CheckoutDetails::where('task_id',$task->id)->pluck('hours')->toArray();
+                $spent_mins = \App\Models\CheckoutDetails::where('task_id',$task->id)->pluck('minutes')->toArray();
+                $total_spent_mins = array_sum($spent_mins);
+                @endphp
+                <P>{{ array_sum($spent_hours) + floor($total_spent_mins / 60) }}h {{  ($total_spent_mins % 60) }}m</P>
             </div>
             @php 
             $alloted_to_ids = explode(',', $task->alloted_to);
