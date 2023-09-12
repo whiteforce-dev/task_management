@@ -1,11 +1,13 @@
 @extends('layouts.user_type.auth')
 @section('content')
-    <link rel="stylesheet" href="{{ url('assets/pipeline/new.css') }}" />
 
+    <link rel="stylesheet" href="{{ url('assets/pipeline/new.css') }}" />
     <body style="font-family: Poppins, sans-serif">
         <div class="alert alert-success" role="alert" id="alert">
             Task status change successfull !
         </div>
+        <div class="fixed-plugin">
+
         <div class="app">
             <main class="project">
                 <div class="heading">
@@ -17,12 +19,12 @@
                             style="margin-top: 15px;">New task</a>
                     </div>
                 </div>
+                
                 <div class="project-tasks">
                     <div class="project-column firstcolumn chromecolum" data-count="1">
                         <div class="project-column-heading">
                             <h2 class="project-column-heading__title">Pending</h2>
                         </div>
-
                         @foreach ($pendingtasks as $pendingtask)
                             <div class="task firstcard" draggable="true" data-id="{{ $pendingtask->id}}">
                                 <a href="javascript:"
@@ -31,21 +33,20 @@
                                         @php $taskname = mb_strimwidth($pendingtask->task_name ?? 'null', 0, 20, '...'); @endphp
                                         <h4>{{ ucfirst($taskname) }}</h4>
                                         <div class="dropdown">
-                                            <button class="dropbtn"><i class="fa-solid fa-bars"></i></button>
+                                            <button class="dropbtn">
+                                            <i class="fa-solid fa-bars"></i></button>
                                             <div class="dropdown-content">
-                                                View Details
+                                              View Details
                                                 @foreach ($stages as $status)
                                                     @if ($status->status !== 'pending')                                                 
                                                         <a href="javascript:void(0);"
                                                             onclick="selectstatus11({{ $pendingtask->id }},{{ $status->id }})">{{ ucfirst($status->status) }}</a>                                                           
                                                     @endif
                                                 @endforeach
-                                              
                                                 <a href="{{ url('sendtask-email', $pendingtask->id) }}">SendEmail</a>
                                             </div>
                                         </div>
-                                    </div>
-                                   
+                                    </div>                                  
                                     <p><span>Name: </span>{{ $pendingtask->userGet->name ?? 'Na' }}</p>
                                     <p><span>Start
                                             Date:</span>{{ \Carbon\Carbon::parse($pendingtask->start_date)->format('d-m-Y') }}
@@ -61,6 +62,7 @@
                             </div>
                         @endforeach
                     </div>
+
                     <div class="project-column secondcolumn chromecolum" data-count="2">
                         <div class="project-column-heading-02">
                             <h2 class="project-column-heading__title">In Progress</h2>
@@ -184,30 +186,32 @@
                         @endforeach
                     </div>
                 </div>
-
             </main>
         </div>
+
+
+
+
 
 
         <script>
             function selectstatus11(task_id, status_id) {
                 $.get("{{ url('pipelinestatus') }}" + '/' + task_id + '/' + status_id, {}, function(response) {
                     location.reload()
-                    //  $('#response').html(response);
                 });
             };
         </script>
         <script>
             function pipelineView(url, id) {
                 $.get(url, id, function(rs) {
-                    $('#myModalpipeline').html(rs);
-                    $('#myModalpipeline').modal('show');
+                    $('#mypipeline').html(rs);
+                    $('#mypipeline').modal('show');
                 });
             }
         </script>
 
-        <div class="modal" id="myModalpipeline">
 
+        <div class="modal right fade right-Modal" id="mypipeline" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
         </div>
 
         <div class="modal" id="myModal10">
@@ -215,7 +219,6 @@
 
         <script>
             $("#alert").hide();
-
             function updateCardStatus(cardId, newStatus) {
                 $.ajax({
                     url: `/update-card-status/`,
@@ -231,26 +234,23 @@
                         setTimeout(() => {
                             $("#alert").hide();
                         }, 3000);
-                        // alert("task status have been saved");
-                        // Handle the response if needed.
                     }
                 });
             }
-
             function createTask(url, id) {
             $.get(url, id, function(rs) {
                 $('#myModal10').html(rs);
                 $('#myModal10').modal('show');
             });
         }
-
         </script>
-        <script src="{{ url('assets/js/core/popper.min.js') }}"></script>
-        <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script>
+
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="{{ url('assets/pipeline/new.js') }}"></script>
         <script src="{{ url('assets/js/core/popper.min.js') }}"></script>
         <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script>
-
+        <script src="{{ url('assets/js/core/popper.min.js') }}"></script>
+        <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script>
         <script src="https://kit.fontawesome.com/66f2518709.js" crossorigin="anonymous"></script>
+
     @endsection

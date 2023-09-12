@@ -1,6 +1,11 @@
 @charset "UTF-8";
 
-
+/*!
+ * Bootstrap v5.0.2 (https://getbootstrap.com/)
+ * Copyright 2011-2021 The Bootstrap Authors
+ * Copyright 2011-2021 Twitter, Inc.
+ * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
+ */
 :root {
     --bs-blue: #63b3ed;
     --bs-indigo: #596cff;
@@ -19781,7 +19786,7 @@ fieldset:disabled .btn {
     border-radius: 5;
     height: 100%;
     left: auto !important;
-    margin-top: 210px !important;
+    margin-top: 10px !important;
     padding: 0 10px;
     position: fixed !important;
     right: -360px;
