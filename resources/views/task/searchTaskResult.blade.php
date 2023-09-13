@@ -28,7 +28,7 @@
             <div class="low-box" style="position:relative;height:95px;overflow:hidden;">
             <span onclick="this.parentElement.style.height='max-content'" style="cursor:pointer;position:absolute;right:20px;bottom:0;font-size:14px;font-weight:bold;">Read More
             </span>
-                <h3>
+                <h3></h3>
                     Description</h3>
                     <?php $taskDetails = mb_strimwidth($task->task_details ?? 'null', 0, 150, '...'); ?>
                 <pre>{{ $task->task_details }}</pre>

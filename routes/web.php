@@ -14,16 +14,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\PipelineController;
 use App\Http\Controllers\StandupController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+
 
 date_default_timezone_set("Asia/kolkata");
 Route::group(['middleware' => 'auth'], function ()
@@ -102,6 +93,7 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::post('daily-standup-report', [StandupController::class, 'dailyStandupReportData']);
 
 		Route::get('description-more', [TaskManagmentController::class, 'description_more']);
+		Route::get('right-model/{task_id}', [PipelineController::class, 'rightModel']);
 	});
 		Route::post('loginauth', [SessionsController::class, 'loginauth']);				
 	Route::group(['middleware' => 'guest'], function () 

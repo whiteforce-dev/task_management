@@ -1,21 +1,14 @@
 @extends('layouts.user_type.auth')
 @section('content')
     <link rel="stylesheet" href="{{ url('assets/css/cards.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,900&family=Rubik:wght@300;400;600;700&display=swap"
-        rel="stylesheet" />
-    <script src="https://kit.fontawesome.com/66f2518709.js" crossorigin="anonymous"></script>
 
     <style>
         .box-one span {
             width: 55% !important;
         }
-
         .box-one p {
             width: 35% !important;
         }
-
         .dott {
             width: 23px;
             background: #ded7dc;
@@ -133,8 +126,7 @@
       
     </main>
 
-    <script src="{{ url('assets/js/core/popper.min.js') }}"></script>
-    <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script> 
+
 
     <link rel="stylesheet" href="{{ url('assets/css/multiselect.css') }}">
     <link rel="stylesheet" href="{{ url('assets/css/multiselectdrop.css') }}">
@@ -271,6 +263,11 @@
     <div class="modal" id="myModalDmore">
     </div>
     <script src="{{ url('assets/js/core/popper.min.js') }}"></script>
+<<<<<<< HEAD
     <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script>
    
+=======
+    <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script> 
+    
+>>>>>>> 6f6f5cc0aa26434f083202250a4b19c3ee4d1269
 @endsection
