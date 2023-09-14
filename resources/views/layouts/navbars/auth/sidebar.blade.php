@@ -169,7 +169,7 @@
             </li>
             
             
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link {{ Request::is('daily-standup-calender') ? 'active' : '' }}" href="{{ url('daily-standup-calender') }}">
                     <div
                         class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -194,7 +194,7 @@
                     </div>
                     <span class="nav-link-text ms-1">Daily Standup Calender</span>
                 </a>
-            </li>
+            </li> -->
             <li class="nav-item">
                 <a class="nav-link {{ Request::is('daily-standup-report') ? 'active' : '' }}" href="{{ url('daily-standup-report') }}">
                     <div

@@ -114,11 +114,11 @@ class StandupController extends Controller
         $data = [];
         foreach ($period as $date) {
             $datesInRange[] = $date->toDateString();
-            $value = $getcollection->where('date',$date->toDateString())->toArray();
             $data[$date->toDateString()] = $getcollection->where('date',$date->toDateString())->toArray();
         }
-        $a = 0;
-        return view('daily_standup.daily_standup_report_data',compact('data','datesInRange','a'));
+        $s_no = 1;
+        $array_key = 0;
+        return view('daily_standup.daily_standup_report_data',compact('data','datesInRange','s_no','array_key'));
 
     }
 }
