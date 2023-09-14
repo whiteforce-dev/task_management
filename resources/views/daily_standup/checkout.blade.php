@@ -284,7 +284,7 @@ margin-bottom: 10px;
                 <div class="row col-md-12">
                     <div class="col-md-4 offset-3"><h3>What have you done today?</h3></div>
                     <div class="col-md-5" style="text-align:right;margin-top: 6px;">
-                        <button type="button" class="btn btn-primary" onclick="addMoreTask('{{ url('add-more-task-checkout') }}')">Add More+</button>
+                        <button type="button" class="btn btn-primary" onclick="addMoreTask('{{ url('add-more-task-checkout') }}')">Add More +</button>
                     </div>
                 </div>
             </div>
