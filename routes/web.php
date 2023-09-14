@@ -91,7 +91,8 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::get('daily-standup-calender', [StandupController::class, 'dailyStandupCalender']);
 		Route::get('daily-standup-report', [StandupController::class, 'dailyStandupReport']);
 		Route::post('daily-standup-report', [StandupController::class, 'dailyStandupReportData']);
-
+		Route::get('add-more-task-checkout', [StandupController::class, 'addMoreTaskInCheckout']);
+		
 		Route::get('description-more', [TaskManagmentController::class, 'description_more']);
 		Route::get('right-model/{task_id}', [PipelineController::class, 'rightModel']);
 	});

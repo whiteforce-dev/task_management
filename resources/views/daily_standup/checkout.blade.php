@@ -281,7 +281,12 @@ margin-bottom: 10px;
                     <h5 class="mb-0" style="text-align:center">Daily Standup Of &nbsp;<span class="badge badge-primary" style="background: linear-gradient(to right, #f953c6, #b91d73);">{{ date('M d,Y') }}</span></h5>
                     
                 </div> -->
-                <h3>What have you done today?</h3>
+                <div class="row col-md-12">
+                    <div class="col-md-4 offset-3"><h3>What have you done today?</h3></div>
+                    <div class="col-md-5" style="text-align:right;margin-top: 6px;">
+                        <button type="button" class="btn btn-primary" onclick="addMoreTask('{{ url('add-more-task-checkout') }}')">Add More+</button>
+                    </div>
+                </div>
             </div>
             <div class="secondtask">
             @foreach($auth_user_tasks as $task)
@@ -304,7 +309,7 @@ margin-bottom: 10px;
                             @endif
                         </span>
                         <p class="datetask">
-                        {{ date('M d,Y') }}
+                        {{ date('M d,Y',strtotime($task->deadline_date)) }}
                         </p>
                     </div>                  
                     <div class="itimage">                        
@@ -331,7 +336,12 @@ margin-bottom: 10px;
                 </div>
             </div>
     </form>
-
+    <div class="modal" id="myModal10">
+    </div>
+    <link rel="stylesheet" href="{{ url('assets/css/multiselect.css') }}">
+    <link rel="stylesheet" href="{{ url('assets/css/multiselectdrop.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script>
             function getDetailsDiv(){
@@ -350,9 +360,16 @@ margin-bottom: 10px;
                     }
                 })
             }
+
+            function addMoreTask(url, id) {
+                $.get(url, id, function(rs) {
+                    $('#myModal10').html(rs);
+                    $('#myModal10').modal('show');
+                });
+            }
         </script>
 
-<script>
+        <script>
             let innerTask = document.querySelectorAll(".innertask");
             let checkBoxes = document.querySelectorAll(".innertask .round input[type='checkbox']")
 

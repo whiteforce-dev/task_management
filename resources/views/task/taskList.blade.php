@@ -263,11 +263,6 @@
     <div class="modal" id="myModalDmore">
     </div>
     <script src="{{ url('assets/js/core/popper.min.js') }}"></script>
-<<<<<<< HEAD
     <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script>
    
-=======
-    <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script> 
-    
->>>>>>> 6f6f5cc0aa26434f083202250a4b19c3ee4d1269
 @endsection

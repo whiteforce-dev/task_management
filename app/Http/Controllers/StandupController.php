@@ -19,14 +19,19 @@ class StandupController extends Controller
     public function dailyStandup(){
         $standup = DailyStandup::where('date',date('Y-m-d'))->where('user_id',Auth::user()->id)->whereNotNull('checkin')->first();
         if(empty($standup)){
-            $auth_user_tasks = Taskmaster::whereRaw("FIND_IN_SET(".Auth::user()->id.", alloted_to)")->where('status','!=',3)->select('id','task_name','priority','task_code','alloted_to')->get();
+            $auth_user_tasks = Taskmaster::whereRaw("FIND_IN_SET(".Auth::user()->id.", alloted_to)")->where('status','!=',3)->select('id','task_name','priority','task_code','alloted_to','deadline_date')->orderBy('priority','ASC')->get();
             return view('daily_standup.checkin',compact('auth_user_tasks'));
         } elseif(!empty($standup) && !empty($standup->checkin) && empty($standup->checkout)) {
-            $auth_user_tasks = Taskmaster::whereIn('id',explode(',',$standup->checkin))->select('id','task_name','priority','task_code','alloted_to')->get();
+            $auth_user_tasks = Taskmaster::whereIn('id',explode(',',$standup->checkin))->select('id','task_name','priority','task_code','alloted_to','deadline_date')->orderBy('priority','ASC')->get();
             return view('daily_standup.checkout',compact('auth_user_tasks'));
         } else {
             return view('daily_standup.thank_you_page');
         }
+    }
+
+    public function addMoreTaskInCheckout(){
+        $auth_user_tasks = Taskmaster::whereRaw("FIND_IN_SET(".Auth::user()->id.", alloted_to)")->where('status','!=',3)->select('id','task_name','priority','task_code','alloted_to','deadline_date')->get();
+        return view('daily_standup.add_more_task_in_checkout',compact('auth_user_tasks'));
     }
 
     public function dailyStandupCheckin(Request $request){

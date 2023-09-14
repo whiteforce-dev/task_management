@@ -278,7 +278,7 @@ margin-bottom: 10px;
             </div>
             <div class="secondtask">
                  @foreach($auth_user_tasks as $task)
-                <div class="innertask">
+                <div class="innertask" style="{{ ($task->deadline_date < date('Y-m-d')) ? 'background:#ffeced' : '' }}">
                     <div class="round">
                     <input type="checkbox" id="customCheck{{$task->id}}" name="selected_task_ids[]" value="{{ $task->id }}">
                     <label class="custom-control-label" for="customCheck{{$task->id}}">
@@ -302,7 +302,7 @@ margin-bottom: 10px;
                             @endif
                         </span>
                         <p class="datetask">
-                        {{ date('M d,Y') }}
+                        {{ date('M d,Y',strtotime($task->deadline_date)) }}
                         </p>
                     </div>
                    
