@@ -50,7 +50,7 @@
 
     .round {
             position: relative;
-            width: 10%;
+            width: 5%;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -147,23 +147,24 @@
         }
 
         .itimage {
-            width: 22%;
-            display: flex;
-            align-items: center;
-            justify-content: start;
-            padding-left: 33px;
+            width: 18%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-right: 24px;
         }
 
         .workable {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            width: 42px !important;
-            height: 42px;
-            margin: 12px 0;
-            overflow: hidden;
-        }
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    width: 42px !important;
+    height: 42px;
+    margin: 12px 0px;
+    overflow: hidden;
+    border: 2px solid #eda528;
+}
 
         .workable img {
             width: 100%;
@@ -183,7 +184,7 @@ transform: scale(1.04);
         } 
 
         .paracard {
-            width: 68%;
+            width: 78%;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -197,11 +198,11 @@ transform: scale(1.04);
         }
 
         .paracard span {
-            width: 13%;
+    width: 12%;
     margin: 10px auto;
     text-align: center;
     background: linear-gradient(310deg, #7928ca, #ff0080);
-    height: 25px;
+    height: 28px;
     padding-top: 3px;
     border-radius: 15px;
     color: white;
@@ -209,7 +210,7 @@ transform: scale(1.04);
         }
 
         .datetask {
-            width: 20%;
+            width: 14%;
             margin: 10px auto;
             text-align: end;
             font-size: 0.94rem;
