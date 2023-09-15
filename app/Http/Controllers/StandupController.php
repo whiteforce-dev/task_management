@@ -25,13 +25,28 @@ class StandupController extends Controller
             $auth_user_tasks = Taskmaster::whereIn('id',explode(',',$standup->checkin))->select('id','task_name','priority','task_code','alloted_to','deadline_date')->orderBy('priority','ASC')->get();
             return view('daily_standup.checkout',compact('auth_user_tasks'));
         } else {
-            return view('daily_standup.thank_you_page');
+            $checkin_tasks = Taskmaster::whereIn('id',explode(',',$standup->checkin))->select('id','task_code','task_name')->get();
+            $checkout_tasks = collect(CheckoutDetails::whereIn('id',explode(',',$standup->checkout))->with('GetTask:id,task_code,task_name')->get());
+            $total_hours = $checkout_tasks->sum('hours');
+            $total_minutes = $checkout_tasks->sum('minutes');
+            return view('daily_standup.thank_you_page',compact('checkin_tasks','checkout_tasks','total_hours','total_minutes'));
         }
     }
 
     public function addMoreTaskInCheckout(){
-        $auth_user_tasks = Taskmaster::whereRaw("FIND_IN_SET(".Auth::user()->id.", alloted_to)")->where('status','!=',3)->select('id','task_name','priority','task_code','alloted_to','deadline_date')->get();
+        $standup = DailyStandup::where('date',date('Y-m-d'))->where('user_id',Auth::user()->id)->whereNotNull('checkin')->first();
+        $auth_user_tasks = Taskmaster::whereRaw("FIND_IN_SET(".Auth::user()->id.", alloted_to)")->where('status','!=',3)->whereNotIn('id',explode(',',$standup->checkin))->select('id','task_name','priority','task_code','alloted_to','deadline_date')->get();
         return view('daily_standup.add_more_task_in_checkout',compact('auth_user_tasks'));
+    }
+
+    public function addMoreTaskInCheckoutStore(Request $request){
+        $standup = DailyStandup::where('date',date('Y-m-d'))->where('user_id',Auth::user()->id)->whereNotNull('checkin')->first();
+        $checkin = explode(',',$standup->checkin);
+        $selectedTask = explode(',',$request->selectedTask);
+        $allTasksInCheckout = array_merge($checkin,$selectedTask);
+
+        $auth_user_tasks = Taskmaster::whereIn('id',$allTasksInCheckout)->select('id','task_name','priority','task_code','alloted_to','deadline_date')->orderBy('priority','ASC')->get();
+        return view('daily_standup.extra_tasks_checkout',compact('auth_user_tasks'));
     }
 
     public function dailyStandupCheckin(Request $request){

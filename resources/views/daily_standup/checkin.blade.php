@@ -49,215 +49,206 @@
     }
 
     .round {
-            position: relative;
-            width: 5%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+        position: relative;
+        width: 5%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-        .round label {
-            background-color: #fff;
-            /* border: 1px solid #ccc; */
-            border: 1px solid #f5baf3;
-            border-radius: 50%;
-            cursor: pointer;
-            height: 28px;
-            left: 25%;
-            position: absolute;
-            top: 31%;
-            width: 28px;
-        }
+    .round label {
+        background-color: #fff;
+        /* border: 1px solid #ccc; */
+        border: 1px solid #f5baf3;
+        border-radius: 50%;
+        cursor: pointer;
+        height: 28px;
+        left: 25%;
+        position: absolute;
+        top: 31%;
+        width: 28px;
+    }
 
-        .round label:after {
-            border: 2px solid #fff;
-            border-top: none;
-            border-right: none;
-            content: "";
-            height: 6px;
-            left: 8px;
-            color: black;
-            opacity: 0;
-            position: absolute;
-            top: 10px;
-            transform: rotate(-45deg);
-            width: 12px;
-        }
+    .round label:after {
+        border: 2px solid #fff;
+        border-top: none;
+        border-right: none;
+        content: "";
+        height: 6px;
+        left: 8px;
+        color: black;
+        opacity: 0;
+        position: absolute;
+        top: 10px;
+        transform: rotate(-45deg);
+        width: 12px;
+    }
 
-        .round input[type="checkbox"] {
-            visibility: hidden;
-        }
+    .round input[type="checkbox"] {
+        visibility: hidden;
+    }
 
-        .round input[type="checkbox"]:checked+label {
-            /* background-color: #358bd7; */
-            border: none
-            ;
-            background: linear-gradient(310deg, #7928ca, #ff0080);
-            /* border-color: #dc71e6; */
-        }
+    .round input[type="checkbox"]:checked+label {
+        border: none;
+        background: linear-gradient(310deg, #7928ca, #ff0080);
+    }
 
-        .round input[type="checkbox"]:checked+label:after {
-            opacity: 1;
-        }
+    .round input[type="checkbox"]:checked+label:after {
+        opacity: 1;
+    }
 
-        .taskpriority {
-            width: 94%;
-            /* padding-bottom: 30px; */
-            margin: 30px auto;
-            border-radius:20px;
-            border: 1px solid rgb(229, 213, 233);
-            box-shadow: 7px 7px 20px -2px rgb(213, 214, 219);
-        }
-  
+    .taskpriority {
+        width: 94%;
+        /* padding-bottom: 30px; */
+        margin: 30px auto;
+        border-radius:20px;
+        border: 1px solid rgb(229, 213, 233);
+        box-shadow: 7px 7px 20px -2px rgb(213, 214, 219);
+    }
 
-        .firsttask {
-            width: 100%;
-            margin: 10px auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
 
-        .upperpriority {
-            width: 100%;
-            margin: 0px auto;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            /* border-bottom: 2px solid rgb(213, 173, 214); */
-            box-shadow: 0 8px 6px -7px rgb(187, 190, 194);
-        }
-        .upperpriority h3{
-            margin-bottom: 25px;
-            font-size: 1.4rem;
-            font-weight: 600;
-            margin-top: 10px;
-        }
+    .firsttask {
+        width: 100%;
+        margin: 10px auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
 
-        .secondtask {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin-top: 40px;
-           
-        }
+    .upperpriority {
+        width: 100%;
+        margin: 0px auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        /* border-bottom: 2px solid rgb(213, 173, 214); */
+        box-shadow: 0 8px 6px -7px rgb(187, 190, 194);
+    }
+    .upperpriority h3{
+        margin-bottom: 25px;
+        font-size: 1.4rem;
+        font-weight: 600;
+        margin-top: 10px;
+    }
 
-        .itimage {
-            width: 18%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-right: 24px;
-        }
+    .secondtask {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-top: 40px;
+    }
 
-        .workable {
-            display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    width: 42px !important;
-    height: 42px;
-    margin: 12px 0px;
-    overflow: hidden;
-    border: 2px solid #eda528;
-}
+    .itimage {
+        width: 18%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding-right: 24px;
+    }
 
-        .workable img {
-            width: 100%;
-        }
+    .workable {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        width: 42px !important;
+        height: 42px;
+        margin: 12px 0px;
+        overflow: hidden;
+        border: 2px solid #eda528;
+    }
 
-        .innertask {
-            width: 93%;
-            margin: 0 auto;
-            display: flex;
-            box-shadow: 0 3px 3px -3px rgb(187, 190, 194);
-            transition: all 600ms ease;
-            cursor: pointer;
-        }
-        .innertask:hover{
-transform: scale(1.04);
-/* border: 1px solid blueviolet; */
-        } 
+    .workable img {
+        width: 100%;
+    }
 
-        .paracard {
-            width: 78%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+    .innertask {
+        width: 93%;
+        margin: 0 auto;
+        display: flex;
+        box-shadow: 0 3px 3px -3px rgb(187, 190, 194);
+        transition: all 600ms ease;
+        cursor: pointer;
+    }
 
-        .taskname {
-            width: 65%;
-            margin: 10px auto;
-            text-align: left;
-            font-size: 0.97rem;
-        }
+    .innertask:hover{
+        transform: scale(1.04);
+    } 
 
-        .paracard span {
-    width: 12%;
-    margin: 10px auto;
-    text-align: center;
-    background: linear-gradient(310deg, #7928ca, #ff0080);
-    height: 28px;
-    padding-top: 3px;
-    border-radius: 15px;
-    color: white;
-    font-size: 0.85rem;
-        }
+    .paracard {
+        width: 78%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-        .datetask {
-            width: 14%;
-            margin: 10px auto;
-            text-align: end;
-            font-size: 0.94rem;
-            color: #cb800b;
-        }
-        .extraimg{
-            margin-left: -6px;
-        }
+    .taskname {
+        width: 65%;
+        margin: 10px auto;
+        text-align: left;
+        font-size: 0.97rem;
+    }
+
+    .paracard span {
+        width: 12%;
+        margin: 10px auto;
+        text-align: center;
+        background: linear-gradient(310deg, #7928ca, #ff0080);
+        height: 28px;
+        padding-top: 3px;
+        border-radius: 15px;
+        color: white;
+        font-size: 0.85rem;
+    }
+
+    .datetask {
+        width: 14%;
+        margin: 10px auto;
+        text-align: end;
+        font-size: 0.94rem;
+        color: #cb800b;
+    }
+    .extraimg{
+        margin-left: -6px;
+    }
  
 
-        .checkbutton{
-width: 100%;
-display: flex;
-align-items: center;
-justify-content: center;
-margin: 40px auto ;
-margin-bottom: 10px;
-}
+    .checkbutton{
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 40px auto ;
+        margin-bottom: 10px;
+    }
 
+    .pulse-button {
+        width: 27%;
+        height: 40px;
+        font-size: 1rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        text-align: center;
+        /* line-height: 100px; */
+        color: white;
+        border: none;
+        border-radius: -1px;
+        background: rgb(237 211 9);
+        background: linear-gradient(310deg, #7928ca, #ff0080);
+        color: white;
+        cursor: pointer;
+        box-shadow: 5px 5px 20px -4px #babae1;
+        transition: all 600ms ease;
+        border-radius:10px;
+    }
 
-
-        
-
-
-.pulse-button {
-    width: 27%;
-    height: 40px;
-    font-size: 1rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    text-align: center;
-    /* line-height: 100px; */
-    color: white;
-    border: none;
-    border-radius: -1px;
-    background: rgb(237 211 9);
-    background: linear-gradient(310deg, #7928ca, #ff0080);
-    color: white;
-    cursor: pointer;
-    box-shadow: 5px 5px 20px -4px #babae1;
-    transition: all 600ms ease;
-    border-radius:10px;
-}
-
-.pulse-button:hover {
-  transform: scale(1.05);
-}
+    .pulse-button:hover {
+        transform: scale(1.05);
+    }
 
 
 </style>
@@ -270,11 +261,6 @@ margin-bottom: 10px;
   @csrf
         <div class="firsttask">
             <div class="upperpriority">
-               
-                <!-- <div class="card-header pb-0 px-3">
-                    <h5 class="mb-0" style="text-align:center">Daily Standup Of &nbsp;<span class="badge badge-primary" style="background: linear-gradient(to right, #f953c6, #b91d73);">{{ date('M d,Y') }}</span></h5>
-                    
-                </div> -->
                 <h3>On which task you are going to work today?</h3>
             </div>
             <div class="secondtask">
