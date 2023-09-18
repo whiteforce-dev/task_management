@@ -9,4 +9,9 @@ class CheckoutDetails extends Model
 {
     use HasFactory;
     protected $table = 'checkout_details';
+
+    public function GetTask()
+    {
+        return $this->belongsTo('App\Models\Taskmaster', 'task_id');
+    } 
 }

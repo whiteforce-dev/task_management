@@ -75,8 +75,7 @@
                     <strong>Account List!</strong>
                     @if(Auth::user()->type == 'admin')
                     <a href="{{ url('account-create') }}" class="btn bg-gradient-primary btn-sm mb-0" type="button"
-                        style="float:right;">+&nbsp; New
-                        User</a>
+                        style="float:right;">+&nbsp; New Account</a>
                     @endif
                 </span>
             </div>

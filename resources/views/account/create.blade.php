@@ -32,7 +32,7 @@
         <div class="container-fluid py-4">
             <div class="card">
                 <div class="card-header pb-0 px-3">
-                    <h6 class="mb-0">{{ __('Task Details') }}</h6>
+                    <h6 class="mb-0">{{ __('Account Details') }}</h6>
                 </div>
                 <div class="card-body pt-4 p-3">
                     <form action="{{ url('create-account') }}" method="POST" role="form text-left" enctype="multipart/form-data" id="createdaccount">

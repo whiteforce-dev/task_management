@@ -80,16 +80,14 @@
     .right-msg .msg-img {
         margin: 0 0 0 10px;
     }
-    .modal-content{
-    overflow: auto; /* or overflow: scroll; */
-    height: 100%; /* Set an appropriate height */
-    overflow-X:hidden;
-    
+    .modal-content {
+    /* overflow-y:auto; */
+    /* height: 800px; Set a value that makes sense for your design */
     }
 </style>
 
-<div class="modal-dialog modal-xl" >
-    <div class="modal-content">
+<div class="modal-dialog modal-xl" style="max-height:calc(100vh - 56px);">
+    <div class="modal-content" style="max-height:calc(100vh - 56px);" >
         <!-- Modal Header -->
         <div class="modal-header">
             <h6 class="modal-title">Remark </h6>
@@ -97,7 +95,7 @@
         </div>
 
         <!-- Modal body -->
-        <div class="modal-body" id="response">
+        <div class="modal-body" id="response" style="overflow-x:hidden; overflow-y: auto;height: 700px;">
             @foreach ($remarks as $i => $remark)
                 @php
                     $managerData = \App\Models\User::where('id', $remark->userid)->first();
@@ -115,7 +113,7 @@
                                     <div class="msg-info-name">{{ ucfirst($managerData->name) }}</div>
                                     <div class="msg-info-time">{{ $remark->created_at->format('d-m-y h:i A') }}</div>
                                 </div>
-                                <div class="msg-text">{{ $remark->remark }}</div>
+                                <div class="msg-text"><pre>{{ $remark->remark }}</pre></div>
                                 <div id="response1"></div>
                             </div>
                             @endif
@@ -132,7 +130,7 @@
                                 <div class="msg-info-name">{{ ucfirst($remark->GetUser->name) }}</div>
                                 <div class="msg-info-time">{{ $remark->created_at->format('d-m-y h:i A') }}</div>
                             </div>
-                            <div class="msg-text"> {{ $remark->remark }}   </div>                     
+                            <div class="msg-text"> <pre>{{ $remark->remark }}</pre> </div>                     
                         </div>
                         @endif
                     </div>                                        
@@ -152,15 +150,15 @@
                 </div>
             </div>
         </form>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
-        </div>
+
+       
     </div>
 </div>
 
 <script>
 
     $(document).ready(function() {
+
         $('#myForm').submit(function(e) {
             e.preventDefault();
             let inputValue = $("#myForm textarea")[0].value;
@@ -178,10 +176,11 @@
                                     <div class="msg-info-name">{{ Auth::user()->name }}</div>
                                     <div class="msg-info-time">{{ date('d-m-y H:i:s'); }}</div>
                                 </div>
-                                <div class="msg-text"> ${inputValue} </div>                              
+                                <div class="msg-text"> <pre>${inputValue}</pre> </div>                              
                             </div>
                         </div></div>`;
                     $("#response").append(html)
+                    scrollBottom()
                 },
                 error: function(response) {
                     // Handle errors

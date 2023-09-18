@@ -26,25 +26,19 @@
             </div>
 
             <div class="low-box" style="position:relative;height:95px;overflow:hidden;">
-            <span onclick="this.parentElement.style.height='max-content'" style="cursor:pointer;position:absolute;right:20px;bottom:0;font-size:14px;font-weight:bold;">
-               Read More
+            <span onclick="this.parentElement.style.height='max-content'" style="cursor:pointer;position:absolute;right:20px;bottom:0;font-size:14px;font-weight:bold;">Read More
             </span>
                 <h3></h3>
                     Description</h3>
                     <?php $taskDetails = mb_strimwidth($task->task_details ?? 'null', 0, 150, '...'); ?>
-                <pre>{{ $taskDetails }}</pre>
+                <pre>{{ $task->task_details }}</pre>
             </div>
 
             <div class="low-box">
                 <h3><i class="fa-solid fa-user-tag" style="margin-right: 5px; color:#cb0c9f;"></i>MyRemark</h3>
                 <?php $remarks = mb_strimwidth($task->GetEmployee->remark ?? 'null', 0, 120, '...'); ?>
                 <p>{{ $remarks ?? 'na' }}
-                    @if (Auth::user()->type == 'employee')
-                        <a href="javascript:"
-                            onclick="managerRemark('{{ url('managerremark' . '?id=' . $task->id) }}')">
-                            <span style="float:right;color: #242527;font-weight: 600;font-family: Poppins, sans-serif">Add Remark</span>
-                    @endif
-                    </a>
+                   
                 </p>
             </div>
             <div class="low-box">
@@ -58,14 +52,14 @@
                     <?php $text = mb_strimwidth($task->Getparent->remark ?? 'null', 0, 120, '...'); ?>
                     @endif
                 {{ $text }}
-                <p>
+                <!-- <p>
                     @if (Auth::user()->type !== 'employee')
                         <a href="javascript:"
                             onclick="managerRemark('{{ url('managerremark' . '?id=' . $task->id) }}')">
                            <span style="float:right;color: #242527;font-weight: 600;font-family: Poppins, sans-serif">Add Remark</span>
                         </a>
                     @endif
-                </p>
+                </p> -->
             </div>
         </div>
         <div class="short-width" style="width: 30%;">
@@ -83,7 +77,7 @@
                         style="display: flex; align-items: center; justify-content: center; text-align: center;">Action
                         <i style="font-size:0.75rem; margin-left: 5px;" class="fa-solid fa-chevron-down"></i></button>
                         <div class="dropdown-content">
-                        @if(Auth::user()->id == $task->alloted_by)
+                        @if(Auth::user()->id == $task->alloted_by || Auth::user()->type == 'admin')
                         <a onclick="EditTask('{{ url('task-edit-page' . '?id=' . $task->id) }}')"
                             class="dropdown-item border-radius-md" href="javascript:;">Edit Task
                         </a>
@@ -91,11 +85,9 @@
                         <a href="{{ url('task-delete', $task->id) }}"
                             class="dropdown-item border-radius-md">Delete
                         </a>
-                        @elseif(Auth::user()->type == 'admin')
-                        <a onclick="EditTask('{{ url('task-edit-page' . '?id=' . $task->id) }}')"
-                            class="dropdown-item border-radius-md" href="javascript:;">Edit Task
-                        </a>
                         @endif
+                        <a href="javascript:"
+                            onclick="managerRemark('{{ url('managerremark' . '?id=' . $task->id) }}')" class="dropdown-item border-radius-md" href="javascript:;">Remarks</a>
                         <a onclick="statushistory('{{ url('statushistory' . '?id=' . $task->id) }}')"
                             class="dropdown-item border-radius-md" href="javascript:;">Status History
                         </a>
@@ -106,13 +98,13 @@
 
             <div class="box-one">
                 <i class="fa-solid fa-circle"
-                    style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Created Date &nbsp;&nbsp; :
+                    style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Created Date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :
                 </span>
                 <P>{{ \Carbon\Carbon::parse($task->created_at)->format('d-m-Y') }}</P>
             </div>
             <div class="box-one">
                 <i class="fa-solid fa-circle"
-                    style="margin-right:10px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Priority  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;:
+                    style="margin-right:10px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Priority  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
                 </span>
                 @if ($task->priority == '1')
                     <P class="priorty" style="background-color: #900; color:#fff;">
@@ -131,7 +123,7 @@
             </div>
             <div class="box-one" style="position: relative;">
                 <i class="fa-solid fa-circle"
-                    style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i> <span>Deadline Date &nbsp; :
+                    style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i> <span>Deadline Date &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;:
                 </span>
                 <p style="margin-left: 0px;">
                     {{ \Carbon\Carbon::parse($task->deadline_date)->format('d-m-Y') }} </p>
@@ -143,7 +135,7 @@
 
                 @if ($task->status !== 3)
                 @if ($currentDate > $deadlineDate)
-                    <div class="dott" style="position: absolute; right:-21px; top:0;">
+                    <div class="dott" style="position: absolute; right:-10px; top:0;">
                         {{ $daysDifference }}</div>
                 @endif
                 @endif
@@ -152,34 +144,38 @@
             </div>
             <div class="box-one">
                 <i class="fa-solid fa-circle"
-                    style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i> <span>Complete Date :
+                    style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i> <span>Completed Date&nbsp; :
                 </span>
                 @if ($task->status == 3)
                     <P>{{ \Carbon\Carbon::parse($task->end_date)->format('d-m-Y') }}</P>
                 @else<p>Null</p>
                 @endif
             </div>
-            <?php $alloted_to_ids = explode(',', $task->alloted_to); ?>
-            @if(isset($alloted_to_ids[1]))
-            <div class="box-shiv" style="position: relative; margin-left:13px;">
+            <div class="box-one">
                 <i class="fa-solid fa-circle"
-                    style="margin-right: 8px; color:#cb0c9f; font-size: 0.5rem;"></i>
-                    <span>Alloted By  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;:</span>   
-                    &nbsp; &nbsp;@foreach ($alloted_to_ids as $alloted_to)
-                            <?php $usersname = \App\Models\User::where('id', $alloted_to)->value('name');  
-                            $name = mb_strimwidth($usersname,0,10,);?>                                                                 
-                            <span style="color:#1a1d29; font-size:0.9rem; font-weight:300 !important;">{{ $name ?? 'N/A' }},  </span>                                            
-                        @endforeach
-                        
+                    style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i> <span>Total Hours&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :
+                </span>
+                @php
+                $spent_hours = \App\Models\CheckoutDetails::where('task_id',$task->id)->pluck('hours')->toArray();
+                $spent_mins = \App\Models\CheckoutDetails::where('task_id',$task->id)->pluck('minutes')->toArray();
+                $total_spent_mins = array_sum($spent_mins);
+                @endphp
+                <P>{{ array_sum($spent_hours) + floor($total_spent_mins / 60) }}h {{  ($total_spent_mins % 60) }}m</P>
             </div>
-            @else 
-            <div class="box-one" style="position: relative;">
-                <i class="fa-solid fa-circle"
-                    style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i>
-                    <span>Alloted By  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;:</span>                     
-                    <p>{{ $usersname ?? 'N/A' }} </p>
-            </div>                                    
-            @endif
+            @php 
+            $alloted_to_ids = explode(',', $task->alloted_to);
+            $get_user_names_arr = \App\Models\User::whereIn('id', $alloted_to_ids)->pluck('name')->toArray();
+            $user_names = implode(',',$get_user_names_arr);
+            @endphp
+            
+            <div class="box-one" style="position: relative; margin-left:13px;">
+            <i class="fa-solid fa-circle"
+                    style="margin-right:10px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Allotted To  &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; :
+                </span>
+                <P>{{ $user_names ?? 'N/A' }}</P>                                                           
+                    
+            </div>
+            
 
             <div class="box-one"
                 style="width:90%; display:flex; align-items:center; justify-contect:center;">

@@ -12,12 +12,16 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\PipelineController;
+use App\Http\Controllers\StandupController;
 
 
 
 date_default_timezone_set("Asia/kolkata");
 Route::group(['middleware' => 'auth'], function ()
 	{
+		Route::get('/', function(){
+			return redirect('dashboard');
+		});
 		Route::get('dashboard', function () {
 			return view('dashboard');
 		})->name('dashboard');
@@ -79,19 +83,27 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::get('sendtask-email/{task_id}', [PipelineController::class, 'sendTaskEmail']);
 		Route::post('update-card-status/', [PipelineController::class, 'updateStatus']);
 		Route::get('pipeline-view', [PipelineController::class, 'pipelineView']);
+
+		Route::get('daily-standup', [StandupController::class, 'dailyStandup']);
+        Route::post('daily-standup-checkin', [StandupController::class, 'dailyStandupCheckin']);
+		Route::post('daily-standup-checkout', [StandupController::class, 'dailyStandupCheckout']);
+		Route::post('get-task-details-div', [StandupController::class, 'getTaskDetailsDiv']);
+		Route::get('daily-standup-calender', [StandupController::class, 'dailyStandupCalender']);
+		Route::get('daily-standup-report', [StandupController::class, 'dailyStandupReport']);
+		Route::post('daily-standup-report', [StandupController::class, 'dailyStandupReportData']);
+		Route::get('add-more-task-checkout', [StandupController::class, 'addMoreTaskInCheckout']);
+		Route::post('add-more-task-checkout', [StandupController::class, 'addMoreTaskInCheckoutStore']);
+		
 		Route::get('description-more', [TaskManagmentController::class, 'description_more']);
 		Route::get('right-model/{task_id}', [PipelineController::class, 'rightModel']);
 	});
 		Route::post('loginauth', [SessionsController::class, 'loginauth']);				
-
 	Route::group(['middleware' => 'guest'], function () 
 	{
-		Route::get('/', function(){
-			return redirect('/login');
-		});
+		
 	Route::get('/register', [RegisterController::class, 'create']);
 	Route::post('/register', [RegisterController::class, 'store']);
-	Route::get('/login', [SessionsController::class, 'create']);
+	Route::get('/login', [SessionsController::class, 'create'])->name('login');
 	Route::post('/session', [SessionsController::class, 'store']);
 	Route::get('/login/forgot-password', [ResetController::class, 'create']);
 	Route::post('/forgot-password', [ResetController::class, 'sendEmail']);

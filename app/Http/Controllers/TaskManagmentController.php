@@ -98,6 +98,9 @@ class TaskManagmentController extends Controller
         if(!empty($request->priority)){
             $tasklist = $tasklist->where('priority',$request->priority);
         }
+        if(!empty($request->task_code)){
+            $tasklist = $tasklist->where('task_code',$request->task_code);
+        }
         if(!empty($request->created_date)){
             $created_date = explode(' - ',$request->created_date);
             
