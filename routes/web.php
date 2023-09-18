@@ -96,8 +96,9 @@ Route::group(['middleware' => 'auth'], function ()
 		
 		Route::get('description-more', [TaskManagmentController::class, 'description_more']);
 		Route::get('right-model/{task_id}', [PipelineController::class, 'rightModel']);
+		Route::post('pipeline-card-search', [PipelineController::class, 'pipelineCardSearch']);
 	});
-		Route::post('loginauth', [SessionsController::class, 'loginauth']);				
+	Route::post('loginauth', [SessionsController::class, 'loginauth']);				
 	Route::group(['middleware' => 'guest'], function () 
 	{
 		
