@@ -15,7 +15,8 @@ class TeamAllotedController extends Controller
 {
     public function teamAllotted($id){
         $tl_id = $id;
-        $users = User::whereNotIn('id', [$id,1])->get();
+        $adminId = User::where('type', 'admin')->value('id');
+        $users = User::whereNotIn('id', [$id,$adminId])->get();
         return view('team-alloted.team-list',compact('users','tl_id'));
     }
     public function teamidSend(request $request, $tl_id){
