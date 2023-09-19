@@ -79,6 +79,7 @@
                                     @if(Auth::user()->type !== 'employee')                                  
                                     <th>Action</th>
                                     @endif
+                                    <th scope="col">Team</th> 
                                 </tr>
                             </thead>
                             <tbody>
@@ -105,6 +106,7 @@
                                                 </a>
                                             </span>
                                         </td>
+                                        <td><a href="{{ url('team-allotted', $user->id) }}" class="btn btn-primary btn-sm">Allotted</a></td>
                                         @endif
                                     </tr>
                                 @endforeach                                  

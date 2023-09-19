@@ -301,13 +301,16 @@
                     </tbody>
                 </table>
             </div>
-<hr>
+
+        <hr>
+        <div style=" height: 450px; overflow-y: auto; overflow-x: hidden;" id="response">            
             @foreach ($remarks as $i => $remark)
             @php
                 $managerData = \App\Models\User::where('id', $remark->userid)->first();
             @endphp               
-            <div class="row">                                                                              
-                <div class="msg left-msg mt-3">                     
+            <div class="row" >                                                  
+                <div class="msg left-msg mt-1">
+                    @if($remark->userid !== Auth::user()->id)
                     <div class="msg-img">
                         <img src="{{ url($managerData->image) }}" class="avatar avatar-lg me-3"
                             height="100" width="100" />
@@ -319,10 +322,11 @@
                         </div>
                         <div class="msg-text"><pre>{{ $remark->remark }}</pre></div>
                         <div id="response1"></div>
-                    </div>                    
-                </div> 
-
-                <div class="msg right-msg mt-3">                 
+                    </div>
+                    @endif
+                </div>                              
+                <div class="msg right-msg mt-1">
+                    @if($remark->userid == Auth::user()->id)
                     <div class="msg-img">
                         <img src="{{ url($managerData->image) }}" class="avatar avatar-lg me-3" height="100" width="100" />
                     </div>
@@ -332,25 +336,23 @@
                             <div class="msg-info-time">{{ $remark->created_at->format('d-m-y h:i A') }}</div>
                         </div>
                         <div class="msg-text"> <pre>{{ $remark->remark }}</pre> </div>                     
-                    </div>                  
-                </div> 
-
+                    </div>
+                    @endif
+                </div>                                        
             </div>                                    
-        @endforeach
-
-        <form id="myForm">@csrf
-            <div class="row">
-                <div class="col-sm-9" style="width: 90%; margin-top:20px;">
+         @endforeach
+        </div>
+         <form id="myForm">@csrf
+            <div class="row" >
+                <div class="col-sm-10" style="margin-top:20px;">
                     <textarea name="manager_comments" cols="" rows="" class="form-control" placeholder="Please enter comments..."></textarea>
                     <input type="hidden" value="{{ $task->id }}" name="task_id" id="task_id">
                 </div>             
-                <div class="col-sm-1" style="width: 10% ;margin-top:20px;">
+                <div class="col-sm-1" style="margin-top:20px;">
                     <button type="submit" class="btn btn-primary" style="margin-top: 12px;">Send</button>
                 </div>
             </div>
-        </form>
-    
-        </div>
+         </form>  
     </div>
 </div>  
    
@@ -373,7 +375,7 @@
                                     <div class="msg-info-name">{{ Auth::user()->name }}</div>
                                     <div class="msg-info-time">{{ date('d-m-y H:i:s'); }}</div>
                                 </div>
-                                <div class="msg-text"> <pre>${inputValue}</pre> </div>                              
+                                <div class="msg-text"> <pre>${inputValue}   </pre> </div>                              
                             </div>
                         </div></div>`;
                     $("#response").append(html)
@@ -387,6 +389,12 @@
         });
     });
 </script>
+
+
+
+
+
+
 
     
 

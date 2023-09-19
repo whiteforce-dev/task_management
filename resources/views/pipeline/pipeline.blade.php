@@ -105,9 +105,7 @@
                         style="margin-top:30px;margin-left:20px">Reset</a>
                 </div>
          </div>
-
-           
-                            
+                         
             <div id="searchResults">
                 @include('pipeline/pipelineSearch')
             </div>
@@ -181,6 +179,8 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.min.js"></script>
+
+    
  {{-- searching ajax --}}
 
         <script>
