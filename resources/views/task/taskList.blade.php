@@ -121,7 +121,7 @@
             <div id="searchResults">
                 @include('task/searchTaskResult')
             </div>
-            {{ $tasklist->links() }}
+        
         </div>
       
     </main>
