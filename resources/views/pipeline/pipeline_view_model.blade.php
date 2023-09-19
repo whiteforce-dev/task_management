@@ -247,7 +247,9 @@
     <div class="modal-content">
         <!-- Modal Header -->
         <div class="modal-header text-white" style="background-color:#d70bbe; ">
-            <h4 class="modal-title" style="color: white; font-size: 1.2rem !important; font-weight:500; ">({{ ucfirst($task->task_code) }}){{ ucfirst($task->task_name) }}</h4>
+            <h4 class="modal-title" style="color: white; font-size: 1.2rem !important; font-weight:500; ">
+            <span class="badge badge-primary" style="background: #efeeee;color: #d70bbe;">{{ ucfirst($task->task_code) }}</span>
+            &nbsp;&nbsp;{{ ucfirst($task->task_name) }}</h4>
             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
 

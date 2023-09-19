@@ -209,26 +209,33 @@
         </div>
         @foreach($data as $key => $value)
         @php
-        if(!empty($value[$array_key])){
-            if(!empty($value[$array_key]['checkin']))
-            $checkin_tasks = App\Models\Taskmaster::whereIn('id',explode(',',$value[$array_key]['checkin']))->select('id','task_code','task_name')->get();
-            $total_hours = 0;
-            $total_minutes = 0;
+        $check_sunday = Carbon\Carbon::parse($key)->dayOfWeek;
+        if($check_sunday != 0){
+            if(!empty($value[$array_key])){
+                if(!empty($value[$array_key]['checkin']))
+                $checkin_tasks = App\Models\Taskmaster::whereIn('id',explode(',',$value[$array_key]['checkin']))->select('id','task_code','task_name')->get();
+                $total_hours = 0;
+                $total_minutes = 0;
 
-            if(!empty($value[$array_key]['checkout'])){
-                $checkout_tasks = collect(App\Models\CheckoutDetails::whereIn('id',explode(',',$value[$array_key]['checkout']))->with('GetTask:id,task_code,task_name')->get());
-                $total_hours = $checkout_tasks->sum('hours');
-                $total_minutes = $checkout_tasks->sum('minutes');
+                if(!empty($value[$array_key]['checkout'])){
+                    $checkout_tasks = collect(App\Models\CheckoutDetails::whereIn('id',explode(',',$value[$array_key]['checkout']))->with('GetTask:id,task_code,task_name')->get());
+                    $total_hours = $checkout_tasks->sum('hours');
+                    $total_minutes = $checkout_tasks->sum('minutes');
+                }
+                $array_key++;
+                $lowerbox_bgcolor = '';
+            } else{
+                $checkin_tasks = [];
+                $checkout_tasks = [];
+                $total_hours = 0;
+                $total_minutes = 0;
+                $lowerbox_bgcolor = 'background:#fdede8';
             }
-            $array_key++;
-        } else{
-            $checkin_tasks = [];
-            $checkout_tasks = [];
-            $total_hours = 0;
-            $total_minutes = 0;
+        } else {
+            $lowerbox_bgcolor = 'background:#9bffed';
         }
         @endphp
-        <div class="lowerbox">
+        <div class="lowerbox" style="{{ $lowerbox_bgcolor }}">
             <div class="middlebox">
                 <div class="serialpage">
                     <p> <span>S. No. : </span> {{ $s_no ++ }} </p>  
@@ -241,7 +248,11 @@
                     <p><span>Total Hours : </span> {{ $total_hours + floor($total_minutes/60) }}h {{ $total_minutes % 60 }}m</p>
                 </div>
             </div>
-            @if(!empty($checkin_tasks) || !empty($checkout_tasks))
+            @if($check_sunday === 0)
+            <div style="text-align: center !important;color: #749c95;font-weight: 600;">
+                SUNDAY
+            </div>
+            @elseif(!empty($checkin_tasks) || !empty($checkout_tasks))
             <div class="lowertask">
                 <div class="firstcheck">
                     <div class="checkpara boomline">
@@ -262,8 +273,8 @@
                 </div>
             </div>
             @else
-            <div style="text-align:center !important;color:red">
-                Absent
+            <div style="text-align: center !important;color: #fa896b;font-weight: 600;">
+                ABSENT
             </div>
             @endif
         </div>
