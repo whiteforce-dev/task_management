@@ -13,8 +13,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\PipelineController;
 use App\Http\Controllers\StandupController;
-
-
+use App\Http\Controllers\TeamAllotedController;
 
 date_default_timezone_set("Asia/kolkata");
 Route::group(['middleware' => 'auth'], function ()
@@ -97,6 +96,8 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::get('description-more', [TaskManagmentController::class, 'description_more']);
 		Route::get('right-model/{task_id}', [PipelineController::class, 'rightModel']);
 		Route::post('pipeline-card-search', [PipelineController::class, 'pipelineCardSearch']);
+		Route::get('team-allotted/{id}', [TeamAllotedController::class, 'teamaAllotted']);
+		Route::Post('teamid-send/{id}', [TeamAllotedController::class, 'teamidSend']);
 	});
 	Route::post('loginauth', [SessionsController::class, 'loginauth']);				
 	Route::group(['middleware' => 'guest'], function () 

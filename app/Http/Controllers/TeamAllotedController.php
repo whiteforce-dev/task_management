@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 class TeamAllotedController extends Controller
 {
-    public function teamAllotted($id){
+    public function teamaAllotted($id){
         $tl_id = $id;
         $adminId = User::where('type', 'admin')->value('id');
         $users = User::whereNotIn('id', [$id,$adminId])->get();
@@ -21,7 +21,7 @@ class TeamAllotedController extends Controller
     }
     public function teamidSend(request $request, $tl_id){
         $alottedteams = new TeamAlloted();
-        $alottedteams->tl_id = $request['tl_id'];
+        $alottedteams->tl_id = $tl_id;
         $teamId = implode(',', $request['teamIds']);
         $alottedteams->team_id = $teamId;
         $alottedteams->save();

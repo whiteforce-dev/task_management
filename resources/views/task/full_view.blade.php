@@ -88,13 +88,10 @@
 
 <div class="modal-dialog modal-xl" style="max-height:calc(100vh - 56px);">
     <div class="modal-content" style="max-height:calc(100vh - 56px);" >
-        <!-- Modal Header -->
         <div class="modal-header">
             <h6 class="modal-title">Remark </h6>
             <button type="button" class="btn-close" data-bs-dismiss="modal">&#10060;</button>
         </div>
-
-        <!-- Modal body -->
         <div class="modal-body" id="response" style="overflow-x:hidden; overflow-y: auto;height: 700px;">
             @foreach ($remarks as $i => $remark)
                 @php
