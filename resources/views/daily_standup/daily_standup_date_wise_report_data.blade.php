@@ -33,13 +33,28 @@
     border: 1px solid #f7e0f2;
 }
 .firstcheck{
-    width: 45%;
+    width: 50%;
     margin: 0px auto;
     border-right: 1px solid #f5e3f0;
     font-family: Poppins, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.userimg{
+    width: 12%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-left: 5px;
+}
+.userimg img{
+    width: 100%;
 }
 .timerallot{
-    width: 55%;
+    width: 50% !important;
     margin: 0px auto;
     font-family: Poppins, sans-serif;
 }
@@ -130,12 +145,12 @@
     font-family: Poppins, sans-serif !important;
 }
 .checkpara{
-    width: 100%;
+    width: 88%;
     font-family: Poppins, sans-serif;
 }
                 
 .checkpara p{
-    width: 90%;
+    width: 93%;
     margin: 5px auto;
     font-size: 0.88rem;
     font-family: Poppins, sans-serif;
@@ -193,6 +208,63 @@
     border-radius: 3px;
     font-family: Poppins, sans-serif;
 }
+.actionform{
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+.actionbtn{
+    width:33%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+.actionbtn button{
+    width:70%;
+    margin:10px auto;
+    width: 70%;
+    margin: 10px auto;
+    border: none;
+    background-color: #5ddfa3;
+    color: #1c1d1e;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+.rejectbtn{
+    width:33%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.rejectbtn button{
+    width:70%;
+    margin:10px auto;
+    border: none;
+    background-color: #db1278;
+    color: #f9f9f9;
+    font-weight: 500;
+    font-size: 0.95rem;
+} 
+.totalhourshow{
+    width:33%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+} 
+.totalhourshow p{
+    width: 77%;
+    text-align: center;
+    margin: 10px auto;
+    border: none;
+    background-color: #ffd280;
+    color: #1c1d1e;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+
 </style>
 
 
@@ -244,6 +316,9 @@
             @if(!empty($checkin_tasks) || !empty($checkout_tasks))
             <div class="lowertask">
                 <div class="firstcheck">
+                    <div class="userimg">
+                        <img src="{{url('assets/img/marie.jpg')}}" alt="">
+                    </div>
                     <div class="checkpara boomline">
                         @foreach($checkin_tasks as $in_task)
                         <p><i class="fa-solid fa-right-long"></i> {{$in_task->task_name}}</p>
@@ -251,7 +326,7 @@
                     </div>
                 </div>
                 <div class="timerallot">
-                    <div class="checkpara">
+                    <div class="checkpara" style="width:100%;">
                         @foreach($checkout_tasks as $out_task)
                         <div class="paraendtimer">
                             <p><i class="fa-solid fa-right-long"></i> {{$out_task->GetTask->task_name}}</p> 
@@ -262,7 +337,13 @@
                 </div>
             </div>
             @endif
+            <div class="actionform">
+                <div class="actionbtn"> <button>Accept</button> </div>
+                <div class="rejectbtn"><button>Reject</button></div>
+                <div class="totalhourshow"><p><span>Total Hours :</span> 4:45 minutes</p></div>
+            </div>
         </div>
+        
         @endforeach
         
     </div>
