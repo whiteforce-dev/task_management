@@ -136,4 +136,27 @@ class StandupController extends Controller
         return view('daily_standup.daily_standup_report_data',compact('data','datesInRange','s_no','array_key'));
 
     }
+
+    public function dailyStandupDateWiseReport(){
+        return view('daily_standup.daily_standup_date_wise_report');
+    }
+
+    public function dailyStandupDateWiseReportData(Request $request){
+        $date = !empty($request->date) ? $request->date : date('Y-m-d');
+        if(Auth::user()->type == 'admin'){
+            $all_users = User::where('software_catagory',Auth::user()->software_catagory)->pluck('id')->toArray();
+        } elseif(Auth::user()->type == 'manager'){
+            $all_users = User::where('software_catagory',Auth::user()->software_catagory)->where('parent_id',Auth::user()->id)->pluck('id')->toArray();
+        } else{
+            $is_team_lead = TeamAlloted::where('tl_id',Auth::user()->id)->first();
+            if(!empty($is_team_lead)){
+                $all_users = explode(',',$is_team_lead->team_id);
+            } else {
+                $all_users = [Auth::user()->id];
+            }
+        }
+
+        $dailyStandups = DailyStandup::with('user:id,name,image')->whereIn('user_id',$all_users)->where('date',$date)->get();
+        return view('daily_standup.daily_standup_date_wise_report_data',compact('dailyStandups')); 
+    }
 }

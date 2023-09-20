@@ -88,10 +88,12 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::post('daily-standup-checkout', [StandupController::class, 'dailyStandupCheckout']);
 		Route::post('get-task-details-div', [StandupController::class, 'getTaskDetailsDiv']);
 		Route::get('daily-standup-calender', [StandupController::class, 'dailyStandupCalender']);
-		Route::get('daily-standup-report', [StandupController::class, 'dailyStandupReport']);
-		Route::post('daily-standup-report', [StandupController::class, 'dailyStandupReportData']);
 		Route::get('add-more-task-checkout', [StandupController::class, 'addMoreTaskInCheckout']);
 		Route::post('add-more-task-checkout', [StandupController::class, 'addMoreTaskInCheckoutStore']);
+		Route::get('daily-standup-report', [StandupController::class, 'dailyStandupReport']);
+		Route::post('daily-standup-report', [StandupController::class, 'dailyStandupReportData']);
+		Route::get('daily-standup-date-wise-report', [StandupController::class, 'dailyStandupDateWiseReport']);
+		Route::post('daily-standup-date-wise-report', [StandupController::class, 'dailyStandupDateWiseReportData']);
 		
 		Route::get('description-more', [TaskManagmentController::class, 'description_more']);
 		Route::get('right-model/{task_id}', [PipelineController::class, 'rightModel']);

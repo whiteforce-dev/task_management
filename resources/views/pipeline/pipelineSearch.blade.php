@@ -145,7 +145,13 @@
                             onclick="pipelineView('{{ url('pipeline-view' . '?id=' . $completedtask->id) }}')">
                             <div class="uper">
                                 @php $taskname = mb_strimwidth($completedtask->task_name ?? 'null', 0, 20, '...'); @endphp
-                                <h5 class="badge badge-primary" style="background: white;color: #13deb9;font-size: 14px;padding-left: 15px;padding-right: 15px;font-weight:700;border: 1px solid;">{{ $completedtask->task_code }}</h5>
+                                <h5 class="badge badge-primary" style="background: white;
+    color: #22b59a;
+    font-size: 14px;
+    padding-left: 15px;
+    padding-right: 15px;
+    font-weight: 600;
+    box-shadow: 1px 1px 3px #acacc3;">{{ $completedtask->task_code }}</h5>
                                 <div class="dropdown">
                                     <button class="dropbtn"><i class="fa-solid fa-bars"></i></button>
                                     <div class="dropdown-content">
