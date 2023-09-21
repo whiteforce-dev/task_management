@@ -31,6 +31,7 @@
     width: 100%;
     margin: 10px 0;
     border: 1px solid #f7e0f2;
+    margin-bottom: 25px !important;
 }
 .firstcheck{
     width: 50%;
@@ -46,7 +47,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
+    border-radius: 21%;
     overflow: hidden;
     margin-left: 5px;
 }
@@ -213,6 +214,7 @@
     display:flex;
     align-items:center;
     justify-content:center;
+    margin-top:10px
 }
 .actionbtn{
     width:33%;
@@ -221,15 +223,22 @@
     justify-content:center;
 }
 .actionbtn button{
-    width:70%;
-    margin:10px auto;
-    width: 70%;
+    width: 98%;
+    box-shadow: 1px 1px 3px -1px #6d7376;
     margin: 10px auto;
     border: none;
-    background-color: #5ddfa3;
+    background-color: #b4edd3;
     color: #1c1d1e;
     font-weight: 500;
     font-size: 0.95rem;
+    border-radius: 10px;
+    font-family: Poppins, sans-serif;
+    height: 30px;
+    transition:all 600ms ease;
+}
+.actionbtn button:hover{
+    background-color: #29d184;
+    color: white;
 }
 .rejectbtn{
     width:33%;
@@ -239,14 +248,23 @@
 }
 
 .rejectbtn button{
-    width:70%;
-    margin:10px auto;
+    width: 98%;
+    margin: 10px auto;
     border: none;
-    background-color: #db1278;
-    color: #f9f9f9;
+    background-color: #f98186;
+    box-shadow: 1px 1px 3px -1px #8b9195;
+  color:  black;
     font-weight: 500;
     font-size: 0.95rem;
+    border-radius: 10px;
+    height: 30px;
+    font-family: Poppins, sans-serif;
+    transition:all 600ms ease;
 } 
+.rejectbtn button:hover{
+    background-color: #ed4141;
+    color:white;
+}
 .totalhourshow{
     width:33%;
     display:flex;
@@ -254,16 +272,26 @@
     justify-content:center;
 } 
 .totalhourshow p{
-    width: 77%;
+    width: 98%;
     text-align: center;
     margin: 10px auto;
     border: none;
-    background-color: #ffd280;
+    background-color: #f5e5c9;
+    box-shadow: 1px 1px 3px -1px #a59b9b;
     color: #1c1d1e;
     font-weight: 500;
     font-size: 0.95rem;
+    border-radius: 10px;
+    height: 30px;
+    padding-top:3px;
+    font-family: Poppins, sans-serif;
 }
 
+.alert-white{
+    width: 100% !important;
+    box-shadow: 2px 2px 8px -3px #a9b;
+    border-radius:15px;
+}
 
 </style>
 
