@@ -174,7 +174,8 @@ class TaskManagmentController extends Controller
             $team_id = User::where('id', Auth::user()->id)->orwhere('id', Auth::user()->parent_id)->orwhere('id', '1')->pluck('id')->toArray();
             $remarks = Remark::where('task_id', $request->id)->whereIn('userid', $team_id)->get();
         }
-        return view('task.full_view', compact('remarks', 'task_id'));
+        $users = User::where('software_catagory',Auth::user()->software_catagory)->get();
+        return view('task.full_view', compact('remarks', 'task_id','users'));
     }
 
     public function feedbackshow(Request $request)

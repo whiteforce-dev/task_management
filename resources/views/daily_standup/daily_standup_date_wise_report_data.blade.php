@@ -345,7 +345,7 @@
             <div class="lowertask">
                 <div class="firstcheck">
                     <div class="userimg">
-                        <img src="{{url('assets/img/marie.jpg')}}" alt="">
+                        <img src="{{url($value->user->image)}}" alt="">
                     </div>
                     <div class="checkpara boomline">
                         @foreach($checkin_tasks as $in_task)
@@ -366,9 +366,9 @@
             </div>
             @endif
             <div class="actionform">
-                <div class="actionbtn"> <button>Accept</button> </div>
-                <div class="rejectbtn"><button>Reject</button></div>
-                <div class="totalhourshow"><p><span>Total Hours :</span> 4:45 minutes</p></div>
+                <div class="actionbtn"> <button>Approve</button> </div>
+                <div class="rejectbtn"><button>Ask Question</button></div>
+                <div class="totalhourshow"><p><span>Total Spent Time :</span> {{ $total_hours + floor($total_minutes/60) }}h {{ $total_minutes % 60 }}m</p></div>
             </div>
         </div>
         

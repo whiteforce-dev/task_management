@@ -84,6 +84,7 @@
     /* overflow-y:auto; */
     /* height: 800px; Set a value that makes sense for your design */
     }
+    
 </style>
 
 <div class="modal-dialog modal-xl" style="max-height:calc(100vh - 56px);">
@@ -138,10 +139,17 @@
         <form id="myForm">
             @csrf
             <div class="row px-2">
-                <div class="col-sm-10" style="width: 90%">
+                <div class="col-sm-7" style="width: 60%">
                     <textarea name="manager_comments" cols="" rows="" class="form-control" placeholder="Please enter comments..."></textarea>
                     <input type="hidden" value="{{ $task_id }}" name="task_id" id="task_id">
-                </div>             
+                </div>  
+                <div class="col-sm-3" style="width: 30%">
+                    <select class="form-control select2" multiple data-live-search="true" name="alloted_to[]" id="alloted_to" data-placement="top">
+                        @foreach ($users as $user)
+                            <option value="{{ $user->id }}">{{ $user->name }}</option>
+                        @endforeach
+                    </select>
+                </div>           
                 <div class="col-sm-2" style="width: 7%">
                     <button type="submit" class="btn btn-primary" style="margin-top: 12px;">Send</button>
                 </div>
@@ -152,6 +160,12 @@
     </div>
 </div>
 
+
+<script>
+    $(document).ready(function() {
+        $('.select2').select2();
+    });
+</script>
 <script>
 
     $(document).ready(function() {

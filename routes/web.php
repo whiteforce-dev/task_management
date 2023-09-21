@@ -100,6 +100,8 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::post('pipeline-card-search', [PipelineController::class, 'pipelineCardSearch']);
 		Route::get('team-allotted/{id}', [TeamAllotedController::class, 'teamaAllotted']);
 		Route::Post('teamid-send/{id}', [TeamAllotedController::class, 'teamidSend']);
+
+		Route::get('send-notification', [StandupController::class, 'sendNotification']);
 	});
 	Route::post('loginauth', [SessionsController::class, 'loginauth']);				
 	Route::group(['middleware' => 'guest'], function () 
