@@ -12,6 +12,7 @@ use App\Models\Remark;
 use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use App\Notifications\UserMentioned;
 
 
 class StandupController extends Controller
@@ -158,5 +159,15 @@ class StandupController extends Controller
 
         $dailyStandups = DailyStandup::with('user:id,name,image')->whereIn('user_id',$all_users)->where('date',$date)->get();
         return view('daily_standup.daily_standup_date_wise_report_data',compact('dailyStandups')); 
+    }
+
+    public function sendNotification(){
+        $comment = "Hey @" . $user2->username . ", can you take a look at this?"; // Example comment
+        
+        $user1 = User::find(9); 
+        $user2 = User::find(10); 
+
+
+        $user2->notify(new UserMentioned());
     }
 }

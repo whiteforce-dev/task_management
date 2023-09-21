@@ -1,8 +1,4 @@
-<!DOCTYPE html>
-<link rel="stylesheet" href="{{ url('assets/css/editor.css') }}">
-<style>
-    
-</style>
+
 <div class="modal-dialog modal-lg">
     <div class="modal-content"  style="overflow-X:hidden; overflow-Y:visible;">
         <div class="modal-header">
@@ -17,7 +13,7 @@
               
               
               
-              <form action="{{ url('update-task', $task->id) }}" method="POST" enctype="multipart/form-data">
+              <form action="{{ url('update-task', $task->id) }}" method="POST" enctype="multipart/form-data" id="edittask">
                   @csrf
                   @if ($errors->any())
                   <div class="mt-3  alert alert-primary alert-dismissible fade show" role="alert">
@@ -185,9 +181,45 @@
         </div>
     </div>
 </div>
+<link rel="stylesheet" href="{{ url('assets/css/multiselect.css') }}">
+<link rel="stylesheet" href="{{ url('assets/css/multiselectdrop.css') }}">
 
-
-  </html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>
+<script src="{{ url('assets/jquery-validation/jquery.validate.min.js') }}"></script>
+<script>
+    $(document).ready(function() {
+        $('.selectpicker').selectpicker();
+    });
+</script>
+<script>
+    $(document).ready(function($) {
+        $("#edittask").validate({
+            rules: {
+                task_name: 'required',
+                alloted_to: 'required',
+                start_date: 'required',
+                deadline_Date: 'required',
+                task_details: 'required',
+                priority: 'required',
+            },
+            messages: {
+                task_name: '*Please Enter Task Name',
+                alloted_to: '*Please Select Alloted To',
+                start_date: '*Please Select Start Date',
+                deadline_Date: '*Please Select Deadline Date',
+                task_details: '*Please Select Task Details',
+                priority: '*Please Select Task Details ',
+            },
+            errorPlacement: function(error, element) {
+                error.insertAfter(element);
+            },
+            submitHandler: function(form) {
+                $("#createTaskBtn").prop( "disabled", true );
+                form.submit();
+            }
+        });
+    });
+</script>
 
 
 

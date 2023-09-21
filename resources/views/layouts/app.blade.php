@@ -36,6 +36,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,900&family=Rubik:wght@300;400;600;700&display=swap"
         rel="stylesheet" />
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://kit.fontawesome.com/66f2518709.js" crossorigin="anonymous"></script>
     
     <style>
@@ -71,6 +72,7 @@
     <script src="{{ url('assets/js/plugins/smooth-scrollbar.min.js') }}"></script>
     <script src="{{ url('assets/js/plugins/fullcalendar.min.js') }}"></script>
     <script src="{{ url('assets/js/plugins/chartjs.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     @stack('rtl')
     @stack('dashboard')
     <script>
