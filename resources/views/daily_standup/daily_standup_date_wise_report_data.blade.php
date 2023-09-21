@@ -50,6 +50,9 @@
     border-radius: 21%;
     overflow: hidden;
     margin-left: 5px;
+    height: 55px;
+    overflow-y: hidden;
+    margin-top: 12px;
 }
 .userimg img{
     width: 100%;
@@ -148,6 +151,7 @@
 .checkpara{
     width: 88%;
     font-family: Poppins, sans-serif;
+    margin-top: 12px;
 }
                 
 .checkpara p{
@@ -291,6 +295,10 @@
     width: 100% !important;
     box-shadow: 2px 2px 8px -3px #a9b;
     border-radius:15px;
+}
+.container-fluid{
+    padding-left:1rem;
+    padding-right:1rem;
 }
 
 </style>
