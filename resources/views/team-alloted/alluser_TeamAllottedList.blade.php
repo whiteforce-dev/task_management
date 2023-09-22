@@ -79,12 +79,13 @@
                                     @if(Auth::user()->type !== 'employee')                                  
                                     <th>Action</th>
                                     @endif
+                                    <th scope="col">Team</th> 
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($users as $i => $user)
                                     <tr>
-                                        <th scope="row">{{ ++$i }}</th>
+                                        <th scope="row">&nbsp;&nbsp;{{ ++$i }}</th>
                                         <td><img src="{{ url($user->image ?? 'NA') }}" class="avatar avatar-sm me-3"></td>
                                         <td>{{ ucfirst($user->name) }}</td>
                                         <td>{{ $user->email }}</td>
@@ -105,6 +106,7 @@
                                                 </a>
                                             </span>
                                         </td>
+                                        <td><a href="{{ url('team-allotted', $user->id) }}" class="btn btn-primary btn-sm">Allotted</a></td>
                                         @endif
                                     </tr>
                                 @endforeach                                  

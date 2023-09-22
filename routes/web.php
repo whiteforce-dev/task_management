@@ -101,6 +101,7 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::post('pipeline-card-search', [PipelineController::class, 'pipelineCardSearch']);
 		Route::get('team-allotted/{id}', [TeamAllotedController::class, 'teamaAllotted']);
 		Route::Post('teamid-send/{id}', [TeamAllotedController::class, 'teamidSend']);
+		Route::get('team-allotted-list', [TeamAllotedController::class, 'teamAllottedList']);
 
 		Route::get('notification-list', [NotificationController::class, 'notificationList']);
 		Route::post('mark-notification-as-read', [NotificationController::class, 'markNotificationAsRead']);

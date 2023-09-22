@@ -96,9 +96,7 @@
         </div>
         <div class="modal-body" id="response" style="overflow-x:hidden; overflow-y: auto;height: 700px;">
             @foreach ($remarks as $i => $remark)
-                @php
-                    $managerData = \App\Models\User::where('id', $remark->userid)->first();
-                @endphp               
+                @php $managerData = \App\Models\User::where('id', $remark->userid)->first(); @endphp               
                 <div class="row">                
                     <div class="col-sm-5">                     
                         <div class="msg left-msg mt-3">
@@ -157,8 +155,6 @@
                 </div>
             </div>
         </form>
-
-       
     </div>
 </div>
 
@@ -171,9 +167,7 @@
     });
 </script>
 <script>
-
     $(document).ready(function() {
-
         $('#myForm').submit(function(e) {
             e.preventDefault();
             let inputValue = $("#myForm textarea")[0].value;
