@@ -88,10 +88,12 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::post('daily-standup-checkout', [StandupController::class, 'dailyStandupCheckout']);
 		Route::post('get-task-details-div', [StandupController::class, 'getTaskDetailsDiv']);
 		Route::get('daily-standup-calender', [StandupController::class, 'dailyStandupCalender']);
-		Route::get('daily-standup-report', [StandupController::class, 'dailyStandupReport']);
-		Route::post('daily-standup-report', [StandupController::class, 'dailyStandupReportData']);
 		Route::get('add-more-task-checkout', [StandupController::class, 'addMoreTaskInCheckout']);
 		Route::post('add-more-task-checkout', [StandupController::class, 'addMoreTaskInCheckoutStore']);
+		Route::get('daily-standup-report', [StandupController::class, 'dailyStandupReport']);
+		Route::post('daily-standup-report', [StandupController::class, 'dailyStandupReportData']);
+		Route::get('daily-standup-date-wise-report', [StandupController::class, 'dailyStandupDateWiseReport']);
+		Route::post('daily-standup-date-wise-report', [StandupController::class, 'dailyStandupDateWiseReportData']);
 		
 		Route::get('description-more', [TaskManagmentController::class, 'description_more']);
 		Route::get('right-model/{task_id}', [PipelineController::class, 'rightModel']);
@@ -99,6 +101,8 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::get('team-allotted/{id}', [TeamAllotedController::class, 'teamaAllotted']);
 		Route::Post('teamid-send/{id}', [TeamAllotedController::class, 'teamidSend']);
 		Route::get('team-allotted-list', [TeamAllotedController::class, 'teamAllottedList']);
+
+		Route::get('send-notification', [StandupController::class, 'sendNotification']);
 	});
 	Route::post('loginauth', [SessionsController::class, 'loginauth']);				
 	Route::group(['middleware' => 'guest'], function () 

@@ -113,6 +113,8 @@
                     <span class="nav-link-text ms-1">Task List</span>
                 </a>
             </li>
+        
+           
          @if(Auth::user()->type == 'admin')         
          <li class="nav-item">
                 <a class="nav-link {{ Request::is('task-board') ? 'active' : '' }}" href="{{ url('task-board') }}">
@@ -140,6 +142,7 @@
                     <span class="nav-link-text ms-1">Task Board</span>
                 </a>
             </li>
+            @if(Auth::user()->type == 'admin')
             <li class="nav-item">
                 <a class="nav-link {{ Request::is('account section') ? 'active' : '' }}" href="{{ url('account-list') }}">
                     <div

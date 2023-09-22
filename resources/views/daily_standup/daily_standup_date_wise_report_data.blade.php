@@ -33,13 +33,28 @@
     border: 1px solid #f7e0f2;
 }
 .firstcheck{
-    width: 45%;
+    width: 50%;
     margin: 0px auto;
     border-right: 1px solid #f5e3f0;
     font-family: Poppins, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.userimg{
+    width: 12%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-left: 5px;
+}
+.userimg img{
+    width: 100%;
 }
 .timerallot{
-    width: 55%;
+    width: 50% !important;
     margin: 0px auto;
     font-family: Poppins, sans-serif;
 }
@@ -130,12 +145,12 @@
     font-family: Poppins, sans-serif !important;
 }
 .checkpara{
-    width: 100%;
+    width: 88%;
     font-family: Poppins, sans-serif;
 }
                 
 .checkpara p{
-    width: 90%;
+    width: 93%;
     margin: 5px auto;
     font-size: 0.88rem;
     font-family: Poppins, sans-serif;
@@ -193,6 +208,63 @@
     border-radius: 3px;
     font-family: Poppins, sans-serif;
 }
+.actionform{
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+.actionbtn{
+    width:33%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+.actionbtn button{
+    width:70%;
+    margin:10px auto;
+    width: 70%;
+    margin: 10px auto;
+    border: none;
+    background-color: #5ddfa3;
+    color: #1c1d1e;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+.rejectbtn{
+    width:33%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.rejectbtn button{
+    width:70%;
+    margin:10px auto;
+    border: none;
+    background-color: #db1278;
+    color: #f9f9f9;
+    font-weight: 500;
+    font-size: 0.95rem;
+} 
+.totalhourshow{
+    width:33%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+} 
+.totalhourshow p{
+    width: 77%;
+    text-align: center;
+    margin: 10px auto;
+    border: none;
+    background-color: #ffd280;
+    color: #1c1d1e;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+
 </style>
 
 
@@ -207,38 +279,31 @@
                 </div>
             </div>
         </div>
-        @foreach($data as $key => $value)
+        @foreach($dailyStandups as $key => $value)
         @php
-        $check_sunday = Carbon\Carbon::parse($key)->dayOfWeek;
-        if($check_sunday != 0){
-            if(!empty($value[$array_key])){
-                if(!empty($value[$array_key]['checkin']))
-                $checkin_tasks = App\Models\Taskmaster::whereIn('id',explode(',',$value[$array_key]['checkin']))->select('id','task_code','task_name')->get();
-                $total_hours = 0;
-                $total_minutes = 0;
+        if(!empty($value->checkin)){
+            $checkin_tasks = App\Models\Taskmaster::whereIn('id',explode(',',$value->checkin))->select('id','task_code','task_name')->get();
+            $total_hours = 0;
+            $total_minutes = 0;
 
-                if(!empty($value[$array_key]['checkout'])){
-                    $checkout_tasks = collect(App\Models\CheckoutDetails::whereIn('id',explode(',',$value[$array_key]['checkout']))->with('GetTask:id,task_code,task_name')->get());
-                    $total_hours = $checkout_tasks->sum('hours');
-                    $total_minutes = $checkout_tasks->sum('minutes');
-                }
-                $array_key++;
-                $lowerbox_bgcolor = '';
-            } else{
-                $checkin_tasks = [];
-                $checkout_tasks = [];
-                $total_hours = 0;
-                $total_minutes = 0;
-                $lowerbox_bgcolor = 'background:#fdede8';
+        if(!empty($value->checkout)){
+            $checkout_tasks = collect(App\Models\CheckoutDetails::whereIn('id',explode(',',$value->checkout))->with('GetTask:id,task_code,task_name')->get());
+            $total_hours = $checkout_tasks->sum('hours');
+            $total_minutes = $checkout_tasks->sum('minutes');
             }
-        } else {
-            $lowerbox_bgcolor = 'background:#9bffed';
+            
+        } else{
+            $checkin_tasks = [];
+            $checkout_tasks = [];
+            $total_hours = 0;
+            $total_minutes = 0;
+            
         }
         @endphp
-        <div class="lowerbox" style="{{ $lowerbox_bgcolor }}">
-            <div class="middlebox">
+        <div class="lowerbox">
+            <!-- <div class="middlebox">
                 <div class="serialpage">
-                    <p> <span>S. No. : </span> {{ $s_no ++ }} </p>  
+                    <p> <span>S. No. : </span> {{ ++ $key }} </p>  
                 </div>
                 <div class=" starthours">
                     <p> <span>Date : </span> {{ date('M d,Y',strtotime($key)) }}</p>
@@ -247,14 +312,13 @@
                 <div class="september">
                     <p><span>Total Hours : </span> {{ $total_hours + floor($total_minutes/60) }}h {{ $total_minutes % 60 }}m</p>
                 </div>
-            </div>
-            @if($check_sunday === 0)
-            <div style="text-align: center !important;color: #749c95;font-weight: 600;">
-                SUNDAY
-            </div>
-            @elseif(!empty($checkin_tasks) || !empty($checkout_tasks))
+            </div> -->
+            @if(!empty($checkin_tasks) || !empty($checkout_tasks))
             <div class="lowertask">
                 <div class="firstcheck">
+                    <div class="userimg">
+                        <img src="{{url($value->user->image)}}" alt="">
+                    </div>
                     <div class="checkpara boomline">
                         @foreach($checkin_tasks as $in_task)
                         <p><i class="fa-solid fa-right-long"></i> {{$in_task->task_name}}</p>
@@ -262,7 +326,7 @@
                     </div>
                 </div>
                 <div class="timerallot">
-                    <div class="checkpara">
+                    <div class="checkpara" style="width:100%;">
                         @foreach($checkout_tasks as $out_task)
                         <div class="paraendtimer">
                             <p><i class="fa-solid fa-right-long"></i> {{$out_task->GetTask->task_name}}</p> 
@@ -272,12 +336,14 @@
                     </div>
                 </div>
             </div>
-            @else
-            <div style="text-align: center !important;color: #fa896b;font-weight: 600;">
-                ABSENT
-            </div>
             @endif
+            <div class="actionform">
+                <div class="actionbtn"> <button>Approve</button> </div>
+                <div class="rejectbtn"><button>Ask Question</button></div>
+                <div class="totalhourshow"><p><span>Total Spent Time :</span> {{ $total_hours + floor($total_minutes/60) }}h {{ $total_minutes % 60 }}m</p></div>
+            </div>
         </div>
+        
         @endforeach
         
     </div>
