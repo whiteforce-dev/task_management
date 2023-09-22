@@ -161,13 +161,6 @@ class StandupController extends Controller
         return view('daily_standup.daily_standup_date_wise_report_data',compact('dailyStandups')); 
     }
 
-    public function sendNotification(){
-        $comment = "Hey @" . $user2->username . ", can you take a look at this?"; // Example comment
-        
-        $user1 = User::find(9); 
-        $user2 = User::find(10); 
-
-
-        $user2->notify(new UserMentioned());
-    }
+    
+    
 }

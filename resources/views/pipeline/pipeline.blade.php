@@ -121,17 +121,10 @@
             });
         };
     </script>
-    <script>
-        function pipelineView(url, id) {
-            $.get(url, id, function(rs) {
-                $('#mypipeline').html(rs);
-                $('#mypipeline').modal('show');
-            });
-        }
-    </script>
+    
 
-<div class="modal right fade right-Modal" id="mypipeline" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
-</div>
+    <div class="modal right fade right-Modal" id="taskDetails" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
+    </div>
 
 <div class="modal" id="myModal10">
 </div>
@@ -250,5 +243,12 @@
     <script src="{{ url('assets/js/core/popper.min.js') }}"></script>
     <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script>
     <script src="https://kit.fontawesome.com/66f2518709.js" crossorigin="anonymous"></script>
- 
+    <script>
+    function taskDetails(url, id) {
+        $.get(url, id, function(rs) {
+            $('#taskDetails').html(rs);
+            $('#taskDetails').modal('show');
+        });
+    }
+    </script>
 @endsection

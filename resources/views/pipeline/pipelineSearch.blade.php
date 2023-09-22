@@ -18,7 +18,7 @@
                 @foreach ($pendingtasks as $pendingtask)
                     <div class="task firstcard" draggable="true" data-id="{{ $pendingtask->id}}">
                         <a href="javascript:"
-                            onclick="pipelineView('{{ url('pipeline-view' . '?id=' . $pendingtask->id) }}')">
+                            onclick="taskDetails('{{ url('task-details' . '?id=' . $pendingtask->id) }}')">
                             <div class="uper">
                                 @php $taskname = mb_strimwidth($pendingtask->task_name ?? 'null', 0, 20, '...'); @endphp
                                 <!-- <h4 style="color:#F63; font-weight:bold;">{{ ucfirst($pendingtask->task_code) }}</h4> -->
@@ -61,7 +61,7 @@
                 @foreach ($progresstasks as $progresstask)
                     <div class="task secondcard" draggable="true" data-id="{{ $progresstask->id}}">
                         <a href="javascript:"
-                        onclick="pipelineView('{{ url('pipeline-view' . '?id=' . $progresstask->id) }}')">
+                        onclick="taskDetails('{{ url('task-details' . '?id=' . $progresstask->id) }}')">
                         <div class="uper">
                                 @php $taskname = mb_strimwidth($progresstask->task_name ?? 'null', 0, 20, '...'); @endphp
                                 <h5 class="badge badge-primary" style="background: white;color: #ffae1f;font-size: 14px;padding-left: 15px;padding-right: 15px;font-weight:700;border: 1px solid;">{{ $progresstask->task_code }}</h5>
@@ -101,7 +101,7 @@
                 @foreach ($holdingtasks as $holdingtask)
                     <div class="task thirdcard" draggable="true" data-id="{{ $holdingtask->id}}">
                         <a href="javascript:"
-                        onclick="pipelineView('{{ url('pipeline-view' . '?id=' . $holdingtask->id) }}')">
+                        onclick="taskDetails('{{ url('task-details' . '?id=' . $holdingtask->id) }}')">
                         <div class="uper">
                                 @php $taskname = mb_strimwidth($holdingtask->task_name ?? 'null', 0, 20, '...'); @endphp
                                 <h5 class="badge badge-primary" style="background: white;color: #fa896b;font-size: 14px;padding-left: 15px;padding-right: 15px;font-weight:700;border: 1px solid;">{{ $holdingtask->task_code }}</h5>
@@ -142,16 +142,10 @@
                 @foreach ($completedtasks as $completedtask)
                     <div class="task forthcard" draggable="true" data-id="{{ $completedtask->id}}">
                         <a href="javascript:"
-                            onclick="pipelineView('{{ url('pipeline-view' . '?id=' . $completedtask->id) }}')">
+                            onclick="taskDetails('{{ url('task-details' . '?id=' . $completedtask->id) }}')">
                             <div class="uper">
                                 @php $taskname = mb_strimwidth($completedtask->task_name ?? 'null', 0, 20, '...'); @endphp
-                                <h5 class="badge badge-primary" style="background: white;
-    color: #22b59a;
-    font-size: 14px;
-    padding-left: 15px;
-    padding-right: 15px;
-    font-weight: 600;
-    box-shadow: 1px 1px 3px #acacc3;">{{ $completedtask->task_code }}</h5>
+                                <h5 class="badge badge-primary" style="background: white;color: #22b59a;font-size: 14px;padding-left: 15px;padding-right: 15px;font-weight: 600;box-shadow: 1px 1px 3px #acacc3;">{{ $completedtask->task_code }}</h5>
                                 <div class="dropdown">
                                     <button class="dropbtn"><i class="fa-solid fa-bars"></i></button>
                                     <div class="dropdown-content">

@@ -80,13 +80,12 @@
     .right-msg .msg-img {
         margin: 0 0 0 10px;
     }
-    .modal-content {
-    /* overflow-y:auto; */
-    /* height: 800px; Set a value that makes sense for your design */
-    }
+    
     .select2-hidden-accessible:focus{
-outline:0 !important;
+        outline:0 !important;
     }
+
+    
 </style>
 
 <div class="modal-dialog modal-xl" style="max-height:calc(100vh - 56px);">
@@ -147,7 +146,7 @@ outline:0 !important;
                 </div>  
                 <div class="col-sm-3" style="width: 30%; padding-top: 17px;">
                 <!-- <label for="alloted_to">Notify To </label> -->
-                    <select class="form-control select2" multiple data-live-search="true" name="alloted_to[]" id="alloted_to" data-placement="top">
+                    <select class="form-control select2" multiple data-live-search="true" name="notify_to[]" id="notify_to" data-placement="top">
                         @foreach ($users as $user)
                             <option value="{{ $user->id }}">{{ $user->name }}</option>
                         @endforeach
@@ -166,7 +165,9 @@ outline:0 !important;
 
 <script>
     $(document).ready(function() {
-        $('.select2').select2();
+        $('.select2').select2({
+            placeholder: "Notify To",
+        });
     });
 </script>
 <script>

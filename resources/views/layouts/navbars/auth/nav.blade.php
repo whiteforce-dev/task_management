@@ -2,6 +2,8 @@
 @php
     $accounts = \App\Models\Account::get();
 @endphp
+
+
 <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur"
     navbar-scroll="true">
     <div class="container-fluid py-1 px-3">
@@ -27,11 +29,22 @@
                 
                    
             </li>
-
-
+            @php
+            $notification_count = count(Auth::user()->unreadNotifications);
+            @endphp
+            <li class="nav-item d-flex align-items-center">
+                <a href="{{ url('notification-list') }}" type="button" class="icon-button">
+                    <span class="material-icons">notifications</span>
+                    @if(!empty($notification_count))
+                    <span class="icon-button__badge" id="notificationCount">{{ $notification_count }}</span>
+                    @endif
+                </a>
+            </li>
+            &nbsp;
+            &nbsp;
             &nbsp;
             <li class="nav-item dropdown pe-2 d-flex align-items-center">&nbsp;
-                
+            
                 <a href="javascript:;" class="nav-link text-body p-0 nav-link text-body font-weight-bold px-0"
                     id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                     <span class="d-sm-inline d-none" style="margin-right: 15px;color:#E4088F;"><b>{{ ucfirst(Auth::user()->name) }}</b></span>
@@ -83,5 +96,7 @@
             }
         });
     }
+    
+    
 </script>
 <!-- End Navbar -->

@@ -14,6 +14,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\PipelineController;
 use App\Http\Controllers\StandupController;
 use App\Http\Controllers\TeamAllotedController;
+use App\Http\Controllers\NotificationController;
 
 date_default_timezone_set("Asia/kolkata");
 Route::group(['middleware' => 'auth'], function ()
@@ -81,7 +82,7 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::get('index', [PipelineController::class, 'index1']);
 		Route::get('sendtask-email/{task_id}', [PipelineController::class, 'sendTaskEmail']);
 		Route::post('update-card-status/', [PipelineController::class, 'updateStatus']);
-		Route::get('pipeline-view', [PipelineController::class, 'pipelineView']);
+		Route::get('task-details', [PipelineController::class, 'taskDetails']);
 
 		Route::get('daily-standup', [StandupController::class, 'dailyStandup']);
         Route::post('daily-standup-checkin', [StandupController::class, 'dailyStandupCheckin']);
@@ -101,7 +102,9 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::get('team-allotted/{id}', [TeamAllotedController::class, 'teamaAllotted']);
 		Route::Post('teamid-send/{id}', [TeamAllotedController::class, 'teamidSend']);
 
-		Route::get('send-notification', [StandupController::class, 'sendNotification']);
+		Route::get('notification-list', [NotificationController::class, 'notificationList']);
+		Route::post('mark-notification-as-read', [NotificationController::class, 'markNotificationAsRead']);
+		Route::post('mark-notification-as-unread', [NotificationController::class, 'markNotificationAsUnRead']);
 	});
 	Route::post('loginauth', [SessionsController::class, 'loginauth']);				
 	Route::group(['middleware' => 'guest'], function () 

@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use App\Models\Taskmaster;
 use App\Models\Account;
+use App\Notifications\UserMentioned;
 
 function uploadImageWithBase64($fileName, $path = '')
 {
@@ -52,6 +53,18 @@ function getTaskCode(){
         $task_code = $slug . '-' . 1;
     }
     return $task_code;
+}
+
+function getNotificationUserList(){
+    $users = User::where('software_catagory',Auth::user()->software_catagory)->where('type','!=','admin')->where('id','!=',Auth::user()->id)->get();
+    return $users;
+}
+
+function sendNotification($users, $sent_by, $task_id, $message){
+    $users_data = User::whereIn('id',$users)->get();
+    foreach($users_data as $user){
+        $user->notify(new UserMentioned($sent_by, $task_id, $message));
+    }
 }
 
 

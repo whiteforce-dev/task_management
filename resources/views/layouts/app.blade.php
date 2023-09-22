@@ -37,6 +37,7 @@
         href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,900&family=Rubik:wght@300;400;600;700&display=swap"
         rel="stylesheet" />
         <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script src="https://kit.fontawesome.com/66f2518709.js" crossorigin="anonymous"></script>
     
     <style>
@@ -46,6 +47,41 @@
         pre{
             font-family: "Poppins", sans-serif;
             white-space: pre-wrap
+        }
+        .icon-button {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            color: #333333;
+            background: #dddddd;
+            border: none;
+            outline: none;
+            border-radius: 50%;
+        }
+
+        .icon-button:hover {
+            cursor: pointer;
+        }
+
+        .icon-button:active {
+            background: #cccccc;
+        }
+
+        .icon-button__badge {
+            position: absolute;
+            top: -3px;
+            right: -7px;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(310deg, #7928ca, #ff0080);
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
         }
     </style>
 </head>
@@ -65,6 +101,7 @@
             <p class="m-0">{{ session('success') }}</p>
         </div>
     @endif
+   
     <!--   Core JS Files   -->
     <script src="{{ url('assets/js/core/popper.min.js') }}"></script>
     <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script>
@@ -89,6 +126,7 @@
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
     <script src="{{ url('assets/js/soft-ui-dashboard.min.js?v=1.0.3') }}"></script>
+    
 </body>
 
 </html>

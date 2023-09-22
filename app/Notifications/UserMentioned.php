@@ -10,15 +10,19 @@ use Illuminate\Notifications\Notification;
 class UserMentioned extends Notification
 {
     use Queueable;
-
+    private $sent_by;
+    private $message;
+    private $task_id;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($sent_by, $task_id, $message)
     {
-        //
+        $this->sent_by = $sent_by;
+        $this->message = $message;
+        $this->task_id = $task_id;
     }
 
     /**
@@ -55,7 +59,9 @@ class UserMentioned extends Notification
     public function toArray($notifiable)
     {
         return [
-            //
+            'sent_by'=>$this->sent_by,
+            'task_id'=>$this->task_id,
+            'message'=>$this->message
         ];
     }
 }

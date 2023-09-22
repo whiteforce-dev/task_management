@@ -40,6 +40,8 @@ class TaskManagmentController extends Controller
         $newtask->software_catagory = Auth::user()->software_catagory;
         $newtask->priority = $request->priority;
         $newtask->save();
+        
+        sendNotification(explode(',',$newtask->alloted_to),Auth::user()->id,$newtask->id,'alloted a task to you');
         return redirect('task-list')->with(['success' => 'Your task successfully save.']);
     }
     public function taskList()
@@ -174,7 +176,7 @@ class TaskManagmentController extends Controller
             $team_id = User::where('id', Auth::user()->id)->orwhere('id', Auth::user()->parent_id)->orwhere('id', '1')->pluck('id')->toArray();
             $remarks = Remark::where('task_id', $request->id)->whereIn('userid', $team_id)->get();
         }
-        $users = User::where('software_catagory',Auth::user()->software_catagory)->get();
+        $users = getNotificationUserList();
         return view('task.full_view', compact('remarks', 'task_id','users'));
     }
 
@@ -419,6 +421,9 @@ class TaskManagmentController extends Controller
         $comments->userid = Auth::user()->id;
         $comments->software_catagory = Auth::user()->software_catagory;
         $comments->save();
+        if(!empty($request->notify_to)){
+            sendNotification($request->notify_to,Auth::user()->id,$request->task_id,'mentioned you in a task');
+        }
         $response = $request->input('manager_comments');
         return $response;
     }
