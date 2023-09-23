@@ -62,15 +62,7 @@
                     </select>
                 </div>    
                 @endif                          
-                <div class="col-3">
-                    <label>Status</label>
-                    <select name="status" id="status" class="form-control" style="border:1px solid #cb0c9f;">
-                        <option value="">Select</option>
-                        @foreach ($stages as $status)
-                            <option value="{{ $status->id }}">{{ ucfirst($status->status) }}</option>
-                        @endforeach
-                    </select>
-                </div>
+
                        
                 <div class="col-sm-2">
                     <label>Priority</label>
