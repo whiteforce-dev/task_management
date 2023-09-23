@@ -139,19 +139,31 @@
         font-weight: 400 !important;
         font-size: 0.97rem !important;
         color: #e407ee;
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        justify-content:start;
+        text-align:left;
     }
     .allow th{
-      text-align: center;    
+      text-align: left;    
+    width: 100%;
     }
     .managern{
         background-color: rgb(244 248 248 / 5%);
         color: #191a1b;
         font-size: 0.9rem;
         background: transparent !important;
+        display:flex;
+        flex-direction:column;
+        align-items:center;
+        justify-content:start;
+        text-align:left;
     }
     .managern td{
         padding-top:10px; 
-        text-align: center;
+        text-align: left;    
+    width: 100%;
     }  
 </style>
 
@@ -238,9 +250,184 @@
         margin: 0 0 0 10px;
     }
     .modal-content {
+        overflow-x: hidden;
     /* overflow-y:auto; */
     /* height: 800px; Set a value that makes sense for your design */
     }
+
+  
+.modal-window {
+  position: fixed;
+  background-color: rgb(0 0 0 / 25%);
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 999;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s;
+  &:target {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+  }
+  & > div {
+    width: 85%;
+    position: absolute;
+    top: 50%;
+    left: 0%;
+    transform: translate(-50%, -50%);
+    padding: 2em;
+    background: white;
+  }
+  header {
+    font-weight: bold;
+  }
+  h1 {
+    font-size: 150%;
+    margin: 0 0 15px;
+  }
+}
+
+.modal-close {
+  color: #aaa;
+  line-height: 50px;
+  font-size: 80%;
+  position: absolute;
+  right: 0;
+  text-align: center;
+  top: 0;
+  width: 70px;
+  text-decoration: none;
+  &:hover {
+    color: black;
+  }
+}
+
+/* Demo Styles */
+
+
+
+
+
+
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.preecont {
+  display: grid;
+  justify-content: start;
+  align-items: center;
+}
+
+.modal-window {
+  & > div {
+    border-radius: 1rem;
+  }
+}
+
+.modal-window div:not(:last-of-type) {
+  margin-bottom: 15px;
+}
+
+.logo {
+  max-width: 150px;
+  display: block;
+}
+
+small {
+  color: lightgray;
+}
+
+.btnmodal {
+    background-color: #fbfbfb;
+    padding: 0.7rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #d70c84;
+    border-radius: 4px;
+    text-decoration: none;
+    border: 1px solid #f5a2e4;
+    box-shadow: 1px 1px 3px -1px #938995;
+  i {
+    padding-right: 0.3em;
+  }
+}
+.allow th{
+    font-size: 0.9rem;
+    font-weight: 600 !important;
+    border:none !important;
+}
+.managern td {
+    color: #2c2c2e;
+    font-weight: 400;
+}
+.managern td p{
+    color: #2c2c2e;
+    font-weight: 400;
+}
+.msg-bubble {
+     padding: 12px 15px;
+}
+.msg-info {
+    margin-bottom: 2px;
+}
+.msg-info-name {
+    font-size: 0.85rem;
+}
+
+/* dropdown start  */
+
+
+.dropbtn {
+  
+    cursor: pointer;
+  }
+  
+  .preecont {
+    display: inline-block;
+    border: 1px solid pink !important;
+    font-size: 0.85rem !important;
+    margin-top: -6px;
+    margin-bottom: 9px;
+    padding: 7px 15px;
+    margin-left: -10px;
+  }
+  
+  .dropdown-contenttent {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: 43px;
+    left: -16px;
+    min-width: 160px;
+    font-size: 0.85rem;
+    border: 1px solid #c8d4e7;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  
+  .dropdown-contenttent table {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    background-color:white !important;
+  }
+  
+  .dropdown-contenttent table:hover {background-color: #f1f1f1}
+  
+  .preecont:hover .dropdown-contenttent {
+    display: block;
+  }
+  
+
+/* dropdown End  */
 </style>
 
 <div class="modal-dialog modal-lg">   
@@ -256,10 +443,91 @@
 
         <!-- Modal body -->
         <div class="modal-body">
-            <div class="container mt-1">Task Details :
-                <p>
+            <div class="container mt-1" style="margin-bottom: -17px;">
+                <div style="display:flex;">
+                <span style="font-weight: 500;
+    color: black;
+    font-size: 0.95rem;
+    width: 20%;
+    border-bottom: 3px solid #ec81ed;
+    height: 28px;
+    padding-left: 4px;
+    margin-right: 13px;">Task Details :
+
+</span> 
+                <p style="width: 80%;
+    color: #3f3f42;">
                     {{ ucfirst($task->task_details ?? 'na') }}</p>
-                <table class="table table-striped">
+                </div>
+
+
+                <!-- modal start  -->
+       
+<!-- dropdown start  -->
+
+<div class="preecont btn">
+                    <button class="dropbtn" style="display: flex; align-items: center; justify-content: center; text-align: center;font-weight: 500 !important;"> View Details <i style="font-size: 1.2rem; margin-left: 5px; margin-top: -8px;" class="fa-solid fa-sort-down"></i></button> 
+                    <div class="dropdown-contenttent">
+                    <table class="table table-striped" style="display:flex;">
+                    <thead>
+                        <tr class="allow">
+                           
+                            <th>Priority</th>
+                            <th>Status</th>
+                            <th>StartDate</th>
+                            <th>Deadline</th>
+                            <th>Complete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="managern">
+                           
+                            <td>
+                                @if ($task->priority == '1')
+                                    <p>Highest</p>
+                                @elseif($task->priority == '2')
+                                    <p>High</p>
+                                @elseif($task->priority == '3')
+                                    <p>Medium</p>
+                                @elseif($task->priority == '4')
+                                    <p>Low</p>
+                                @endif
+                            </td>
+
+                            <td style="margin-top:-3px;">
+                                @if ($task->status == '1')
+                                    <p>Pending</p>
+                                @elseif($task->status == '2')
+                                    <p>Progress</p>
+                                @elseif($task->status == '3')
+                                    <p>Hold</p>
+                                @elseif($task->status == '4')
+                                    <p>Completed</p>
+                                @endif
+                            </td>
+                            <td style="margin-top:-4px; "> <p> {{ \Carbon\Carbon::parse($task->start_date)->format('d-m-Y') }}</p></td>
+                            <td style="margin-top:-5px; "> <p> {{ \Carbon\Carbon::parse($task->deadline_date)->format('d-m-Y') }}</p></td>
+                            <td style="margin-top:-3.5px; "> <p> {{ \Carbon\Carbon::parse($task->end_date)->format('d-m-Y') }}</p></td>
+                        </tr>
+                    </tbody>
+                </table>
+                    </div>
+                  </div>
+
+<!-- dropdown end  -->
+
+
+
+
+                <!-- <div class="preecont">
+  <div class="interior">
+    <a class="btnmodal" href="#open-modal"><i class="fa-solid fa-eye" style="color: #f312b7; margin-right:5px;"></i> View Details</a>
+  </div>
+</div>
+<div id="open-modal" class="modal-window">
+  <div>
+    <a href="#" title="Close" class="modal-close">Close</a>
+    <table class="table table-striped">
                     <thead>
                         <tr class="allow">
                            
@@ -302,10 +570,17 @@
                         </tr>
                     </tbody>
                 </table>
+  </div>
+</div>
+</div> -->
+
+                <!-- modal end  -->
+              
+                
             </div>
 
         <hr>
-        <div style=" height: 450px; overflow-y: auto; overflow-x: hidden;" id="response">            
+        <div style=" height: 342px; overflow-y: auto; overflow-x: hidden;" id="response">            
             @foreach ($remarks as $i => $remark)
             @php
                 $managerData = \App\Models\User::where('id', $remark->userid)->first();
@@ -347,7 +622,8 @@
          <form id="myForm">@csrf
             <div class="row" >
                 <div class="col-sm-10" style="margin-top:20px;">
-                    <textarea name="manager_comments" cols="" rows="" class="form-control" placeholder="Please enter comments..."></textarea>
+                    <textarea name="manager_comments" cols="" rows="" class="form-control" placeholder="Please enter comments..." style="width: 98%;
+    margin-left: 14px;"></textarea>
                     <input type="hidden" value="{{ $task->id }}" name="task_id" id="task_id">
                 </div>             
                 <div class="col-sm-1" style="margin-top:20px;">
@@ -393,7 +669,7 @@
 </script>
 
 
-
+<script src="https://kit.fontawesome.com/66f2518709.js" crossorigin="anonymous"></script>
 
 
 
