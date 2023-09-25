@@ -84,8 +84,21 @@
     .select2-hidden-accessible:focus{
         outline:0 !important;
     }
-
-    
+    .msg-bubble {
+    padding: 0px 15px !important;
+    padding-top: 10px !important;
+}
+.msg-img{
+    display: flex;
+    align-items: center;
+    border-radius: 50%;
+    overflow: hidden !important;
+}
+.avatar-lg {
+    font-size: .875rem;
+    height: 50px !important;
+    width: 100% !important;
+}
 </style>
 
 <div class="modal-dialog modal-xl" style="max-height:calc(100vh - 56px);">
@@ -139,7 +152,7 @@
             @csrf
             <div class="row px-2">
                 <div class="col-sm-7" style="width: 60%">
-                    <textarea name="manager_comments" cols="" rows="" class="form-control" placeholder="Please enter comments..."></textarea>
+                    <textarea name="manager_comments" cols="" rows="" class="form-control" placeholder="Please enter comments..." required ></textarea>
                     <input type="hidden" value="{{ $task_id }}" name="task_id" id="task_id">
                 </div>  
                 <div class="col-sm-3" style="width: 30%; padding-top: 17px;">
