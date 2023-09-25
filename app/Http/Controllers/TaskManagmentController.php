@@ -161,6 +161,16 @@ class TaskManagmentController extends Controller
         $newtask->status = $request->status;
         $newtask->software_catagory = Auth::user()->software_catagory;
         $newtask->priority = $request->priority;
+        if ($request->hasfile('images')) {
+            foreach ($request->file('images') as $i => $file) {
+                $temp = $file->getClientOriginalName();
+                $destinationPath = 'task_image' . '/';
+                $file->move($destinationPath, $temp);
+                $data[] = $temp;
+            }
+        }
+        $imagedata = implode(',', $data);
+        $newtask->images = $imagedata;
         $newtask->update();
         return redirect('task-list')->with(['success' => 'Your task successfully updated.']);
     }

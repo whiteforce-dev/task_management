@@ -160,6 +160,23 @@
                             </div>                                    
                         </div>
                     </div>
+
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label>Images</label>
+                            <input type="file" name="images[]" id="imageUpload" multiple accept="image/*">
+                            <br>
+                        </div>
+                        <?php $img = explode(',', $task->images); ?>
+                        <div class="col-sm-6">
+                            @foreach ($img as $img)                               
+                            <img src="task_image/.{{ url($img) }}" width="50" height="50" class="">
+                            @endforeach
+                        </div>
+                    </div>
+
+
                    
                     <input type="hidden" name="managerId" value="{{ $task->alloted_by }}">
                     <div class="row">
