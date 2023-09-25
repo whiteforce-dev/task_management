@@ -315,40 +315,26 @@
                 </div>
             </div>
         </div>
+        
         @foreach($dailyStandups as $key => $value)
         @php
         if(!empty($value->checkin)){
             $checkin_tasks = App\Models\Taskmaster::whereIn('id',explode(',',$value->checkin))->select('id','task_code','task_name')->get();
-            $total_hours = 0;
-            $total_minutes = 0;
+        } else {
+            $checkin_tasks = [];
+        }
 
         if(!empty($value->checkout)){
             $checkout_tasks = collect(App\Models\CheckoutDetails::whereIn('id',explode(',',$value->checkout))->with('GetTask:id,task_code,task_name')->get());
             $total_hours = $checkout_tasks->sum('hours');
             $total_minutes = $checkout_tasks->sum('minutes');
-            }
-            
         } else{
-            $checkin_tasks = [];
             $checkout_tasks = [];
             $total_hours = 0;
             $total_minutes = 0;
-            
         }
         @endphp
         <div class="lowerbox">
-            <!-- <div class="middlebox">
-                <div class="serialpage">
-                    <p> <span>S. No. : </span> {{ ++ $key }} </p>  
-                </div>
-                <div class=" starthours">
-                    <p> <span>Date : </span> {{ date('M d,Y',strtotime($key)) }}</p>
-                </div>
-                
-                <div class="september">
-                    <p><span>Total Hours : </span> {{ $total_hours + floor($total_minutes/60) }}h {{ $total_minutes % 60 }}m</p>
-                </div>
-            </div> -->
             @if(!empty($checkin_tasks) || !empty($checkout_tasks))
             <div class="lowertask">
                 <div class="firstcheck">
