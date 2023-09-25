@@ -31,10 +31,9 @@
         .dropdown-toggle:focus {
             outline: 0 !important;
         }
-</style>
+    </style>
 
     @php $auth = Auth::user()->id; @endphp
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <main class="main-content position-relative h-100 border-radius-lg ">
@@ -65,7 +64,6 @@
                     </div>
                 @endif
                 
-            
             <div class="col-3">
                 <label>Status</label>
                 <select name="status" id="status" class="form-control" style="border:1px solid #cb0c9f;">

@@ -116,14 +116,6 @@ class PipelineController extends Controller
                 $completedtasks  = Taskmaster::where('status', '3')->where('alloted_by', $request->created_by)->get();
                 $holdingtasks = Taskmaster::where('status', '4')->where('alloted_by', $request->created_by)->get();
             }
-
-            if(!empty($request->status)) {
-                $pendingtasks = Taskmaster::where('status', '1')->where('status', $request->status)->get();
-                $progresstasks = Taskmaster::where('status', '2')->where('status', $request->status)->get();
-                $completedtasks  = Taskmaster::where('status', '3')->where('status', $request->status)->get();
-                $holdingtasks = Taskmaster::where('status', '4')->where('status', $request->status)->get();
-            }
-
             if(!empty($request->priority)) {  
                 $pendingtasks = Taskmaster::where('status', '1')->where('priority', $request->priority)->get();
                 $progresstasks = Taskmaster::where('status', '2')->where('priority', $request->priority)->get();

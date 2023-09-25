@@ -6,13 +6,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal">&#10060;</button>
         </div>
         
-
-        
-        <div class="modal-body" >            
-
-              
-              
-              
+        <div class="modal-body" >                                            
               <form action="{{ url('update-task', $task->id) }}" method="POST" enctype="multipart/form-data" id="edittask">
                   @csrf
                   @if ($errors->any())
@@ -116,8 +110,7 @@
                                 @enderror
                             </div>
                         </div>
-                    </div>
-                    
+                    </div>                   
                 </div>
                 
                 <div class="row">
@@ -167,6 +160,23 @@
                             </div>                                    
                         </div>
                     </div>
+
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label>Images</label>
+                            <input type="file" name="images[]" id="imageUpload" multiple accept="image/*">
+                            <br>
+                        </div>
+                        <?php $img = explode(',', $task->images); ?>
+                        <div class="col-sm-6">
+                            @foreach ($img as $img)                               
+                            <img src="task_image/.{{ url($img) }}" width="50" height="50" class="">
+                            @endforeach
+                        </div>
+                    </div>
+
+
                    
                     <input type="hidden" name="managerId" value="{{ $task->alloted_by }}">
                     <div class="row">

@@ -66,6 +66,20 @@
                         <textarea class="form-control" id="about" rows="3" placeholder="Description..." name="task_details" id="task_details"></textarea>
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label>Images</label>
+                        <input type="file" name="images[]" id="imageUpload" multiple accept="image/*">
+                        <br>
+                    </div>
+                    <div class="col-sm-6"></div>
+                    
+                </div>
+
+
+
+
                 <div class="modal-footer">
                     <div class="col-md-6 offset-3">
                         <button type="submit" class="btn btn-primary col-md-12" style="margin-top: 30px;" id="createTaskBtn">Create Task</button>
@@ -77,26 +91,17 @@
     </div>
 </div>
 
-<!-- <script>
-    tinymce.init({
-      selector: 'textarea',
-      plugins: 'ai tinycomments mentions anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed permanentpen footnotes advtemplate advtable advcode editimage tableofcontents mergetags powerpaste tinymcespellchecker autocorrect a11ychecker typography inlinecss',
-      toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | align lineheight | tinycomments | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-      tinycomments_mode: 'embedded',
-      tinycomments_author: 'Author name',
-      mergetags_list: [
-        { value: 'First.Name', title: 'First Name' },
-        { value: 'Email', title: 'Email' },
-      ],
-      ai_request: (request, respondWith) => respondWith.string(() => Promise.reject("See docs to implement AI Assistant")),
-    });
-</script> -->
+
 
 <link rel="stylesheet" href="{{ url('assets/css/multiselect.css') }}">
 <link rel="stylesheet" href="{{ url('assets/css/multiselectdrop.css') }}">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>
 <script src="{{ url('assets/jquery-validation/jquery.validate.min.js') }}"></script>
+
+
+
+
 <script>
     $(document).ready(function() {
         $('.selectpicker').selectpicker();

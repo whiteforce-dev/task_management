@@ -171,6 +171,9 @@
     </div>
 </div>
 
+<!-- jQuery -->
+
+
 
 <script>
     $(document).ready(function() {
@@ -205,7 +208,6 @@
                     scrollBottom()
                 },
                 error: function(response) {
-                    // Handle errors
                     console.log(response);
                 }
             });
@@ -213,6 +215,7 @@
         });
     });
 </script>
+
 
 
 
