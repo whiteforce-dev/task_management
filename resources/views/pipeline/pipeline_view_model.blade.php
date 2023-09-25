@@ -165,6 +165,8 @@
         text-align: left;    
     width: 100%;
     }  
+
+  
 </style>
 
 <style>
@@ -393,7 +395,7 @@ small {
     display: inline-block;
     border: 1px solid pink !important;
     font-size: 0.85rem !important;
-    margin-top: -6px;
+    margin-top: -5px;
     margin-bottom: 9px;
     padding: 7px 15px;
     margin-left: -10px;
@@ -425,13 +427,106 @@ small {
   .preecont:hover .dropdown-contenttent {
     display: block;
   }
-  
-
 /* dropdown End  */
+
+.msg-img{
+    display: flex;
+    align-items: center;
+    border-radius: 50%;
+    overflow: hidden !important;
+}
+.avatar-lg {
+    font-size: .875rem;
+    height: 50px !important;
+    width: 100% !important;
+}
+.msg-bubble {
+    padding: 0px 15px !important;
+    padding-top: 10px !important;
+}
+.col-sm-10 {
+    flex: 0 0 auto;
+    width: 82.333333%;
+}
+
+.select2-selection--multiple {
+    border: 1px solid #aaa;
+}
+.select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
+    background-color: #fd3ef1;
+    color: white;
+    font-size: 0.85rem !important;
+}
+.select2-results__option--selectable {
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: #4d4f53;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice__display {
+    font-size: 0.8rem;
+    color: #262729;
+}
+
+/* input image start  */
+.image-input {
+  text-aling: center;
+  position: absolute;
+    top: 35px;
+    right: 109px;
+}
+.image-input input {
+  display: none;
+}
+.image-input label {
+    background: transparent;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    width: 95px;
+    font-weight: 500;
+    color: #414247;
+}
+.image-input label i {
+  font-size: 125%;
+  margin-right: 0.3rem;
+  color: #e600ff;
+}
+.newformto:hover .fa-image {
+  animation: shake 0.35s;
+}
+.image-input img {
+  max-width: 175px;
+  display: none;
+}
+.image-input span {
+  display: none;
+  text-align: center;
+  cursor: pointer;
+}
+
+@keyframes shake {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(10deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  75% {
+    transform: rotate(-10deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+/* image end  */
 </style>
 
 <div class="modal-dialog modal-lg">   
-    <div class="modal-content">
+    <div class="modal-content" style="position: relative;
+">
         <!-- Modal Header -->
         <div class="modal-header text-white" style="background-color:#d70bbe; ">
             <h4 class="modal-title" style="color: white; font-size: 1.2rem !important; font-weight:500; ">
@@ -443,12 +538,16 @@ small {
 
         <!-- Modal body -->
         <div class="modal-body">
-            <div class="container mt-1" style="margin-bottom: -17px;">
-                <div style="display:flex;">
+            <div class="container mt-1" style="margin-bottom: -17px;
+    position: absolute;
+    top: 0;
+    background: white;
+    box-shadow: 2px 2px 4px -1px #cbcfd9;">
+                <div style="display:flex; margin-top: 13px;">
                 <span style="font-weight: 500;
     color: black;
     font-size: 0.95rem;
-    width: 20%;
+    width: 19%;
     border-bottom: 3px solid #ec81ed;
     height: 28px;
     padding-left: 4px;
@@ -465,42 +564,47 @@ small {
        
 <!-- dropdown start  -->
 
-<div class="preecont btn">
-                    <button class="dropbtn" style="display: flex; align-items: center; justify-content: center; text-align: center;font-weight: 500 !important;"> View Details <i style="font-size: 1.2rem; margin-left: 5px; margin-top: -8px;" class="fa-solid fa-sort-down"></i></button> 
-                    <div class="dropdown-contenttent">
-                    <table class="table table-striped" style="display:flex;">
-                    <thead>
-                        <tr class="allow">
-                           
-                            <th>Priority</th>
-                            <th>Status</th>
-                            <th>StartDate</th>
-                            <th>Deadline</th>
-                            <th>Complete</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="managern">
-                           
-                            <td>
-                                @if ($task->priority == '1')
-                                    <p>Highest</p>
-                                @elseif($task->priority == '2')
-                                    <p>High</p>
-                                @elseif($task->priority == '3')
-                                    <p>Medium</p>
-                                @elseif($task->priority == '4')
-                                    <p>Low</p>
-                                @endif
-                            </td>
+<div style="    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-evenly; margin-left: -32px;">
 
-                            <td style="margin-top:-3px;">
-                                @if ($task->status == '1')
-                                    <p>Pending</p>
-                                @elseif($task->status == '2')
-                                    <p>Progress</p>
-                                @elseif($task->status == '3')
-                                    <p>Hold</p>
+    <div class="preecont btn">
+        <button class="dropbtn" style="display: flex; align-items: center; justify-content: center; text-align: center;font-weight: 500 !important;"> View Details <i style="font-size: 1.2rem; margin-left: 5px; margin-top: -8px;" class="fa-solid fa-sort-down"></i></button> 
+        <div class="dropdown-contenttent">
+            <table class="table table-striped" style="display:flex;">
+                <thead>
+                    <tr class="allow">
+                        
+                        <th>Priority</th>
+                        <th>Status</th>
+                        <th>StartDate</th>
+                        <th>Deadline</th>
+                        <th>Complete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="managern">
+                        
+                        <td>
+                            @if ($task->priority == '1')
+                            <p>Highest</p>
+                            @elseif($task->priority == '2')
+                            <p>High</p>
+                            @elseif($task->priority == '3')
+                            <p>Medium</p>
+                            @elseif($task->priority == '4')
+                            <p>Low</p>
+                            @endif
+                        </td>
+                        
+                        <td style="margin-top:-3px;">
+                            @if ($task->status == '1')
+                            <p>Pending</p>
+                            @elseif($task->status == '2')
+                            <p>Progress</p>
+                            @elseif($task->status == '3')
+                            <p>Hold</p>
                                 @elseif($task->status == '4')
                                     <p>Completed</p>
                                 @endif
@@ -511,18 +615,36 @@ small {
                         </tr>
                     </tbody>
                 </table>
-                    </div>
-                  </div>
-
-<!-- dropdown end  -->
-
-
-
-
+            </div>
+        </div>
+        
+        <!-- dropdown end  -->
+        
+        
+        <!-- notify start  -->
+        
+        <div class="col-sm-3" style="    width: 62%;
+    margin-top: -12px;
+    display: flex;
+    align-items: center;">
+                <!-- <label for="alloted_to">Notify To </label> -->
+                <?php $users = \App\Models\User::get(); ?>
+                <select class="form-control select2" multiple data-live-search="true" name="alloted_to[]" id="alloted_to" data-placement="top" style="width:100%;">
+                    @foreach ($users as $user)
+                    <option value="{{ $user->id }}">{{ $user->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            
+            <!-- notify end  -->
+            
+        </div>
+            
+            
                 <!-- <div class="preecont">
   <div class="interior">
     <a class="btnmodal" href="#open-modal"><i class="fa-solid fa-eye" style="color: #f312b7; margin-right:5px;"></i> View Details</a>
-  </div>
+</div>
 </div>
 <div id="open-modal" class="modal-window">
   <div>
@@ -579,8 +701,7 @@ small {
                 
             </div>
 
-        <hr>
-        <div style=" height: 342px; overflow-y: auto; overflow-x: hidden;" id="response">            
+        <div style="height: 463px; overflow-y: auto; overflow-x: hidden;padding-right: 15px;" id="response">            
             @foreach ($remarks as $i => $remark)
             @php
                 $managerData = \App\Models\User::where('id', $remark->userid)->first();
@@ -619,13 +740,30 @@ small {
             </div>                                    
          @endforeach
         </div>
-         <form id="myForm">@csrf
+         <form class="newformto" id="myForm" style="position: sticky;
+    bottom: 0;">@csrf
             <div class="row" >
                 <div class="col-sm-10" style="margin-top:20px;">
                     <textarea name="manager_comments" cols="" rows="" class="form-control" placeholder="Please enter comments..." style="width: 98%;
-    margin-left: 14px;"></textarea>
+    margin-left: 14px; 
+    position: relative;" required>
+
+</textarea>
+<!-- image uploader  start -->
+<div class="image-input">
+	<input type="file" accept="image/*" id="imageInput">
+	<label for="imageInput" class="image-button"><i class="far fa-image"></i>Upload</label>
+	<img src="" class="image-preview">
+	<span class="change-image">Choose different image</span>
+</div>
+ <!-- image uploader end  -->
+
                     <input type="hidden" value="{{ $task->id }}" name="task_id" id="task_id">
-                </div>             
+                </div>  
+                
+               
+
+
                 <div class="col-sm-1" style="margin-top:20px;">
                     <button type="submit" class="btn btn-primary" style="margin-top: 12px;">Send</button>
                 </div>
@@ -633,6 +771,12 @@ small {
          </form>  
     </div>
 </div>  
+
+<script>
+    $(document).ready(function() {
+        $('.select2').select2();
+    });
+</script>
    
 <script>
     $(document).ready(function() {
@@ -667,7 +811,31 @@ small {
         });
     });
 </script>
-
+<script>
+    $('#imageInput').on('change', function() {
+	$input = $(this);
+	if($input.val().length > 0) {
+		fileReader = new FileReader();
+		fileReader.onload = function (data) {
+		$('.image-preview').attr('src', data.target.result);
+		}
+		fileReader.readAsDataURL($input.prop('files')[0]);
+		$('.image-button').css('display', 'none');
+		$('.image-preview').css('display', 'block');
+		$('.change-image').css('display', 'block');
+	}
+});
+						
+$('.change-image').on('click', function() {
+	$control = $(this);			
+	$('#imageInput').val('');	
+	$preview = $('.image-preview');
+	$preview.attr('src', '');
+	$preview.css('display', 'none');
+	$control.css('display', 'none');
+	$('.image-button').css('display', 'block');
+});
+</script>
 
 <script src="https://kit.fontawesome.com/66f2518709.js" crossorigin="anonymous"></script>
 
