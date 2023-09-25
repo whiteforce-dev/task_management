@@ -6,13 +6,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal">&#10060;</button>
         </div>
         
-
-        
-        <div class="modal-body" >            
-
-              
-              
-              
+        <div class="modal-body" >                                            
               <form action="{{ url('update-task', $task->id) }}" method="POST" enctype="multipart/form-data" id="edittask">
                   @csrf
                   @if ($errors->any())
@@ -116,8 +110,7 @@
                                 @enderror
                             </div>
                         </div>
-                    </div>
-                    
+                    </div>                   
                 </div>
                 
                 <div class="row">

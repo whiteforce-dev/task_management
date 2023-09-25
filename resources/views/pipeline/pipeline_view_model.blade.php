@@ -347,7 +347,7 @@
          <form id="myForm">@csrf
             <div class="row" >
                 <div class="col-sm-10" style="margin-top:20px;">
-                    <textarea name="manager_comments" cols="" rows="" class="form-control" placeholder="Please enter comments..."></textarea>
+                    <textarea name="manager_comments" cols="" rows="" class="form-control" placeholder="Please enter comments..." required></textarea>
                     <input type="hidden" value="{{ $task->id }}" name="task_id" id="task_id">
                 </div>             
                 <div class="col-sm-1" style="margin-top:20px;">

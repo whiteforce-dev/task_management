@@ -138,7 +138,7 @@
             @csrf
             <div class="row px-2">
                 <div class="col-sm-7" style="width: 60%">
-                    <textarea name="manager_comments" cols="" rows="" class="form-control" placeholder="Please enter comments..."></textarea>
+                    <textarea name="manager_comments" cols="" rows="" class="form-control" placeholder="Please enter comments..." required></textarea>
                     <input type="hidden" value="{{ $task_id }}" name="task_id" id="task_id">
                 </div>  
                 <div class="col-sm-3" style="width: 30%">
@@ -155,6 +155,9 @@
         </form>
     </div>
 </div>
+
+<!-- jQuery -->
+
 
 
 <script>
@@ -188,7 +191,6 @@
                     scrollBottom()
                 },
                 error: function(response) {
-                    // Handle errors
                     console.log(response);
                 }
             });
@@ -196,6 +198,7 @@
         });
     });
 </script>
+
 
 
 

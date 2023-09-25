@@ -28,14 +28,14 @@
             <div class="low-box" style="position:relative;height:95px;overflow:hidden;">
             <span onclick="this.parentElement.style.height='max-content'" style="cursor:pointer;position:absolute;right:20px;bottom:0;font-size:14px;font-weight:bold;">Read More
             </span>
-                <h3></h3>
+                <h3><i class="fa-solid fa-user-tag" style="margin-right: 5px; color:#cb0c9f;"></i>
                     Description</h3>
                     <?php $taskDetails = mb_strimwidth($task->task_details ?? 'null', 0, 150, '...'); ?>
                 <pre>{{ $task->task_details }}</pre>
             </div>
 
             <div class="low-box">
-                <h3><i class="fa-solid fa-user-tag" style="margin-right: 5px; color:#cb0c9f;"></i>MyRemark</h3>
+                <h3><i class="fa-solid fa-user-tag" style="margin-right: 5px; color:#cb0c9f;"></i>My Remark</h3>
                 <?php $remarks = mb_strimwidth($task->GetEmployee->remark ?? 'null', 0, 120, '...'); ?>
                 <p>{{ $remarks ?? 'na' }}
                    
@@ -107,23 +107,18 @@
                     style="margin-right:10px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Priority  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
                 </span>
                 @if ($task->priority == '1')
-                    <P class="priorty" style="background-color: #900; color:#fff;">
-                        Highest</P>
+                    <P class="priorty" style="background-color: #900; color:#fff;">Highest</P>
                 @elseif($task->priority == '2')
-                    <P class="priorty" style="background-color:#F63; color:#fff;">
-                        High</P>
+                    <P class="priorty" style="background-color:#F63; color:#fff;">High</P>
                 @elseif($task->priority == '3')
-                    <P class="priorty" style="background-color: #fc0; color:#fff;">
-                        Medium</P>
+                    <P class="priorty" style="background-color: #fc0; color:#fff;">Medium</P>
                 @else
-                    <P class="priorty" style="background-color: #036; color:#fff;">
-                        Low</P>
+                    <P class="priorty" style="background-color: #036; color:#fff;">Low</P>
                 @endif
-
             </div>
             <div class="box-one" style="position: relative;">
                 <i class="fa-solid fa-circle"
-                    style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i> <span>Deadline Date &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;:
+                    style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i> <span>Deadline Date &nbsp;&nbsp;&nbsp; &nbsp;:
                 </span>
                 <p style="margin-left: 0px;">
                     {{ \Carbon\Carbon::parse($task->deadline_date)->format('d-m-Y') }} </p>
@@ -144,7 +139,7 @@
             </div>
             <div class="box-one">
                 <i class="fa-solid fa-circle"
-                    style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i> <span>Completed Date&nbsp; :
+                    style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i> <span>Completed Date :
                 </span>
                 @if ($task->status == 3)
                     <P>{{ \Carbon\Carbon::parse($task->end_date)->format('d-m-Y') }}</P>
@@ -153,7 +148,7 @@
             </div>
             <div class="box-one">
                 <i class="fa-solid fa-circle"
-                    style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i> <span>Total Hours&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :
+                    style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i> <span>Total Hours&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
                 </span>
                 @php
                 $spent_hours = \App\Models\CheckoutDetails::where('task_id',$task->id)->pluck('hours')->toArray();
@@ -170,9 +165,9 @@
             
             <div class="box-one" style="position: relative; margin-left:13px;">
             <i class="fa-solid fa-circle"
-                    style="margin-right:10px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Allotted To  &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; :
+                    style="margin-right:7px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Allotted To &nbsp;  &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; :
                 </span>
-                <P>{{ $user_names ?? 'N/A' }}</P>                                                           
+                &nbsp;<P>{{ $user_names ?? 'N/A' }}</P>                                                           
                     
             </div>
             
