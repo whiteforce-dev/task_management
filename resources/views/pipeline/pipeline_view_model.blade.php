@@ -393,8 +393,8 @@ small {
     display: inline-block;
     border: 1px solid pink !important;
     font-size: 0.85rem !important;
-    margin-top: -6px;
-    margin-bottom: 9px;
+    /* margin-top: -6px; */
+    margin-bottom: 11px;
     padding: 7px 15px;
     margin-left: -10px;
   }
@@ -425,6 +425,12 @@ small {
   .preecont:hover .dropdown-contenttent {
     display: block;
   }
+  .modal-dialog{
+    width: 676px !important;
+    max-width: 676px !important;
+    height: 100vh !important;
+    overflow-y: auto;
+  }
   
 
 /* dropdown End  */
@@ -442,8 +448,12 @@ small {
 
 
         <!-- Modal body -->
-        <div class="modal-body">
-            <div class="container mt-1" style="margin-bottom: -17px;">
+        <div class="modal-body" style="   background: white;
+    padding-top: 12px;
+    border-bottom: 1px solid #d3d7e4;">
+            <div class="container mt-1" style="width: 100% !important;
+    margin-bottom: -17px;
+  >
                 <div style="display:flex;">
                 <span style="font-weight: 500;
     color: black;
@@ -452,12 +462,12 @@ small {
     border-bottom: 3px solid #ec81ed;
     height: 28px;
     padding-left: 4px;
-    margin-right: 13px;">Task Details :
+    margin-right: 13px; padding-left: 3px !important;">Task Details :
 
 </span> 
                 <p style="width: 80%;
     color: #3f3f42;">
-                    {{ ucfirst($task->task_details ?? 'na') }}</p>
+                    {{ ucfirst($task->task_details ?? 'na') }} </p>
                 </div>
 
 
@@ -578,9 +588,10 @@ small {
               
                 
             </div>
-
-        <hr>
-        <div style=" height: 342px; overflow-y: auto; overflow-x: hidden;" id="response">            
+        <div style="   height: 553px;
+    overflow-y: auto;
+    overflow-x: hidden;
+" id="response">            
             @foreach ($remarks as $i => $remark)
             @php
                 $managerData = \App\Models\User::where('id', $remark->userid)->first();
@@ -619,7 +630,9 @@ small {
             </div>                                    
          @endforeach
         </div>
-         <form id="myForm">@csrf
+         <form id="myForm" style="position: sticky;
+    bottom: 0;
+">@csrf
             <div class="row" >
                 <div class="col-sm-10" style="margin-top:20px;">
                     <textarea name="manager_comments" cols="" rows="" class="form-control" placeholder="Please enter comments..." style="width: 98%;
