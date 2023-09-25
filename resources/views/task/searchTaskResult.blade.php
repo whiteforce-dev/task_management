@@ -81,7 +81,6 @@
                         <a onclick="EditTask('{{ url('task-edit-page' . '?id=' . $task->id) }}')"
                             class="dropdown-item border-radius-md" href="javascript:;">Edit Task
                         </a>
-
                         <a href="{{ url('task-delete', $task->id) }}"
                             class="dropdown-item border-radius-md">Delete
                         </a>
@@ -90,8 +89,7 @@
                             onclick="managerRemark('{{ url('managerremark' . '?id=' . $task->id) }}')" class="dropdown-item border-radius-md" href="javascript:;">Remarks</a>
                         <a onclick="statushistory('{{ url('statushistory' . '?id=' . $task->id) }}')"
                             class="dropdown-item border-radius-md" href="javascript:;">Status History
-                        </a>
-                        
+                        </a>                       
                     </div>
                 </div>
             </div>
@@ -128,20 +126,18 @@
                     $daysDifference = $currentDate->diffInDays($deadlineDate);
                 @endphp
 
-                @if ($task->status !== 3)
+                @if ($task->status != '3')
                 @if ($currentDate > $deadlineDate)
                     <div class="dott" style="position: absolute; right:-10px; top:0;">
                         {{ $daysDifference }}</div>
                 @endif
                 @endif
-
-
             </div>
             <div class="box-one">
                 <i class="fa-solid fa-circle"
                     style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i> <span>Completed Date :
                 </span>
-                @if ($task->status == 3)
+                @if ($task->status ==3)
                     <P>{{ \Carbon\Carbon::parse($task->end_date)->format('d-m-Y') }}</P>
                 @else<p>Null</p>
                 @endif

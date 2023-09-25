@@ -140,7 +140,7 @@
                 <div class="col-sm-7" style="width: 60%">
                     <textarea name="manager_comments" cols="" rows="" class="form-control" placeholder="Please enter comments..." required></textarea>
                     <input type="hidden" value="{{ $task_id }}" name="task_id" id="task_id">
-                </div>  
+                </div>                 
                 <div class="col-sm-3" style="width: 30%">
                     <select class="form-control select2" multiple data-live-search="true" name="alloted_to[]" id="alloted_to" data-placement="top">
                         @foreach ($users as $user)

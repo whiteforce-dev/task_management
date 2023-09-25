@@ -54,7 +54,6 @@ class TaskManagmentController extends Controller
         $newtask->save();
         return redirect('task-list')->with(['success' => 'Your task successfully save.']);
     }
-
     public function taskList()
     {
         $to = "";
