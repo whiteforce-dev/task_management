@@ -22,7 +22,7 @@
                             <div class="uper">
                                 @php $taskname = mb_strimwidth($pendingtask->task_name ?? 'null', 0, 20, '...'); @endphp
                                 <!-- <h4 style="color:#F63; font-weight:bold;">{{ ucfirst($pendingtask->task_code) }}</h4> -->
-                                <h5 class="badge badge-primary" style="background: white;color: #5d87ff;font-size: 14px;padding-left: 15px;padding-right: 15px;font-weight:700;border: 1px solid;">{{ $pendingtask->task_code }}</h5>
+                                <h5 class="badge badge-primary" style="background: white;color: #5d87ff;font-size: 14px;padding-left: 15px;padding-right: 15px;font-weight: 600;box-shadow: 1px 1px 3px #acacc3;">{{ $pendingtask->task_code }}</h5>
                                 <div class="dropdown">
                                     <button class="dropbtn">
                                     <i class="fa-solid fa-bars"></i></button>
@@ -64,7 +64,7 @@
                         onclick="taskDetails('{{ url('task-details' . '?id=' . $progresstask->id) }}')">
                         <div class="uper">
                                 @php $taskname = mb_strimwidth($progresstask->task_name ?? 'null', 0, 20, '...'); @endphp
-                                <h5 class="badge badge-primary" style="background: white;color: #ffae1f;font-size: 14px;padding-left: 15px;padding-right: 15px;font-weight:700;border: 1px solid;">{{ $progresstask->task_code }}</h5>
+                                <h5 class="badge badge-primary" style="background: white;color: #ffae1f;font-size: 14px;padding-left: 15px;padding-right: 15px;font-weight: 600;box-shadow: 1px 1px 3px #acacc3;">{{ $progresstask->task_code }}</h5>
                                 <div class="dropdown">
                                     <button class="dropbtn"><i class="fa-solid fa-bars"></i></button>
                                     <div class="dropdown-content">
@@ -104,7 +104,7 @@
                         onclick="taskDetails('{{ url('task-details' . '?id=' . $holdingtask->id) }}')">
                         <div class="uper">
                                 @php $taskname = mb_strimwidth($holdingtask->task_name ?? 'null', 0, 20, '...'); @endphp
-                                <h5 class="badge badge-primary" style="background: white;color: #fa896b;font-size: 14px;padding-left: 15px;padding-right: 15px;font-weight:700;border: 1px solid;">{{ $holdingtask->task_code }}</h5>
+                                <h5 class="badge badge-primary" style="background: white;color: #fa896b;font-size: 14px;padding-left: 15px;padding-right: 15px;font-weight: 600;box-shadow: 1px 1px 3px #acacc3;">{{ $holdingtask->task_code }}</h5>
                                 <div class="dropdown">
                                     <button class="dropbtn"><i class="fa-solid fa-bars"></i></button>
                                     <div class="dropdown-content">
