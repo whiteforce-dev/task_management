@@ -81,7 +81,7 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::get('pipelinestatus/{task_id}/{status_id}', [PipelineController::class, 'pipelinestatus']);
 		Route::get('index', [PipelineController::class, 'index1']);
 		Route::get('sendtask-email/{task_id}', [PipelineController::class, 'sendTaskEmail']);
-		Route::post('update-card-status/', [PipelineController::class, 'updateStatus']);
+		Route::post('update-card-status', [PipelineController::class, 'updateStatus']);
 		Route::get('task-details', [PipelineController::class, 'taskDetails']);
 
 		Route::get('daily-standup', [StandupController::class, 'dailyStandup']);
