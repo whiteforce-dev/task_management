@@ -109,13 +109,25 @@ class PipelineController extends Controller
         return view('pipeline.rightmodel', compact('tasks','pendingtasks', 'progresstasks', 'completedtasks', 'users', 'holdingtasks', 'stages','tasks'));
     }
     
-    public function pipelineCardSearch(Request $request){      
+    public function pipelineCardSearch(Request $request){   
+            $pendingtasks = [];
+            $progresstasks = [];
+            $completedtasks = [];
+            $holdingtasks = [];
             if(!empty($request->created_by)) {
                 $pendingtasks = Taskmaster::where('status', '1')->where('alloted_by', $request->created_by)->get();
                 $progresstasks = Taskmaster::where('status', '2')->where('alloted_by', $request->created_by)->get();
                 $completedtasks  = Taskmaster::where('status', '3')->where('alloted_by', $request->created_by)->get();
                 $holdingtasks = Taskmaster::where('status', '4')->where('alloted_by', $request->created_by)->get();
             }
+
+            if(!empty($request->alloted_to)) {
+                $pendingtasks = Taskmaster::where('status', '1')->where('alloted_to', $request->alloted_to)->get();
+                $progresstasks = Taskmaster::where('status', '2')->where('alloted_to', $request->alloted_to)->get();
+                $completedtasks  = Taskmaster::where('status', '3')->where('alloted_to', $request->alloted_to)->get();
+                $holdingtasks = Taskmaster::where('status', '4')->where('alloted_to', $request->alloted_to)->get();
+            }
+
             if(!empty($request->priority)) {  
                 $pendingtasks = Taskmaster::where('status', '1')->where('priority', $request->priority)->get();
                 $progresstasks = Taskmaster::where('status', '2')->where('priority', $request->priority)->get();
@@ -152,8 +164,8 @@ class PipelineController extends Controller
                 $completedtasks  = Taskmaster::where('status', '3')->whereBetween('deadline_date',[$start_dedaline_date,$end_dedaline_date])->get();
                 $holdingtasks = Taskmaster::where('status', '4')->whereBetween('deadline_date',[$start_dedaline_date,$end_dedaline_date])->get();
             }
-             $stages = Status::get();
-             $users = User::where('software_catagory', Auth::user()->software_catagory)->where('type','!=', 'admin')->get();
+            $stages = Status::get();
+            $users = User::where('software_catagory', Auth::user()->software_catagory)->where('type','!=', 'admin')->get();
         return view('pipeline.pipelineSearch', compact('pendingtasks', 'progresstasks', 'completedtasks', 'users', 'holdingtasks', 'stages'));
     }
 

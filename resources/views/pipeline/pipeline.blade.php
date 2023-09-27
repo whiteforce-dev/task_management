@@ -38,7 +38,8 @@
 
     <main class="main-content position-relative h-100 border-radius-lg ">
         <div class="container-fluid py-4">
-            <div class="row">
+            {{-- <form action="{{ url('pipeline-card-search') }}" method="POST">@csrf --}}
+                <div class="row">
                 @if (auth::user()->type !== 'employee')
                 <div class="col-3">
                     <label>Created By</label>
@@ -90,13 +91,15 @@
                     <input name="task_code" id="task_code" class="form-control" style="border:1px solid #cb0c9f;" placeholder="Enter Task Code">
                 </div>
                 <div class="col-sm-1">
+                    {{-- <button type="submit">submit</button> --}}
                     <button type="button" class="btn btn-primary" style="margin-top:31px;" id="submitButton" onclick="searchTask()">Search</button> 
                 </div>
                 <div class="col-sm-1">
                     <a href="{{ url('task-board') }}" class="btn btn-primary"
                         style="margin-top:30px;margin-left:20px">Reset</a>
                 </div>
-         </div>
+            {{-- </form> --}}
+            </div>
                          
             <div id="searchResults">
                 @include('pipeline/pipelineSearch')
@@ -126,7 +129,7 @@
 
     function updateCardStatus(cardId, newStatus) {
         $.ajax({
-            url: `/update-card-status/`,
+            url: `update-card-status`,
             type: 'POST',
             data: {
                 newStatus: parseInt(newStatus),
