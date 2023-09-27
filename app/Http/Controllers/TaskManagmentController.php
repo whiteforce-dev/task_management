@@ -48,9 +48,10 @@ class TaskManagmentController extends Controller
                 $file->move($destinationPath, $temp);
                 $data[] = $temp;
             }
-        }
+        
         $imagedata = implode(',', $data);
         $newtask->images = $imagedata;
+    }
         $newtask->save();
         
         sendNotification(explode(',',$newtask->alloted_to),Auth::user()->id,$newtask->id,'alloted a task to you');

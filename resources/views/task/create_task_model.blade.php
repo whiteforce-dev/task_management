@@ -76,10 +76,6 @@
                     <div class="col-sm-6"></div>
                     
                 </div>
-
-
-
-
                 <div class="modal-footer">
                     <div class="col-md-6 offset-3">
                         <button type="submit" class="btn btn-primary col-md-12" style="margin-top: 30px;" id="createTaskBtn">Create Task</button>
