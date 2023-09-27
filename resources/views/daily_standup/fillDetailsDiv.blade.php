@@ -42,7 +42,7 @@
             </select>
         </div>
         <div class="col-md-6">
-            <textarea name="comment_{{ $task->id }}" id="comment_{{ $task->id }}" cols="37" rows="1" class="form-control"></textarea>
+            <textarea name="comment_{{ $task->id }}" id="comment_{{ $task->id }}" cols="37" rows="1" class="form-control" required></textarea>
         </div>
         @endforeach
     </div>

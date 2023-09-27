@@ -334,6 +334,10 @@
         <script>
             function getDetailsDiv(){
                 var selected_ids = $("input[name='selected_task_ids[]']:checked").map(function(){return $(this).val();}).get();
+                if(selected_ids.length == 0){
+                    alert('Please select at least one task');
+                    return false;
+                } 
                 $.ajax({
                     type : 'POST',
                     url : "{{ url('get-task-details-div') }}",
