@@ -25,6 +25,9 @@
 
 <script src="{{ url('assets/js/core/popper.min.js') }}"></script>
 <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script> 
+<script src="{{ url('assets/js/core/popper.min.js') }}"></script>
+<script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script> 
+
 
 <link rel="stylesheet" href="{{ url('assets/css/multiselect.css') }}">
 <link rel="stylesheet" href="{{ url('assets/css/multiselectdrop.css') }}">
@@ -57,3 +60,7 @@
     }
 </script>
 @endsection
+<script src="{{ url('assets/js/core/popper.min.js') }}"></script>
+<script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script> 
+<script src="{{ url('assets/js/core/popper.min.js') }}"></script>
+<script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script>

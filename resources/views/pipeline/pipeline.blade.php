@@ -126,7 +126,6 @@
 
 <script> 
     $("#alert").hide();
-
     function updateCardStatus(cardId, newStatus) {
         $.ajax({
             url: `update-card-status`,

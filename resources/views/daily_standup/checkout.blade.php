@@ -326,6 +326,11 @@
     </form>
     <div class="modal right fade right-Modal" id="mypipeline" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
     </div>
+<script src="{{ url('assets/js/core/popper.min.js') }}"></script>
+<script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script> 
+<script src="{{ url('assets/js/core/popper.min.js') }}"></script>
+<script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script>
+
     <link rel="stylesheet" href="{{ url('assets/css/multiselect.css') }}">
     <link rel="stylesheet" href="{{ url('assets/css/multiselectdrop.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>

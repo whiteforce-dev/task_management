@@ -205,30 +205,7 @@
             });
         }
 
-        $(document).ready(function () {
-            $('.status-dropdown').on('change', function () {
-                var taskId = $(this).data('task-id');
-                var newStatus = $(this).val();
-               
-                $.ajax({
-                    url: 'selectstatus',
-                    method: 'POST',
-                    data: {
-                        taskId: taskId,
-                        newStatus: newStatus,
-                        _token: '{{ csrf_token() }}'
-                    },
 
-                    success: function (response) {
-                        console.log('Status updated successfully');
-                        // Update the UI to reflect the new status if needed
-                    },
-                    error: function (xhr) {
-                        console.log('Error updating status');
-                    }
-                });
-            });
-        });
         
         $('.datepicker').daterangepicker(
             {
@@ -260,6 +237,8 @@
     </div>
     <div class="modal" id="myModalDmore">
     </div>
+    <script src="{{ url('assets/js/core/popper.min.js') }}"></script>
+    <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script>
     <script src="{{ url('assets/js/core/popper.min.js') }}"></script>
     <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script>
    

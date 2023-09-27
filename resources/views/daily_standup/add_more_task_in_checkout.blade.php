@@ -218,7 +218,10 @@
         
     </div>
 </div>
-
+<script src="{{ url('assets/js/core/popper.min.js') }}"></script>
+<script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script>
+<script src="{{ url('assets/js/core/popper.min.js') }}"></script>
+<script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script>
 <script>
     let innerTaskModel = document.querySelectorAll(".innertaskModal");
     let checkBoxesModel = document.querySelectorAll(".innertaskModal .round input[type='checkbox']")

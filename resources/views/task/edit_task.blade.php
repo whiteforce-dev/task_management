@@ -161,23 +161,24 @@
                         </div>
                     </div>
 
-
+                @if($task->images > 0)
                     <div class="row">
                         <div class="col-sm-6">
                             <label>Images</label>
-                            <input type="file" name="images[]" id="imageUpload" multiple accept="image/*">
+                            <input type="file" name="images[]" id="imageUpload" multiple accept="image/*" style="border: 1px solid pink !important;
+                            font-size: 0.85rem!important;">
                             <br>
                         </div>
-                        <?php $img = explode(',', $task->images); ?>
+                        <?php $img = explode(',', $task->images);?>
                         <div class="col-sm-6">
-                            @foreach ($img as $img)                               
-                            <img src="task_image/.{{ url($img) }}" width="50" height="50" class="">
+                            @foreach ($img as $img)  
+                           <?php  $disk = Storage::disk('s3');
+                            $img = $disk->temporaryUrl($img, now()->addMinutes(5));    ?>                         
+                            <img src="{{ $img }}" width="50" height="50" class="" style="border-radius:10px;">
                             @endforeach
-                        </div>
+                        </div>    
                     </div>
-
-
-                   
+                @endif
                     <input type="hidden" name="managerId" value="{{ $task->alloted_by }}">
                     <div class="row">
                         <div class="col-md-12">

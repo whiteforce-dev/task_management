@@ -32,6 +32,7 @@
                     Description</h3>
                     <?php $taskDetails = mb_strimwidth($task->task_details ?? 'null', 0, 150, '...'); ?>
                 <pre>{{ $task->task_details }}</pre>
+              
             </div>
 
             <div class="low-box">
@@ -125,7 +126,6 @@
                     $deadlineDate = \Carbon\Carbon::parse($task->deadline_date);
                     $daysDifference = $currentDate->diffInDays($deadlineDate);
                 @endphp
-
                 @if ($task->status != '3')
                 @if ($currentDate > $deadlineDate)
                     <div class="dott" style="position: absolute; right:-10px; top:0;">
@@ -163,11 +163,9 @@
             <i class="fa-solid fa-circle"
                     style="margin-right:7px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Allotted To &nbsp;  &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; :
                 </span>
-                &nbsp;<P>{{ $user_names ?? 'N/A' }}</P>                                                           
-                    
+                &nbsp;<P>{{ $user_names ?? 'N/A' }}</P>                                                                              
             </div>
             
-
             <div class="box-one"
                 style="width:90%; display:flex; align-items:center; justify-contect:center;">
                 <?php $taskss = explode(',', $task->alloted_to); ?>
@@ -176,8 +174,6 @@
                     <img src="{{ url($userimg ?? 'NA') }}" alt="" width="50" height="50"
                         style="margin:10px 5px; border-radius:50px">
                 @endforeach
-
-
                 <img src="{{ url($task->GetManagerName->image) }}" alt="" width="50"
                     height="50"
                     style="margin:10px 5px; border-radius:50px; border:1px solid #cb0c9f; ">
@@ -187,3 +183,26 @@
 </section>
 @endforeach
 {{ $tasklist->links() }}
+<script>
+            $(document).ready(function () {
+            $('.status-dropdown').on('change', function () {
+                var taskId = $(this).data('task-id');
+                var newStatus = $(this).val();
+                $.ajax({
+                    url: 'selectstatus',
+                    method: 'POST',
+                    data: {
+                        taskId: taskId,
+                        newStatus: newStatus,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function (response) {
+                        console.log('Status updated successfully');
+                    },
+                    error: function (xhr) {
+                        console.log('Error updating status');
+                    }
+                });
+            });
+        });
+</script>

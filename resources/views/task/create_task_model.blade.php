@@ -67,19 +67,16 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row" style="margin-top:25px;">
                     <div class="col-sm-6">
                         <label>Images</label>
-                        <input type="file" name="images[]" id="imageUpload" multiple accept="image/*">
+                        <input type="file" name="images[]" id="imageUpload" multiple accept="image/*" style="border: 1px solid pink !important;
+                        font-size: 0.85rem!important;">
                         <br>
                     </div>
                     <div class="col-sm-6"></div>
                     
                 </div>
-
-
-
-
                 <div class="modal-footer">
                     <div class="col-md-6 offset-3">
                         <button type="submit" class="btn btn-primary col-md-12" style="margin-top: 30px;" id="createTaskBtn">Create Task</button>
