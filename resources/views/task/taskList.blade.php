@@ -239,5 +239,7 @@
     </div>
     <script src="{{ url('assets/js/core/popper.min.js') }}"></script>
     <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script>
+    <script src="{{ url('assets/js/core/popper.min.js') }}"></script>
+    <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script>
    
 @endsection

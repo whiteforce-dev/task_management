@@ -14,6 +14,8 @@ use App\Models\Teamremark;
 use App\Models\Status;
 use App\Models\Priority;
 use Illuminate\Support\Facades\Session;
+use Storage;
+use League\Flysystem\AwsS3V3\PortableVisibilityConverter;
 
 class TaskManagmentController extends Controller
 {
@@ -40,21 +42,19 @@ class TaskManagmentController extends Controller
         $newtask->software_catagory = Auth::user()->software_catagory;
         $newtask->priority = $request->priority;
 
-
-        if ($request->hasfile('images')) {
-            foreach ($request->file('images') as $i => $file) {
-                $temp = $file->getClientOriginalName();
-                $destinationPath = 'task_image' . '/';
-                $file->move($destinationPath, $temp);
-                $data[] = $temp;
+        if ($request->images) {
+            $image_code = $request->images;
+            foreach ($image_code as $i => $file) {
+                $filepath = time() . '.png';
+                Storage::disk('s3')->put($filepath, file_get_contents($file), 'public');
+                $data[] = $filepath;
             }
-        
-        $imagedata = implode(',', $data);
-        $newtask->images = $imagedata;
-    }
+            $imagedata = implode(',', $data);
+            $newtask->images = $imagedata;
+        }
         $newtask->save();
-        
-        sendNotification(explode(',',$newtask->alloted_to),Auth::user()->id,$newtask->id,'alloted a task to you');
+
+        sendNotification(explode(',', $newtask->alloted_to), Auth::user()->id, $newtask->id, 'alloted a task to you');
         return redirect('task-list')->with(['success' => 'Your task successfully save.']);
     }
     public function taskList()
@@ -164,16 +164,16 @@ class TaskManagmentController extends Controller
         $newtask->status = $request->status;
         $newtask->software_catagory = Auth::user()->software_catagory;
         $newtask->priority = $request->priority;
-        if ($request->hasfile('images')) {
-            foreach ($request->file('images') as $i => $file) {
-                $temp = $file->getClientOriginalName();
-                $destinationPath = 'task_image' . '/';
-                $file->move($destinationPath, $temp);
-                $data[] = $temp;
+        if ($request->images) {
+            $image_code = $request->images;
+            foreach ($image_code as $i => $file) {
+                $filepath = time() . '.png';
+                Storage::disk('s3')->put($filepath, file_get_contents($file), 'public');
+                $data[] = $filepath;
             }
+            $imagedata = implode(',', $data);
+            $newtask->images = $imagedata;
         }
-        $imagedata = implode(',', $data);
-        $newtask->images = $imagedata;
         $newtask->update();
         return redirect('task-list')->with(['success' => 'Your task successfully updated.']);
     }
@@ -201,7 +201,7 @@ class TaskManagmentController extends Controller
             $remarks = Remark::where('task_id', $request->id)->whereIn('userid', $team_id)->get();
         }
         $users = getNotificationUserList();
-        return view('task.full_view', compact('remarks', 'task_id','users'));
+        return view('task.full_view', compact('remarks', 'task_id', 'users'));
     }
 
     public function feedbackshow(Request $request)
@@ -445,8 +445,8 @@ class TaskManagmentController extends Controller
         $comments->userid = Auth::user()->id;
         $comments->software_catagory = Auth::user()->software_catagory;
         $comments->save();
-        if(!empty($request->notify_to)){
-            sendNotification($request->notify_to,Auth::user()->id,$request->task_id,'mentioned you in a task');
+        if (!empty($request->notify_to)) {
+            sendNotification($request->notify_to, Auth::user()->id, $request->task_id, 'mentioned you in a task');
         }
         $response = $request->input('manager_comments');
         return $response;

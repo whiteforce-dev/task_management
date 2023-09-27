@@ -282,5 +282,8 @@
         
     </div>
     </section>
-
+    <script src="{{ url('assets/js/core/popper.min.js') }}"></script>
+    <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script> 
+    <script src="{{ url('assets/js/core/popper.min.js') }}"></script>
+    <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script>
     <script src="https://kit.fontawesome.com/66f2518709.js" crossorigin="anonymous"></script>

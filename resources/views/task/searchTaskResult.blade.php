@@ -32,6 +32,7 @@
                     Description</h3>
                     <?php $taskDetails = mb_strimwidth($task->task_details ?? 'null', 0, 150, '...'); ?>
                 <pre>{{ $task->task_details }}</pre>
+              
             </div>
 
             <div class="low-box">

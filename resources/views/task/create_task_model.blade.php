@@ -67,10 +67,11 @@
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row" style="margin-top:25px;">
                     <div class="col-sm-6">
                         <label>Images</label>
-                        <input type="file" name="images[]" id="imageUpload" multiple accept="image/*">
+                        <input type="file" name="images[]" id="imageUpload" multiple accept="image/*" style="border: 1px solid pink !important;
+                        font-size: 0.85rem!important;">
                         <br>
                     </div>
                     <div class="col-sm-6"></div>
