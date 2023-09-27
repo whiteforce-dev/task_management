@@ -516,6 +516,7 @@
     border-radius: 5px;
     box-shadow: 2px 2px 5px -1px #6c7179;
     padding-bottom: 2px;
+    display:none;
 }
 
 .main-loader{
