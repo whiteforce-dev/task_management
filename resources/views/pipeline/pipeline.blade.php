@@ -37,7 +37,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <main class="main-content position-relative h-100 border-radius-lg ">
-        <div class="container-fluid py-4">
+        <div class="container-fluid py-4" >
             <div class="row">
                 @if (auth::user()->type !== 'employee')
                 <div class="col-3">
