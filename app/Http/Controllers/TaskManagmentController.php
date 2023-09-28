@@ -13,6 +13,7 @@ use App\Models\StatusHistory;
 use App\Models\Teamremark;
 use App\Models\Status;
 use App\Models\Priority;
+use App\Models\Attachment;
 use Illuminate\Support\Facades\Session;
 use Storage;
 use League\Flysystem\AwsS3V3\PortableVisibilityConverter;
@@ -168,7 +169,7 @@ class TaskManagmentController extends Controller
             $image_code = $request->images;
             foreach ($image_code as $i => $file) {
                 $filepath = time() . '.png';
-                Storage::disk('s3')->put($filepath, file_get_contents($file), 'public');
+                Storage::disk('s3')->put('task_management/task_attachments/'.$filepath, file_get_contents($file), 'public');
                 $data[] = $filepath;
             }
             $imagedata = implode(',', $data);
@@ -444,6 +445,7 @@ class TaskManagmentController extends Controller
         $comments->remark = $request->manager_comments;
         $comments->userid = Auth::user()->id;
         $comments->software_catagory = Auth::user()->software_catagory;
+
         $comments->save();
         if (!empty($request->notify_to)) {
             sendNotification($request->notify_to, Auth::user()->id, $request->task_id, 'mentioned you in a task');
@@ -600,5 +602,22 @@ class TaskManagmentController extends Controller
     {
         $taskdesc = Taskmaster::find($request->id);
         return view('task.task-description', compact('taskdesc'));
+    }
+    public function attachmentFile(request $request, $id){
+        $filedata = new Remark();
+        if ($request->attachment) {
+            $image_code = $request->attachment;
+            foreach ($image_code as $i => $file) {
+                $filepath = time() . '.png';
+                Storage::disk('s3')->put('task_management/task_attachments/'.$filepath, file_get_contents($file), 'public');
+                $data[] = $filepath;
+            }
+            $imagedata = implode(',', $data);
+            $filedata->attachment = $imagedata;
+            $filedata->task_id = $id;
+            $filedata->userid = Auth::user()->id;
+            $filedata->save();
+            return redirect('task-list')->with(['success' => 'Your image successfuly inserted']);
+        }
     }
 }
