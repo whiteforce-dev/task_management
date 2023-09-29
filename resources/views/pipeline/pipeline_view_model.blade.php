@@ -20,7 +20,6 @@
 
     .modal.left .modal-content,
     .modal.right .modal-content {
-        height: 100%;
         overflow-y: auto;
     }
 
@@ -485,9 +484,9 @@
             position: fixed;
             top: 0;
             right: -150%;
-            background: white;
-            margin: 0;
-            width: 650px;
+            background: #eff0f7;
+    margin: 0;
+    width: 540px;
             max-width: 90vw;
             height: 100vh;
             overflow-y: auto;
@@ -516,20 +515,20 @@
     border-radius: 5px;
     box-shadow: 2px 2px 5px -1px #6c7179;
     padding-bottom: 2px;
-    display:none;
 }
 
 .main-loader{
     width:90%;
     border-top-right-radius: 18px;
     border-top-left-radius: 18px;
+    border-bottom-left-radius: 18px;
+    border-bottom-right-radius: 18px;
 }
 .main-loader::-webkit-scrollbar {
   display: none;
 }
 .imgsec{
     width: 95%;
-    border: 1px solid #dee6eb;
     margin: 10px auto;
     display: flex;
     align-items: center;
@@ -542,7 +541,11 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin:10px auto;
+    margin: 19px auto;
+    border: 2px solid #ffffff;
+    margin-bottom: 60px;
+    box-shadow: 0px 0px 9px -1px #a1a3ab;
+    background: white;
 }
 .newpicshot img{
     width: 97%;
@@ -552,16 +555,24 @@
     margin:10px auto;
 }
     /* modal CSS end  */
-.screen-header{
-    padding-top: 9px;
+    .upheaderbox{
+        padding-top: 9px;
     width: 100%;
     background: #d70bbe;
     color: white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
     height: 63px;
-    padding-left: 40px;
+    /* padding-left: 40px; */
     position: sticky;
     top: 0;
+    }
+.screen-header{
+    width: 79%;
+    color: white;
 }
+
 .screen-header h2{
 color: white;
     font-size: 1.2rem !important;
@@ -570,11 +581,23 @@ color: white;
      margin: 10px auto;
 }
 .modal-dialog{
-    box-shadow: 0px 0px 22px -3px #74797f;
+}
+.submit-btn{
+    width: 14%;
+    text-align: center;
+}
+.submit-btn button{
+    width: 78px;
+    height: 30px;
+    border: none;
+    color: #d70bbe;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 6px;
 }
 </style>
 
-<div class="modal-dialog modal-lg" style="positon:relative; z-index: 2500;">   
+<div class="modal-dialog modal-lg" style="positon:relative; z-index: 2500;max-height: 100vh !important;">   
     <div class="modal-content" style="position: relative; z-index: 2500;">
         <!-- Modal Header -->
         <div class="modal-header text-white" style="background-color:#d70bbe; ">
@@ -674,7 +697,7 @@ color: white;
 
         <div class="apply-btn" style="margin-top: -13px;
     margin-left: 12px;">
-            <button class="btn-one" id="applyBtn">View Modal</button>
+            <button class="btn-one" id="applyBtn">View Image</button>
 </div>
         <!-- modal button end  -->
         
@@ -690,7 +713,7 @@ color: white;
                 
             </div>
 
-        <div style="height: 463px; overflow-y: auto; overflow-x: hidden;padding-right: 15px;" id="response">            
+        <div style="height: 463px; overflow-y: auto; overflow-x: hidden;padding-right: 15px; margin-top: 24px;" id="response">            
             @foreach ($remarks as $i => $remark)
             @php
                 $managerData = \App\Models\User::where('id', $remark->userid)->first();
@@ -795,9 +818,16 @@ color: white;
 <div class="modalContainer">
       <div class="overlay"></div>
       <div class="main-loader submitModal" style="z-index:2000">
-        <div class="screen-header">
-            <h2>Lorem ipsum, dolor sit amet consectetur adipisicing elit.</h2>
+      <div class="upheaderbox">
+      <div class="submit-btn">
+          <button class="sub-mit" id="form-cancel-menu">Back <i class="fa-solid fa-share fa-flip-horizontal" style="color: #d70bbe; margin-left: 5px;"></i> </button>
+          
         </div>
+        <div class="screen-header">
+            <h2>Lorem ipsum, dolor sit amet consectetur </h2>
+        </div>
+      </div>
+      
       <div class="imgsec">
 
 <div class="newpicshot">
@@ -822,10 +852,7 @@ color: white;
 
 
 
-        <div class="submit-btn">
-          <button class="sub-mit" id="form-cancel-menu">Cancel</button>
-          
-        </div>
+        
       </div>
     </div>
 
