@@ -831,29 +831,22 @@ color: white;
           
         </div>
         <div class="screen-header">
-            <h2>Lorem ipsum, dolor sit amet consectetur </h2>
+            <h2>Attached images</h2>
         </div>
       </div>
       
-      <div class="imgsec">
-
-<div class="newpicshot">
-<img src="{{ url('task_image/img1.png') }}" alt="">
-</div>
-
-<div class="newpicshot">
-<img src="{{ url('task_image/img2.png') }}" alt="">
-</div>
-
-<div class="newpicshot">
-<img src="{{ url('task_image/img3.png') }}" alt="">
-</div>
-
-<div class="newpicshot">
-<img src="{{ url('task_image/img4.png') }}" alt="">
-</div>
-
-      </div> 
+            @php 
+            $taskImages = !empty($task->images) ? explode(',', $task->images) : [];
+            @endphp
+            <div class="imgsec">
+                @if(!empty($taskImages))
+                @foreach ($taskImages as $taskImage)  
+                <div class="newpicshot">
+                    <img src="{{ Storage::disk('s3')->temporaryUrl('task_management/task_images'.$taskImage, now()->addMinutes(5)) }}" alt="img">
+                </div>
+                @endforeach
+                @endif
+            </div>
 
 
 
