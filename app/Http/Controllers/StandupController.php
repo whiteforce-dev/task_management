@@ -13,6 +13,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use App\Notifications\UserMentioned;
+use App\Models\Askquestion;
 
 
 class StandupController extends Controller
@@ -163,11 +164,31 @@ class StandupController extends Controller
                 $all_users = [Auth::user()->id];
             }
         }
-
         $dailyStandups = DailyStandup::with('user:id,name,image')->whereIn('user_id',$all_users)->where('date',$date)->get();
+        $standups = DailyStandup::whereIn('user_id',$all_users)->where('date',$date)->get();
         return view('daily_standup.daily_standup_date_wise_report_data',compact('dailyStandups')); 
     }
 
-    
+    public function taskApproved(request $request){ 
+      $id = $request->data;
+      $data = DailyStandup::find($id);
+      $data->is_approved = '1';
+      $data->approved_by = Auth::user()->id;
+      $data->approved_at =  date('Y-m-d');
+      $data->save();
+      return response()->json('Task Approved successfully ');
+    }
+
+    public function askQuestion(request $request){
+        $dailyStandups = DailyStandup::find($request->id);
+        return view('daily_standup.ask_question_model',compact('dailyStandups')); 
+    }
+    public function ask_Question(request $request, $id){
+        $askques = new Askquestion();
+        $askques->daily_standups_id = $id;
+        $askques->question = $request->ask_question;
+        $askques->save();
+        return redirect('daily-standup-report');
+    }
     
 }

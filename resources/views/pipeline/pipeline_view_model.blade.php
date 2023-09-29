@@ -853,6 +853,7 @@
                     <h2>Attached images </h2>
                 </div>
             </div>
+
             @php $taskImages = explode(',', $task->images); @endphp
             <div class="imgsec">
                 @foreach ($taskImages as $taskImage)  
