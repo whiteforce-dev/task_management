@@ -40,6 +40,7 @@
 <script src="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.min.js"></script>
 <link href="{{ url('css/dailystandupreport.css') }}">
 <script>
+    getReport();
     function getReport(){
         var date = $('#date').val();
         if(date == ''){

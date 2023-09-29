@@ -106,6 +106,17 @@
     top: 0 !important;
     width: 76%;
 }
+.dropbtn {
+  /* background-color: #4CAF50; */
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+.dropbtn i {
+  margin-top: 2px;
+  font-size: 1rem !important;
+  color: #26272c;
+}
 </style>
 <div class="container"  style="    background: white;
     width: 99%;
@@ -207,8 +218,8 @@
     }
 
     function scrollBottom(id) {
-    var chat = document.getElementById(id);
-    chat.scrollTop = chat.scrollHeight - chat.clientHeight;
-  }
+        var chat = document.getElementById(id);
+        chat.scrollTop = chat.scrollHeight - chat.clientHeight;
+    }
 </script>
 @endsection
