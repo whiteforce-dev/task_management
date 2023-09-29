@@ -152,7 +152,7 @@
         @endforeach
     </div>
 </div>
-<div class="modal right fade right-Modal" id="taskdetails" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
+<div class="" id="taskdetails" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ url('assets/pipeline/new.js') }}"></script>
@@ -166,8 +166,12 @@
     function taskDetails(url, id) {
         $.get(url, id, function(rs) {
             $('#taskdetails').html(rs);
-            $('#taskdetails').modal('show');
+            $('#taskDetails-modal').modal('show');
         });
+    setTimeout(() => {
+        scrollBottom("response")
+    }, 500);      
+        
     }
     function markAsRead(id,key){
         $.ajax({
@@ -202,6 +206,9 @@
         })
     }
 
-    
+    function scrollBottom(id) {
+    var chat = document.getElementById(id);
+    chat.scrollTop = chat.scrollHeight - chat.clientHeight;
+  }
 </script>
 @endsection

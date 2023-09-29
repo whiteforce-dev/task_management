@@ -488,7 +488,7 @@
     margin: 0;
     width: 540px;
             max-width: 90vw;
-            height: 100vh;
+            height: 99vh;
             overflow-y: auto;
             z-index: 56;
             transition: all 0.5s ease-in-out;
@@ -598,7 +598,7 @@ color: white;
 </style>
 
 <div class="modal-dialog modal-lg" style="positon:relative; z-index: 2500;max-height: 100vh !important;">   
-    <div class="modal-content" style="position: relative; z-index: 2500;">
+    <div class="modal-content" style="position: relative; z-index: 2500;    min-height: 100vh;">
         <!-- Modal Header -->
         <div class="modal-header text-white" style="background-color:#d70bbe; ">
             <h4 class="modal-title" style="color: white; font-size: 1.2rem !important; font-weight:500; ">
@@ -609,10 +609,11 @@ color: white;
 
 
         <!-- Modal body -->
-        <div class="modal-body">
+        <div class="modal-body" style="display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - 70px);
+">
             <div class="container mt-1" style="margin-bottom: -17px;
-    position: absolute;
-    top: 0;
     background: white;
     box-shadow: 2px 2px 4px -1px #cbcfd9;">
                 <div style="display:flex; margin-top: 13px;">
@@ -627,7 +628,10 @@ color: white;
 
 </span> 
                 <p style="width: 80%;
-    color: #3f3f42;">
+    color: #3f3f42;display: -webkit-box;
+    overflow-y: hidden;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;">
                     {{ ucfirst($task->task_details ?? 'na') }} </p>
                 </div>
 
@@ -713,7 +717,11 @@ color: white;
                 
             </div>
 
-        <div style="height: 463px; overflow-y: auto; overflow-x: hidden;padding-right: 15px; margin-top: 24px;" id="response">            
+        <div style="    flex-grow: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 15px;
+    margin-top: 24px;" id="response">            
             @foreach ($remarks as $i => $remark)
             @php
                 $managerData = \App\Models\User::where('id', $remark->userid)->first();
@@ -752,8 +760,7 @@ color: white;
             </div>                                    
          @endforeach
         </div>
-         <form class="newformto" id="myForm" style="position: sticky;
-    bottom: 0;">@csrf
+         <form class="newformto" id="myForm" style="">@csrf
             <div class="row" >
                 <div class="col-sm-10" style="margin-top:20px;">
                     <textarea name="manager_comments" cols="" rows="" class="form-control" placeholder="Please enter comments..." style="width: 98%;
@@ -890,7 +897,7 @@ color: white;
                             </div>
                         </div></div>`;
                     $("#response").append(html)
-                    scrollBottom()
+                    scrollBottom("response")
                 },
                 error: function(response) {
                     console.log(response);
@@ -948,6 +955,11 @@ $('.change-image').on('click', function() {
                 modalContainer.classList.remove("show");
             };
         }
+
+        function scrollBottom(id) {
+    var chat = document.getElementById(id);
+    chat.scrollTop = chat.scrollHeight - chat.clientHeight;
+  }
     </script>
 
 <script src="https://kit.fontawesome.com/66f2518709.js" crossorigin="anonymous"></script>
