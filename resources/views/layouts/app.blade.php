@@ -83,6 +83,33 @@
             align-items: center;
             border-radius: 50%;
         }
+
+        .notification-badge {
+            animation: pulse 1.7s ease-out;
+            animation-iteration-count: infinite;
+            }
+
+            @keyframes pulse {
+            40% {
+                transform: scale3d(1, 1, 1);
+            }
+
+            50% {
+                transform: scale3d(1.3, 1.3, 1.3);
+            }
+
+            55% {
+                transform: scale3d(1, 1, 1);
+            }
+            
+            60% {
+                transform: scale3d(1.3, 1.3, 1.3);
+            }
+
+            65% {
+                transform: scale3d(1, 1, 1);
+            }
+        }
     </style>
 </head>
 

@@ -221,6 +221,8 @@
                     $checkout_tasks = collect(App\Models\CheckoutDetails::whereIn('id',explode(',',$value[$array_key]['checkout']))->with('GetTask:id,task_code,task_name')->get());
                     $total_hours = $checkout_tasks->sum('hours');
                     $total_minutes = $checkout_tasks->sum('minutes');
+                } else {
+                    $checkout_tasks = [];
                 }
                 $array_key++;
                 $lowerbox_bgcolor = '';
@@ -233,6 +235,8 @@
             }
         } else {
             $lowerbox_bgcolor = 'background:#9bffed';
+            $total_hours = 0;
+            $total_minutes = 0;
         }
         @endphp
         <div class="lowerbox" style="{{ $lowerbox_bgcolor }}">

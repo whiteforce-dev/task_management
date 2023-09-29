@@ -758,8 +758,7 @@ color: white;
     display: flex;
     align-items: center;">
                 <!-- <label for="alloted_to">Notify To </label> -->
-                <?php $users = \App\Models\User::get(); ?>
-                <select class="form-control select2" multiple data-live-search="true" name="alloted_to[]" id="alloted_to" data-placement="top" style="width:100%;">
+                <select class="form-control select2" multiple data-live-search="true" name="notify_to[]" id="notify_to" data-placement="top" style="width:100%;">
                     @foreach ($users as $user)
                     <option value="{{ $user->id }}">{{ $user->name }}</option>
                     @endforeach
@@ -835,7 +834,9 @@ color: white;
 <!-- modal end  -->
 <script>
     $(document).ready(function() {
-        $('.select2').select2();
+        $('.select2').select2({
+            placeholder: "Notify To",
+        });
     });
 </script>
    

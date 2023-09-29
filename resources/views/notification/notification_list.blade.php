@@ -77,6 +77,13 @@
     border-radius: 5px;
     margin-left: 20px;
 }
+
+.taskcodebadge {
+    background: linear-gradient(310deg, #7928ca, #ff0080);
+    padding-left: 11px;
+    padding-right: 11px;
+    font-size: 11px;
+}
 </style>
 <div class="container">
     <h3 class="m-b-50 heading-line">Notifications <i class="fa fa-bell" style="color: #e4088f !important;"></i></h3>
@@ -103,7 +110,7 @@
                     <img src="{{ url($sent_by['image']) }}" alt="user">
                 </div>
                 <div class="notification-list_detail">
-                    <p ><b>{{ ucwords(strtolower($sent_by['name'])) }}</b>&nbsp;{{$data['message']}}</p>
+                    <p ><b>{{ ucwords(strtolower($sent_by['name'])) }}</b>&nbsp;{!!$data['message']!!}</p>
                     <!-- <p class="text-muted">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Unde, dolorem.</p> -->
                     <p class="text-muted"><small>At {{ date('M d, Y H:i:s',strtotime($notification->created_at)) }}</small></p>
                 </div>
@@ -166,5 +173,7 @@
             }
         })
     }
+
+    
 </script>
 @endsection

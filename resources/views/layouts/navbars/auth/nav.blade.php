@@ -36,7 +36,7 @@
                 <a href="{{ url('notification-list') }}" type="button" class="icon-button">
                     <span class="material-icons">notifications</span>
                     @if(!empty($notification_count))
-                    <span class="icon-button__badge" id="notificationCount">{{ $notification_count }}</span>
+                    <span class="icon-button__badge notification-badge" id="notificationCount">{{ $notification_count }}</span>
                     @endif
                 </a>
             </li>
