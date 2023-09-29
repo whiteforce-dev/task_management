@@ -47,7 +47,7 @@ class TaskManagmentController extends Controller
             $image_code = $request->images;
             foreach ($image_code as $i => $file) {
                 $filepath = time() . '.png';
-                Storage::disk('s3')->put($filepath, file_get_contents($file), 'public');
+                Storage::disk('s3')->put('task_management/task_attachments/'.$filepath, file_get_contents($file), 'public');
                 $data[] = $filepath;
             }
             $imagedata = implode(',', $data);
