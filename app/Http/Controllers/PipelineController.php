@@ -81,7 +81,8 @@ class PipelineController extends Controller
    public function taskDetails(Request $request){
         $task = Taskmaster::find($request->id);
         $remarks = Remark::where('task_id', $request->id)->get();
-        return view('pipeline.pipeline_view_model', compact('task', 'remarks')); 
+        $users = User::where('software_catagory',Auth::user()->software_catagory)->get();
+        return view('pipeline.pipeline_view_model', compact('task', 'remarks','users')); 
     }
 
     public function rightModel(Request $request, $task_id){

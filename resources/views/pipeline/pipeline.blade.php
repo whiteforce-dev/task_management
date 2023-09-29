@@ -118,8 +118,8 @@
     </script>
     
 
-    <div class="modal right fade right-Modal" id="taskDetails" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
-    </div>
+    <div class="" id="taskDetails" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
+        </div>
 
 <div class="modal" id="myModal10">
 </div>
@@ -241,7 +241,7 @@
     function taskDetails(url, id) {
         $.get(url, id, function(rs) {
             $('#taskDetails').html(rs);
-            $('#taskDetails').modal('show');
+            $('#taskDetails-modal').modal('show');
         });
     }
     </script>

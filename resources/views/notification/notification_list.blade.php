@@ -19,6 +19,7 @@
 .heading-line {
     position: relative;
     padding-bottom: 5px;
+    padding-top: 22px;
 }
 
 .heading-line:after {
@@ -47,6 +48,19 @@
     background: #fff;
     -webkit-box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+    transition:all 600ms ease;
+    cursor: pointer;
+    border-right: 1px solid #f3c9ea;
+    border-top: 1px solid #f3c9ea;
+    border-bottom: 1px solid #f3c9ea;
+    width: 99%;
+    margin: 15px auto;
+    border-radius: 10px;
+}
+.notification-list:hover{
+    transform: scale(1.05);
+    background: white;
+    box-shadow: 0px 0px 10px -2px #ababb3;
 }
 
 .notification-list--unread {
@@ -77,8 +91,29 @@
     border-radius: 5px;
     margin-left: 20px;
 }
+
+.taskcodebadge {
+    background: linear-gradient(310deg, #7928ca, #ff0080);
+    padding-left: 11px;
+    padding-right: 11px;
+    font-size: 11px;
+}
+#navbarBlur{
+    background: white;
+    box-shadow: 0px 0px 8px -2px #a7a7ab !important;
+    margin-top: 16px;
+    position: fixed;
+    top: 0 !important;
+    width: 76%;
+}
 </style>
-<div class="container">
+<div class="container"  style="    background: white;
+    width: 99%;
+    border-radius: 24px;
+    box-shadow: 2px 2px 10px -2px #a1a1b1;
+    padding-bottom: 20px;
+    /* margin-top: 110px; */
+">
     <h3 class="m-b-50 heading-line">Notifications <i class="fa fa-bell" style="color: #e4088f !important;"></i></h3>
 
     <div class="notification-ui_dd-content">
@@ -103,7 +138,7 @@
                     <img src="{{ url($sent_by['image']) }}" alt="user">
                 </div>
                 <div class="notification-list_detail">
-                    <p ><b>{{ ucwords(strtolower($sent_by['name'])) }}</b>&nbsp;{{$data['message']}}</p>
+                    <p ><b>{{ ucwords(strtolower($sent_by['name'])) }}</b>&nbsp;{!!$data['message']!!}</p>
                     <!-- <p class="text-muted">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Unde, dolorem.</p> -->
                     <p class="text-muted"><small>At {{ date('M d, Y H:i:s',strtotime($notification->created_at)) }}</small></p>
                 </div>
@@ -166,5 +201,7 @@
             }
         })
     }
+
+    
 </script>
 @endsection

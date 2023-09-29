@@ -55,7 +55,15 @@ class TaskManagmentController extends Controller
         }
         $newtask->save();
 
-        sendNotification(explode(',', $newtask->alloted_to), Auth::user()->id, $newtask->id, 'alloted a task to you');
+        $notification_users = explode(',', $newtask->alloted_to);
+        $key = array_search(Auth::user()->id, $notification_users);
+        if ($key !== false) {
+            unset($notification_users[$key]);
+        }
+        if(!empty($notification_users)){
+            $message = "alloted a task&nbsp;&nbsp;<span class='badge badge-primary taskcodebadge'>".$newtask->task_code."</span>&nbsp;&nbsp;to you";
+            sendNotification($notification_users, Auth::user()->id, $newtask->id, $message);
+        }
         return redirect('task-list')->with(['success' => 'Your task successfully save.']);
     }
     public function taskList()
@@ -448,7 +456,9 @@ class TaskManagmentController extends Controller
 
         $comments->save();
         if (!empty($request->notify_to)) {
-            sendNotification($request->notify_to, Auth::user()->id, $request->task_id, 'mentioned you in a task');
+            $task_code = Taskmaster::where('id',$request->task_id)->value('task_code');
+            $message = "mentioned you in a task&nbsp;&nbsp;<span class='badge badge-primary taskcodebadge'>".$task_code."</span>";
+            sendNotification($request->notify_to, Auth::user()->id, $request->task_id, $message);
         }
         $response = $request->input('manager_comments');
         return $response;

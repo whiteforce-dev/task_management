@@ -309,7 +309,7 @@
 
             </div>
                 <div class="checkbutton">
-                    <button type="submit" class="pulse-button">CHECKIN</button>
+                    <button type="button" class="pulse-button" onclick="checkinvalidation()">CHECKIN</button>
                 </div>
         </div>
 </form>
@@ -334,5 +334,15 @@
         </script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.slim.min.js"></script>
     <script src="{{ url('assets') }}/jquery-validation/jquery.validate.min.js"></script>
+    <script>
+        function checkinvalidation(){
+            var selected_task_ids = $("input[name='selected_task_ids[]']:checked").map(function(){return $(this).val();}).get();
+            if(selected_task_ids.length == 0){
+                alert('Please select at least one task');
+                return false;
+            } 
+            $('#createdaccount').submit();
+        }
+    </script>
 @endsection
 </body>
