@@ -169,9 +169,9 @@
                             font-size: 0.85rem!important;">
                             <br>
                         </div>
-                        <?php $img = explode(',', $task->images);?>
+                        <?php $imgg = explode(',', $task->images);?>
                         <div class="col-sm-6">
-                            @foreach ($img as $img)  
+                            @foreach ($imgg as $img)  
                            <?php  $disk = Storage::disk('s3');
                             $img = $disk->temporaryUrl($img, now()->addMinutes(5));    ?>                         
                             <img src="{{ $img }}" width="50" height="50" class="" style="border-radius:10px;">
