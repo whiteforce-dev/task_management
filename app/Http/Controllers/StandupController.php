@@ -13,7 +13,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use App\Notifications\UserMentioned;
-use App\Models\Askquestion;
+use App\Models\DailyStandupComment;
 
 
 class StandupController extends Controller
@@ -180,13 +180,15 @@ class StandupController extends Controller
     }
 
     public function askQuestion(request $request){
-        $dailyStandups = DailyStandup::find($request->id);
-        return view('daily_standup.ask_question_model',compact('dailyStandups')); 
+        $dailyStandupsId = $request->id;
+        $dailyStandups = DailyStandupComment::where('daily_standup_id', $dailyStandupsId)->orderBy('id', 'DESC')->get();
+        return view('daily_standup.ask_question_model',compact('dailyStandups','dailyStandupsId')); 
     }
-    public function ask_Question(request $request, $id){
-        $askques = new Askquestion();
-        $askques->daily_standups_id = $id;
-        $askques->question = $request->ask_question;
+    public function ask_Question(request $request){
+        $askques = new DailyStandupComment();
+        $askques->daily_standup_id = $request->daily_standup_id;
+        $askques->added_by = Auth::user()->id;
+        $askques->comment = $request->comment;
         $askques->save();
         return redirect('daily-standup-report');
     }

@@ -363,9 +363,10 @@
             <div class="actionform">
                 <div class="actionbtn"> <button type="button" onclick="task_Approved({{ $value->id }});">Approve </button> </div>
                 <div class="rejectbtn"><button onclick="AskQuestion('{{ url('ask-question' . '?id=' . $value->id) }}')" href="javascript:;">Ask Question</button></div>
-                <div class="totalhourshow"><p><span>Total Spent Time :</span> {{ $total_hours + floor($total_minutes/60) }}h {{ $total_minutes % 60 }}m</p></div>
+                <div class="totalhourshow"><p><span>Total Spent Time :</span> {{ $total_hours + floor($total_minutes/60) }}h {{ $total_minutes % 60 }}m</p></div>          
             </div>
         </div>
+        
 
         <div id="searchResults"></div>
         <script>
@@ -396,8 +397,7 @@
 
     <div class="modal" id="myModalAsk">
     </div>
-        @endforeach
-        
+        @endforeach 
     </div>
     </section>
     <script src="{{ url('assets/js/core/popper.min.js') }}"></script>

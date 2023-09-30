@@ -108,7 +108,8 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::post('mark-notification-as-unread', [NotificationController::class, 'markNotificationAsUnRead']);
 		Route::post('task-approved', [StandupController::class, 'taskApproved']);
 		Route::get('ask-question', [StandupController::class, 'askQuestion']);
-		Route::Post('ask-question/{id}', [StandupController::class, 'ask_Question']);
+		Route::Post('ask-question', [StandupController::class, 'ask_Question']);
+
 	});
 	Route::post('loginauth', [SessionsController::class, 'loginauth']);				
 	Route::group(['middleware' => 'guest'], function () 

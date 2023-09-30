@@ -99,7 +99,7 @@
                 <i class="fa-solid fa-circle"
                     style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Created Date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :
                 </span>
-                <P>{{ \Carbon\Carbon::parse($task->created_at)->format('d-m-Y') }}</P>
+                <p>{{ \Carbon\Carbon::parse($task->created_at)->format('d M h:i') }}</p>
             </div>
             <div class="box-one">
                 <i class="fa-solid fa-circle"

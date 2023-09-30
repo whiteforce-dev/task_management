@@ -11,5 +11,5 @@
             @include('layouts.footers.auth.footer')
         </div>
     </main>
-    
+
 @endsection

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Askquestion extends Model
+class DailyStandupComment extends Model
 {
-    use HasFactory;
+   protected $table = 'daily_standup_comments';
 }
