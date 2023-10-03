@@ -181,7 +181,7 @@ class StandupController extends Controller
 
     public function askQuestion(request $request){
         $dailyStandupsId = $request->id;
-        $dailyStandups = DailyStandupComment::where('daily_standup_id', $dailyStandupsId)->orderBy('id', 'DESC')->get();
+        $dailyStandups = DailyStandupComment::where('daily_standup_id', $dailyStandupsId)->get();
         return view('daily_standup.ask_question_model',compact('dailyStandups','dailyStandupsId')); 
     }
     public function ask_Question(request $request){

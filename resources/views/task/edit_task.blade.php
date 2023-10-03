@@ -169,12 +169,11 @@
                             font-size: 0.85rem!important;">
                             <br>
                         </div>
-                        <?php $imgg = explode(',', $task->images);?>
+                        <?php  $imgg = explode(',', $task->images);  ?>
                         <div class="col-sm-6">
-                            @foreach ($imgg as $img)  
-                           <?php  $disk = Storage::disk('s3');
-                            $img = $disk->temporaryUrl($img, now()->addMinutes(5));    ?>                         
-                            <img src="{{ $img }}" width="50" height="50" class="" style="border-radius:10px;">
+                           @foreach ($imgg as $img)  
+                                <?php $disk = Storage::disk('s3'); $image = $disk->temporaryUrl($img, now()->addMinutes(5)); ?>                         
+                                <img src="{{ $image }}" width="50" height="50" class="" style="border-radius:10px;">
                             @endforeach
                         </div>    
                     </div>

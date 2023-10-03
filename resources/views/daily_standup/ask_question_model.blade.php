@@ -140,7 +140,6 @@
 <div class="fixedContainer">
 <div class="modal-dialog">
     <div class="modal-content">
-
         <!-- Modal Header -->
         <div class="modal-header" style="background-color:#d70bbe; ">
             <h4 class="modal-title" style="color: white; font-size: 1.2rem !important; font-weight:500; ">
@@ -149,16 +148,14 @@
             </h4>
             <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
         </div>
-
         <!-- Modal body -->
 <div id="response">
-
     @foreach ($dailyStandups as $i => $remark)
     @php $managerData = \App\Models\User::where('id', $remark->added_by)->first(); @endphp
     <div class="row">
         <div class="col-sm-12" style="margin-left: 10px;">
             <div class="msg left-msg mt-3">
-                @if ($remark->userid !== Auth::user()->id)
+                @if ($remark->added_by !== Auth::user()->id)
                     <div class="msg-img">
                         <img src="{{ url($managerData->image) }}" class="avatar avatar-lg me-3"
                             height="100" width="100" />
@@ -171,22 +168,21 @@
                         </div>
                         <div class="msg-text">
                             <pre>{{ $remark->comment }}</pre>
-                        </div>
-                       
+                        </div>                      
                     </div>
                 @endif
             </div>
         </div>
 
         <div class="msg right-msg mt-3" >
-            @if ($remark->userid == Auth::user()->id)
+            @if ($remark->added_by == Auth::user()->id)
                 <div class="msg-img" >
                     <img src="{{ url($managerData->image) }}" class="avatar avatar-lg me-3" height="100"
                         width="100" />
                 </div>
                 <div class="msg-bubble">
                     <div class="msg-info">
-                        <div class="msg-info-name">{{ ucfirst($remark->GetUser->name) }}</div>
+                        <div class="msg-info-name">{{ ucfirst($managerData->name) }}</div>
                         <div class="msg-info-time">{{ $remark->created_at->format('d-m-y h:i A') }}</div>
                     </div>
                     <div class="msg-text">
@@ -198,23 +194,18 @@
     </div>
     @endforeach
 </div>
-
-
         <form class="newformto" id="myFormAsk">@csrf
             <div class="row">
-                <div class="col-sm-10" style="margin-top:20px;">
-                    <textarea name="comment" cols="" rows="" class="form-control"
-                        placeholder="Please enter comments..." style="width: 98%;margin-left: 14px;position: relative;" required>
-                    </textarea>
+                <div class="col-sm-9" style="margin-top:20px; margin-left:10px;">
+                    <textarea name="comment" cols="" rows="" class="form-control" placeholder="Please enter comments..."  required></textarea>
                     <input type="hidden" value="{{ $dailyStandupsId }}" name="daily_standup_id">
                 </div>
 
-                <div class="col-sm-1" style="margin-top:20px;">
+                <div class="col-sm-2" style="margin-top:20px;">
                     <button type="submit" class="btn btn-primary" style="margin-top: 12px;">Send</button>
                 </div>
             </div>
         </form>
-
     </div>
 </div>
 
