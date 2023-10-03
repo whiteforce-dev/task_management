@@ -11,12 +11,21 @@
 </style>
 @foreach ($tasklist as $i => $task)
 @php
-    $date1 = Carbon\Carbon::parse($task->end_date);
-    $date2 = Carbon\Carbon::now();
-    $difference = $date2->diffInDays($date1, false);            
+   $currentDate = now();
+   $deadlineDate = \Carbon\Carbon::parse($task->deadline_date);
+   $daysDifference = $currentDate->diffInDays($deadlineDate); 
+   $differenceInDays = $deadlineDate->diffInDays($currentDate);                    
 @endphp
-<section class="cards" id="result">
 
+@if ($differenceInDays > 15 && $task->status !='3') 
+<section class="cards" style="border:2px solid #C03;">
+    @elseif ($differenceInDays <= 3)
+    <section class="cards" style="border:2px solid #fc0;">
+        @elseif($task->status =="3")
+          <section class="cards" style="border:2px solid #090;">
+            @else
+              <section class="cards">
+                @endif
     <div class="main-card">
         <div class="long-width" style="width: 70%;">
             <div class="up-box">
@@ -99,7 +108,7 @@
                 <i class="fa-solid fa-circle"
                     style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Created Date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :
                 </span>
-                <P>{{ \Carbon\Carbon::parse($task->created_at)->format('d-m-Y') }}</P>
+                <p>{{ \Carbon\Carbon::parse($task->created_at)->format('d M h:i') }}</p>
             </div>
             <div class="box-one">
                 <i class="fa-solid fa-circle"
@@ -121,11 +130,7 @@
                 </span>
                 <p style="margin-left: 0px;">
                     {{ \Carbon\Carbon::parse($task->deadline_date)->format('d-m-Y') }} </p>
-                @php
-                    $currentDate = now();
-                    $deadlineDate = \Carbon\Carbon::parse($task->deadline_date);
-                    $daysDifference = $currentDate->diffInDays($deadlineDate);
-                @endphp
+
                 @if ($task->status != '3')
                 @if ($currentDate > $deadlineDate)
                     <div class="dott" style="position: absolute; right:-10px; top:0;">

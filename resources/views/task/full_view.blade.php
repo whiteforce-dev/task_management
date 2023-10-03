@@ -123,7 +123,7 @@
                                     <div class="msg-info-name">{{ ucfirst($managerData->name) }}</div>
                                     <div class="msg-info-time">{{ $remark->created_at->format('d-m-y h:i A') }}</div>
                                 </div>
-                                <div class="msg-text"><pre>{{ $remark->remark }}</pre></div>
+                                <div class="msg-text"><pre>{{ $remark->remark }}h</pre></div>
                                 <div id="response1"></div>
                             </div>
                             @endif

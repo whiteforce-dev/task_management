@@ -6,10 +6,10 @@
     <main
         class="main-content position-relative h-100 mt-1 border-radius-lg {{ Request::is('rtl') ? 'overflow-hidden' : '' }}">
         @include('layouts.navbars.auth.nav')
-        <div class="container-fluid py-4">
+        <div class="container-fluid">
             @yield('content')
             @include('layouts.footers.auth.footer')
         </div>
     </main>
-    
+
 @endsection

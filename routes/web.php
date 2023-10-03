@@ -99,8 +99,6 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::get('description-more', [TaskManagmentController::class, 'description_more']);
 		Route::get('right-model/{task_id}', [PipelineController::class, 'rightModel']);
 		Route::post('pipeline-card-search', [PipelineController::class, 'pipelineCardSearch']);
-		Route::get('team-allotted/{id}', [TeamAllotedController::class, 'teamaAllotted']);
-		Route::Post('teamid-send/{id}', [TeamAllotedController::class, 'teamidSend']);
 		Route::get('team-allotted-list', [TeamAllotedController::class, 'teamAllottedList']);
 
 		Route::get('notification-list', [NotificationController::class, 'notificationList']);
@@ -108,7 +106,12 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::post('mark-notification-as-unread', [NotificationController::class, 'markNotificationAsUnRead']);
 		Route::post('task-approved', [StandupController::class, 'taskApproved']);
 		Route::get('ask-question', [StandupController::class, 'askQuestion']);
-		Route::Post('ask-question/{id}', [StandupController::class, 'ask_Question']);
+		Route::Post('ask-question', [StandupController::class, 'ask_Question']);
+
+		Route::get('select-team', [TeamAllotedController::class, 'selectTeam']);
+		Route::Post('selected-team', [TeamAllotedController::class, 'selectedTeam']);
+
+
 	});
 	Route::post('loginauth', [SessionsController::class, 'loginauth']);				
 	Route::group(['middleware' => 'guest'], function () 
