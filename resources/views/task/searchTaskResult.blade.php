@@ -17,15 +17,15 @@
    $differenceInDays = $deadlineDate->diffInDays($currentDate);                    
 @endphp
 
-@if ($differenceInDays > 15) 
+@if ($differenceInDays > 15 && $task->status !='3') 
 <section class="cards" style="border:2px solid #C03;">
     @elseif ($differenceInDays <= 3)
     <section class="cards" style="border:2px solid #fc0;">
-        @elseif($task->status =='3')
-        <section class="cards" style="border:2px solid #090;">
-        @else
-         <section class="cards">
-        @endif
+        @elseif($task->status =="3")
+          <section class="cards" style="border:2px solid #090;">
+            @else
+              <section class="cards">
+                @endif
     <div class="main-card">
         <div class="long-width" style="width: 70%;">
             <div class="up-box">

@@ -27,16 +27,37 @@
             z-index: 1;
             border: 1px solid #cb0c9f !important;
         }
-
         .dropdown-toggle:focus {
             outline: 0 !important;
         }
-    </style>
+        #loader {
+    canvas {
+        width: 240px;
+        height: 240px;
+    }
+}
+
+html {
+    box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+}
+
+* {
+    box-sizing: inherit;
+    &:before,
+    &:after {
+        box-sizing: inherit;
+    }
+}
+
+</style>
+
 
     @php $auth = Auth::user()->id; @endphp
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <main class="main-content position-relative h-100 border-radius-lg ">
+        <form id="taskform">
         <div class="container-fluid">
             <div class="row">
                 @if (auth::user()->type !== 'employee')
@@ -104,7 +125,7 @@
                 <input name="task_code" id="task_code" class="form-control" style="border:1px solid #cb0c9f;" placeholder="Enter Task Code">
             </div>
             <div class="col-sm-1">
-                <button type="button" class="btn btn-primary" style="margin-top:31px;" id="submitButton load1" onclick="searchTask()"  data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>">Search</button> 
+                <button type="button" class="btn btn-primary" style="margin-top:31px;" id="submitButton" onclick="searchTask()"  data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>">Search</button> 
             </div>
             <div class="col-sm-1">
                 <a href="{{ url('task-list') }}" class="btn btn-primary"
@@ -119,12 +140,15 @@
             <div id="searchResults">
                 @include('task/searchTaskResult')
             </div>
+
         
         </div>
-      
+        </form>
     </main>
 
 
+
+    <a class="dribbble" href="https://dribbble.com/shots/6772849--Loader" target="_blank"><img src="https://dribbble.com/assets/logo-small-2x-9fe74d2ad7b25fba0f50168523c15fda4c35534f9ea0b1011179275383035439.png" alt=""></a>
 
     <link rel="stylesheet" href="{{ url('assets/css/multiselect.css') }}">
     <link rel="stylesheet" href="{{ url('assets/css/multiselectdrop.css') }}">
@@ -224,6 +248,13 @@
             $(this).val('');
         });
     </script>
+    {{-- <script>
+        $(function() { 
+            $( "#submitButton" ).submit(function() {
+                $('#loader').show();
+            });
+        });
+    </script> --}}
 
     <div class="modal" id="myModal10">
     </div>
