@@ -11,7 +11,7 @@ class NotificationController extends Controller
     public function notificationList(){
         $user = Auth::user();
         $notifications = $user->notifications;
-        $user->unreadNotifications->markAsRead();
+        //$user->unreadNotifications->markAsRead();
         return view('notification.notification_list',compact('notifications'));
     }
 

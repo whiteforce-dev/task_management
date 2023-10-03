@@ -842,7 +842,7 @@ color: white;
                 @if(!empty($taskImages))
                 @foreach ($taskImages as $taskImage)  
                 <div class="newpicshot">
-                    <img src="{{ Storage::disk('s3')->temporaryUrl('task_management/task_images'.$taskImage, now()->addMinutes(5)) }}" alt="img">
+                    <img src="{{ Storage::disk('s3')->temporaryUrl('task_management/task_attachments/'.$taskImage, now()->addMinutes(5)) }}" alt="img">
                 </div>
                 @endforeach
                 @endif

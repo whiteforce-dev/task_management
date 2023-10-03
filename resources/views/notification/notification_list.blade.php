@@ -98,14 +98,7 @@
     padding-right: 11px;
     font-size: 11px;
 }
-#navbarBlur{
-    background: white;
-    box-shadow: 0px 0px 8px -2px #a7a7ab !important;
-    margin-top: 16px;
-    position: fixed;
-    top: 0 !important;
-    width: 76%;
-}
+
 .dropbtn {
   /* background-color: #4CAF50; */
   background: transparent;

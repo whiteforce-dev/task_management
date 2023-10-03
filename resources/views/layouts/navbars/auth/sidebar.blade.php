@@ -195,6 +195,8 @@
                     <span class="nav-link-text ms-1">Daily Standup Report</span>
                 </a>
             </li>
+            @endif
+            @if(Auth::user()->type == 'admin' || Auth::user()->type == 'manager')
             <li class="nav-item">
                 <a class="nav-link {{ Request::is('daily-standup-date-wise-report') ? 'active' : '' }}" href="{{ url('daily-standup-date-wise-report') }}">
                     <div
