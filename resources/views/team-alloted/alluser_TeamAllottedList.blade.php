@@ -36,7 +36,7 @@
             <form action="{{ url('selected-team') }}" method="POST" enctype="multipart/form-data">@csrf
                 <div class="card">
                     <div class="row">
-                        <div class="col-md-5" style="margin-left:15px;">
+                        <div class="col-md-11" style="margin-left:15px;">
                             <div class="form-group">
                                 <label for="user-name" class="form-control-label">{{ __('Select Team Leader') }}</label>
                                 <div class="@error('user.name')border border-danger rounded-3 @enderror">
@@ -49,7 +49,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-11" style="margin-left:15px;">
                             <div class="form-group" id="selected_team">
                                 <label for="user-list" class="form-control-label">User List</label>
                                 <select class="form-control selectpicker" multiple data-live-search="true"

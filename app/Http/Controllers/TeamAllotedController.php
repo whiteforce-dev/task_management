@@ -16,14 +16,16 @@ class TeamAllotedController extends Controller
  
     public function teamAllottedList(){ 
         $adminId = User::where('type', 'admin')->value('id');
-        $users = User::whereNotIn('id', [Auth::user()->id, $adminId])->get();
+        $managerId = User::where('type', 'manager')->value('id');
+        $users = User::whereNotIn('id', [Auth::user()->id, $adminId, $managerId])->get();
         return view('team-alloted.alluser_TeamAllottedList',compact('users'));
     }
 
     public function selectTeam(request $request){
         $tl_id = $request->tl_id;
         $adminId = User::where('type', 'admin')->value('id');
-        $userss = User::whereNotIn('id', [$tl_id, $adminId])->get();
+        $managerId = User::where('type', 'manager')->value('id');
+        $userss = User::whereNotIn('id', [$tl_id, $adminId, $managerId])->get();
         echo '<label for="user-list" class="form-control-label">User List</label>
         <select class="form-control selectpicker" multiple data-live-search="true"
             name="selected_team[]">
