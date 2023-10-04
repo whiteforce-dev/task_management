@@ -11,21 +11,14 @@
 </style>
 @foreach ($tasklist as $i => $task)
 @php
+   $status = \App\Models\Status::get();
    $currentDate = now();
    $deadlineDate = \Carbon\Carbon::parse($task->deadline_date);
    $daysDifference = $currentDate->diffInDays($deadlineDate); 
    $differenceInDays = $deadlineDate->diffInDays($currentDate);                    
 @endphp
 
-@if ($differenceInDays > 15 && $task->status !='3') 
-<section class="cards" style="border:2px solid #C03;">
-    @elseif ($differenceInDays <= 3)
-    <section class="cards" style="border:2px solid #fc0;">
-        @elseif($task->status =="3")
-          <section class="cards" style="border:2px solid #090;">
-            @else
-              <section class="cards">
-                @endif
+<section class="cards">
     <div class="main-card">
         <div class="long-width" style="width: 70%;">
             <div class="up-box">
@@ -75,12 +68,21 @@
         <div class="short-width" style="width: 30%;">
             <div class="box-one box-btn">
                 <div class="dropdown" style=" margin-right: 10px;">
-                    <select class="dropbtn1 status-dropdown" name="selectstatus" data-task-id="{{ $task->id }}">
-                        <option value="1" {{ '1' == $task->status ? 'selected' : '' }}>Pending</option>
-                        <option value="2" {{ '2' == $task->status ? 'selected' : '' }}>Progress</option>
-                        <option value="4" {{ '4' == $task->status ? 'selected' : '' }}>Hold</option>
-                        <option value="3" {{ '3' == $task->status ? 'selected' : '' }}>Completed</option>
-                    </select>
+                    @if(Auth::user()->type == 'manager' || Auth::user()->type == 'admin' || Auth::user()->can_allot_to_others == '1')
+                        <select class="dropbtn1 status-dropdown" name="selectstatus" data-task-id="{{ $task->id }}">
+                        @foreach ($status as $statuss)
+                        <option value="{{ $statuss->id }}" {{ $statuss->id == $task->status ? 'selected' : '' }}>{{ ucfirst($statuss->status) }}</option>   
+                        @endforeach
+                        </select>
+                    @elseif(Auth::user()->type == 'employee')
+                        <select class="dropbtn1 status-dropdown" name="selectstatus" data-task-id="{{ $task->id }}">
+                        @foreach ($status as $statuss)
+                        @if($statuss->status != 'need approval')
+                        <option value="{{ $statuss->id }}" {{ $statuss->id == $task->status ? 'selected' : '' }}>{{ ucfirst($statuss->status) }}</option>   
+                        @endif
+                        @endforeach
+                        </select>
+                    @endif    
                 </div>
                 <div class="dropdown btn-card">
                     <button class="dropbtn"
@@ -108,7 +110,7 @@
                 <i class="fa-solid fa-circle"
                     style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Created Date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :
                 </span>
-                <p>{{ \Carbon\Carbon::parse($task->created_at)->format('d M h:i') }}</p>
+                <p>{{ \Carbon\Carbon::parse($task->created_at)->format('d,M h:i') }}</p>
             </div>
             <div class="box-one">
                 <i class="fa-solid fa-circle"
@@ -129,7 +131,7 @@
                     style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i> <span>Deadline Date &nbsp;&nbsp;&nbsp; &nbsp;:
                 </span>
                 <p style="margin-left: 0px;">
-                    {{ \Carbon\Carbon::parse($task->deadline_date)->format('d-m-Y') }} </p>
+                    {{ \Carbon\Carbon::parse($task->deadline_date)->format('d,M h:i') }} </p>
 
                 @if ($task->status != '3')
                 @if ($currentDate > $deadlineDate)
@@ -143,7 +145,7 @@
                     style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i> <span>Completed Date :
                 </span>
                 @if ($task->status ==3)
-                    <P>{{ \Carbon\Carbon::parse($task->end_date)->format('d-m-Y') }}</P>
+                    <P>{{ \Carbon\Carbon::parse($task->end_date)->format('d,M h:i') }}</P>
                 @else<p>Null</p>
                 @endif
             </div>

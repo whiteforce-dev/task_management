@@ -121,7 +121,7 @@
                             <div class="msg-bubble" style="margin-left:8px;">
                                 <div class="msg-info">
                                     <div class="msg-info-name">{{ ucfirst($managerData->name) }}</div>
-                                    <div class="msg-info-time">{{ $remark->created_at->format('d-m-y h:i A') }}</div>
+                                    <div class="msg-info-time">{{ $remark->created_at->format('d,M Y / h:i A') }}</div>
                                 </div>
                                 <div class="msg-text"><pre>{{ $remark->remark }}h</pre></div>
                                 <div id="response1"></div>
@@ -138,7 +138,7 @@
                         <div class="msg-bubble">
                             <div class="msg-info">
                                 <div class="msg-info-name">{{ ucfirst($remark->GetUser->name) }}</div>
-                                <div class="msg-info-time">{{ $remark->created_at->format('d-m-y h:i A') }}</div>
+                                <div class="msg-info-time">{{ $remark->created_at->format('d,M Y / h:i A') }}</div>
                             </div>
                             <div class="msg-text"> <pre>{{ $remark->remark }}</pre> </div>                     
                         </div>
@@ -152,7 +152,8 @@
             @csrf
             <div class="row px-2">
                 <div class="col-sm-7" style="width: 60%">                  
-                    <textarea name="manager_comments" cols="" rows="" class="form-control" placeholder="Please enter comments..." required ></textarea>                  
+                    <textarea name="manager_comments" cols="" rows="" class="form-control" placeholder="Please enter comments..." required >                     
+                    </textarea>                  
                     <input type="hidden" value="{{ $task_id }}" name="task_id" id="task_id">
                 </div>  
                 <div class="col-sm-3" style="width: 30%; padding-top: 17px;">
@@ -198,7 +199,7 @@
                             <div class="msg-bubble">
                                 <div class="msg-info">
                                     <div class="msg-info-name">{{ Auth::user()->name }}</div>
-                                    <div class="msg-info-time">{{ date('d-m-y H:i:s'); }}</div>
+                                    <div class="msg-info-time">{{ date('d,M Y / h:i A'); }}</div>
                                 </div>
                                 <div class="msg-text"> <pre>${inputValue}</pre> </div>                              
                             </div>

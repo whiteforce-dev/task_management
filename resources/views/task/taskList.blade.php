@@ -50,14 +50,28 @@ html {
     }
 }
 
+
+#loader {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  background: rgba(0,0,0,0.75) url(https://media.geeksforgeeks.org/wp-content/uploads/20230723195619/GfG-Image.png) no-repeat center center;
+  z-index: 10000;
+}
 </style>
+
+
 
 
     @php $auth = Auth::user()->id; @endphp
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <main class="main-content position-relative h-100 border-radius-lg ">
-        <form id="taskform">
+        <form id="taskform">  
         <div class="container-fluid">
             <div class="row">
                 @if (auth::user()->type !== 'employee')
@@ -140,9 +154,9 @@ html {
             <div id="searchResults">
                 @include('task/searchTaskResult')
             </div>
-
-        
+           
         </div>
+        
         </form>
     </main>
 

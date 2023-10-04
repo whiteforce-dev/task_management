@@ -10,6 +10,7 @@ use App\Models\Status;
 use App\Models\Remark;
 use App\Models\Team;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Priority;
 
 class TeamAllotedController extends Controller
 {
@@ -46,5 +47,26 @@ class TeamAllotedController extends Controller
         $teamdata = explode(',', $teamss);
         $teams = User::wherein('id', $teamdata)->get();
         return view('team-alloted.showteam-list',compact('teams'));
+    }
+
+    public function needApproval(){
+        $to = "";
+        $from = "";
+        $status_search = "";
+        $managerId = [];
+        $EmployeeId = [];
+        $priority = "";
+        if(Auth::user()->type == 'admin'){
+            $tasklist = Taskmaster::where('need_approval', 0)->paginate('25');
+        }elseif(Auth::user()->type == 'manager'){
+            $teamId = User::where('id', Auth::user()->id)->orwhere('parent_id', Auth::user()->id)->pluck('id')->ToArray();
+            $tasklist = Taskmaster::where('need_approval', 0)->where('alloted_by', Auth::user()->id)->where('alloted_to', $teamId)->paginate('25');
+        }elseif(Auth::user()->can_allot_to_others == '1'){
+            $tasklist = Taskmaster::where('need_approval', 0)->where('alloted_by', Auth::user()->id)->paginate('25');
+        }
+        $users = User::where('software_catagory', Auth::user()->software_catagory)->where('type', '!=', 'admin')->get();
+        $statuss = Status::get();
+        $prioritys = Priority::get();
+        return view('task.taskList', compact('tasklist', 'tasklist', 'managerId', 'EmployeeId', 'status_search', 'from', 'to', 'priority', 'statuss', 'users', 'prioritys'));
     }
 }

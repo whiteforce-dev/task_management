@@ -60,6 +60,8 @@
                           <td><span style="color:rgb(153, 143, 0) !important; font-weight:500;">Hold</span></td>
                           @elseif($task->status == '3')
                           <td><span style="color:#090 !important; font-weight:500;">Completed</span></td>
+                          @elseif($task->status == '5')
+                          <td><span style="color:rgb(153, 87, 0) !important; font-weight:500;">Senior Approval</span></td>
                           @endif
             
                           <td>
