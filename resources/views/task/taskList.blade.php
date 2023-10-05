@@ -72,7 +72,7 @@ html {
 
     <main class="main-content position-relative h-100 border-radius-lg ">
         <form id="taskform">  
-        <div class="container-fluid">
+        <div class="container-fluid py-4">
             <div class="row">
                 @if (auth::user()->type !== 'employee')
                 <div class="col-3">

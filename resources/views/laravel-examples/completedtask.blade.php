@@ -52,7 +52,7 @@
         </div>
     </div>
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
-        <div class="container-fluid">
+        <div class="container-fluid py-4">
             <div class="alert alert-secondary mx-1" role="alert">
                 <span class="text-white">
                     <strong>Total Task Report!</strong>
