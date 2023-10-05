@@ -75,7 +75,7 @@ class TaskManagmentController extends Controller
         $EmployeeId = [];
         $priority = "";
 
-        $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('need_approval', '=', '5');
+        $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('is_approved', '=', '1');
 
         if (Auth::user()->type == "employee") {
             $tasklist = $tasklist->where('alloted_by', Auth::user()->id)->orWhereRaw("FIND_IN_SET(" . Auth::user()->id . ", alloted_to)");
@@ -85,7 +85,7 @@ class TaskManagmentController extends Controller
             $pattern = implode('|', array_map('preg_quote', explode(',', implode(',', $all_users_ids))));
             $tasklist = $tasklist->whereIn('alloted_by', $all_users_ids)->orWhereRaw("alloted_to REGEXP '{$pattern}'");
         }
-        $tasklist = $tasklist->orderBy('id', 'Desc')->where('need_approval', '=', '5')->paginate(25);
+        $tasklist = $tasklist->orderBy('id', 'Desc')->where('is_approved', '=', '1')->paginate(25);
         $users = User::where('software_catagory', Auth::user()->software_catagory)->where('type', '!=', 'admin')->get();
         $statuss = Status::get();
         $prioritys = Priority::get();
@@ -94,7 +94,7 @@ class TaskManagmentController extends Controller
 
     public function searchTask(Request $request)
     {
-        $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('need_approval', '=', '5');
+        $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('is_approved', '=', '1');
         if (Auth::user()->type == "employee") {
             $tasklist = $tasklist->where(function ($query) {
                 $query->where('alloted_by', Auth::user()->id)
@@ -263,7 +263,7 @@ class TaskManagmentController extends Controller
     }
     public function savechangestatus(Request $request, $id)
     {
-        Taskmaster::where('id', $id)->update(array('status' => $request->status, 'end_date' => $request->end_date, 'need_approval', $request->status));
+        Taskmaster::where('id', $id)->update(array('status' => $request->status, 'end_date' => $request->end_date, 'is_approved', $request->status));
         if (isset($request->status)) {
             $task_name = Taskmaster::where('id', $id)->first();
             $status = new StatusHistory();
@@ -294,7 +294,7 @@ class TaskManagmentController extends Controller
         $priority = $request->priority;
         $deadline = $request->deadline;
 
-        $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('need_approval', '=', '5');
+        $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('is_approved', '=', '1');
 
         if ($request->managerId) {
             if (Auth::user()->type !== 'employee') {
@@ -378,7 +378,7 @@ class TaskManagmentController extends Controller
             $teamId = User::where('software_catagory', Auth::user()->software_catagory)->where('id', Auth::user()->id)->orwhere('parent_id', Auth::user()->id)->pluck('id')->ToArray();
             $tasklist = Taskmaster::whereIn('alloted_to', $teamId)->get();
         } else {
-            $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('need_approval', '=', '5')
+            $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('is_approved', '=', '1')
                 ->orderBy('id', 'DESC')
                 ->where('alloted_to', Auth::user()->id)
                 ->get();
@@ -490,10 +490,9 @@ class TaskManagmentController extends Controller
 
     public function selectstatus(Request $request)
     {
-
         $taskId = $request->input('taskId');
         $newStatus = $request->input('newStatus');
-        Taskmaster::where('id', $taskId)->update(['status' => $newStatus, 'end_date' => date('y-m-d'), 'need_approval' => $newStatus]);
+        Taskmaster::where('id', $taskId)->update(['status' => $newStatus, 'end_date' => date('y-m-d'), 'is_approved' => '0']);
         if (isset($newStatus)) {
             $status = new StatusHistory();
             $status->task_id = $taskId;
@@ -541,7 +540,7 @@ class TaskManagmentController extends Controller
         $priority_search = $request->priority;
         $complete_date = $request->complete_date;
 
-        $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('need_approval', '=', '5');
+        $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('is_approved', '=', '1');
         $statuss = Status::get();
         $prioritys = Priority::get();
 

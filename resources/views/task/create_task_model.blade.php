@@ -5,7 +5,7 @@
 
         <!-- Modal Header -->
         <div class="modal-header">
-            <h4 class="modal-title">Create Task</h4>
+            <h5 class="modal-title">Create Task</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal">&#10060;</button>
         </div>
 
@@ -77,11 +77,12 @@
                     <div class="col-sm-6"></div>
                     
                 </div>
-                <div class="modal-footer">
-                    <div class="col-md-6 offset-3">
-                        <button type="submit" class="btn btn-primary col-md-12" style="margin-top: 30px;" id="createTaskBtn">Create Task</button>
+                <div class="row">                 
+                    <div class="col-md-12">
+                        <div class="d-flex justify-content-center mt-1">
+                            <button type="submit" class="btn bg-primary text-white" id="createTaskBtn">Create Task</button>
+                        </div>
                     </div>
-                    <div class="col-md-3"></div>
                 </div>
             </form>
         </div>

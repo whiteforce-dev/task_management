@@ -111,6 +111,9 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::get('select-team', [TeamAllotedController::class, 'selectTeam']);
 		Route::Post('selected-team', [TeamAllotedController::class, 'selectedTeam']);
 		Route::get('need-approval', [TeamAllotedController::class, 'needApproval']);
+		Route::POST('task-approval', [TeamAllotedController::class, 'taskApproval']);
+		Route::GET('task-rejected', [TeamAllotedController::class, 'taskRejected']);
+		Route::POST('approval-task-search', [TeamAllotedController::class, 'approvalTaskSearch']);
 
 	});
 	Route::post('loginauth', [SessionsController::class, 'loginauth']);				

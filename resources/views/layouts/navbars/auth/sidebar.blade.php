@@ -246,7 +246,7 @@
                 </a>
             </li>           
             @endif
-@if(Auth::user()->type == 'admin' || Auth::user()->type == 'manager' || Auth::user()->can_allot_to_others == '1')
+
             <li class="nav-item">
                 <a class="nav-link {{ Request::is('need-approval') ? 'active' : '' }}" href="{{ url('need-approval') }}">
                     <div
@@ -273,7 +273,7 @@
                     <span class="nav-link-text ms-1">Need Approval</span>
                 </a>
             </li>
-@endif
+
 
         </ul>
     </div>

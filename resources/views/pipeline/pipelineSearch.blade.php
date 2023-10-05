@@ -139,7 +139,7 @@
 
             <div class="project-column fifthcolumn chromecolum" data-count="5">
                 <div class="project-column-heading-05">
-                    <h2 class="project-column-heading__title">Senior Approval</h2>
+                    <h2 class="project-column-heading__title">Need Approval</h2>
                 </div>
                 @foreach ($seniorApproval as $seniorApprovals)
                     <div class="task fifthcard" draggable="true" data-id="{{ $seniorApprovals->id}}">

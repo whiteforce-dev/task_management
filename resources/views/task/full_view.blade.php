@@ -87,18 +87,18 @@
     .msg-bubble {
     padding: 0px 15px !important;
     padding-top: 10px !important;
-}
-.msg-img{
-    display: flex;
-    align-items: center;
-    border-radius: 50%;
-    overflow: hidden !important;
-}
-.avatar-lg {
-    font-size: .875rem;
-    height: 50px !important;
-    width: 100% !important;
-}
+    }
+    .msg-img{
+        display: flex;
+        align-items: center;
+        border-radius: 50%;
+        overflow: hidden !important;
+    }
+    .avatar-lg {
+        font-size: .875rem;
+        height: 50px !important;
+        width: 100% !important;
+    }
 </style>
 
 <div class="modal-dialog modal-xl" style="max-height:calc(100vh - 56px);">

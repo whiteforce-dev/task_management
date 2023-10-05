@@ -163,7 +163,6 @@ html {
 
 
     <a class="dribbble" href="https://dribbble.com/shots/6772849--Loader" target="_blank"><img src="https://dribbble.com/assets/logo-small-2x-9fe74d2ad7b25fba0f50168523c15fda4c35534f9ea0b1011179275383035439.png" alt=""></a>
-
     <link rel="stylesheet" href="{{ url('assets/css/multiselect.css') }}">
     <link rel="stylesheet" href="{{ url('assets/css/multiselectdrop.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>
@@ -175,7 +174,7 @@ html {
     <script src="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.min.js"></script>
  {{-- searching ajax --}}
 
-        <script>
+    <script>
         function searchTask(){
             $.ajax({
                 type : 'POST',

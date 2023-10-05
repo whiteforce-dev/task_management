@@ -77,7 +77,7 @@
                     @elseif(Auth::user()->type == 'employee')
                         <select class="dropbtn1 status-dropdown" name="selectstatus" data-task-id="{{ $task->id }}">
                         @foreach ($status as $statuss)
-                        @if($statuss->status != 'need approval')
+                        @if($statuss->status != 'completed')
                         <option value="{{ $statuss->id }}" {{ $statuss->id == $task->status ? 'selected' : '' }}>{{ ucfirst($statuss->status) }}</option>   
                         @endif
                         @endforeach
