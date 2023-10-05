@@ -50,14 +50,28 @@ html {
     }
 }
 
+
+#loader {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  background: rgba(0,0,0,0.75) url(https://media.geeksforgeeks.org/wp-content/uploads/20230723195619/GfG-Image.png) no-repeat center center;
+  z-index: 10000;
+}
 </style>
+
+
 
 
     @php $auth = Auth::user()->id; @endphp
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <main class="main-content position-relative h-100 border-radius-lg ">
-        <form id="taskform">
+        <form id="taskform">  
         <div class="container-fluid">
             <div class="row">
                 @if (auth::user()->type !== 'employee')
@@ -140,16 +154,15 @@ html {
             <div id="searchResults">
                 @include('task/searchTaskResult')
             </div>
-
-        
+           
         </div>
+        
         </form>
     </main>
 
 
 
     <a class="dribbble" href="https://dribbble.com/shots/6772849--Loader" target="_blank"><img src="https://dribbble.com/assets/logo-small-2x-9fe74d2ad7b25fba0f50168523c15fda4c35534f9ea0b1011179275383035439.png" alt=""></a>
-
     <link rel="stylesheet" href="{{ url('assets/css/multiselect.css') }}">
     <link rel="stylesheet" href="{{ url('assets/css/multiselectdrop.css') }}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>
@@ -161,7 +174,7 @@ html {
     <script src="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.min.js"></script>
  {{-- searching ajax --}}
 
-        <script>
+    <script>
         function searchTask(){
             $.ajax({
                 type : 'POST',

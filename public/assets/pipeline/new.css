@@ -171,7 +171,7 @@ body {
 
 .dropdown-content a {
   color: black;
-  padding: 10px 14px;
+  padding: 5px 8px;
   text-decoration: none;
   display: block;
   border-radius:5px;
@@ -179,6 +179,7 @@ body {
 
 .dropdown-content a:hover {
   background-color: #fa896b;
+  margin-top: 0px;
 }
 
 .dropdown:hover .dropdown-content {
@@ -207,6 +208,16 @@ body {
 .project-column-heading-04 {
   width: 100%;
   background-color: #13deb9;
+  padding: 5px 0;
+  margin-bottom: 25px;
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.project-column-heading-05 {
+  width: 100%;
+  background-color: #FFCBB3;
   padding: 5px 0;
   margin-bottom: 25px;
   border-radius: 7px;
@@ -298,6 +309,9 @@ body {
 .fourthcolumn > .task {
   background-color: #e6fffa;
 }
+.fifthcolumn > .task {
+  background-color: #FFCBB3;
+}
 .forthcard {
   cursor: move;
   padding: 1rem;
@@ -308,6 +322,21 @@ body {
   border: 3px dashed transparent;
 }
 .forthcard:hover {
+  transform: translateY(-9px);
+  background-color: white;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgb(255 239 214);
+}
+.fifthcard {
+  cursor: move;
+  padding: 1rem;
+  border-radius: 8px;
+  width: 100%;
+  box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
+  margin-bottom: 1rem;
+  border: 3px dashed transparent;
+}
+.fifthcard:hover {
   transform: translateY(-9px);
   background-color: white;
   box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
@@ -485,7 +514,7 @@ body {
       justify-content: center;
       margin-top: -12px !important;
       margin-right: -7px;
-  border-radius: 50%;
+      border-radius: 50%;
     }
 
 .imgbox img{

@@ -11,6 +11,7 @@
         </div>
         
         <div class="project-tasks">
+
             <div class="project-column firstcolumn chromecolum" data-count="1">
                 <div class="project-column-heading">
                     <h2 class="project-column-heading__title">Pending</h2>
@@ -26,8 +27,7 @@
                                 <div class="dropdown">
                                     <button class="dropbtn">
                                     <i class="fa-solid fa-bars"></i></button>
-                                    <div class="dropdown-content">
-                                      View Details
+                                    <div class="dropdown-content">                                    
                                         @foreach ($stages as $status)
                                             @if ($status->status !== 'pending')                                                 
                                                 <a href="javascript:void(0);"
@@ -68,7 +68,7 @@
                                 <div class="dropdown">
                                     <button class="dropbtn"><i class="fa-solid fa-bars"></i></button>
                                     <div class="dropdown-content">
-                                        View Details
+                                       
                                         @foreach ($stages as $status)
                                             @if ($status->status !== 'progress')
                                                 <a href="javascript:void(0);"
@@ -94,6 +94,7 @@
                     </div>
                 @endforeach
             </div>
+
             <div class="project-column thirdcolumn chromecolum" data-count="4">
                 <div class="project-column-heading-03">
                     <h2 class="project-column-heading__title">Hold Task</h2>
@@ -108,7 +109,7 @@
                                 <div class="dropdown">
                                     <button class="dropbtn"><i class="fa-solid fa-bars"></i></button>
                                     <div class="dropdown-content">
-                                        View Details
+                                      
                                         @foreach ($stages as $status)
                                             @if ($status->status !== 'hold')
                                                 <a href="javascript:void(0);"
@@ -135,6 +136,48 @@
                     </div>
                 @endforeach
             </div>
+
+            <div class="project-column fifthcolumn chromecolum" data-count="5">
+                <div class="project-column-heading-05">
+                    <h2 class="project-column-heading__title">Need Approval</h2>
+                </div>
+                @foreach ($seniorApproval as $seniorApprovals)
+                    <div class="task fifthcard" draggable="true" data-id="{{ $seniorApprovals->id}}">
+                        <a href="javascript:"
+                            onclick="taskDetails('{{ url('task-details' . '?id=' . $seniorApprovals->id) }}')">
+                            <div class="uper">
+                                @php $taskname = mb_strimwidth($seniorApprovals->task_name ?? 'null', 0, 20, '...'); @endphp
+                                <h5 class="badge badge-primary" style="background: white;color: #22b59a;font-size: 14px;padding-left: 15px;padding-right: 15px;font-weight: 600;box-shadow: 1px 1px 3px #acacc3;">{{ $seniorApprovals->task_code }}</h5>
+                                <div class="dropdown">
+                                    <button class="dropbtn"><i class="fa-solid fa-bars"></i></button>
+                                    <div class="dropdown-content">
+                                       
+                                        @foreach ($stages as $status)
+                                            @if ($status->status !== 'completed')
+                                                <a href="javascript:void(0);"
+                                                    onclick="selectstatus11({{ $seniorApprovals->id }},{{ $status->id }})">{{ ucfirst($status->status) }}</a>
+                                            @endif
+                                        @endforeach
+                                        {{-- <a href="{{ url('sendtask-email', $completedtask->id) }}">SendEmail</a> --}}
+                                    </div>
+                                </div>
+                            </div>
+                            <span style="font-size: 14px; font-weight:bold; color:black;">{{ ucfirst($taskname) }}</span>
+                            <p><span>Start:
+                                </span>{{ \Carbon\Carbon::parse($seniorApprovals->start_date)->format('M d,Y') }}</p>
+                            <div class="preimg">
+                                
+                                <p><span>Compl:</span>{{ \Carbon\Carbon::parse($seniorApprovals->deadline_date)->format('M d,Y') }}</p>
+                               
+                                <div class="imgbox">
+                                    <img src="{{ url($seniorApprovals->userGet->image ?? 'NA') }}" alt="">
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                @endforeach
+            </div>
+
             <div class="project-column fourthcolumn chromecolum" data-count="3">
                 <div class="project-column-heading-04">
                     <h2 class="project-column-heading__title">Completed</h2>
@@ -148,15 +191,13 @@
                                 <h5 class="badge badge-primary" style="background: white;color: #22b59a;font-size: 14px;padding-left: 15px;padding-right: 15px;font-weight: 600;box-shadow: 1px 1px 3px #acacc3;">{{ $completedtask->task_code }}</h5>
                                 <div class="dropdown">
                                     <button class="dropbtn"><i class="fa-solid fa-bars"></i></button>
-                                    <div class="dropdown-content">
-                                        View Details
+                                    <div class="dropdown-content">                                       
                                         @foreach ($stages as $status)
                                             @if ($status->status !== 'completed')
                                                 <a href="javascript:void(0);"
                                                     onclick="selectstatus11({{ $completedtask->id }},{{ $status->id }})">{{ ucfirst($status->status) }}</a>
                                             @endif
-                                        @endforeach
-                                        {{-- <a href="{{ url('sendtask-email', $completedtask->id) }}">SendEmail</a> --}}
+                                        @endforeach                                   
                                     </div>
                                 </div>
                             </div>
