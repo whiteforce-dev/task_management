@@ -29,7 +29,7 @@
                                     <div class="dropdown-content">
                                       View Details
                                         @foreach ($stages as $status)
-                                            @if ($status->status !== 'pending')                                                 
+                                            @if ($status->status !== 'pending' && $status->status != 'completed')                                              
                                                 <a href="javascript:void(0);"
                                                     onclick="selectstatus11({{ $pendingtask->id }},{{ $status->id }})">{{ ucfirst($status->status) }}</a>                                                           
                                             @endif
@@ -70,7 +70,7 @@
                                     <div class="dropdown-content">
                                         View Details
                                         @foreach ($stages as $status)
-                                            @if ($status->status !== 'progress')
+                                            @if ($status->status !== 'progress' && $status->status != 'completed')
                                                 <a href="javascript:void(0);"
                                                     onclick="selectstatus11({{ $progresstask->id }},{{ $status->id }})">{{ ucfirst($status->status) }}</a>
                                             @endif
@@ -110,7 +110,7 @@
                                     <div class="dropdown-content">
                                         View Details
                                         @foreach ($stages as $status)
-                                            @if ($status->status !== 'hold')
+                                            @if ($status->status !== 'hold' && $status->status != 'completed')
                                                 <a href="javascript:void(0);"
                                                     onclick="selectstatus11({{ $holdingtask->id }},{{ $status->id }})">{{ ucfirst($status->status) }}</a>
                                             @endif
@@ -151,7 +151,7 @@
                                     <div class="dropdown-content">
                                         View Details
                                         @foreach ($stages as $status)
-                                            @if ($status->status !== 'completed')
+                                            @if ($status->status !== 'completed' && $status->status != 'completed')
                                                 <a href="javascript:void(0);"
                                                     onclick="selectstatus11({{ $completedtask->id }},{{ $status->id }})">{{ ucfirst($status->status) }}</a>
                                             @endif

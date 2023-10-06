@@ -7,7 +7,7 @@
             @endphp
 
             <section class="cards">
-                <div class="main-card">
+                <div class="main-card"> 
                     <div class="long-width" style="width: 70%;">
                         <div class="up-box">
                             <h1><span class="badge badge-primary"
@@ -46,34 +46,27 @@
                             @elseif(Auth::user()->type == 'employee')
                                 <?php $text = mb_strimwidth($task->Getparent->remark ?? 'null', 0, 120, '...'); ?>
                             @endif
-                            {{ $text }}
-                           
+                            {{ $text }}                          
                         </div>
                     </div>
                     <div class="short-width" style="width: 30%;">
-                        @if(Auth::user()->type !='employee' || Auth::user()->can_allot_to_others =='1')
+                        @php
+                            $is_tl = checkIsUserTL(Auth::user()->id);
+                        @endphp
+                       @if(!empty($is_tl))
                         <div class="box-one box-btn">
                             <div class="dropdown btn-card">
                                 <a href="javascript:" class="btn btn-primary btn-sm"
                                     onclick="taskApproval({{ $task->id }})">Approved</a>
-                            </div>&nbsp
-                            @if($task->status == '5')
+                            </div>&nbsp                         
                             <div class="dropdown btn-card">
                                 <a href="javascript:" class="btn btn-primary btn-sm"
-                                    >completed</a>
-                            </div>
-                            @else
-                            <div class="dropdown btn-card">
-                                <a href="javascript:" class="btn btn-primary btn-sm"
-                                    onclick="TaskRejected({{ $task->id }})" >Rejected</a>
-                            </div>
-                            @endif
+                                    onclick="TaskRejected({{ $task->id }})">Rejected</a>
+                            </div>                          
                         </div>
                         @else
                         <div class="box-one box-btn">
-                        <div class="dropdown btn-card">
-                            <a href="javascript:" class="btn btn-primary btn-sm">Need Approval </a>
-                        </div>
+                        
                         </div>
                         @endif
                         <div class="box-one">
@@ -168,3 +161,20 @@
             </section>
         @endforeach
         {{ $tasklist->links() }}
+
+        <script>
+            function searchTask(){
+                $.ajax({
+                    type : 'POST',
+                    url : "{{ url('approval-task-search') }}",
+                    data : {
+                        created_by : $('#created_by').val(),
+                        task_code : $('#task_code').val(),
+                        '_token' : "{{ csrf_token() }}"
+                    },
+                    success : function(response){
+                        $('#searchResults').html(response)
+                    }
+                })
+            }
+            </script>

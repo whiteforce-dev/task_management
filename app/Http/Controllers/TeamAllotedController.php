@@ -50,15 +50,12 @@ class TeamAllotedController extends Controller
     }
 
     public function needApproval(){
-        if(Auth::user()->type == 'admin'){
-            $tasklist = Taskmaster::where('is_approved', 0)->paginate('25');
-        }elseif(Auth::user()->type == 'manager'){
-            $teamId = User::where('id', Auth::user()->id)->orwhere('parent_id', Auth::user()->id)->pluck('id')->ToArray();
-            $tasklist = Taskmaster::where('is_approved', 0)->where('alloted_by', Auth::user()->id)->where('alloted_to', $teamId)->OrderBy('id', 'DESC')->paginate('25');
-        }elseif(Auth::user()->can_allot_to_others == '1'){
-            $tasklist = Taskmaster::where('is_approved', 0)->where('alloted_by', Auth::user()->id)->OrderBy('id', 'DESC')->paginate('25');
+
+        $is_tl = checkIsUserTL(Auth::user()->id);
+        if(!empty($is_tl)){
+            $tasklist = Taskmaster::where('is_approved', 0)->OrderBy('id', 'DESC')->paginate('25');
         }else{
-            $tasklist = Taskmaster::where('is_approved', 0)->where('alloted_to', Auth::user()->id)->OrderBy('id', 'DESC')->paginate('25');  
+            $tasklist = Taskmaster::where('is_approved', 0)->where('alloted_to', Auth::user()->id)->OrderBy('id', 'DESC')->paginate('25');
         }
         $users = User::where('software_catagory', Auth::user()->software_catagory)->where('type', '!=', 'admin')->get();
         return view('approved.need-approval', compact('tasklist',  'users'));
@@ -68,7 +65,6 @@ class TeamAllotedController extends Controller
         $id = $request->TaskId;
         $task = Taskmaster::find($id);
         $task->is_approved = '1';
-        $task->status = '1';
         $task->save();
         return response()->json('Task Approved Successfully');
     }
@@ -83,10 +79,10 @@ class TeamAllotedController extends Controller
     
     public function approvalTaskSearch(Request $request){ 
         $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('is_approved', '=', '0');
-        if ($request->created_by) {
+        if ($request->created_by) { 
             $tasklist = $tasklist->where('alloted_to', $request->created_by)->where('alloted_by', Auth::user()->id);
         }
-        if ($request->task_code) {
+        if ($request->task_code) { 
             $tasklist = $tasklist->where('task_code', $request->task_code);
         }
         $tasklist = $tasklist->OrderBy('id', 'DESC')->paginate('25');

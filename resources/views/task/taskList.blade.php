@@ -154,7 +154,7 @@ html {
             <div id="searchResults">
                 @include('task/searchTaskResult')
             </div>
-           
+            {{ $tasklist->links() }} 
         </div>
         
         </form>

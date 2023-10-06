@@ -69,50 +69,44 @@
         }
     </style>
 
-    @php
-        $auth = Auth::user()->id;
-        $is_tl = checkIsUserTL(Auth::user()->id);
-        $users = \App\Models\User::get();
+    @php 
+    $auth = Auth::user()->id;
+    $is_tl = checkIsUserTL(Auth::user()->id);
     @endphp
-
-    <main class="main-content position-relative h-100 border-radius-lg ">
-        {{-- <form action="{{ url('approval-task-search') }}" method="POST">@csrf --}}
-            <div class="container-fluid py-4">
-                <div class="row" style="margin-left: 20px;">
-                    @if (!empty($is_tl))
-                        <div class="col-sm-6">
-                            <select name="created_by" id="created_by" class="form-control" style="border:1px solid #cb0c9f;"
-                                id="dataField">
-                                <option value="">SelectName</option>
-                                @foreach ($users as $user)
-                                    <option value="{{ $user->id }}">{{ ucfirst($user->name) }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    @else
-                        <div class="col-sm-6">
-                            <select name="created_by" id="created_by" class="form-control" style="border:1px solid #cb0c9f;"
-                                id="dataField">
-                                <option value="" selected>{{ ucfirst(Auth::user()->name) }}</option>
-                            </select>
-                        </div>
-                    @endif
-
-                    <div class="col-sm-4">
-                        <input name="task_code" id="task_code" class="form-control" style="border:1px solid #cb0c9f;"
-                            placeholder="Enter Task Code">
-                    </div>
-                    <div class="col-sm-1">
-                        <button type="submit" class="btn btn-primary" id="submitButton"
-                            onclick="searchTask()">Search</button>
-                    </div>
-                </div>
-
-                <div id="searchResults">
-                    @include('approved.searchresult-approval')
-                </div>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<body>
+    <main class="main-content position-relative h-100 border-radius-lg mt-7" id="searchResults">
+        <div class="row" style="margin-left: 20px;">
+            @if(!empty($is_tl)) 
+            <div class="col-sm-6">
+                <select name="created_by" id="created_by" class="form-control" style="border:1px solid #cb0c9f;"
+                    id="dataField">
+                    <option value="">SelectName</option>
+                    @foreach ($users as $user)                   
+                    <option value="{{ $user->id }}">{{ ucfirst($user->name) }}</option>                  
+                    @endforeach
+                </select>
             </div>
-        {{-- </form> --}}
+            @else 
+            <div class="col-sm-6"> 
+            <select name="created_by" id="created_by" class="form-control" style="border:1px solid #cb0c9f;"
+                    id="dataField">
+                    <option value="">SelectName</option>                                      
+                    <option value="{{ Auth::user()->id }}" selected>{{ ucfirst(Auth::user()->name) }}</option>                                     
+                </select>
+            </div>
+            @endif
+
+            <div class="col-sm-4">
+                <input name="task_code" id="task_code" class="form-control" style="border:1px solid #cb0c9f;" placeholder="Enter Task Code">
+            </div>
+            <div class="col-sm-1">
+                <button type="button" class="btn btn-primary" id="submitButton" onclick="searchTask()">Search</button> 
+            </div>
+        </div>
+        <div id="searchResults">
+            @include('approved.searchresult-approval')
+        </div>
     </main>
 
 
@@ -161,24 +155,25 @@
         }
     </script>
 
-    <script>
-        function searchTask() {
-            $.ajax({
-                type: 'POST',
-                url: "{{ url('approval-task-search') }}",
-                data: {
-                    created_by: $('#created_by').val(),
-                    task_code: $('#task_code').val(),
-                    '_token': "{{ csrf_token() }}"
-                },
-                success: function(response) {
-                    $('#searchResults').html(response)
-                }
-            })
-        }
+<script>
+    function searchTask(){
+        $.ajax({
+            type : 'POST',
+            url : "{{ url('approval-task-search') }}",
+            data : {
+                created_by : $('#created_by').val(),
+                task_code : $('#task_code').val(),
+                '_token' : "{{ csrf_token() }}"
+            },
+            success : function(response){
+                $('#searchResults').html(response)
+            }
+        })
+    }
     </script>
     <script src="{{ url('assets/js/core/popper.min.js') }}"></script>
     <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script>
     <script src="{{ url('assets/js/core/popper.min.js') }}"></script>
     <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script>
 @endsection
+</body>

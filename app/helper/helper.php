@@ -10,6 +10,7 @@ use Intervention\Image\Facades\Image;
 use App\Models\Taskmaster;
 use App\Models\Account;
 use App\Notifications\UserMentioned;
+use App\Models\Team;
 
 function uploadImageWithBase64($fileName, $path = '')
 {
@@ -65,6 +66,14 @@ function sendNotification($users, $sent_by, $task_id, $message){
     foreach($users_data as $user){
         $user->notify(new UserMentioned($sent_by, $task_id, $message));
     }
+}
+
+function checkIsUserTL($user_id){
+   $is_tl = Team::where('tl_id',$user_id)->first();
+   if(!empty($is_tl)){
+    return true;
+   }
+   return false;
 }
 
 

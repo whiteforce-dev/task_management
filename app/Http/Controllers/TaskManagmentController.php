@@ -209,7 +209,7 @@ class TaskManagmentController extends Controller
             $alloted_by = Taskmaster::where('id', $task_id)->pluck('alloted_by')->ToArray();
             $alloted_to = Taskmaster::where('id', $task_id)->pluck('alloted_to')->ToArray();
             $team_id = User::where('id', Auth::user()->id)->orwhere('id', Auth::user()->parent_id)->orwhere('id', '1')->pluck('id')->toArray();
-            $remarks = Remark::where('task_id', $request->id)->whereIn('userid', $team_id)->orwhere('userid', $alloted_by)->orwhere('userid', $alloted_to)->get();
+            $remarks = Remark::where('task_id', $request->id)->whereIn('userid', $team_id)->orwhere('userid', $alloted_by)->where('task_id', $request->id)->orwhere('userid', $alloted_to)->where('task_id', $request->id)->get();
         }
         $users = getNotificationUserList();
         return view('task.full_view', compact('remarks', 'task_id', 'users'));
@@ -494,7 +494,7 @@ class TaskManagmentController extends Controller
         $newStatus = $request->input('newStatus');
        
             Taskmaster::where('id', $taskId)->update(['status' => $newStatus, 'end_date' => date('y-m-d')]);
-        
+       
         if (isset($newStatus)) {
             $status = new StatusHistory();
             $status->task_id = $taskId;
