@@ -155,33 +155,77 @@
     padding: 5px 9px;
     border-radius: 4px;
 }
+.summarySpan{
+    font-size: 14px;
+    font-weight: 700;
+}
+.summryproimg {
+    height: 50px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px !important;
+    overflow: hidden;
+    border-radius: 19%;
+}
 
 </style>
+@if(!empty($is_allotted_to))
+<div class="cards">
+    <h6 style="padding-left: 11px;padding-bottom: 1px;padding-top: 4px;font-weight: 900;">Task Summary -</h6>
+    @foreach($alloted_array as $allotted)
+    <div class="row col-md-12" style="padding-left: 11px;padding-bottom: 9px;">
+        <div class="col-md-1">
+            <div class="summryproimg">
+                <img src="{{ !empty($alloted_summary_array[$allotted]['user_image']) ? url($alloted_summary_array[$allotted]['user_image']) : '' }}" alt="" width="100%">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <span class="summarySpan">Pending Task :</span>
+            <span class="badge badge-primary" style="background: linear-gradient(to right, #ff8585, #f60909);">
+            {{ !empty($alloted_summary_array[$allotted]['data'][1]) ? $alloted_summary_array[$allotted]['data'][1] : 0}}</span>
+        </div>
+        <div class="col-md-3">
+            <span class="summarySpan">Progress Task :</span>
+            <span class="badge badge-primary" style="background: linear-gradient(to right, #d48100, #ffb645)">
+            {{ !empty($alloted_summary_array[$allotted]['data'][2]) ? $alloted_summary_array[$allotted]['data'][2] : 0}}</span>
+        </div>
+        <div class="col-md-3">
+            <span class="summarySpan">Need Approval :</span>
+            <span class="badge badge-primary" style="background: linear-gradient(to right, #07e4f8, #00a9b8);">
+            {{!empty($alloted_summary_array[$allotted]['data'][5]) ? $alloted_summary_array[$allotted]['data'][5] : 0}}</span>
+        </div>
+        <div class="col-md-3">
+            <span class="summarySpan">Completed Task :</span>
+            <span class="badge badge-primary" style="background: linear-gradient(to right, #8fff62, #3dd103);">
+            {{!empty($alloted_summary_array[$allotted]['data'][3]) ? $alloted_summary_array[$allotted]['data'][3] : 0}}</span>
+        </div>
+    </div>
+    @endforeach
+</div>
+@endif
 @foreach ($tasklist as $i => $task)
 @php
+$currentDate = now();
    $status = \App\Models\Status::get();
-   $currentDate = now();
    $deadlineDate = \Carbon\Carbon::parse($task->deadline_date);
-   $daysDifference = $currentDate->diffInDays($deadlineDate); 
-   $differenceInDays = $deadlineDate->diffInDays($currentDate);                    
+   $daysDifference = $currentDate->diffInDays($deadlineDate);
+   $differenceInDays = $deadlineDate->diffInDays($currentDate);
+   $daydiffapprovaldate = $currentDate->diffInDays($task->sent_to_approval_date);
+   
+   $card_color_class = '';
+   if($task->status != 3){
+        if($daydiffapprovaldate >= 3) {
+            $card_color_class = 'outdated';
+        } elseif($currentDate > $deadlineDate) {
+            $card_color_class = 'danger';
+        }elseif($differenceInDays <= 2) {
+            $card_color_class = 'warning';
+        }
+    }
 @endphp
 
-@php
-if(!function_exists("getTag")){
-function getTag($id){
-    $id = $id % 3;
-switch($id){
-    case 0:
-        return "danger";
-    case 1:
-        return "warning";
-    case 2: 
-        return "outdated";
-}
-}
-}
-@endphp
-<section class="cards {{getTag($i)}}" id="result">
+<section class="cards {{$card_color_class}}" id="result">
 
     <div class="main-card"> 
         <div class="long-width" style="width: 70%;">
@@ -203,60 +247,31 @@ switch($id){
 
             <div class="low-box">
                 <h3><i class="fa-solid fa-user-tag" style="margin-right: 5px; color:#cb0c9f;"></i>Remark</h3>
-              
-<div class="comments">
-    <div class="comment-one">
-        <div class="proimg">
-       
-
-       
-
-        <img src=" http://127.0.0.1:8000/profile_images/Raman.jpg" alt="" width="100%">
-        </div>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing.</p>
-        <div class="numdate">
-        <span>Oct 10, 2023 05:30:00</span>
-        </div>
-    </div>
-    <div class="comment-two">  <div class="proimg"><img src="  http://127.0.0.1:8000/profile_images/1692966914.png" alt="" width="100%"></div>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing.</p>
-        <div class="numdate">
-            <span>Oct 10, 2023 05:30:00</span>
-        </div></div>
-    <div class="comment-three">  <div class="proimg"><img src=" http://127.0.0.1:8000/profile_images/Raman.jpg" alt="" width="100%"></div>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing.</p>
-        <div class="numdate">
-        <span>Oct 10, 2023 05:30:00</span>
-        </div></div>
-</div>
-
-
-
+                <div class="comments">
+                    @foreach($task->getLatedtRemarks as $remark)
+                    <div class="comment-one">
+                        <div class="proimg">
+                            <img src="{{ !empty($remark->GetUser->image) ? url($remark->GetUser->image) : '' }}" alt="" width="100%">
+                        </div>
+                        <p>{{ $remark->remark }}</p>
+                        <div class="numdate">
+                            <span>{{ date('M d,Y H:i:s',strtotime($remark->created_at)) }}</span>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
             </div>
-            <!-- <div class="low-box">
-                <h3><i class="fa-solid fa-user-shield" style="margin-right: 5px; color:#cb0c9f;"></i>Other
-                    Remark</h3>
-                    @if(Auth::user()->type == 'manager')
-                    <?php $text = mb_strimwidth($task->Getparent->remark ?? 'null', 0, 120, '...'); ?>
-                    @elseif(Auth::user()->type == 'admin')
-                    <?php $text = mb_strimwidth($task->Getparent->remark ?? 'null', 0, 120, '...'); ?>
-                    @elseif(Auth::user()->type == 'employee')
-                    <?php $text = mb_strimwidth($task->Getparent->remark ?? 'null', 0, 120, '...'); ?>
-                    @endif
-                {{ $text }}
-            
-            </div> -->
         </div>
         <div class="short-width" style="width: 30%;">
             <div class="box-one box-btn">
                 <div class="dropdown" style=" margin-right: 10px;">
-                    @if(Auth::user()->type == 'manager' || Auth::user()->type == 'admin' || Auth::user()->can_allot_to_others == '1')
+                    @if(Auth::user()->type != 'employee' || checkIsUserTL(Auth::user()->id))
                         <select class="dropbtn1 status-dropdown" name="selectstatus" data-task-id="{{ $task->id }}">
                         @foreach ($status as $statuss)
                         <option value="{{ $statuss->id }}" {{ $statuss->id == $task->status ? 'selected' : '' }}>{{ ucfirst($statuss->status) }}</option>   
                         @endforeach
                         </select>
-                    @elseif(Auth::user()->type == 'employee')
+                    @else
                         <select class="dropbtn1 status-dropdown" name="selectstatus" data-task-id="{{ $task->id }}">
                         @foreach ($status as $statuss)
                         @if($statuss->status != 'completed')
@@ -324,11 +339,21 @@ switch($id){
             </div>
             <div class="box-one">
                 <i class="fa-solid fa-circle"
+                    style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i> <span>Approval Date &nbsp;&nbsp;&nbsp;&nbsp; :
+                </span>
+                @if(!empty($task->sent_to_approval_date))
+                <P>{{ \Carbon\Carbon::parse($task->sent_to_approval_date)->format('d,M h:i') }}</P>
+                @else
+                <p>-</p>
+                @endif
+            </div>
+            <div class="box-one">
+                <i class="fa-solid fa-circle"
                     style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i> <span>Completed Date :
                 </span>
                 @if ($task->status ==3)
                     <P>{{ \Carbon\Carbon::parse($task->end_date)->format('d,M h:i') }}</P>
-                @else<p>Null</p>
+                @else<p>-</p>
                 @endif
             </div>
             <div class="box-one">

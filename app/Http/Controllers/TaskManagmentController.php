@@ -94,6 +94,8 @@ class TaskManagmentController extends Controller
 
     public function searchTask(Request $request)
     {
+        $is_allotted_to = false;
+        $alloted_summary_array = $alloted_array = [];
         $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('is_approved', '=', '1');
         if (Auth::user()->type == "employee") {
             $tasklist = $tasklist->where(function ($query) {
@@ -113,8 +115,18 @@ class TaskManagmentController extends Controller
             $tasklist = $tasklist->where('alloted_by', $request->created_by);
         }
         if (!empty($request->alloted_to)) {
-            $pattern = implode('|', array_map('preg_quote', explode(',', implode(',', $request->alloted_to))));
+            $alloted_array = explode(',', implode(',', $request->alloted_to));
+            $pattern = implode('|', array_map('preg_quote', $alloted_array));
             $tasklist = $tasklist->whereRaw("alloted_to REGEXP '{$pattern}'");
+            //forsummary
+            $is_allotted_to = true;
+            foreach($alloted_array as $alloted){
+                $tasksummry = Taskmaster::where('alloted_to',$alloted)->select('status', \DB::raw('count(id) as task_count'))->groupBy('status')->pluck('task_count', 'status')->toArray();
+                if(!empty($tasksummry)){
+                    $alloted_summary_array[$alloted]['user_image'] = User::where('id',$alloted)->value('image');
+                    $alloted_summary_array[$alloted]['data'] = $tasksummry;
+                }
+            }
         }
         if (!empty($request->status)) {
             $tasklist = $tasklist->where('status', $request->status);
@@ -145,7 +157,8 @@ class TaskManagmentController extends Controller
             $tasklist = $tasklist->whereBetween('deadline_date', [$start_dedaline_date, $end_dedaline_date]);
         }
         $tasklist = $tasklist->orderBy('id', 'Desc')->paginate(25);
-        return view('task.searchTaskResult', compact('tasklist'));
+        
+        return view('task.searchTaskResult', compact('tasklist','is_allotted_to','alloted_summary_array','alloted_array'));
     }
 
     public function taskEditPage(Request $request)
@@ -492,9 +505,15 @@ class TaskManagmentController extends Controller
     {
         $taskId = $request->input('taskId');
         $newStatus = $request->input('newStatus');
-       
-            Taskmaster::where('id', $taskId)->update(['status' => $newStatus, 'end_date' => date('y-m-d')]);
-       
+        
+        $taskmaster = Taskmaster::where('id', $taskId)->first();
+        $taskmaster->status = $newStatus;
+        if($newStatus == 5){
+            $taskmaster->sent_to_approval_date = date('y-m-d');
+        } elseif($newStatus == 3){
+            $taskmaster->end_date = date('y-m-d');
+        }
+        $taskmaster->save();
         if (isset($newStatus)) {
             $status = new StatusHistory();
             $status->task_id = $taskId;

@@ -34,6 +34,10 @@ class Taskmaster extends Model
         return $this->hasOne('App\Models\Remark', 'task_id')->orderBy('id', 'desc')->whereNotIn('userid', [Auth::user()->id]);
     }
 
+    public function getLatedtRemarks(){
+        return $this->hasMany('App\Models\Remark', 'task_id')->limit(3)->orderBy('id', 'desc');
+    }
+
 
 
 }
