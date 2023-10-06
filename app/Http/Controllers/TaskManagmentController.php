@@ -47,7 +47,7 @@ class TaskManagmentController extends Controller
             $image_code = $request->images;
             foreach ($image_code as $i => $file) {
                 $filepath = time() . '.png';
-                Storage::disk('s3')->put('task_management/task_attachments/'.$filepath, file_get_contents($file), 'public');
+                Storage::disk('s3')->put('task_management/task_attachments/' . $filepath, file_get_contents($file), 'public');
                 $data[] = $filepath;
             }
             $imagedata = implode(',', $data);
@@ -60,8 +60,8 @@ class TaskManagmentController extends Controller
         if ($key !== false) {
             unset($notification_users[$key]);
         }
-        if(!empty($notification_users)){
-            $message = "alloted a task&nbsp;&nbsp;<span class='badge badge-primary taskcodebadge'>".$newtask->task_code."</span>&nbsp;&nbsp;to you";
+        if (!empty($notification_users)) {
+            $message = "alloted a task&nbsp;&nbsp;<span class='badge badge-primary taskcodebadge'>" . $newtask->task_code . "</span>&nbsp;&nbsp;to you";
             sendNotification($notification_users, Auth::user()->id, $newtask->id, $message);
         }
         return redirect('task-list')->with(['success' => 'Your task successfully save.']);
@@ -177,7 +177,7 @@ class TaskManagmentController extends Controller
             $image_code = $request->images;
             foreach ($image_code as $i => $file) {
                 $filepath = time() . '.png';
-                Storage::disk('s3')->put('task_management/task_attachments/'.$filepath, file_get_contents($file), 'public');
+                Storage::disk('s3')->put('task_management/task_attachments/' . $filepath, file_get_contents($file), 'public');
                 $data[] = $filepath;
             }
             $imagedata = implode(',', $data);
@@ -458,8 +458,8 @@ class TaskManagmentController extends Controller
 
         $comments->save();
         if (!empty($request->notify_to)) {
-            $task_code = Taskmaster::where('id',$request->task_id)->value('task_code');
-            $message = "mentioned you in a task&nbsp;&nbsp;<span class='badge badge-primary taskcodebadge'>".$task_code."</span>";
+            $task_code = Taskmaster::where('id', $request->task_id)->value('task_code');
+            $message = "mentioned you in a task&nbsp;&nbsp;<span class='badge badge-primary taskcodebadge'>" . $task_code . "</span>";
             sendNotification($request->notify_to, Auth::user()->id, $request->task_id, $message);
         }
         $response = $request->input('manager_comments');
@@ -492,7 +492,9 @@ class TaskManagmentController extends Controller
     {
         $taskId = $request->input('taskId');
         $newStatus = $request->input('newStatus');
-        Taskmaster::where('id', $taskId)->update(['status' => $newStatus, 'end_date' => date('y-m-d'), 'is_approved' => '0']);
+       
+            Taskmaster::where('id', $taskId)->update(['status' => $newStatus, 'end_date' => date('y-m-d')]);
+        
         if (isset($newStatus)) {
             $status = new StatusHistory();
             $status->task_id = $taskId;
@@ -614,13 +616,14 @@ class TaskManagmentController extends Controller
         $taskdesc = Taskmaster::find($request->id);
         return view('task.task-description', compact('taskdesc'));
     }
-    public function attachmentFile(request $request, $id){
+    public function attachmentFile(request $request, $id)
+    {
         $filedata = new Remark();
         if ($request->attachment) {
             $image_code = $request->attachment;
             foreach ($image_code as $i => $file) {
                 $filepath = time() . '.png';
-                Storage::disk('s3')->put('task_management/task_attachments/'.$filepath, file_get_contents($file), 'public');
+                Storage::disk('s3')->put('task_management/task_attachments/' . $filepath, file_get_contents($file), 'public');
                 $data[] = $filepath;
             }
             $imagedata = implode(',', $data);

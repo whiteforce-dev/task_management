@@ -54,15 +54,16 @@ class TeamAllotedController extends Controller
             $tasklist = Taskmaster::where('is_approved', 0)->paginate('25');
         }elseif(Auth::user()->type == 'manager'){
             $teamId = User::where('id', Auth::user()->id)->orwhere('parent_id', Auth::user()->id)->pluck('id')->ToArray();
-            $tasklist = Taskmaster::where('is_approved', 0)->where('alloted_by', Auth::user()->id)->where('alloted_to', $teamId)->paginate('25');
+            $tasklist = Taskmaster::where('is_approved', 0)->where('alloted_by', Auth::user()->id)->where('alloted_to', $teamId)->OrderBy('id', 'DESC')->paginate('25');
         }elseif(Auth::user()->can_allot_to_others == '1'){
-            $tasklist = Taskmaster::where('is_approved', 0)->where('alloted_by', Auth::user()->id)->paginate('25');
+            $tasklist = Taskmaster::where('is_approved', 0)->where('alloted_by', Auth::user()->id)->OrderBy('id', 'DESC')->paginate('25');
         }else{
-            $tasklist = Taskmaster::where('is_approved', 0)->where('alloted_to', Auth::user()->id)->paginate('25');  
+            $tasklist = Taskmaster::where('is_approved', 0)->where('alloted_to', Auth::user()->id)->OrderBy('id', 'DESC')->paginate('25');  
         }
         $users = User::where('software_catagory', Auth::user()->software_catagory)->where('type', '!=', 'admin')->get();
         return view('approved.need-approval', compact('tasklist',  'users'));
     }
+
     public function taskApproval(request $request){
         $id = $request->TaskId;
         $task = Taskmaster::find($id);
@@ -71,6 +72,7 @@ class TeamAllotedController extends Controller
         $task->save();
         return response()->json('Task Approved Successfully');
     }
+
     public function taskRejected(request $request){
         $id = $request->TaskId;
         $task = Taskmaster::find($id);
@@ -78,6 +80,7 @@ class TeamAllotedController extends Controller
         $task->save();
         return response()->json('Task Rejected Successfully');
     }
+    
     public function approvalTaskSearch(Request $request){ 
         $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('is_approved', '=', '0');
         if ($request->created_by) {

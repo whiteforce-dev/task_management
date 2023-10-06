@@ -57,10 +57,17 @@
                                 <a href="javascript:" class="btn btn-primary btn-sm"
                                     onclick="taskApproval({{ $task->id }})">Approved</a>
                             </div>&nbsp
+                            @if($task->status == '5')
+                            <div class="dropdown btn-card">
+                                <a href="javascript:" class="btn btn-primary btn-sm"
+                                    >completed</a>
+                            </div>
+                            @else
                             <div class="dropdown btn-card">
                                 <a href="javascript:" class="btn btn-primary btn-sm"
                                     onclick="TaskRejected({{ $task->id }})" >Rejected</a>
                             </div>
+                            @endif
                         </div>
                         @else
                         <div class="box-one box-btn">
