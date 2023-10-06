@@ -66,6 +66,7 @@ class StandupController extends Controller
         $standup->date = date('Y-m-d');
         $standup->user_id = Auth::user()->id;
         $standup->checkin = implode(',',$request->selected_task_ids);
+        $standup->checkin_date_time = date('Y-m-d H:i:s');
         $standup->save();
         Session::flash('checkout', 'Checked in successfully. You can checkout by giving below answers anytime when you complete your day.');
         return back();
@@ -103,6 +104,7 @@ class StandupController extends Controller
             }
         }
         $standup->checkout = implode(',',$checkoutDetailsIds);
+        $standup->checkout_date_time = date('Y-m-d H:i:s');
         $standup->save();
         return back();
     }
@@ -165,7 +167,6 @@ class StandupController extends Controller
             }
         }
         $dailyStandups = DailyStandup::with('user:id,name,image')->whereIn('user_id',$all_users)->where('date',$date)->get();
-        $standups = DailyStandup::whereIn('user_id',$all_users)->where('date',$date)->get();
         return view('daily_standup.daily_standup_date_wise_report_data',compact('dailyStandups')); 
     }
 

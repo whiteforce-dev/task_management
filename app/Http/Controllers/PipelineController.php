@@ -18,25 +18,22 @@ class PipelineController extends Controller
         $progresstasks = Taskmaster::where('status', '2')->get();
         $completedtasks  = Taskmaster::where('status', '3')->get();
         $holdingtasks = Taskmaster::where('status', '4')->get();
-        $seniorApproval = Taskmaster::where('is_approved', '0')->get();
     }elseif(Auth::user()->type == 'admin'){
         $parentId = User::where('id', Auth::user()->parent_id)->pluck('id')->ToArray();
         $pendingtasks = Taskmaster::where('alloted_to', $parentId)->where('status', '1')->get();
         $progresstasks = Taskmaster::where('alloted_to', $parentId)->where('status', '2')->get();
         $completedtasks  = Taskmaster::where('alloted_to', $parentId)->where('status', '3')->get(); 
         $holdingtasks = Taskmaster::where('alloted_to', $parentId)->where('status', '4')->get();
-        $seniorApproval = Taskmaster::where('alloted_to', $parentId)->where('is_approved', '0')->get();
     }else{
         $pendingtasks = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '1')->get();
         $progresstasks = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '2')->get();
         $completedtasks  = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '3')->get();  
         $holdingtasks = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '4')->get();
-        $seniorApproval = Taskmaster::where('alloted_to', Auth::user()->id)->where('is_approved', '0')->get();
     }
 
       $stages = Status::get();
       $users = User::where('software_catagory', Auth::user()->software_catagory)->where('type','!=', 'admin')->get();
-    return view('pipeline.pipeline', compact('pendingtasks', 'progresstasks', 'completedtasks', 'users', 'holdingtasks', 'stages', 'seniorApproval'));
+    return view('pipeline.pipeline', compact('pendingtasks', 'progresstasks', 'completedtasks', 'users', 'holdingtasks', 'stages'));
    }
 
    public function pipelinestatus(Request $request, $task_id, $status_id){
@@ -94,26 +91,23 @@ class PipelineController extends Controller
             $progresstasks = Taskmaster::where('status', '2')->get();
             $holdingtasks = Taskmaster::where('status', '3')->get();
             $completedtasks  = Taskmaster::where('status', '4')->get();
-            $seniorApproval  = Taskmaster::where('is_approved', '0')->get();
         }elseif(Auth::user()->type == 'admin'){
             $parentId = User::where('id', Auth::user()->parent_id)->pluck('id')->ToArray();
             $pendingtasks = Taskmaster::where('alloted_to', $parentId)->where('status', '1')->get();
             $progresstasks = Taskmaster::where('alloted_to', $parentId)->where('status', '2')->get();
             $holdingtasks = Taskmaster::where('alloted_to', $parentId)->where('status', '3')->get();
             $completedtasks  = Taskmaster::where('alloted_to', $parentId)->where('status', '4')->get(); 
-            $seniorApproval = Taskmaster::where('alloted_to', $parentId)->where('is_approved', '0')->get(); 
         }else{
             $pendingtasks = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '1')->get();
             $progresstasks = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '2')->get();
             $holdingtasks = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '3')->get();
-            $completedtasks  = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '4')->get(); 
-            $seniorApproval  = Taskmaster::where('alloted_to', Auth::user()->id)->where('is_approved', '0')->get(); 
+            $completedtasks  = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '4')->get();  
         }
           $stages = Status::get();
           $users = User::where('software_catagory', Auth::user()->software_catagory)->where('type','!=', 'admin')->get();
           $tasks = Taskmaster::find($request->id);
           $tasks = Taskmaster::find($task_id);
-        return view('pipeline.rightmodel', compact('tasks','pendingtasks', 'progresstasks', 'completedtasks', 'users', 'holdingtasks', 'stages','tasks', 'seniorApproval'));
+        return view('pipeline.rightmodel', compact('tasks','pendingtasks', 'progresstasks', 'completedtasks', 'users', 'holdingtasks', 'stages','tasks'));
     }
     
     public function pipelineCardSearch(Request $request){   
@@ -126,7 +120,6 @@ class PipelineController extends Controller
                 $progresstasks = Taskmaster::where('status', '2')->where('alloted_by', $request->created_by)->get();
                 $completedtasks  = Taskmaster::where('status', '3')->where('alloted_by', $request->created_by)->get();
                 $holdingtasks = Taskmaster::where('status', '4')->where('alloted_by', $request->created_by)->get();
-                $seniorApproval = Taskmaster::where('is_approved', '0')->where('alloted_by', $request->created_by)->get();
             }
 
             if(!empty($request->alloted_to)) {
@@ -134,7 +127,6 @@ class PipelineController extends Controller
                 $progresstasks = Taskmaster::where('status', '2')->where('alloted_to', $request->alloted_to)->get();
                 $completedtasks  = Taskmaster::where('status', '3')->where('alloted_to', $request->alloted_to)->get();
                 $holdingtasks = Taskmaster::where('status', '4')->where('alloted_to', $request->alloted_to)->get();
-                $seniorApproval = Taskmaster::where('is_approved', '0')->where('alloted_to', $request->alloted_to)->get();
             }
 
             if(!empty($request->priority)) {  
@@ -142,14 +134,12 @@ class PipelineController extends Controller
                 $progresstasks = Taskmaster::where('status', '2')->where('priority', $request->priority)->get();
                 $completedtasks  = Taskmaster::where('status', '3')->where('priority', $request->priority)->get();
                 $holdingtasks = Taskmaster::where('status', '4')->where('priority', $request->priority)->get();
-                $seniorApproval = Taskmaster::where('is_approved', '0')->where('priority', $request->priority)->get();
             }
             if(!empty($request->task_code)) {  
                 $pendingtasks = Taskmaster::where('status', '1')->where('task_code', $request->task_code)->get();
                 $progresstasks = Taskmaster::where('status', '2')->where('task_code', $request->task_code)->get();
                 $completedtasks  = Taskmaster::where('status', '3')->where('task_code', $request->task_code)->get();
                 $holdingtasks = Taskmaster::where('status', '4')->where('task_code', $request->task_code)->get();
-                $seniorApproval = Taskmaster::where('is_approved', '0')->where('task_code', $request->task_code)->get();
             }
             if(!empty($request->created_date)){
                 $created_date = explode(' - ',$request->created_date);         
@@ -162,7 +152,6 @@ class PipelineController extends Controller
                 $progresstasks = Taskmaster::where('status', '2')->whereBetween('created_at',[$start_created_date.' 00:00:00',$end_created_date.' 23:59:59'])->get();
                 $completedtasks  = Taskmaster::where('status', '3')->whereBetween('created_at',[$start_created_date.' 00:00:00',$end_created_date.' 23:59:59'])->get();
                 $holdingtasks = Taskmaster::where('status', '4')->whereBetween('created_at',[$start_created_date.' 00:00:00',$end_created_date.' 23:59:59'])->get();
-                $seniorApproval = Taskmaster::where('is_approved', '0')->whereBetween('created_at',[$start_created_date.' 00:00:00',$end_created_date.' 23:59:59'])->get();
             }
             if(!empty($request->deadline_date)){
                 $deadline_date = explode(' - ',$request->deadline_date);
@@ -175,11 +164,10 @@ class PipelineController extends Controller
                 $progresstasks = Taskmaster::where('status', '2')->whereBetween('deadline_date',[$start_dedaline_date,$end_dedaline_date])->get();
                 $completedtasks  = Taskmaster::where('status', '3')->whereBetween('deadline_date',[$start_dedaline_date,$end_dedaline_date])->get();
                 $holdingtasks = Taskmaster::where('status', '4')->whereBetween('deadline_date',[$start_dedaline_date,$end_dedaline_date])->get();
-                $seniorApproval = Taskmaster::where('is_approved', '0')->whereBetween('deadline_date',[$start_dedaline_date,$end_dedaline_date])->get();
             }
             $stages = Status::get();
             $users = User::where('software_catagory', Auth::user()->software_catagory)->where('type','!=', 'admin')->get();
-        return view('pipeline.pipelineSearch', compact('pendingtasks', 'progresstasks', 'completedtasks', 'users', 'holdingtasks', 'stages', 'seniorApproval'));
+        return view('pipeline.pipelineSearch', compact('pendingtasks', 'progresstasks', 'completedtasks', 'users', 'holdingtasks', 'stages'));
     }
 
 

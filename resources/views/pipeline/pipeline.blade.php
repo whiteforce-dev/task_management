@@ -243,6 +243,14 @@
             $('#taskDetails').html(rs);
             $('#taskDetails-modal').modal('show');
         });
+        setTimeout(() => {
+            scrollBottom("response")
+        }, 500);      
+    }
+
+    function scrollBottom(id) {
+        var chat = document.getElementById(id);
+        chat.scrollTop = chat.scrollHeight - chat.clientHeight;
     }
     </script>
 @endsection

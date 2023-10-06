@@ -98,13 +98,17 @@
     padding-right: 11px;
     font-size: 11px;
 }
-#navbarBlur{
-    background: white;
-    box-shadow: 0px 0px 8px -2px #a7a7ab !important;
-    margin-top: 16px;
-    position: fixed;
-    top: 0 !important;
-    width: 76%;
+
+.dropbtn {
+  /* background-color: #4CAF50; */
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+.dropbtn i {
+  margin-top: 2px;
+  font-size: 1rem !important;
+  color: #26272c;
 }
 </style>
 <div class="container"  style="    background: white;
@@ -152,7 +156,7 @@
         @endforeach
     </div>
 </div>
-<div class="modal right fade right-Modal" id="taskdetails" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
+<div class="" id="taskdetails" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2">
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ url('assets/pipeline/new.js') }}"></script>
@@ -166,8 +170,12 @@
     function taskDetails(url, id) {
         $.get(url, id, function(rs) {
             $('#taskdetails').html(rs);
-            $('#taskdetails').modal('show');
+            $('#taskDetails-modal').modal('show');
         });
+    setTimeout(() => {
+        scrollBottom("response")
+    }, 500);      
+        
     }
     function markAsRead(id,key){
         $.ajax({
@@ -202,6 +210,9 @@
         })
     }
 
-    
+    function scrollBottom(id) {
+        var chat = document.getElementById(id);
+        chat.scrollTop = chat.scrollHeight - chat.clientHeight;
+    }
 </script>
 @endsection

@@ -46,8 +46,8 @@ class TaskManagmentController extends Controller
         if ($request->images) {
             $image_code = $request->images;
             foreach ($image_code as $i => $file) {
-                $filepath = time() . '.png';
-                Storage::disk('s3')->put('task_management/task_attachments/' . $filepath, file_get_contents($file), 'public');
+                $filepath = time() . '_' . $i . '.png';
+                Storage::disk('s3')->put('task_management/task_attachments/'.$filepath, file_get_contents($file), 'public');
                 $data[] = $filepath;
             }
             $imagedata = implode(',', $data);
@@ -176,8 +176,8 @@ class TaskManagmentController extends Controller
         if ($request->images) {
             $image_code = $request->images;
             foreach ($image_code as $i => $file) {
-                $filepath = time() . '.png';
-                Storage::disk('s3')->put('task_management/task_attachments/' . $filepath, file_get_contents($file), 'public');
+                $filepath = time() . '_' . $i . '.png';
+                Storage::disk('s3')->put('task_management/task_attachments/'.$filepath, file_get_contents($file), 'public');
                 $data[] = $filepath;
             }
             $imagedata = implode(',', $data);
