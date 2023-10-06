@@ -91,14 +91,7 @@
     border-radius: 5px;
     margin-left: 20px;
 }
-#navbarBlur{
-    background: white;
-    box-shadow: 0px 0px 8px -2px #a7a7ab !important;
-    margin-top: 16px;
-    position: fixed;
-    top: 0 !important;
-    width: 76%;
-}
+
 </style>
 <div class="container"  style="    background: white;
     width: 99%;

@@ -56,7 +56,7 @@ body {
     margin-top: 16px;
     position: fixed !important;
     top: 0 !important;
-    width: 76%;
+    width: calc(100vw - 17.125rem - 60px);
     z-index: 1000;
 }
 .py-4{
@@ -20578,7 +20578,6 @@ hr.horizontal.gray-light {
     background-position: 50%;
     height: 100%;
     left: 0;
-    opacity: .8;
     position: absolute;
     top: 0;
     width: 100%
