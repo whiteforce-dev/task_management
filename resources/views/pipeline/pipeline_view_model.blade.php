@@ -595,10 +595,14 @@ color: white;
     font-weight: 600;
     border-radius: 6px;
 }
+.backimgc{
+/* background:url(); */
+background: linear-gradient( rgb(255 255 255 / 65%) 100%, rgb(255 253 253 / 50%)100%),url(upload/commentbgimg02.jpg);
+}
 </style>
 
-<div class="modal-dialog modal-lg" style="positon:relative; z-index: 2500;max-height: 100vh !important;">   
-    <div class="modal-content" style="position: relative; z-index: 2500;    min-height: 100vh;">
+<div class="modal-dialog modal-lg" style="positon:relative; z-index: 2500;max-height: 100vh !important; min-height: 100vh;">   
+    <div class="modal-content" style="position: relative; z-index: 2500; height: 100vh;">
         <!-- Modal Header -->
         <div class="modal-header text-white" style="background-color:#d70bbe; ">
             <h4 class="modal-title" style="color: white; font-size: 1.2rem !important; font-weight:500; ">
@@ -611,12 +615,11 @@ color: white;
         <!-- Modal body -->
         <div class="modal-body" style="display: flex;
     flex-direction: column;
-    max-height: calc(100vh - 70px);
-">
+    max-height: calc(100vh - 70px);">
             <div class="container mt-1" style="margin-bottom: -17px;
     background: white;
-    box-shadow: 2px 2px 4px -1px #cbcfd9;">
-                <div style="display:flex; margin-top: 13px;">
+    box-shadow: 2px 2px 4px -1px #cbcfd9; min-width: 104% !important;">
+                <div style="display:flex;">
                 <span style="font-weight: 500;
     color: black;
     font-size: 0.95rem;
@@ -717,7 +720,7 @@ color: white;
                 
             </div>
 
-        <div style="    flex-grow: 1;
+        <div class="backimgc" style="    flex-grow: 1;
     overflow-y: auto;
     overflow-x: hidden;
     padding-right: 15px;
@@ -824,7 +827,8 @@ color: white;
 
 <div class="modalContainer">
       <div class="overlay"></div>
-      <div class="main-loader submitModal" style="z-index:2000">
+      <div class="main-loader submitModal" style="z-index:2000; min-height: 100vh;
+    max-height: 100vh;">
       <div class="upheaderbox">
       <div class="submit-btn">
           <button class="sub-mit" id="form-cancel-menu">Back <i class="fa-solid fa-share fa-flip-horizontal" style="color: #d70bbe; margin-left: 5px;"></i> </button>

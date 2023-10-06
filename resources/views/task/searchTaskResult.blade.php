@@ -8,6 +8,154 @@
 .image-container img {
   margin-left: -6px;
 }
+/* Danger CSS  */
+
+.cards.danger {
+    border: 1px solid #f5b2b2;
+}
+.cards.danger::before {
+    content: '';
+    position: absolute;
+    --dim: 100px;
+    height:var(--dim);
+    width:var(--dim);
+    rotate: 45deg;
+    background:red;
+    --trans: -0.6;
+    top: calc(var(--dim) * var(--trans));
+    left: calc(var(--dim) * var(--trans))
+}
+.cards{
+    position:relative;
+    overflow:hidden;
+}
+.cards.danger hr{
+    background-color: #f52d2d !important;
+}
+
+/* Warning CSS  */
+
+.cards.warning{
+    border: 1px solid #f5c875;
+}
+
+.cards.warning::before {
+    content: '';
+    position: absolute;
+    --dim: 100px;
+    height:var(--dim);
+    width:var(--dim);
+    rotate: 45deg;
+    background:#f39e1e;;
+    --trans: -0.6;
+    top: calc(var(--dim) * var(--trans));
+    left: calc(var(--dim) * var(--trans))
+}
+.cards{
+    position:relative;
+    overflow:hidden;
+}
+.cards.warning hr{
+    background-color: #f59a29 !important;
+}
+
+/* Outdated CSS start  */
+
+.cards.outdated{
+    border: 1px solid #79bbc3;
+}
+.cards.outdated::before {
+    content: '';
+    position: absolute;
+    --dim: 100px;
+    height:var(--dim);
+    width:var(--dim);
+    rotate: 45deg;
+    background:#407E85;
+    --trans: -0.6;
+    top: calc(var(--dim) * var(--trans));
+    left: calc(var(--dim) * var(--trans))
+}
+.cards{
+    position:relative;
+    overflow:hidden;
+}
+.cards.outdated hr{
+    background-color: #61adb7 !important;
+}
+
+.comments{
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+    justify-content: center;
+}
+.comment-one{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 0;
+}
+.comment-two{
+        width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 0;
+    border: 1px solid #f0f0f5;
+    border-left: none;
+    border-right: none;
+}
+.comment-three{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 0;
+}
+.proimg{
+    height: 40px !important;
+    display: flex;
+    /* align-items: center; */
+    justify-content: center;
+    width: 40px !important;
+    overflow: hidden;
+    border-radius: 50%;
+}
+.proimg img{
+    width: 100% !important;
+}
+.comment-one p{
+    width:64%;
+    margin: auto 10px;
+    font-size: 0.9rem;
+    color: #424952;
+}
+.comment-two p{
+    width:64%;
+    margin: auto 10px;
+    font-size: 0.9rem;
+    color: #424952;
+}
+.comment-three p{
+    width:64%;
+    margin: auto 10px;
+    font-size: 0.9rem;
+    color: #424952;
+}
+.numdate{
+    width:27%;
+    text-align: center;
+}
+.numdate span{
+    font-size: 0.84rem;
+    font-weight: 600;
+    color: #898d95;
+    padding: 5px 9px;
+    border-radius: 4px;
+}
+
 </style>
 @foreach ($tasklist as $i => $task)
 @php
@@ -18,8 +166,24 @@
    $differenceInDays = $deadlineDate->diffInDays($currentDate);                    
 @endphp
 
-<section class="cards">
-    <div class="main-card">
+@php
+if(!function_exists("getTag")){
+function getTag($id){
+    $id = $id % 3;
+switch($id){
+    case 0:
+        return "danger";
+    case 1:
+        return "warning";
+    case 2: 
+        return "outdated";
+}
+}
+}
+@endphp
+<section class="cards {{getTag($i)}}" id="result">
+
+    <div class="main-card"> 
         <div class="long-width" style="width: 70%;">
             <div class="up-box">
             <h1><span class="badge badge-primary" style="background: linear-gradient(to right, #f953c6, #b91d73);">{{ $task->task_code }}</span> &nbsp;&nbsp;{{ ucfirst($task->task_name) }}</h1>
@@ -38,13 +202,38 @@
             </div>
 
             <div class="low-box">
-                <h3><i class="fa-solid fa-user-tag" style="margin-right: 5px; color:#cb0c9f;"></i>My Remark</h3>
-                <?php $remarks = mb_strimwidth($task->GetEmployee->remark ?? 'null', 0, 120, '...'); ?>
-                <p>{{ $remarks ?? 'na' }}
-                   
-                </p>
+                <h3><i class="fa-solid fa-user-tag" style="margin-right: 5px; color:#cb0c9f;"></i>Remark</h3>
+              
+<div class="comments">
+    <div class="comment-one">
+        <div class="proimg">
+       
+
+       
+
+        <img src=" http://127.0.0.1:8000/profile_images/Raman.jpg" alt="" width="100%">
+        </div>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing.</p>
+        <div class="numdate">
+        <span>Oct 10, 2023 05:30:00</span>
+        </div>
+    </div>
+    <div class="comment-two">  <div class="proimg"><img src="  http://127.0.0.1:8000/profile_images/1692966914.png" alt="" width="100%"></div>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing.</p>
+        <div class="numdate">
+            <span>Oct 10, 2023 05:30:00</span>
+        </div></div>
+    <div class="comment-three">  <div class="proimg"><img src=" http://127.0.0.1:8000/profile_images/Raman.jpg" alt="" width="100%"></div>
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing.</p>
+        <div class="numdate">
+        <span>Oct 10, 2023 05:30:00</span>
+        </div></div>
+</div>
+
+
+
             </div>
-            <div class="low-box">
+            <!-- <div class="low-box">
                 <h3><i class="fa-solid fa-user-shield" style="margin-right: 5px; color:#cb0c9f;"></i>Other
                     Remark</h3>
                     @if(Auth::user()->type == 'manager')
@@ -55,15 +244,8 @@
                     <?php $text = mb_strimwidth($task->Getparent->remark ?? 'null', 0, 120, '...'); ?>
                     @endif
                 {{ $text }}
-                <!-- <p>
-                    @if (Auth::user()->type !== 'employee')
-                        <a href="javascript:"
-                            onclick="managerRemark('{{ url('managerremark' . '?id=' . $task->id) }}')">
-                           <span style="float:right;color: #242527;font-weight: 600;font-family: Poppins, sans-serif">Add Remark</span>
-                        </a>
-                    @endif
-                </p> -->
-            </div>
+            
+            </div> -->
         </div>
         <div class="short-width" style="width: 30%;">
             <div class="box-one box-btn">

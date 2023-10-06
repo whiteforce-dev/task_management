@@ -7,8 +7,8 @@
   width: 5%;
 }
 .cards{
-    width: 98%;
-    margin: 20px auto;
+    width: 101%;
+    margin: 45px auto;
     background-color: white !important;
     border: 1px solid rgb(233, 218, 226);
     box-shadow: 5px 5px 10px -2px rgb(156, 165, 172);
@@ -55,7 +55,7 @@
     letter-spacing: 0.2px;
     }
 .low-box{
-    width: 92%;
+    width: 95%;
     margin: 4px auto;
 }
 .low-box h3{
