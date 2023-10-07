@@ -99,6 +99,62 @@
         height: 50px !important;
         width: 100% !important;
     }
+
+
+
+       .image-input {
+text-align: center;
+width: 140px;
+position: absolute;
+    right: 24px;
+    bottom: 12px;
+}
+.image-input input {
+  display: none;
+}
+.image-input label {
+    display: block;
+    color: #FFF;
+    background: #cb0c9f;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.84rem;
+    cursor: pointer;
+    border-radius: 7px;
+}
+.image-input label i {
+  font-size: 0.92rem;
+  margin-right: 0.3rem;
+}
+.image-input label:hover i {
+  animation: shake 0.35s;
+}
+.image-input img {
+  max-width: 175px;
+  display: none;
+}
+.image-input span {
+  display: none;
+  text-align: center;
+  cursor: pointer;
+}
+
+@keyframes shake {
+  0% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(10deg);
+  }
+  50% {
+    transform: rotate(0deg);
+  }
+  75% {
+    transform: rotate(-10deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
 </style>
 
 <div class="modal-dialog modal-xl" style="max-height:calc(100vh - 56px);">
@@ -140,21 +196,33 @@
                                 <div class="msg-info-name">{{ ucfirst($remark->GetUser->name) }}</div>
                                 <div class="msg-info-time">{{ $remark->created_at->format('d,M Y / h:i A') }}</div>
                             </div>
-                            <div class="msg-text"> <pre>{{ $remark->remark }}</pre> </div>                     
+                            <div class="msg-text"> <pre>{{ $remark->remark }}</pre></div>                     
                         </div>
+                        @if(!empty($remark->screenshort))
+                        <?php  $imgg = explode(',', $remark->screenshort);  ?>                               
+                           @foreach ($imgg as $img)  
+                                <?php $disk = Storage::disk('s3'); $image = $disk->temporaryUrl($img, now()->addMinutes(5)); ?>                         
+                                <img src="{{ $image }}" width="50" height="50" class="" style="border-radius:10px;">                               
+                            @endforeach
+                        @endif
                         @endif
                     </div>                                        
                 </div>                                    
             @endforeach
         </div>
 
-        <form id="myForm">
+        <form id="myForm" enctype="multipart/form-data">
             @csrf
-            <div class="row px-2">
-                <div class="col-sm-7" style="width: 60%">                  
-                    <textarea name="manager_comments" cols="" rows="" class="form-control" placeholder="Please enter comments..." required >                     
-                    </textarea>                  
-                    <input type="hidden" value="{{ $task_id }}" name="task_id" id="task_id">
+            <div class="row" style="margin-bottom: 9px;">
+                <div class="col-sm-7" style="width: 60%; position: relative; margin-left: 7px;">                    
+                    <textarea name="manager_comments" class="form-control" style="padding-right:140px;" required></textarea>
+                    <div class="image-input">
+                        <input type="file" name="screenshort[]" id="imageInput" multiple accept="image/*">
+                        <label for="imageInput" class="image-button"><i class="far fa-image"></i> Upload image</label>
+                        <img src="" class="image-preview">
+                        <span class="change-image">Upload different image</span>                
+                        <input type="hidden" value="{{ $task_id }}" name="task_id" id="task_id">
+                    </div>             
                 </div>  
                 <div class="col-sm-3" style="width: 30%; padding-top: 17px;">
                     <select class="form-control select2" multiple data-live-search="true" name="notify_to[]" id="notify_to" data-placement="top">
@@ -164,7 +232,7 @@
                     </select>
                 </div>           
                 <div class="col-sm-2" style="width: 7%">
-                    <button type="submit" class="btn btn-primary" style="margin-top: 12px;">Send</button>
+                    <button type="submit" class="btn btn-primary" style="margin-top: 12px;" id="submitButton">Send</button>
                 </div>
             </div>
         </form>
@@ -173,7 +241,31 @@
 
 <!-- jQuery -->
 
-
+<script>
+    $('#imageInput').on('change', function() {
+    $input = $(this);
+    if($input.val().length > 0) {
+        fileReader = new FileReader();
+        fileReader.onload = function (data) {
+        $('.image-preview').attr('src', data.target.result);
+        }
+        fileReader.readAsDataURL($input.prop('files')[0]);
+        $('.image-button').css('display', 'none');
+        $('.image-preview').css('display', 'block');
+        $('.change-image').css('display', 'block');
+    }
+    });
+                        
+    $('.change-image').on('click', function() {
+    $control = $(this);			
+    $('#imageInput').val('');	
+    $preview = $('.image-preview');
+    $preview.attr('src', '');
+    $preview.css('display', 'none');
+    $control.css('display', 'none');
+    $('.image-button').css('display', 'block');
+    });
+</script>
 
 <script>
     $(document).ready(function() {
@@ -183,38 +275,83 @@
     });
 </script>
 <script>
+    // $(document).ready(function() {
+    //     $('#myForm').submit(function(e) {
+    //         e.preventDefault();
+    //         let inputValue = $("#myForm textarea")[0].value;
+    //         consol.log(#myForm);
+    //         $.ajax({
+    //             type: 'POST',
+    //             url: "{{ url('comment-bymanager') }}",
+    //             data: $('#myForm').serialize(),
+    //             success: function(response) {  
+    //                 let html = `<div class="row"></div><div class="msg right-msg mt-3">
+    //                         <div class="msg-img">
+    //                             <img src="{{url(Auth::user()->image)}}" class="avatar avatar-lg me-3" height="100" width="100" />
+    //                         </div>
+    //                         <div class="msg-bubble">
+    //                             <div class="msg-info">
+    //                                 <div class="msg-info-name">{{ Auth::user()->name }}</div>
+    //                                 <div class="msg-info-time">{{ date('d,M Y / h:i A'); }}</div>
+    //                             </div>
+    //                             <div class="msg-text"> <pre>${inputValue}</pre> </div>                              
+    //                         </div>
+    //                     </div></div>`;
+    //                 $("#response").append(html)
+    //                 scrollBottom()
+    //             },
+    //             error: function(response) {
+    //                 console.log(response);
+    //             }
+    //         });
+    //         $("#myForm textarea")[0].value = "";
+    //     });
+    // });
+
     $(document).ready(function() {
-        $('#myForm').submit(function(e) {
-            e.preventDefault();
-            let inputValue = $("#myForm textarea")[0].value;
-            $.ajax({
-                type: 'POST',
-                url: "{{ url('comment-bymanager') }}",
-                data: $('#myForm').serialize(),
-                success: function(response) {  
-                    let html = `<div class="row"></div><div class="msg right-msg mt-3">
-                            <div class="msg-img">
-                                <img src="{{url(Auth::user()->image)}}" class="avatar avatar-lg me-3" height="100" width="100" />
+    $('#myForm').submit(function(e) {
+        e.preventDefault();
+
+        var formData = new FormData(this);
+
+        $.ajax({
+            type: 'POST',
+            url: "{{ url('comment-bymanager') }}",
+            data: formData,
+            processData: false, // Prevent jQuery from processing the data
+            contentType: false, // Prevent jQuery from setting content type
+            success: function(response) {  
+                // Handle the success response here
+                let html = `<div class="row"></div><div class="msg right-msg mt-3">
+                        <div class="msg-img">
+                            <img src="{{url(Auth::user()->image)}}" class="avatar avatar-lg me-3" height="100" width="100" />
+                        </div>
+                        <div class="msg-bubble">
+                            <div class="msg-info">
+                                <div class="msg-info-name">{{ Auth::user()->name }}</div>
+                                <div class="msg-info-time">{{ date('d,M Y / h:i A'); }}</div>
                             </div>
-                            <div class="msg-bubble">
-                                <div class="msg-info">
-                                    <div class="msg-info-name">{{ Auth::user()->name }}</div>
-                                    <div class="msg-info-time">{{ date('d,M Y / h:i A'); }}</div>
-                                </div>
-                                <div class="msg-text"> <pre>${inputValue}</pre> </div>                              
-                            </div>
-                        </div></div>`;
-                    $("#response").append(html)
-                    scrollBottom()
-                },
-                error: function(response) {
-                    console.log(response);
-                }
-            });
-            $("#myForm textarea")[0].value = "";
+                            <div class="msg-text"> <pre>${formData.get('manager_comments')}</pre>
+                                <img src="${formData.get('screenshort')}" height="50" width="50">
+                             </div>                              
+                        </div>
+                    </div></div>`;
+                $("#response").append(html)
+                scrollBottom()
+            },
+            error: function(response) {
+                console.log(response);
+            }
         });
+        
+        // Clear the textarea and file input after submission
+        $("#myForm textarea").val("");
+        $("#myForm input[type='file']").val("");
     });
+});
+
 </script>
+
 
 
 

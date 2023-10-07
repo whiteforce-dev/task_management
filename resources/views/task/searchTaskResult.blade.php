@@ -110,7 +110,7 @@
                 <i class="fa-solid fa-circle"
                     style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Created Date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :
                 </span>
-                <p>{{ \Carbon\Carbon::parse($task->created_at)->format('d,M h:i') }}</p>
+                <p>{{ \Carbon\Carbon::parse($task->created_at)->format('M d H:i') }}</p>
             </div>
             <div class="box-one">
                 <i class="fa-solid fa-circle"
@@ -131,7 +131,7 @@
                     style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i> <span>Deadline Date &nbsp;&nbsp;&nbsp; &nbsp;:
                 </span>
                 <p style="margin-left: 0px;">
-                    {{ \Carbon\Carbon::parse($task->deadline_date)->format('d,M h:i') }} </p>
+                    {{ \Carbon\Carbon::parse($task->deadline_date)->format('M d Y') }} </p>
 
                 @if ($task->status != '3')
                 @if ($currentDate > $deadlineDate)
@@ -145,7 +145,7 @@
                     style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i> <span>Completed Date :
                 </span>
                 @if ($task->status ==3)
-                    <P>{{ \Carbon\Carbon::parse($task->end_date)->format('d,M h:i') }}</P>
+                    <P>{{ \Carbon\Carbon::parse($task->end_date)->format('M d Y') }}</P>
                 @else<p>Null</p>
                 @endif
             </div>
