@@ -53,7 +53,7 @@
                         @php
                             $is_tl = checkIsUserTL(Auth::user()->id);
                         @endphp
-                       @if(!empty($is_tl))
+                       @if(!empty($is_tl) || Auth::user()->type == 'manager')
                         <div class="box-one box-btn">
                             <div class="dropdown btn-card">
                                 <a href="javascript:" class="btn btn-primary btn-sm"

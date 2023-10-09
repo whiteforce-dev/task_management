@@ -47,7 +47,7 @@ class TaskManagmentController extends Controller
             $image_code = $request->images;
             foreach ($image_code as $i => $file) {
                 $filepath = time() . '_' . $i . '.png';
-                Storage::disk('s3')->put('task_management/task_attachments/'.$filepath, file_get_contents($file), 'public');
+                Storage::disk('s3')->put('task_management/task_attachments/' . $filepath, file_get_contents($file), 'public');
                 $data[] = $filepath;
             }
             $imagedata = implode(',', $data);
@@ -166,7 +166,8 @@ class TaskManagmentController extends Controller
         $taskId = $request->id;
         $task = Taskmaster::find($taskId);
         $status = Status::get();
-        return view('task.edit_task', compact('task', 'status'));
+        $users = User::get();
+        return view('task.edit_task', compact('task', 'status', 'users'));
     }
 
     public function UpdateTask(request $request, $id)
@@ -190,7 +191,7 @@ class TaskManagmentController extends Controller
             $image_code = $request->images;
             foreach ($image_code as $i => $file) {
                 $filepath = time() . '_' . $i . '.png';
-                Storage::disk('s3')->put('task_management/task_attachments/'.$filepath, file_get_contents($file), 'public');
+                Storage::disk('s3')->put('task_management/task_attachments/' . $filepath, file_get_contents($file), 'public');
                 $data[] = $filepath;
             }
             $imagedata = implode(',', $data);
@@ -467,8 +468,17 @@ class TaskManagmentController extends Controller
         $comments->task_id = $request->task_id;
         $comments->remark = $request->manager_comments;
         $comments->userid = Auth::user()->id;
-        $comments->software_catagory = Auth::user()->software_catagory;
-
+        $comments->software_catagory = Auth::user()->software_catagory;      
+        if ($request['screenshort']) {  
+            $image_code = $request['screenshort'];
+            foreach ($image_code as $i => $file) {
+                $filepath = time() . '.png';
+                Storage::disk('s3')->put('task_management/task_attachments/' . $filepath, file_get_contents($file), 'public');
+                $data[] = $filepath;
+            }
+            $imagedata = implode(',', $data);
+            $comments->screenshort = $imagedata;  
+        }
         $comments->save();
         if (!empty($request->notify_to)) {
             $task_code = Taskmaster::where('id', $request->task_id)->value('task_code');

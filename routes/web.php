@@ -1,5 +1,4 @@
 <?php
-
 use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InfoUserController;
@@ -114,6 +113,11 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::POST('task-approval', [TeamAllotedController::class, 'taskApproval']);
 		Route::GET('task-rejected', [TeamAllotedController::class, 'taskRejected']);
 		Route::POST('approval-task-search', [TeamAllotedController::class, 'approvalTaskSearch']);
+
+		Route::get('delete-tl/{tl_id}', [TeamAllotedController::class, 'deleteTl']);
+		Route::get('edit-tl/{tl_id}', [TeamAllotedController::class, 'edit_tl']);
+		Route::get('create-tl-team', [TeamAllotedController::class, 'create_TlTeam']);
+		Route::Post('edit-tl/{tl_id}', [TeamAllotedController::class, 'edit_tlPage']);
 
 	});
 	Route::post('loginauth', [SessionsController::class, 'loginauth']);				

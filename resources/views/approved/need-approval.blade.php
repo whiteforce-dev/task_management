@@ -69,17 +69,11 @@
         }
     </style>
 
-    @php
-        $auth = Auth::user()->id;
-        $is_tl = checkIsUserTL(Auth::user()->id);
-        $users = \App\Models\User::get();
-    @endphp
-
     <main class="main-content position-relative h-100 border-radius-lg ">
         {{-- <form action="{{ url('approval-task-search') }}" method="POST">@csrf --}}
             <div class="container-fluid py-4">
                 <div class="row" style="margin-left: 20px;">
-                    @if (!empty($is_tl))
+                    @if (!empty($is_tl) || Auth::user()->type == 'manager')
                         <div class="col-sm-6">
                             <select name="created_by" id="created_by" class="form-control" style="border:1px solid #cb0c9f;"
                                 id="dataField">

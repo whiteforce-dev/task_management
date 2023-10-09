@@ -31,7 +31,7 @@
                
                 @if(Auth::user()->can_allot_to_others == '1')
                 <div class="row">                           
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <div class="form-group">
                             <label for="user-name" class="form-control-label">{{ __('Task name') }}</label>
                             <div class="@error('user.name')border border-danger rounded-3 @enderror">
@@ -42,41 +42,13 @@
                                 @enderror
                             </div>
                         </div>
-                    </div>
-                    @php
-                      $selectedIDs = explode(',', $task->alloted_to);
-                      $users = \App\Models\User::select('id', 'name')->get();
-                      foreach ($users as $user) {
-                          $options[] = [
-                              'id' => $user->id,
-                                'name' => $user->name,
-                                'selected' => in_array($user->id, $selectedIDs),
-                            ];
-                        }
-                    @endphp                         
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="user.type" class="form-control-label">{{ __('Alloted to') }}</label>
-                                <div class="@error('user.type')border border-danger rounded-3 @enderror">                                       
-                                        <select class="selectpicker form-control" multiple data-live-search="true" name="alloted_to[]">                                           
-                                            @foreach ($options as $option)
-                                            <option value="{{ $option['id'] }}" {{ $option['selected'] ? 'selected' : '' }}>
-                                                {{ $option['name'] }}
-                                            </option>
-                                            @endforeach
-                                    </select>
-                                    @error('type')
-                                        <p class="text-danger text-xs mt-2">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                            </div>
-                        </div>                         
+                    </div>                                                                        
                  </div>
                  @else<div class="row">                           
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="user-name" class="form-control-label">{{ __('Task name') }}</label>
-                            <div class="@error('user.name')border border-danger rounded-3 @enderror">
+                            <div class="@error('user.task_name')border border-danger rounded-3 @enderror">
                                 <input class="form-control" value="{{ $task->task_name }}" type="text"
                                     placeholder="Task Name" id="task-name" name="task_name">
                                 @error('task_name')
@@ -112,22 +84,36 @@
                         </div>
                     </div>                   
                 </div>
-                
+                <input type="hidden" value="{{ $task->status }}" name="status">
+                @php
+                $selectedIDs = explode(',', $task->alloted_to);
+                $users = \App\Models\User::select('id', 'name')->get();
+                foreach ($users as $user) {
+                    $options[] = [
+                        'id' => $user->id,
+                          'name' => $user->name,
+                          'selected' => in_array($user->id, $selectedIDs),
+                      ];
+                  }
+                @endphp
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="about">{{ 'Status' }}</label>
-                            <div class="@error('user.status')border border-danger rounded-3 @enderror">
-                                <select class="form-control" name="status">
-                                    <option value="">--select--</option>
-                                    @foreach ($status as $statu)                                       
-                                    <option value="{{ $statu->id }}"{{ $statu->id == $task->status ? 'selected' : '' }}>{{ $statu->status }}</option>
-                                    @endforeach
+                            <label for="user.type" class="form-control-label">{{ __('Alloted to') }}</label>
+                            <div class="@error('user.type')border border-danger rounded-3 @enderror">                                       
+                                    <select class="selectpicker form-control" multiple data-live-search="true" name="alloted_to[]">                                           
+                                        @foreach ($options as $option)
+                                        <option value="{{ $option['id'] }}" {{ $option['selected'] ? 'selected' : '' }}>
+                                            {{ $option['name'] }}
+                                        </option>
+                                        @endforeach
                                 </select>
+                                @error('type')
+                                    <p class="text-danger text-xs mt-2">{{ $message }}</p>
+                                @enderror
                             </div>
                         </div>
-                    </div>
-
+                    </div> 
                     <div class="col-md-6">                                                         
                         <div class="form-group">
                             <label for="user.team_comments"
@@ -161,7 +147,7 @@
                         </div>
                     </div>
 
-                @if($task->images > 0)
+                
                     <div class="row">
                         <div class="col-sm-6">
                             <label>Images</label>
@@ -169,16 +155,17 @@
                             font-size: 0.85rem!important;">
                             <br>
                         </div>
-                        <?php $imgg = explode(',', $task->images);?>
+                        @if($task->images > 0)
+                        <?php  $imgg = explode(',', $task->images);  ?>
                         <div class="col-sm-6">
-                            @foreach ($imgg as $img)  
-                           <?php  $disk = Storage::disk('s3');
-                            $img = $disk->temporaryUrl($img, now()->addMinutes(5));    ?>                         
-                            <img src="{{ $img }}" width="50" height="50" class="" style="border-radius:10px;">
+                           @foreach ($imgg as $img)  
+                                <?php $disk = Storage::disk('s3'); $image = $disk->temporaryUrl($img, now()->addMinutes(5)); ?>                         
+                                <img src="{{ $image }}" width="50" height="50" class="" style="border-radius:10px;">
                             @endforeach
-                        </div>    
+                        </div>
+                        @endif    
                     </div>
-                @endif
+               
                     <input type="hidden" name="managerId" value="{{ $task->alloted_by }}">
                     <div class="row">
                         <div class="col-md-12">
@@ -195,7 +182,6 @@
 <link rel="stylesheet" href="{{ url('assets/css/multiselect.css') }}">
 <link rel="stylesheet" href="{{ url('assets/css/multiselectdrop.css') }}">
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>
 <script src="{{ url('assets/jquery-validation/jquery.validate.min.js') }}"></script>
 <script>
