@@ -18,7 +18,7 @@
                 <div class="col-auto my-auto">
                     <div class="h-100">
                         <h5 class="mb-1">
-                            {{ __('User List') }}
+                            {{ ucfirst(Auth::user()->name) }}
                         </h5>
                         <p class="mb-0 font-weight-bold text-sm">
                             {{ ucfirst(Auth::user()->type) }}
@@ -33,12 +33,8 @@
         <div class="container-fluid py-4">
             <div class="alert alert-secondary mx-1" role="alert">
                 <span class="text-white">
-                    <strong>Show All Uesr List!</strong>
-                    @if(Auth::user()->type == 'admin')
-                    <a href="{{ url('user-profile') }}" class="btn bg-gradient-primary btn-sm mb-0" type="button"
-                        style="float:right;">+&nbsp; New
-                        User</a>
-                    @endif
+                    <strong>Team User List!</strong>
+                    
                 </span>
             </div>
 
@@ -53,21 +49,18 @@
                                     <th scope="col"><b>Photo</b></th>
                                     <th scope="col"><b>Name</b></th>
                                     <th scope="col"><b>Email</b></th>
-                                    <th scope="col"><b>Manager</b></th>
+                                    <th scope="col"><b>TL Name</b></th>
                                     <th scope="col"><b>Type</b></th>                                   
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($teams as $i => $user)
                                     <tr>
-                                        <th scope="row">{{ ++$i }}</th>
+                                        <th scope="row">&nbsp;&nbsp;{{ ++$i }}.</th>
                                         <td><img src="{{ url($user->image ?? 'NA') }}" class="avatar avatar-sm me-3"></td>
                                         <td>{{ ucfirst($user->name) }}</td>
                                         <td>{{ $user->email }}</td>
-                                        @php
-                                        $managerName = \App\Models\User::where('id', $user->parent_id)->value('name');
-                                        @endphp
-                                        <td>{{ ucfirst($managerName ?? 'Null') }}</td>
+                                        <td>{{ ucfirst($tlName ?? 'Null') }}</td>
                                         <td>{{ ucfirst($user->type) }}</td>                                                                
                                     </tr>
                                 @endforeach                                  

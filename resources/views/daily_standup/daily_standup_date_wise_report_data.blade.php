@@ -367,38 +367,38 @@
             </div>
         </div>
         
-
         <div id="searchResults"></div>
-        <script>
-            function task_Approved(id){ 
-                var data = id;
-                $.ajax({
-                    type: 'POST',
-                    url: "{{url('task-approved')}}",
-                    data: {
-                        data : data,
-                        '_token' : "{{ csrf_token() }}"
-                    },
-                    success: function(response){  
-                    alert(response);
-                    }
+            <script>
+                function task_Approved(id){ 
+                    var data = id;
+                    $.ajax({
+                        type: 'POST',
+                        url: "{{url('task-approved')}}",
+                        data: {
+                            data : data,
+                            '_token' : "{{ csrf_token() }}"
+                        },
+                        success: function(response){  
+                        alert(response);
+                        }
+                    });
+                }
+            </script>
+
+            <script>
+            function AskQuestion(url, id) {
+                $.get(url, id, function(rs) {
+                    $('#myModalAsk').html(rs);
+                    $('#myModalAsk').modal('show');
                 });
             }
-        </script>
-
-        <script>
-        function AskQuestion(url, id) {
-            $.get(url, id, function(rs) {
-                $('#myModalAsk').html(rs);
-                $('#myModalAsk').modal('show');
-            });
-        }
-        </script>
+            </script>
 
     <div class="modal" id="myModalAsk">
     </div>
-        @endforeach 
+@endforeach 
     </div>
+
     </section>
     <script src="{{ url('assets/js/core/popper.min.js') }}"></script>
     <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script> 

@@ -275,39 +275,7 @@ position: absolute;
     });
 </script>
 <script>
-    // $(document).ready(function() {
-    //     $('#myForm').submit(function(e) {
-    //         e.preventDefault();
-    //         let inputValue = $("#myForm textarea")[0].value;
-    //         consol.log(#myForm);
-    //         $.ajax({
-    //             type: 'POST',
-    //             url: "{{ url('comment-bymanager') }}",
-    //             data: $('#myForm').serialize(),
-    //             success: function(response) {  
-    //                 let html = `<div class="row"></div><div class="msg right-msg mt-3">
-    //                         <div class="msg-img">
-    //                             <img src="{{url(Auth::user()->image)}}" class="avatar avatar-lg me-3" height="100" width="100" />
-    //                         </div>
-    //                         <div class="msg-bubble">
-    //                             <div class="msg-info">
-    //                                 <div class="msg-info-name">{{ Auth::user()->name }}</div>
-    //                                 <div class="msg-info-time">{{ date('d,M Y / h:i A'); }}</div>
-    //                             </div>
-    //                             <div class="msg-text"> <pre>${inputValue}</pre> </div>                              
-    //                         </div>
-    //                     </div></div>`;
-    //                 $("#response").append(html)
-    //                 scrollBottom()
-    //             },
-    //             error: function(response) {
-    //                 console.log(response);
-    //             }
-    //         });
-    //         $("#myForm textarea")[0].value = "";
-    //     });
-    // });
-
+    
     $(document).ready(function() {
     $('#myForm').submit(function(e) {
         e.preventDefault();

@@ -153,7 +153,8 @@ class TaskManagmentController extends Controller
         $taskId = $request->id;
         $task = Taskmaster::find($taskId);
         $status = Status::get();
-        return view('task.edit_task', compact('task', 'status'));
+        $users = User::get();
+        return view('task.edit_task', compact('task', 'status', 'users'));
     }
 
     public function UpdateTask(request $request, $id)
@@ -459,7 +460,7 @@ class TaskManagmentController extends Controller
             $image_code = $request['screenshort'];
             foreach ($image_code as $i => $file) {
                 $filepath = time() . '.png';
-                Storage::disk('s3')->put($filepath, file_get_contents($file), 'public');
+                Storage::disk('s3')->put('task_management/task_attachments/' . $filepath, file_get_contents($file), 'public');
                 $data[] = $filepath;
             }
             $imagedata = implode(',', $data);
