@@ -114,9 +114,9 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::GET('task-rejected', [TeamAllotedController::class, 'taskRejected']);
 		Route::POST('approval-task-search', [TeamAllotedController::class, 'approvalTaskSearch']);
 
+		Route::get('create-tl-team', [TeamAllotedController::class, 'create_TlTeam']);
 		Route::get('delete-tl/{tl_id}', [TeamAllotedController::class, 'deleteTl']);
 		Route::get('edit-tl/{tl_id}', [TeamAllotedController::class, 'edit_tl']);
-		Route::get('create-tl-team', [TeamAllotedController::class, 'create_TlTeam']);
 		Route::Post('edit-tl/{tl_id}', [TeamAllotedController::class, 'edit_tlPage']);
 
 	});

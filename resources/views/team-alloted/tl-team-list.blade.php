@@ -25,6 +25,16 @@
             </div>
         </div>
     </div>
+    @if (session('success'))
+    <div class="m-3  alert alert-success alert-dismissible fade show" id="alert-success"
+        role="alert">
+        <span class="alert-text text-white">
+            {{ session('success') }}</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            <i class="fa fa-close" aria-hidden="true"></i>
+        </button>
+    </div>
+    @endif
 
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
         <div class="container-fluid py-4">
@@ -51,24 +61,26 @@
                     </div>
                 </div>
                 @foreach ($tl_list as $i => $tllist)
-                    <div class="row" style="margin-left: 10px">
+                    <div class="row mt-2 mb-3" style="margin-left: 10px">
                         <div class="col-md-1">{{ ++$i }}. </div>
                         <div class="col-md-2">
                             <span>{{ $tllist->getTlDetails->name }}</span>
-                        </div>
+                        </div> 
                         <div class="col-md-6">
                             @php $userId = explode(',', $tllist->selected_team);@endphp
                             @foreach ($userId as $user)
-                                @php $users = \App\Models\User::where('id', $user)->value('name');   @endphp
-                                <span>{{ $users }},</span>
-                            @endforeach
+                                @php $users = \App\Models\User::where('id', $user)->value('name'); 
+                                @endphp
+                                <span>{{ $users }}</span>,
+                            @endforeach                         
                         </div>
 
                         <div class="col-md-3">
-                            <a href="{{ url('delete-tl', $tllist->id) }}" class="btn btn-primary btn-sm">Delete </a>
-                            <a href="{{ url('edit-tl', $tllist->id) }}" class="btn btn-primary btn-sm">Edit </a>
+                            <a href="{{ url('delete-tl', $tllist->id) }}"> <i class="fa fa-trash-o" style="font-size:20px;color:red"></i> </a>&nbsp;
+                            <a href="{{ url('edit-tl', $tllist->id) }}"><i class="fa fa-pencil-square-o" style="font-size:20px;color:green"></i> </a>
                         </div>
                     </div>
+                    
                 @endforeach
             </div>
         </div>

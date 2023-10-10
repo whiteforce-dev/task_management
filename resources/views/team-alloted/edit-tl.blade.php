@@ -40,23 +40,32 @@
                             <div class="form-group">
                                 <label for="user-name" class="form-control-label">{{ __('Select Team Leader') }}</label>
                                 <div class="@error('user.name')border border-danger rounded-3 @enderror">
-                                    <select name="tl_id" class="form-control" onchange="selectTeam();" id="tl_id">
-                                        <option value="">--select--</option>
-                                        @foreach ($users as $user)
-                                            <option value="{{ $user->id }}" {{ $user->id == $tl_data->tl_id ? 'selected' : '' }}>{{ $user->name }}</option>
-                                        @endforeach
-                                    </select>
+                                    <input type="text" name="tl_id" class="form-control" value="{{ $tlName }}" readonly>                                    
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    @php
+                    $selectedIDs = explode(',', $tl_data->selected_team);
+                    foreach ($users as $user) {
+                        $options[] = [
+                            'id' => $user->id,
+                              'name' => $user->name,
+                              'selected' => in_array($user->id, $selectedIDs),
+                          ];
+                      }
+                    @endphp 
                     <div class="row">
                         <div class="col-md-11" style="margin-left:15px;">
                             <div class="form-group" id="selected_team">
                                 <label for="user-list" class="form-control-label">User List</label>
-                                <select class="form-control selectpicker" multiple data-live-search="true"
-                                    name="selected_team[]">
-                                    <option value="">Select User</option>
+                                <select class="form-control select2" multiple data-live-search="true" name="selected_team[]" id="notify_to" data-placement="top">                            
+                                        @foreach ($options as $option)
+                                        <option value="{{ $option['id'] }}" {{ $option['selected'] ? 'selected' : '' }}>
+                                            {{ $option['name'] }}
+                                        </option>
+                                        @endforeach
                                 </select>
                             </div>
                         </div>
@@ -72,26 +81,18 @@
         </div>
     </main>
 
-
-
     <link rel="stylesheet" href="{{ url('assets/css/multiselect.css') }}">
     <link rel="stylesheet" href="{{ url('assets/css/multiselectdrop.css') }}">
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>
     <script src="{{ url('assets/jquery-validation/jquery.validate.min.js') }}"></script>
-
-
     <script>
-        function selectTeam() {
-            var tl_id = $('#tl_id').val();
-            $.get("{{ url('select-team') }}", {
-                tl_id: tl_id,
-            }, function(response) {
-                $('#selected_team').html(response);
-                $(".selectpicker").select2();
+        $(document).ready(function() {
+            $('.select2').select2({
+                placeholder: "Notify To",
             });
-        }
+        });
     </script>
 
     <script src="{{ url('assets/js/core/popper.min.js') }}"></script>

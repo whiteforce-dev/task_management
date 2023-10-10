@@ -26,6 +26,16 @@
         </div>
     </div>
 
+    @if (session('success'))
+    <div class="m-3  alert alert-success alert-dismissible fade show" id="alert-success"
+        role="alert">
+        <span class="alert-text text-white">
+            {{ session('success') }}</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+            <i class="fa fa-close" aria-hidden="true"></i>
+        </button>
+    </div>
+    @endif
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
         <div class="container-fluid py-4">
             <div class="alert alert-secondary mx-1" role="alert">
@@ -56,7 +66,7 @@
                                 <label for="user-list" class="form-control-label">User List</label>
                                 <select class="form-control selectpicker" multiple data-live-search="true"
                                     name="selected_team[]">
-                                    <option value="">Select User</option>
+                               
                                 </select>
                             </div>
                         </div>
