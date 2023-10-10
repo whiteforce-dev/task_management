@@ -219,7 +219,7 @@
         display:flex;
         align-items:center;
         justify-content:center;
-        margin-top:10px
+        /* margin-top:10px */
     }
     .actionbtn{
         width:33%;
@@ -302,6 +302,14 @@
         padding-right:1rem;
     }
 
+    .datetime{
+        text-align: right;
+        font-size: 12px !important;
+        font-weight: 700;
+        color: #968f8f !important;
+        margin-top: 17px;
+    }
+
 </style>
 
 
@@ -346,6 +354,7 @@
                         @foreach($checkin_tasks as $in_task)
                         <p><i class="fa-solid fa-right-long"></i> {{$in_task->task_name}}</p>
                         @endforeach
+                        <p class="datetime">{{ !empty($value->checkin_date_time) ? date('M d,Y H:i',strtottime($value->checkin_date_time)) : '' }}</p>
                     </div>
                 </div>
                 <div class="timerallot">
@@ -356,6 +365,7 @@
                             <div>{{ $out_task->hours }}h {{$out_task->minutes}}m</div>
                         </div>
                         @endforeach
+                        <p class="datetime">{{ !empty($value->checkout_date_time) ? date('M d,Y H:i',strtottime($value->checkout_date_time)) : '' }}</p>
                     </div>
                 </div>
             </div>

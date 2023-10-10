@@ -216,13 +216,13 @@ position: absolute;
             <div class="row" style="margin-bottom: 9px;">
                 <div class="col-sm-7" style="width: 60%; position: relative; margin-left: 7px;">                    
                     <textarea name="manager_comments" class="form-control" style="padding-right:140px;" required></textarea>
-                    <div class="image-input">
+                    <!-- <div class="image-input">
                         <input type="file" name="screenshort[]" id="imageInput" multiple accept="image/*">
                         <label for="imageInput" class="image-button"><i class="far fa-image"></i> Upload image</label>
                         <img src="" class="image-preview">
                         <span class="change-image">Upload different image</span>                
-                        <input type="hidden" value="{{ $task_id }}" name="task_id" id="task_id">
-                    </div>             
+                    </div>              -->
+                    <input type="hidden" value="{{ $task_id }}" name="task_id" id="task_id">
                 </div>  
                 <div class="col-sm-3" style="width: 30%; padding-top: 17px;">
                     <select class="form-control select2" multiple data-live-search="true" name="notify_to[]" id="notify_to" data-placement="top">
@@ -300,10 +300,10 @@ position: absolute;
                                 <div class="msg-info-time">{{ date('d,M Y / h:i A'); }}</div>
                             </div>
                             <div class="msg-text"> <pre>${formData.get('manager_comments')}</pre>
-                                <img src="${formData.get('screenshort')}" height="50" width="50">
-                             </div>                              
-                        </div>
-                    </div></div>`;
+                            </div>                              
+                            </div>
+                            </div></div>`;
+                            // <img src="${formData.get('screenshort')}" height="50" width="50">
                 $("#response").append(html)
                 scrollBottom()
             },

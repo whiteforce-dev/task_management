@@ -43,6 +43,10 @@ class TaskManagmentController extends Controller
         $newtask->software_catagory = Auth::user()->software_catagory;
         $newtask->priority = $request->priority;
 
+        if(Auth::user()->type == 'manager' || !empty(checkIsUserTL(Auth::user()->id))){
+            $newtask->is_approved = 1;
+        }
+
         if ($request->images) {
             $image_code = $request->images;
             foreach ($image_code as $i => $file) {
@@ -217,14 +221,7 @@ class TaskManagmentController extends Controller
     public function remark(Request $request)
     {
         $task_id = $request->id;
-        if (Auth::user()->type !== 'employee') {
-            $remarks = Remark::where('task_id', $request->id)->get();
-        } else {
-            $alloted_by = Taskmaster::where('id', $task_id)->pluck('alloted_by')->ToArray();
-            $alloted_to = Taskmaster::where('id', $task_id)->pluck('alloted_to')->ToArray();
-            $team_id = User::where('id', Auth::user()->id)->orwhere('id', Auth::user()->parent_id)->orwhere('id', '1')->pluck('id')->toArray();
-            $remarks = Remark::where('task_id', $request->id)->whereIn('userid', $team_id)->orwhere('userid', $alloted_by)->where('task_id', $request->id)->orwhere('userid', $alloted_to)->where('task_id', $request->id)->get();
-        }
+        $remarks = Remark::where('task_id', $request->id)->get();
         $users = getNotificationUserList();
         return view('task.full_view', compact('remarks', 'task_id', 'users'));
     }

@@ -168,6 +168,13 @@
     overflow: hidden;
     border-radius: 19%;
 }
+.summarydiv{
+    text-align:center;
+    margin-top: 11px
+}
+.summaryfisrtdiv{
+    margin-top: 11px
+}
 
 </style>
 @if(!empty($is_allotted_to))
@@ -180,24 +187,24 @@
                 <img src="{{ !empty($alloted_summary_array[$allotted]['user_image']) ? url($alloted_summary_array[$allotted]['user_image']) : '' }}" alt="" width="100%">
             </div>
         </div>
-        <div class="col-md-2">
+        <div class="col-md-2 summaryfisrtdiv">
             <span class="summarySpan">Pending Task :</span>
-            <span class="badge badge-primary" style="background: linear-gradient(to right, #ff8585, #f60909);">
+            <span class="badge badge-primary" style="background: linear-gradient(to right, #ff8585, #f60909);font-size: 14px">
             {{ !empty($alloted_summary_array[$allotted]['data'][1]) ? $alloted_summary_array[$allotted]['data'][1] : 0}}</span>
         </div>
-        <div class="col-md-3">
-            <span class="summarySpan">Progress Task :</span>
-            <span class="badge badge-primary" style="background: linear-gradient(to right, #d48100, #ffb645)">
+        <div class="col-md-3 summarydiv">
+            <span class="summarySpan" style="margin-left:44px">Progress Task :</span>
+            <span class="badge badge-primary" style="background:linear-gradient(310deg, #8508e0, #ff00fa);font-size: 14px">
             {{ !empty($alloted_summary_array[$allotted]['data'][2]) ? $alloted_summary_array[$allotted]['data'][2] : 0}}</span>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 summarydiv">
             <span class="summarySpan">Need Approval :</span>
-            <span class="badge badge-primary" style="background: linear-gradient(to right, #07e4f8, #00a9b8);">
+            <span class="badge badge-primary" style="background: linear-gradient(to right, #07e4f8, #00a9b8);font-size: 14px">
             {{!empty($alloted_summary_array[$allotted]['data'][5]) ? $alloted_summary_array[$allotted]['data'][5] : 0}}</span>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3 summarydiv">
             <span class="summarySpan">Completed Task :</span>
-            <span class="badge badge-primary" style="background: linear-gradient(to right, #8fff62, #3dd103);">
+            <span class="badge badge-primary" style="background: linear-gradient(to right, #8fff62, #3dd103);font-size: 14px">
             {{!empty($alloted_summary_array[$allotted]['data'][3]) ? $alloted_summary_array[$allotted]['data'][3] : 0}}</span>
         </div>
     </div>
@@ -215,12 +222,12 @@ $currentDate = now();
    
    $card_color_class = '';
    if($task->status != 3){
-        if($daydiffapprovaldate >= 3) {
-            $card_color_class = 'outdated';
-        } elseif($currentDate > $deadlineDate) {
-            $card_color_class = 'danger';
-        }elseif($differenceInDays <= 2) {
+        if($differenceInDays <= 2){
             $card_color_class = 'warning';
+        } elseif($currentDate > $deadlineDate){
+            $card_color_class = 'danger';
+        } elseif($daydiffapprovaldate >= 3){
+            $card_color_class = 'outdated';
         }
     }
 @endphp
@@ -328,7 +335,7 @@ $currentDate = now();
                     style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i> <span>Deadline Date &nbsp;&nbsp;&nbsp; &nbsp;:
                 </span>
                 <p style="margin-left: 0px;">
-                    {{ \Carbon\Carbon::parse($task->deadline_date)->format('M d Y') }} </p>
+                    {{ \Carbon\Carbon::parse($task->deadline_date)->format('M d,Y') }} </p>
 
                 @if ($task->status != '3')
                 @if ($currentDate > $deadlineDate)
@@ -342,7 +349,7 @@ $currentDate = now();
                     style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i> <span>Approval Date &nbsp;&nbsp;&nbsp;&nbsp; :
                 </span>
                 @if(!empty($task->sent_to_approval_date))
-                <P>{{ \Carbon\Carbon::parse($task->sent_to_approval_date)->format('d,M h:i') }}</P>
+                <P>{{ \Carbon\Carbon::parse($task->sent_to_approval_date)->format('M d,Y') }}</P>
                 @else
                 <p>-</p>
                 @endif
@@ -352,8 +359,8 @@ $currentDate = now();
                     style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i> <span>Completed Date :
                 </span>
                 @if ($task->status ==3)
-                    <P>{{ \Carbon\Carbon::parse($task->end_date)->format('M d Y') }}</P>
-                @else<p>Null</p>
+                    <P>{{ \Carbon\Carbon::parse($task->end_date)->format('M d,Y') }}</P>
+                @else<p>-</p>
                 @endif
             </div>
             <div class="box-one">

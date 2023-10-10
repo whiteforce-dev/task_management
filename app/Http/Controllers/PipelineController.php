@@ -14,18 +14,18 @@ class PipelineController extends Controller
 {
    public function pipeline(){
     if(Auth::user()->type == 'admin'){
-        $pendingtasks = Taskmaster::where('status', '1')->orderBy('id', 'DESC')->get();
+        $pendingtasks = Taskmaster::where('status', '1')->where('is_approved',1)->orderBy('id', 'DESC')->get();
         $progresstasks = Taskmaster::where('status', '2')->orderBy('id', 'DESC')->get();
         $completedtasks  = Taskmaster::where('status', '3')->orderBy('id', 'DESC')->get();
         $holdingtasks = Taskmaster::where('status', '4')->orderBy('id', 'DESC')->get();
     }elseif(Auth::user()->type == 'manager'){
         $parentId = User::where('parent_id', Auth::user()->id)->pluck('id')->ToArray();
-        $pendingtasks = Taskmaster::whereIn('alloted_to', $parentId)->where('status', '1')->orderBy('id', 'DESC')->get();
+        $pendingtasks = Taskmaster::whereIn('alloted_to', $parentId)->where('is_approved',1)->where('status', '1')->orderBy('id', 'DESC')->get();
         $progresstasks = Taskmaster::whereIn('alloted_to', $parentId)->where('status', '2')->orderBy('id', 'DESC')->get();
         $completedtasks  = Taskmaster::whereIn('alloted_to', $parentId)->where('status', '3')->orderBy('id', 'DESC')->get(); 
         $holdingtasks = Taskmaster::whereIn('alloted_to', $parentId)->where('status', '4')->orderBy('id', 'DESC')->get();
     }else{
-        $pendingtasks = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '1')->orderBy('id', 'DESC')->get();
+        $pendingtasks = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '1')->where('is_approved',1)->orderBy('id', 'DESC')->get();
         $progresstasks = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '2')->orderBy('id', 'DESC')->get();
         $completedtasks  = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '3')->orderBy('id', 'DESC')->get();  
         $holdingtasks = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '4')->orderBy('id', 'DESC')->get();
@@ -87,18 +87,18 @@ class PipelineController extends Controller
 
     public function rightModel(Request $request, $task_id){
         if(Auth::user()->type == 'admin'){
-            $pendingtasks = Taskmaster::where('status', '1')->get();
+            $pendingtasks = Taskmaster::where('status', '1')->where('is_approved',1)->get();
             $progresstasks = Taskmaster::where('status', '2')->get();
             $holdingtasks = Taskmaster::where('status', '3')->get();
             $completedtasks  = Taskmaster::where('status', '4')->get();
         }elseif(Auth::user()->type == 'manager'){
             $parentId = User::where('id', Auth::user()->parent_id)->pluck('id')->ToArray();
-            $pendingtasks = Taskmaster::whereIn('alloted_to', $parentId)->where('status', '1')->get();
+            $pendingtasks = Taskmaster::whereIn('alloted_to', $parentId)->where('is_approved',1)->where('status', '1')->get();
             $progresstasks = Taskmaster::whereIn('alloted_to', $parentId)->where('status', '2')->get();
             $holdingtasks = Taskmaster::whereIn('alloted_to', $parentId)->where('status', '3')->get();
             $completedtasks  = Taskmaster::whereIn('alloted_to', $parentId)->where('status', '4')->get(); 
         }else{
-            $pendingtasks = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '1')->get();
+            $pendingtasks = Taskmaster::where('alloted_to', Auth::user()->id)->where('is_approved',1)->where('status', '1')->get();
             $progresstasks = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '2')->get();
             $holdingtasks = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '3')->get();
             $completedtasks  = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '4')->get();  
@@ -116,27 +116,27 @@ class PipelineController extends Controller
             $completedtasks = [];
             $holdingtasks = [];
             if(!empty($request->created_by)) {
-                $pendingtasks = Taskmaster::where('status', '1')->where('alloted_by', $request->created_by)->orderBy('id', 'DESC')->get();
+                $pendingtasks = Taskmaster::where('status', '1')->where('is_approved',1)->where('alloted_by', $request->created_by)->orderBy('id', 'DESC')->get();
                 $progresstasks = Taskmaster::where('status', '2')->where('alloted_by', $request->created_by)->orderBy('id', 'DESC')->get();
                 $completedtasks  = Taskmaster::where('status', '3')->where('alloted_by', $request->created_by)->orderBy('id', 'DESC')->get();
                 $holdingtasks = Taskmaster::where('status', '4')->where('alloted_by', $request->created_by)->orderBy('id', 'DESC')->get();
             }
 
             if(!empty($request->alloted_to)) {
-                $pendingtasks = Taskmaster::where('status', '1')->where('alloted_to', $request->alloted_to)->orderBy('id', 'DESC')->get();
+                $pendingtasks = Taskmaster::where('status', '1')->where('is_approved',1)->where('alloted_to', $request->alloted_to)->orderBy('id', 'DESC')->get();
                 $progresstasks = Taskmaster::where('status', '2')->where('alloted_to', $request->alloted_to)->orderBy('id', 'DESC')->get();
                 $completedtasks  = Taskmaster::where('status', '3')->where('alloted_to', $request->alloted_to)->orderBy('id', 'DESC')->get();
                 $holdingtasks = Taskmaster::where('status', '4')->where('alloted_to', $request->alloted_to)->orderBy('id', 'DESC')->get();
             }
 
             if(!empty($request->priority)) {  
-                $pendingtasks = Taskmaster::where('status', '1')->where('priority', $request->priority)->orderBy('id', 'DESC')->get();
+                $pendingtasks = Taskmaster::where('status', '1')->where('is_approved',1)->where('priority', $request->priority)->orderBy('id', 'DESC')->get();
                 $progresstasks = Taskmaster::where('status', '2')->where('priority', $request->priority)->orderBy('id', 'DESC')->get();
                 $completedtasks  = Taskmaster::where('status', '3')->where('priority', $request->priority)->orderBy('id', 'DESC')->get();
                 $holdingtasks = Taskmaster::where('status', '4')->where('priority', $request->priority)->orderBy('id', 'DESC')->get();
             }
             if(!empty($request->task_code)) {  
-                $pendingtasks = Taskmaster::where('status', '1')->where('task_code', $request->task_code)->orderBy('id', 'DESC')->get();
+                $pendingtasks = Taskmaster::where('status', '1')->where('is_approved',1)->where('task_code', $request->task_code)->orderBy('id', 'DESC')->get();
                 $progresstasks = Taskmaster::where('status', '2')->where('task_code', $request->task_code)->orderBy('id', 'DESC')->get();
                 $completedtasks  = Taskmaster::where('status', '3')->where('task_code', $request->task_code)->orderBy('id', 'DESC')->get();
                 $holdingtasks = Taskmaster::where('status', '4')->where('task_code', $request->task_code)->orderBy('id', 'DESC')->get();
@@ -148,7 +148,7 @@ class PipelineController extends Controller
                 $start_created_date = $start_created_date_parts[2].'-'.$start_created_date_parts[1].'-'.$start_created_date_parts[0];
                 $end_created_date = $end_created_date_parts[2].'-'.$end_created_date_parts[1].'-'.$end_created_date_parts[0];           
                 
-                $pendingtasks = Taskmaster::where('status', '1')->whereBetween('created_at',[$start_created_date.' 00:00:00',$end_created_date.' 23:59:59'])->orderBy('id', 'DESC')->get();
+                $pendingtasks = Taskmaster::where('status', '1')->where('is_approved',1)->whereBetween('created_at',[$start_created_date.' 00:00:00',$end_created_date.' 23:59:59'])->orderBy('id', 'DESC')->get();
                 $progresstasks = Taskmaster::where('status', '2')->whereBetween('created_at',[$start_created_date.' 00:00:00',$end_created_date.' 23:59:59'])->orderBy('id', 'DESC')->get();
                 $completedtasks  = Taskmaster::where('status', '3')->whereBetween('created_at',[$start_created_date.' 00:00:00',$end_created_date.' 23:59:59'])->orderBy('id', 'DESC')->get();
                 $holdingtasks = Taskmaster::where('status', '4')->whereBetween('created_at',[$start_created_date.' 00:00:00',$end_created_date.' 23:59:59'])->orderBy('id', 'DESC')->get();
@@ -160,7 +160,7 @@ class PipelineController extends Controller
                 $start_dedaline_date = $start_deadline_date_parts[2].'-'.$start_deadline_date_parts[1].'-'.$start_deadline_date_parts[0];
                 $end_dedaline_date = $end_deadline_date_parts[2].'-'.$end_deadline_date_parts[1].'-'.$end_deadline_date_parts[0];                         
 
-                $pendingtasks = Taskmaster::where('status', '1')->whereBetween('deadline_date',[$start_dedaline_date,$end_dedaline_date])->orderBy('id', 'DESC')->get();
+                $pendingtasks = Taskmaster::where('status', '1')->where('is_approved',1)->whereBetween('deadline_date',[$start_dedaline_date,$end_dedaline_date])->orderBy('id', 'DESC')->get();
                 $progresstasks = Taskmaster::where('status', '2')->whereBetween('deadline_date',[$start_dedaline_date,$end_dedaline_date])->orderBy('id', 'DESC')->get();
                 $completedtasks  = Taskmaster::where('status', '3')->whereBetween('deadline_date',[$start_dedaline_date,$end_dedaline_date])->orderBy('id', 'DESC')->get();
                 $holdingtasks = Taskmaster::where('status', '4')->whereBetween('deadline_date',[$start_dedaline_date,$end_dedaline_date])->orderBy('id', 'DESC')->get();
