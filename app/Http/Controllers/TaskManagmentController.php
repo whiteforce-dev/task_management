@@ -160,6 +160,9 @@ class TaskManagmentController extends Controller
 
             $tasklist = $tasklist->whereBetween('deadline_date', [$start_dedaline_date, $end_dedaline_date]);
         }
+        if (!empty($request->multiple_status)) {
+            $tasklist = $tasklist->whereIn('status', $request->multiple_status);
+        }
         $tasklist = $tasklist->orderBy('id', 'Desc')->paginate(25);
         
         return view('task.searchTaskResult', compact('tasklist','is_allotted_to','alloted_summary_array','alloted_array'));
@@ -274,15 +277,14 @@ class TaskManagmentController extends Controller
     }
     public function savechangestatus(Request $request, $id)
     {
-        Taskmaster::where('id', $id)->update(array('status' => $request->status, 'end_date' => $request->end_date, 'is_approved', $request->status));
+        Taskmaster::where('id', $id)->update(array('status' => $request->status));
         if (isset($request->status)) {
-            $task_name = Taskmaster::where('id', $id)->first();
+            $status = new StatusHistory();
             $status = new StatusHistory();
             $status->task_id = $id;
             $status->status = $request->status;
-            $status->task_name = $task_name->task_name ?? 'Null';
+            $status->changed_by = Auth::user()->id;
             $status->software_catagory = Auth::user()->software_catagory;
-            $status->end_date = $request->end_date;
             $status->save();
         }
         return redirect('task-list')->with(['success' => 'Your status successfully updated.']);
@@ -525,6 +527,7 @@ class TaskManagmentController extends Controller
             $status = new StatusHistory();
             $status->task_id = $taskId;
             $status->status = $newStatus;
+            $status->changed_by = Auth::user()->id;
             $status->software_catagory = Auth::user()->software_catagory;
             $status->save();
         }

@@ -62,6 +62,11 @@ html {
   background: rgba(0,0,0,0.75) url(https://media.geeksforgeeks.org/wp-content/uploads/20230723195619/GfG-Image.png) no-repeat center center;
   z-index: 10000;
 }
+.status{
+font-size:0.95rem;
+font:Arial, Helvetica, sans-serif;
+color:#fff;
+}
 </style>
 
 
@@ -138,6 +143,17 @@ html {
                 <label>Task Code</label>
                 <input name="task_code" id="task_code" class="form-control" style="border:1px solid #cb0c9f;" placeholder="Enter Task Code">
             </div>
+
+            <div class="col-sm-3">
+                <label>Multiple Status</label>
+                <select class="selectpicker form-control" multiple data-live-search="true" name="multiple_status[]" id="multiple_status">
+                    @foreach ($statuss as $status)
+                    <option value="{{ $status->id }}">{{ ucfirst($status->status) }}</option>                    
+                    @endforeach
+            
+                </select>
+            </div>
+
             <div class="col-sm-1">
                 <button type="button" class="btn btn-primary" style="margin-top:31px;" id="submitButton" onclick="searchTask()"  data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>">Search</button> 
             </div>
@@ -187,6 +203,7 @@ html {
                     created_date : $('#created_date').val(),
                     deadline_date : $('#deadline_date').val(),
                     task_code : $('#task_code').val(),
+                    multiple_status : $('#multiple_status').val(),
                     '_token' : "{{ csrf_token() }}"
                 },
                 success : function(response){

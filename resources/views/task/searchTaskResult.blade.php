@@ -175,6 +175,12 @@
 .summaryfisrtdiv{
     margin-top: 11px
 }
+.aaa{
+    display: flex; align-items: center; justify-content: center; text-align: center; 
+}
+a:hover {
+  background-color: none;
+}
 
 </style>
 @if(!empty($is_allotted_to))
@@ -233,7 +239,6 @@ $currentDate = now();
 @endphp
 
 <section class="cards {{$card_color_class}}" id="result">
-
     <div class="main-card"> 
         <div class="long-width" style="width: 70%;">
             <div class="up-box">
@@ -248,8 +253,7 @@ $currentDate = now();
                 <h3><i class="fa-solid fa-user-tag" style="margin-right: 5px; color:#cb0c9f;"></i>
                     Description</h3>
                     <?php $taskDetails = mb_strimwidth($task->task_details ?? 'null', 0, 150, '...'); ?>
-                <pre>{{ $task->task_details }}</pre>
-              
+                <pre>{{ $task->task_details }}</pre>             
             </div>
 
             <div class="low-box">
@@ -278,6 +282,10 @@ $currentDate = now();
                         <option value="{{ $statuss->id }}" {{ $statuss->id == $task->status ? 'selected' : '' }}>{{ ucfirst($statuss->status) }}</option>   
                         @endforeach
                         </select>
+                    @elseif($task->status == '3')
+                        <select class="dropbtn1 status-dropdown" name="selectstatus">
+                          <option value="">Complete</option> 
+                        </select>
                     @else
                         <select class="dropbtn1 status-dropdown" name="selectstatus" data-task-id="{{ $task->id }}">
                         @foreach ($status as $statuss)
@@ -289,9 +297,7 @@ $currentDate = now();
                     @endif    
                 </div>
                 <div class="dropdown btn-card">
-                    <button class="dropbtn"
-                        style="display: flex; align-items: center; justify-content: center; text-align: center;">Action
-                        <i style="font-size:0.75rem; margin-left: 5px;" class="fa-solid fa-chevron-down"></i></button>
+                    <a class="dropbtn aaa" href="#">Action<i style="font-size:0.75rem; margin-left: 5px;" class="fa-solid fa-chevron-down"></i></a>
                         <div class="dropdown-content">
                         @if(Auth::user()->id == $task->alloted_by || Auth::user()->type == 'admin')
                         <a onclick="EditTask('{{ url('task-edit-page' . '?id=' . $task->id) }}')"
@@ -397,7 +403,7 @@ $currentDate = now();
                 @endforeach
                 <img src="{{ url($task->GetManagerName->image) }}" alt="" width="50"
                     height="50"
-                    style="margin:10px 5px; border-radius:50px; border:1px solid #cb0c9f; ">
+                    style="margin:10px 5px; border-radius:50px; border:2px solid #cb0c9f; ">
             </div>
         </div>
     </div>

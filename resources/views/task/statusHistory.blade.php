@@ -10,22 +10,26 @@
         <div class="modal-body"> 
             <div class="row">
                 <div class="col-sm-2" style="text-align:center;">S.no</div>
-                <div class="col-sm-5" style="text-align:center;">Updated Date</div>
-                <div class="col-sm-5" style="text-align:center;">Status</div>
-
+                <div class="col-sm-3" style="text-align:center;">Updated Date</div>
+                <div class="col-sm-3" style="text-align:center;">Status</div>
+                <div class="col-sm-3" style="text-align:center;">Image</div>
             </div>
             @foreach ($statushistorys as $i=> $statushistory)         
             <div class="row">
                 <div class="col-sm-2" style="text-align:center;">{{ ++$i }}.</div>
-                <div class="col-sm-5" style="text-align:center;">{{ $statushistory->created_at->format("d/m/y  H:i A") }}</div>
+                <div class="col-sm-3" style="text-align:center;">{{ $statushistory->created_at->format("d/m/y  H:i A") }}</div>
                 @if($statushistory->status == '1')
-                <div class="col-sm-5" style="text-align:center;"><p>Pending</p></div>
+                <div class="col-sm-3" style="text-align:center;"><p>Pending</p></div>
                 @elseif($statushistory->status == '2')
-                <div class="col-sm-5" style="text-align:center;"><p>Progress</p></div>
-                @else
-                <div class="col-sm-5" style="text-align:center;"><p>Completed</p></div>
+                <div class="col-sm-3" style="text-align:center;"><p>Progress</p></div>
+                @elseif($statushistory->status == '3')
+                <div class="col-sm-3" style="text-align:center;"><p>Completed</p></div>
+                @elseif($statushistory->status == '4')
+                <div class="col-sm-3" style="text-align:center;"><p>Hold</p></div>
+                @elseif($statushistory->status == '5')
+                <div class="col-sm-3" style="text-align:center;"><p>Need Approval</p></div>
                 @endif
-                
+                <div class="col-sm-3" style="text-align:center;"><img src="{{ url($statushistory->GetUser->image) }}" alt="img" height="50" width="50" class="avatar" style="margin-top:5px;"></div>
             </div>
             @endforeach             
         </div>
