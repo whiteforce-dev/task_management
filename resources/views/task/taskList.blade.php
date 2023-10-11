@@ -104,7 +104,7 @@ color:#fff;
                     </div>
                 @endif
                 
-            <div class="col-3">
+            {{-- <div class="col-3">
                 <label>Status</label>
                 <select name="status" id="status" class="form-control" style="border:1px solid #cb0c9f;">
                     <option value="">Select</option>
@@ -114,6 +114,15 @@ color:#fff;
                             {{ ucfirst($status->status) }}
                         </option>
                     @endforeach
+                </select>
+            </div> --}}
+
+            <div class="col-sm-3">
+                <label>Status</label>
+                <select class="selectpicker form-control" multiple data-live-search="true" name="multiple_status[]" id="multiple_status">
+                    @foreach ($statuss as $status)
+                    <option value="{{ $status->id }}">{{ ucfirst($status->status) }}</option>                    
+                    @endforeach           
                 </select>
             </div>
             
@@ -144,15 +153,7 @@ color:#fff;
                 <input name="task_code" id="task_code" class="form-control" style="border:1px solid #cb0c9f;" placeholder="Enter Task Code">
             </div>
 
-            <div class="col-sm-3">
-                <label>Multiple Status</label>
-                <select class="selectpicker form-control" multiple data-live-search="true" name="multiple_status[]" id="multiple_status">
-                    @foreach ($statuss as $status)
-                    <option value="{{ $status->id }}">{{ ucfirst($status->status) }}</option>                    
-                    @endforeach
-            
-                </select>
-            </div>
+
 
             <div class="col-sm-1">
                 <button type="button" class="btn btn-primary" style="margin-top:31px;" id="submitButton" onclick="searchTask()"  data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i>">Search</button> 

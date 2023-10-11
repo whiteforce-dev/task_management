@@ -283,9 +283,7 @@ $currentDate = now();
                         @endforeach
                         </select>
                     @elseif($task->status == '3')
-                        <select class="dropbtn1 status-dropdown" name="selectstatus">
-                          <option value="">Complete</option> 
-                        </select>
+                        <span  class="badge badge-primary" style="background: linear-gradient(to right, #f953c6, #b91d73); width: 100% !important; color:#fff; text-transform: none;">Completed</span> 
                     @else
                         <select class="dropbtn1 status-dropdown" name="selectstatus" data-task-id="{{ $task->id }}">
                         @foreach ($status as $statuss)

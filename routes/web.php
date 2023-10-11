@@ -111,13 +111,15 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::Post('selected-team', [TeamAllotedController::class, 'selectedTeam']);
 		Route::get('need-approval', [TeamAllotedController::class, 'needApproval']);
 		Route::POST('task-approval', [TeamAllotedController::class, 'taskApproval']);
-		Route::GET('task-rejected', [TeamAllotedController::class, 'taskRejected']);
 		Route::POST('approval-task-search', [TeamAllotedController::class, 'approvalTaskSearch']);
-
+		
 		Route::get('create-tl-team', [TeamAllotedController::class, 'create_TlTeam']);
 		Route::get('delete-tl/{tl_id}', [TeamAllotedController::class, 'deleteTl']);
 		Route::get('edit-tl/{tl_id}', [TeamAllotedController::class, 'edit_tl']);
 		Route::Post('edit-tl/{tl_id}', [TeamAllotedController::class, 'edit_tlPage']);
+		Route::GET('task-rejected', [TeamAllotedController::class, 'taskRejected']);
+		Route::Post('task-reject/{id}', [TeamAllotedController::class, 'taskReject']);
+		Route::Get('task-rejected-reason', [TeamAllotedController::class, 'taskRejectedReason']);
 
 	});
 	Route::post('loginauth', [SessionsController::class, 'loginauth']);				

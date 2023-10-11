@@ -61,12 +61,11 @@ class TeamAllotedController extends Controller
 
     public function needApproval()
     {
-
         $is_tl = checkIsUserTL(Auth::user()->id);
-        if (!empty($is_tl) || Auth::user()->type == 'manager') {
+        if (!empty($is_tl) || Auth::user()->type == 'manager' || Auth::user()->type == 'admin') {
             $tasklist = Taskmaster::where('is_approved', 0)->OrderBy('id', 'DESC')->paginate('25');
         } else {
-            $tasklist = Taskmaster::where('is_approved', 0)->where('alloted_to', Auth::user()->id)->OrderBy('id', 'DESC')->paginate('25');
+            $tasklist = Taskmaster::whereIn('is_approved', [0, 2])->where('alloted_to', Auth::user()->id)->OrderBy('id', 'DESC')->paginate('25');
         }
         $users = User::where('software_catagory', Auth::user()->software_catagory)->where('type', '!=', 'admin')->get();
         $is_tl = checkIsUserTL(Auth::user()->id);
@@ -78,27 +77,29 @@ class TeamAllotedController extends Controller
         $id = $request->TaskId;
         $task = Taskmaster::find($id);
         $task->is_approved = '1';
+        $task->approve_reject_by = Auth::user()->id;
         $task->save();
         return response()->json('Task Approved Successfully');
     }
 
     public function taskRejected(request $request)
     {
-        $id = $request->TaskId;
+        $id = $request->id;
         $task = Taskmaster::find($id);
-        $task->is_approved = '2';
-        $task->save();
-        return response()->json('Task Rejected Successfully');
+        return view('approved.reject-model', compact('task'));
     }
 
     public function approvalTaskSearch(Request $request)
     {
         $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('is_approved', '=', '0');
-        if ($request->created_by) {
-            $tasklist = $tasklist->where('alloted_to', $request->created_by)->where('alloted_by', Auth::user()->id);
+        if ($request->created_by) { 
+            $tasklist = $tasklist->where('alloted_to', $request->created_by);
         }
         if ($request->task_code) {
             $tasklist = $tasklist->where('task_code', $request->task_code);
+        }
+        if ($request->created_by && $request->task_code) {
+            $tasklist = $tasklist->where('task_code', $request->task_code)->where('alloted_to', $request->created_by);
         }
         $tasklist = $tasklist->OrderBy('id', 'DESC')->paginate('25');
         return view('approved.searchresult-approval', compact('tasklist'));
@@ -110,7 +111,8 @@ class TeamAllotedController extends Controller
         return redirect('team-allotted-list')->with('success', 'Team deleted successfully');
     }
     public function edit_tl($tl_id)
-    {   $teamId = Team::where('id', $tl_id)->pluck('tl_id')->toArray();
+    {
+        $teamId = Team::where('id', $tl_id)->pluck('tl_id')->toArray();
         $adminId = User::where('type', 'admin')->pluck('id')->toArray();
         $managerId = User::where('type', 'manager')->pluck('id')->toArray();
         $data = array_merge($adminId, $managerId, $teamId);
@@ -125,5 +127,30 @@ class TeamAllotedController extends Controller
         $data->selected_team = implode(',', $request->selected_team);
         $data->save();
         return redirect('team-allotted-list')->with('success', 'Team update successfully');
+    }
+    public function taskReject(request $request, $id)
+    {
+        $task = Taskmaster::find($id);
+        $task->task_reject_remark = $request->task_reject_remark;
+        $task->is_approved = '2';
+        $task->approve_reject_by = Auth::user()->id;
+        $task->save();
+
+        $is_tl = checkIsUserTL(Auth::user()->id);
+        if (!empty($is_tl) || Auth::user()->type == 'manager' || Auth::user()->type == 'admin') {
+            $tasklist = Taskmaster::where('is_approved', 0)->OrderBy('id', 'DESC')->paginate('25');
+        } else {
+            $tasklist = Taskmaster::where('is_approved', 0)->where('alloted_to', Auth::user()->id)->OrderBy('id', 'DESC')->paginate('25');
+        }
+        $users = User::where('software_catagory', Auth::user()->software_catagory)->where('type', '!=', 'admin')->get();
+        $is_tl = checkIsUserTL(Auth::user()->id);
+        return view('approved.need-approval', compact('tasklist',  'users', 'is_tl'));
+    }
+
+    public function taskRejectedReason(request $requset)
+    {   
+        $id = $requset->id;
+        $task = Taskmaster::where('id', $id)->where('is_approved', '2')->first();
+        return view('approved.show-reject-reason', compact('task'));
     }
 }

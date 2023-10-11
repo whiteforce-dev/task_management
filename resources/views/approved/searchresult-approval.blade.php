@@ -5,7 +5,6 @@
                 $daysDifference = $currentDate->diffInDays($deadlineDate);
                 $differenceInDays = $deadlineDate->diffInDays($currentDate);
             @endphp
-
             <section class="cards">
                 <div class="main-card"> 
                     <div class="long-width" style="width: 70%;">
@@ -53,20 +52,24 @@
                         @php
                             $is_tl = checkIsUserTL(Auth::user()->id);
                         @endphp
-                       @if(!empty($is_tl) || Auth::user()->type == 'manager')
+                       @if(!empty($is_tl) || Auth::user()->type == 'manager' || Auth::user()->type == 'admin')
                         <div class="box-one box-btn">
                             <div class="dropdown btn-card">
                                 <a href="javascript:" class="btn btn-primary btn-sm"
-                                    onclick="taskApproval({{ $task->id }})">Approved</a>
-                            </div>&nbsp                         
+                                    onclick="taskApproval({{ $task->id }})">Approve</a>
+                            </div>&nbsp 
                             <div class="dropdown btn-card">
-                                <a href="javascript:" class="btn btn-primary btn-sm"
-                                    onclick="TaskRejected({{ $task->id }})">Rejected</a>
-                            </div>                          
+                                <a href="javascript:;" class="btn btn-primary btn-sm"
+                                    onclick="TaskRejected('{{ url('task-rejected' . '?id=' . $task->id) }}')">Rejected</a>
+                            </div>                        
+                                                                          
                         </div>
-                        @else
+                        @elseif($task->is_approved == '2')
                         <div class="box-one box-btn">
-                        
+                            <div class="dropdown btn-card">
+                                <a href="javascript:;" class="btn btn-primary btn-sm"
+                                    onclick="TaskRejectedReason('{{ url('task-rejected-reason' . '?id=' . $task->id) }}')">Task Rejection Reason</a>
+                            </div>
                         </div>
                         @endif
                         <div class="box-one">
@@ -74,7 +77,7 @@
                                 style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Created Date
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :
                             </span>
-                            <p>{{ \Carbon\Carbon::parse($task->created_at)->format('d,M h:i') }}</p>
+                            <p>{{ \Carbon\Carbon::parse($task->created_at)->format('d M, h:i') }}</p>
                         </div>
                         <div class="box-one">
                             <i class="fa-solid fa-circle"
@@ -96,7 +99,7 @@
                             <span>Deadline Date &nbsp;&nbsp;&nbsp; &nbsp;:
                             </span>
                             <p style="margin-left: 0px;">
-                                {{ \Carbon\Carbon::parse($task->deadline_date)->format('d,M h:i') }} </p>
+                                {{ \Carbon\Carbon::parse($task->deadline_date)->format('d M, h:i') }} </p>
 
                             @if ($task->status != '3')
                                 @if ($currentDate > $deadlineDate)
@@ -110,7 +113,7 @@
                             <span>Completed Date :
                             </span>
                             @if ($task->status == 3)
-                                <P>{{ \Carbon\Carbon::parse($task->end_date)->format('d,M h:i') }}</P>
+                                <P>{{ \Carbon\Carbon::parse($task->end_date)->format('d M, h:i') }}</P>
                             @else<p>Null</p>
                             @endif
                         </div>
@@ -160,8 +163,7 @@
                 </div>
             </section>
         @endforeach
-        {{ $tasklist->links() }}
-
+    {{ $tasklist->links() }}
         <script>
             function searchTask(){
                 $.ajax({
@@ -177,4 +179,4 @@
                     }
                 })
             }
-            </script>
+        </script>

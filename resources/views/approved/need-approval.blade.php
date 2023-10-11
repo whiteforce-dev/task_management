@@ -1,7 +1,8 @@
 @extends('layouts.user_type.auth')
 @section('content')
     <link rel="stylesheet" href="{{ url('assets/css/cards.css') }}">
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <style>
         .box-one span {
             width: 55% !important;
@@ -70,45 +71,46 @@
     </style>
 
     <main class="main-content position-relative h-100 border-radius-lg ">
-        {{-- <form action="{{ url('approval-task-search') }}" method="POST">@csrf --}}
-            <div class="container-fluid py-4">
-                <div class="row" style="margin-left: 20px;">
-                    @if (!empty($is_tl) || Auth::user()->type == 'manager')
-                        <div class="col-sm-6">
-                            <select name="created_by" id="created_by" class="form-control" style="border:1px solid #cb0c9f;"
-                                id="dataField">
-                                <option value="">SelectName</option>
-                                @foreach ($users as $user)
-                                    <option value="{{ $user->id }}">{{ ucfirst($user->name) }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    @else
-                        <div class="col-sm-6">
-                            <select name="created_by" id="created_by" class="form-control" style="border:1px solid #cb0c9f;"
-                                id="dataField">
-                                <option value="" selected>{{ ucfirst(Auth::user()->name) }}</option>
-                            </select>
-                        </div>
-                    @endif
+        <div class="container-fluid py-4">
+            <div class="row" style="margin-left: 20px;">
+                @if (!empty($is_tl) || Auth::user()->type == 'manager' || Auth::user()->type == 'admin')
+                    <div class="col-sm-6">
+                        <select name="created_by" id="created_by" class="form-control" style="border:1px solid #cb0c9f;"
+                            id="dataField">
+                            <option value="">SelectName</option>
+                            @foreach ($users as $user)
+                                <option value="{{ $user->id }}">{{ ucfirst($user->name) }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                @else
+                    <div class="col-sm-6">
+                        <select name="created_by" id="created_by" class="form-control" style="border:1px solid #cb0c9f;"
+                            id="dataField">
+                            <option value="" selected>{{ ucfirst(Auth::user()->name) }}</option>
+                        </select>
+                    </div>
+                @endif
 
-                    <div class="col-sm-4">
-                        <input name="task_code" id="task_code" class="form-control" style="border:1px solid #cb0c9f;"
-                            placeholder="Enter Task Code">
-                    </div>
-                    <div class="col-sm-1">
-                        <button type="submit" class="btn btn-primary" id="submitButton"
-                            onclick="searchTask()">Search</button>
-                    </div>
+                <div class="col-sm-4">
+                    <input name="task_code" id="task_code" class="form-control" style="border:1px solid #cb0c9f;"
+                        placeholder="Enter Task Code">
                 </div>
-
-                <div id="searchResults">
-                    @include('approved.searchresult-approval')
+                <div class="col-sm-1">
+                    <button type="submit" class="btn btn-primary" id="submitButton" onclick="searchTask()">Search</button>
                 </div>
             </div>
+
+            <div id="searchResults">
+                @include('approved.searchresult-approval')
+            </div>
+        </div>
         {{-- </form> --}}
     </main>
 
+
+      
+      <!-- The Modal -->
 
 
 
@@ -134,43 +136,29 @@
             })
         }
     </script>
-    <script>
-        function TaskRejected(id) {
-            var TaskId = id;
-            $.ajax({
-                type: 'GET',
-                url: "{{ url('task-rejected') }}",
-                data: {
-                    TaskId: TaskId,
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function(response) {
-                    alert(response);
-                    location.reload()
-                },
-                error: function(xhr) {
-                    consol.log('Erron in Task Rejected');
-                }
-            })
-        }
-    </script>
+  
 
     <script>
-        function searchTask() {
-            $.ajax({
-                type: 'POST',
-                url: "{{ url('approval-task-search') }}",
-                data: {
-                    created_by: $('#created_by').val(),
-                    task_code: $('#task_code').val(),
-                    '_token': "{{ csrf_token() }}"
-                },
-                success: function(response) {
-                    $('#searchResults').html(response)
-                }
-            })
+        function TaskRejected(url, id) { 
+            $.get(url, id, function(rs) {
+                $('#myModal').html(rs);
+                $('#myModal').modal('show');
+            });
         }
     </script>
+        <script>
+            function TaskRejectedReason(url, id) { 
+                $.get(url, id, function(rs) {
+                    $('#myModalRejectReason').html(rs);
+                    $('#myModalRejectReason').modal('show');
+                });
+            }
+        </script>
+    <div class="modal" id="myModal">
+    </div>
+    <div class="modal" id="myModalRejectReason">
+    </div>
+
     <script src="{{ url('assets/js/core/popper.min.js') }}"></script>
     <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script>
     <script src="{{ url('assets/js/core/popper.min.js') }}"></script>

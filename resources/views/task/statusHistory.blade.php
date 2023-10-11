@@ -8,16 +8,16 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" style="color:#cb0c9f;">&#10060;</button>
         </div>
         <div class="modal-body"> 
-            <div class="row">
+            <div class="row" style="font-weight: bold;">
                 <div class="col-sm-2" style="text-align:center;">S.no</div>
-                <div class="col-sm-3" style="text-align:center;">Updated Date</div>
+                <div class="col-sm-4" style="text-align:center;">Updated Date</div>
                 <div class="col-sm-3" style="text-align:center;">Status</div>
                 <div class="col-sm-3" style="text-align:center;">Image</div>
             </div>
             @foreach ($statushistorys as $i=> $statushistory)         
-            <div class="row">
+            <div class="row" style="margin-top:10px;">
                 <div class="col-sm-2" style="text-align:center;">{{ ++$i }}.</div>
-                <div class="col-sm-3" style="text-align:center;">{{ $statushistory->created_at->format("d/m/y  H:i A") }}</div>
+                <div class="col-sm-4" style="text-align:center;">{{ $statushistory->created_at->format("M d, Y H : i : s") }}</div>
                 @if($statushistory->status == '1')
                 <div class="col-sm-3" style="text-align:center;"><p>Pending</p></div>
                 @elseif($statushistory->status == '2')
