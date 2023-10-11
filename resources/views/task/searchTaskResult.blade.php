@@ -181,7 +181,17 @@
 a:hover {
   background-color: none;
 }
-
+.completedBadge{
+    background: linear-gradient(to right, #05fd8d, #008a4c);
+    width: 105% !important;
+    color: #fff !important;
+    text-transform: none;
+    padding-left: 17px;
+    padding-right: 17px;
+    padding-top: 10px;
+    padding-bottom: 9px;
+    margin-right: 11px;
+}
 </style>
 @if(!empty($is_allotted_to))
 <div class="cards">
@@ -236,6 +246,14 @@ $currentDate = now();
             $card_color_class = 'outdated';
         }
     }
+    $dropdownColor = '#cb0c9f';
+    if($task->status == 1){
+        $dropdownColor = '#8392ab';
+    } elseif($task->status == 4){
+        $dropdownColor = '#10cfe2';
+    } elseif($task->status == 5){
+        $dropdownColor = '#fbcf33e3';
+    }
 @endphp
 
 <section class="cards {{$card_color_class}}" id="result">
@@ -276,23 +294,25 @@ $currentDate = now();
         <div class="short-width" style="width: 30%;">
             <div class="box-one box-btn">
                 <div class="dropdown" style=" margin-right: 10px;">
-                    @if(Auth::user()->type != 'employee' || checkIsUserTL(Auth::user()->id))
-                        <select class="dropbtn1 status-dropdown" name="selectstatus" data-task-id="{{ $task->id }}">
-                        @foreach ($status as $statuss)
-                        <option value="{{ $statuss->id }}" {{ $statuss->id == $task->status ? 'selected' : '' }}>{{ ucfirst($statuss->status) }}</option>   
-                        @endforeach
-                        </select>
-                    @elseif($task->status == '3')
-                        <span  class="badge badge-primary" style="background: linear-gradient(to right, #f953c6, #b91d73); width: 100% !important; color:#fff; text-transform: none;">Completed</span> 
+                    @if($task->status == '3')
+                        <span  class="badge badge-primary completedBadge" style="width: 105% !important">Completed</span>
                     @else
-                        <select class="dropbtn1 status-dropdown" name="selectstatus" data-task-id="{{ $task->id }}">
-                        @foreach ($status as $statuss)
-                        @if($statuss->status != 'completed')
-                        <option value="{{ $statuss->id }}" {{ $statuss->id == $task->status ? 'selected' : '' }}>{{ ucfirst($statuss->status) }}</option>   
+                        @if(Auth::user()->type != 'employee' || checkIsUserTL(Auth::user()->id))
+                            <select class="dropbtn1 status-dropdown" style="background:{{ $dropdownColor }} !important" name="selectstatus" data-task-id="{{ $task->id }}">
+                            @foreach ($status as $statuss)
+                            <option value="{{ $statuss->id }}" {{ $statuss->id == $task->status ? 'selected' : '' }}>{{ ucfirst($statuss->status) }}</option>   
+                            @endforeach
+                            </select>
+                        @else
+                            <select class="dropbtn1 status-dropdown" style="background:{{ $dropdownColor }} !important"  name="selectstatus" data-task-id="{{ $task->id }}">
+                            @foreach ($status as $statuss)
+                            @if($statuss->status != 'completed')
+                            <option value="{{ $statuss->id }}" {{ $statuss->id == $task->status ? 'selected' : '' }}>{{ ucfirst($statuss->status) }}</option>   
+                            @endif
+                            @endforeach
+                            </select>
                         @endif
-                        @endforeach
-                        </select>
-                    @endif    
+                    @endif
                 </div>
                 <div class="dropdown btn-card">
                     <a class="dropbtn aaa" href="#">Action<i style="font-size:0.75rem; margin-left: 5px;" class="fa-solid fa-chevron-down"></i></a>
