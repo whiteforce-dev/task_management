@@ -69,7 +69,8 @@ class TeamAllotedController extends Controller
         }
         $users = User::where('software_catagory', Auth::user()->software_catagory)->where('type', '!=', 'admin')->get();
         $is_tl = checkIsUserTL(Auth::user()->id);
-        return view('approved.need-approval', compact('tasklist',  'users', 'is_tl'));
+        $status = Status::get();
+        return view('approved.need-approval', compact('tasklist',  'users', 'is_tl', 'status'));
     }
 
     public function taskApproval(request $request)
@@ -100,6 +101,9 @@ class TeamAllotedController extends Controller
         }
         if ($request->created_by && $request->task_code) {
             $tasklist = $tasklist->where('task_code', $request->task_code)->where('alloted_to', $request->created_by);
+        }
+        if ($request->approval_id) {
+            $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('is_approved', '=', '2')->where('is_approved', $request->approval_id);
         }
         $tasklist = $tasklist->OrderBy('id', 'DESC')->paginate('25');
         return view('approved.searchresult-approval', compact('tasklist'));
@@ -144,13 +148,8 @@ class TeamAllotedController extends Controller
         }
         $users = User::where('software_catagory', Auth::user()->software_catagory)->where('type', '!=', 'admin')->get();
         $is_tl = checkIsUserTL(Auth::user()->id);
-        return view('approved.need-approval', compact('tasklist',  'users', 'is_tl'));
+        $status = Status::get();
+        return view('approved.need-approval', compact('tasklist',  'users', 'is_tl', 'status'));
     }
 
-    public function taskRejectedReason(request $requset)
-    {   
-        $id = $requset->id;
-        $task = Taskmaster::where('id', $id)->where('is_approved', '2')->first();
-        return view('approved.show-reject-reason', compact('task'));
-    }
 }

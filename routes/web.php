@@ -119,7 +119,6 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::Post('edit-tl/{tl_id}', [TeamAllotedController::class, 'edit_tlPage']);
 		Route::GET('task-rejected', [TeamAllotedController::class, 'taskRejected']);
 		Route::Post('task-reject/{id}', [TeamAllotedController::class, 'taskReject']);
-		Route::Get('task-rejected-reason', [TeamAllotedController::class, 'taskRejectedReason']);
 
 	});
 	Route::post('loginauth', [SessionsController::class, 'loginauth']);				

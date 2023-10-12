@@ -17,7 +17,7 @@
             @foreach ($statushistorys as $i=> $statushistory)         
             <div class="row" style="margin-top:10px;">
                 <div class="col-sm-2" style="text-align:center;">{{ ++$i }}.</div>
-                <div class="col-sm-4" style="text-align:center;">{{ $statushistory->created_at->format("M d, Y H : i : s") }}</div>
+                <div class="col-sm-4" style="text-align:center;">{{ $statushistory->created_at->format("M d, Y H:i:s") }}</div>
                 @if($statushistory->status == '1')
                 <div class="col-sm-3" style="text-align:center;"><p>Pending</p></div>
                 @elseif($statushistory->status == '2')
@@ -29,7 +29,7 @@
                 @elseif($statushistory->status == '5')
                 <div class="col-sm-3" style="text-align:center;"><p>Need Approval</p></div>
                 @endif
-                <div class="col-sm-3" style="text-align:center;"><img src="{{ url($statushistory->GetUser->image) }}" alt="img" height="50" width="50" class="avatar" style="margin-top:5px;"></div>
+                <div class="col-sm-3" style="text-align:center;"><img src="{{ url($statushistory->GetUser->image ?? 'N/A') }}" alt="img" height="50" width="50" class="avatar" style="margin-top:5px;"></div>
             </div>
             @endforeach             
         </div>

@@ -195,7 +195,7 @@
 <link rel="stylesheet" href="{{ url('assets/css/multiselect.css') }}">
 <link rel="stylesheet" href="{{ url('assets/css/multiselectdrop.css') }}">
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>
 <script src="{{ url('assets/jquery-validation/jquery.validate.min.js') }}"></script>
 <script>

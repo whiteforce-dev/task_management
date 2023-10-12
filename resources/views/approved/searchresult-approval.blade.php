@@ -54,6 +54,7 @@
                         @endphp
                        @if(!empty($is_tl) || Auth::user()->type == 'manager' || Auth::user()->type == 'admin')
                         <div class="box-one box-btn">
+                            @if($task->is_approved == '0')
                             <div class="dropdown btn-card">
                                 <a href="javascript:" class="btn btn-primary btn-sm"
                                     onclick="taskApproval({{ $task->id }})">Approve</a>
@@ -61,15 +62,15 @@
                             <div class="dropdown btn-card">
                                 <a href="javascript:;" class="btn btn-primary btn-sm"
                                     onclick="TaskRejected('{{ url('task-rejected' . '?id=' . $task->id) }}')">Rejected</a>
-                            </div>                        
+                            </div> 
+                            @elseif($task->is_approved == '2')
+                            <span  class="badge badge-danger" style="background-color:rgb(202, 25, 25);color:#fff; !important">Rejected</span> 
+                            @endif
                                                                           
                         </div>
                         @elseif($task->is_approved == '2')
-                        <div class="box-one box-btn">
-                            <div class="dropdown btn-card">
-                                <a href="javascript:;" class="btn btn-primary btn-sm"
-                                    onclick="TaskRejectedReason('{{ url('task-rejected-reason' . '?id=' . $task->id) }}')">Task Rejection Reason</a>
-                            </div>
+                        <div class="box-one box-btn">                         
+                                <span  class="badge badge-danger" style="background-color:rgb(202, 25, 25);color:#fff; !important">Rejected</span>                         
                         </div>
                         @endif
                         <div class="box-one">
@@ -163,7 +164,7 @@
                 </div>
             </section>
         @endforeach
-    {{ $tasklist->links() }}
+    
         <script>
             function searchTask(){
                 $.ajax({
@@ -172,6 +173,7 @@
                     data : {
                         created_by : $('#created_by').val(),
                         task_code : $('#task_code').val(),
+                        approval_id : $('#approval_id').val(),
                         '_token' : "{{ csrf_token() }}"
                     },
                     success : function(response){

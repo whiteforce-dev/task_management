@@ -38,6 +38,9 @@ class Taskmaster extends Model
         return $this->hasMany('App\Models\Remark', 'task_id')->limit(3)->orderBy('id', 'desc');
     }
 
-
+    public function GetRejectReson()
+    {
+        return $this->belongsTo('App\Models\User', 'approve_reject_by');
+    }
 
 }

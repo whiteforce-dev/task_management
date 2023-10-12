@@ -1,8 +1,8 @@
 @extends('layouts.user_type.auth')
 @section('content')
     <link rel="stylesheet" href="{{ url('assets/css/cards.css') }}">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <style>
         .box-one span {
             width: 55% !important;
@@ -74,7 +74,7 @@
         <div class="container-fluid py-4">
             <div class="row" style="margin-left: 20px;">
                 @if (!empty($is_tl) || Auth::user()->type == 'manager' || Auth::user()->type == 'admin')
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         <select name="created_by" id="created_by" class="form-control" style="border:1px solid #cb0c9f;"
                             id="dataField">
                             <option value="">SelectName</option>
@@ -84,7 +84,7 @@
                         </select>
                     </div>
                 @else
-                    <div class="col-sm-6">
+                    <div class="col-sm-4">
                         <select name="created_by" id="created_by" class="form-control" style="border:1px solid #cb0c9f;"
                             id="dataField">
                             <option value="" selected>{{ ucfirst(Auth::user()->name) }}</option>
@@ -93,9 +93,18 @@
                 @endif
 
                 <div class="col-sm-4">
+                    <select name="approval_search" id="approval_id" class="form-control" style="border:1px solid #cb0c9f;">
+                        <option value="">Select Status</option>
+                        <option value="0">Pending For Approval</option>
+                        <option value="2">Rejected Task</option>
+                    </select>
+                </div>
+
+                <div class="col-sm-3">
                     <input name="task_code" id="task_code" class="form-control" style="border:1px solid #cb0c9f;"
                         placeholder="Enter Task Code">
                 </div>
+
                 <div class="col-sm-1">
                     <button type="submit" class="btn btn-primary" id="submitButton" onclick="searchTask()">Search</button>
                 </div>
@@ -104,15 +113,9 @@
             <div id="searchResults">
                 @include('approved.searchresult-approval')
             </div>
+            {{ $tasklist->links() }}
         </div>
-        {{-- </form> --}}
     </main>
-
-
-      
-      <!-- The Modal -->
-
-
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -136,27 +139,17 @@
             })
         }
     </script>
-  
 
     <script>
-        function TaskRejected(url, id) { 
+        function TaskRejected(url, id) {
             $.get(url, id, function(rs) {
                 $('#myModal').html(rs);
                 $('#myModal').modal('show');
             });
         }
     </script>
-        <script>
-            function TaskRejectedReason(url, id) { 
-                $.get(url, id, function(rs) {
-                    $('#myModalRejectReason').html(rs);
-                    $('#myModalRejectReason').modal('show');
-                });
-            }
-        </script>
+
     <div class="modal" id="myModal">
-    </div>
-    <div class="modal" id="myModalRejectReason">
     </div>
 
     <script src="{{ url('assets/js/core/popper.min.js') }}"></script>
