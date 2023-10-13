@@ -81,9 +81,7 @@ class TaskManagmentController extends Controller
         $priority = "";
 
         $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('is_approved', '=', '1');
-        if(!empty($is_tl) || Auth::user()->type == 'admin'){ 
-           $tasklist = $tasklist;
-        } elseif (Auth::user()->type == "employee") { 
+        if (Auth::user()->type == "employee" && empty($is_tl)) { 
             $tasklist = $tasklist->where('alloted_by', Auth::user()->id)->orWhereRaw("FIND_IN_SET(" . Auth::user()->id . ", alloted_to)");
         } elseif (Auth::user()->type == "manager") { 
             $teamId = User::where('software_catagory', Auth::user()->software_catagory)->where('parent_id', Auth::user()->id)->pluck('id')->toArray();
@@ -101,9 +99,10 @@ class TaskManagmentController extends Controller
     public function searchTask(Request $request)
     {
         $is_allotted_to = false;
+        $is_tl = checkIsUserTL(Auth::user()->id);
         $alloted_summary_array = $alloted_array = [];
         $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('is_approved', '=', '1');
-        if (Auth::user()->type == "employee") {
+        if (Auth::user()->type == "employee" && empty($is_tl)) {
             $tasklist = $tasklist->where(function ($query) {
                 $query->where('alloted_by', Auth::user()->id)
                     ->orWhereRaw("FIND_IN_SET(" . Auth::user()->id . ", alloted_to)");

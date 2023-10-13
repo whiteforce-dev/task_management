@@ -315,7 +315,7 @@ $currentDate = now();
                     @endif
                 </div>
                 <div class="dropdown btn-card">
-                    <a class="dropbtn aaa" href="#">Action<i style="font-size:0.75rem; margin-left: 5px;" class="fa-solid fa-chevron-down"></i></a>
+                    <a class="dropbtn aaa" href="javascript:void(0)">Action<i style="font-size:0.75rem; margin-left: 5px;" class="fa-solid fa-chevron-down"></i></a>
                         <div class="dropdown-content">
                         @if(Auth::user()->id == $task->alloted_by || Auth::user()->type == 'admin')
                         <a onclick="EditTask('{{ url('task-edit-page' . '?id=' . $task->id) }}')"
