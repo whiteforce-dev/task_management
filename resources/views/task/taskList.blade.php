@@ -104,19 +104,6 @@ color:#fff;
                     </div>
                 @endif
                 
-            {{-- <div class="col-3">
-                <label>Status</label>
-                <select name="status" id="status" class="form-control" style="border:1px solid #cb0c9f;">
-                    <option value="">Select</option>
-                    @foreach ($statuss as $status)
-                        <option value="{{ $status->id }}"
-                            {{ $status->id == "$status_search" ? 'selected' : '' }}>
-                            {{ ucfirst($status->status) }}
-                        </option>
-                    @endforeach
-                </select>
-            </div> --}}
-
             <div class="col-sm-3">
                 <label>Status</label>
                 <select class="selectpicker form-control" multiple data-live-search="true" name="multiple_status[]" id="multiple_status">
@@ -171,7 +158,7 @@ color:#fff;
             <div id="searchResults">
                 @include('task/searchTaskResult')
             </div>
-            {{ $tasklist->links() }} 
+            {{-- {{ $tasklist->links() }}  --}}
         </div>
         
         </form>
@@ -279,13 +266,6 @@ color:#fff;
             $(this).val('');
         });
     </script>
-    {{-- <script>
-        $(function() { 
-            $( "#submitButton" ).submit(function() {
-                $('#loader').show();
-            });
-        });
-    </script> --}}
 
     <div class="modal" id="myModal10">
     </div>

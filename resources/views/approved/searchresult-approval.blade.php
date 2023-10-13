@@ -1,4 +1,4 @@
-@foreach ($tasklist as $i => $task)
+        @foreach ($tasklist as $i => $task)
             @php
                 $currentDate = now();
                 $deadlineDate = \Carbon\Carbon::parse($task->deadline_date);
@@ -164,21 +164,7 @@
                 </div>
             </section>
         @endforeach
-    
-        <script>
-            function searchTask(){
-                $.ajax({
-                    type : 'POST',
-                    url : "{{ url('approval-task-search') }}",
-                    data : {
-                        created_by : $('#created_by').val(),
-                        task_code : $('#task_code').val(),
-                        approval_id : $('#approval_id').val(),
-                        '_token' : "{{ csrf_token() }}"
-                    },
-                    success : function(response){
-                        $('#searchResults').html(response)
-                    }
-                })
-            }
-        </script>
+        <div class="paginate">
+        {{ $tasklist->links() }}
+         </div>
+

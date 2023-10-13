@@ -72,6 +72,7 @@ class TaskManagmentController extends Controller
     }
     public function taskList()
     {
+        $is_tl = checkIsUserTL(Auth::user()->id);
         $to = "";
         $from = "";
         $status_search = "";
@@ -80,15 +81,16 @@ class TaskManagmentController extends Controller
         $priority = "";
 
         $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('is_approved', '=', '1');
-
-        if (Auth::user()->type == "employee") {
+        if(!empty($is_tl) || Auth::user()->type == 'admin'){ 
+           $tasklist = $tasklist;
+        } elseif (Auth::user()->type == "employee") { 
             $tasklist = $tasklist->where('alloted_by', Auth::user()->id)->orWhereRaw("FIND_IN_SET(" . Auth::user()->id . ", alloted_to)");
-        } elseif (Auth::user()->type == "manager") {
+        } elseif (Auth::user()->type == "manager") { 
             $teamId = User::where('software_catagory', Auth::user()->software_catagory)->where('parent_id', Auth::user()->id)->pluck('id')->toArray();
             $all_users_ids = [Auth::user()->id, ...$teamId];
             $pattern = implode('|', array_map('preg_quote', explode(',', implode(',', $all_users_ids))));
             $tasklist = $tasklist->whereIn('alloted_by', $all_users_ids)->orWhereRaw("alloted_to REGEXP '{$pattern}'");
-        }
+        } 
         $tasklist = $tasklist->orderBy('id', 'Desc')->where('is_approved', '=', '1')->paginate(25);
         $users = User::where('software_catagory', Auth::user()->software_catagory)->where('type', '!=', 'admin')->get();
         $statuss = Status::get();
@@ -163,8 +165,7 @@ class TaskManagmentController extends Controller
         if (!empty($request->multiple_status)) {
             $tasklist = $tasklist->whereIn('status', $request->multiple_status);
         }
-        $tasklist = $tasklist->orderBy('id', 'Desc')->paginate(25);
-        
+        $tasklist = $tasklist->orderBy('id', 'Desc')->paginate(25);      
         return view('task.searchTaskResult', compact('tasklist','is_allotted_to','alloted_summary_array','alloted_array'));
     }
 
@@ -185,7 +186,6 @@ class TaskManagmentController extends Controller
         if (isset($request->alloted_to)) {
             $newtask->alloted_to = implode(',', $request->alloted_to);
         }
-
 
         $newtask->task_details = $request->task_details;
         $newtask->start_date = $request->task_date;

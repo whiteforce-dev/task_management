@@ -739,7 +739,7 @@ background: linear-gradient( rgb(255 255 255 / 65%) 100%, rgb(255 253 253 / 50%)
                     <div class="msg-bubble" style="margin-left:8px;">
                         <div class="msg-info">
                             <div class="msg-info-name">{{ ucfirst($managerData->name) }}</div>
-                            <div class="msg-info-time">{{ $remark->created_at->format('d-m-y h:i A') }}</div>
+                            <div class="msg-info-time">{{ $remark->created_at->format('M d, Y H:i:s') }}</div>
                         </div>
                         <div class="msg-text"><pre>{{ $remark->remark }}</pre></div>
                         <div id="response1"></div>
@@ -754,7 +754,7 @@ background: linear-gradient( rgb(255 255 255 / 65%) 100%, rgb(255 253 253 / 50%)
                     <div class="msg-bubble">
                         <div class="msg-info">
                             <div class="msg-info-name">{{ ucfirst($remark->GetUser->name) }}</div>
-                            <div class="msg-info-time">{{ $remark->created_at->format('d-m-y h:i A') }}</div>
+                            <div class="msg-info-time">{{ $remark->created_at->format('M d, Y H:i:s') }}</div>
                         </div>
                         <div class="msg-text"> <pre>{{ $remark->remark }}</pre> </div>                     
                     </div>
@@ -888,7 +888,7 @@ background: linear-gradient( rgb(255 255 255 / 65%) 100%, rgb(255 253 253 / 50%)
                             <div class="msg-bubble">
                                 <div class="msg-info">
                                     <div class="msg-info-name">{{ Auth::user()->name }}</div>
-                                    <div class="msg-info-time">{{ date('d-m-y H:i:s'); }}</div>
+                                    <div class="msg-info-time">{{ date('M d, Y H:i:s'); }}</div>
                                 </div>
                                 <div class="msg-text"> <pre>${inputValue}   </pre> </div>                              
                             </div>

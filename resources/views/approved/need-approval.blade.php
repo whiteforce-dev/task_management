@@ -95,7 +95,7 @@
                 <div class="col-sm-4">
                     <select name="approval_search" id="approval_id" class="form-control" style="border:1px solid #cb0c9f;">
                         <option value="">Select Status</option>
-                        <option value="0">Pending For Approval</option>
+                        <option value="1">Pending For Approval</option>
                         <option value="2">Rejected Task</option>
                     </select>
                 </div>
@@ -106,14 +106,14 @@
                 </div>
 
                 <div class="col-sm-1">
-                    <button type="submit" class="btn btn-primary" id="submitButton" onclick="searchTask()">Search</button>
+                    <button type="button" class="btn btn-primary" id="submitButton" onclick="searchTask()">Search</button>
                 </div>
             </div>
 
             <div id="searchResults">
                 @include('approved.searchresult-approval')
             </div>
-            {{ $tasklist->links() }}
+            {{-- {{ $tasklist->links() }} --}}
         </div>
     </main>
 
@@ -156,4 +156,24 @@
     <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script>
     <script src="{{ url('assets/js/core/popper.min.js') }}"></script>
     <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script>
+
+    <script>
+        function searchTask(){ 
+            $.ajax({
+                type : 'POST',
+                url : "{{ url('approval-task-search') }}",
+                data : {
+                    created_by : $('#created_by').val(),
+                    task_code : $('#task_code').val(),
+                    approval_id : $('#approval_id').val(),
+                    '_token' : "{{ csrf_token() }}"
+                },
+                success : function(response){
+                    $('#searchResults').html(response)
+                }
+            })
+        }
+    </script>
+
+
 @endsection

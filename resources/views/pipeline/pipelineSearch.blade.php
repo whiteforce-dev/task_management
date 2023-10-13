@@ -1,3 +1,4 @@
+<?php  $is_tl = checkIsUserTL(Auth::user()->id); ?>
 <div class="app">
     <main class="project">
         <div class="heading">
@@ -53,7 +54,6 @@
                     </div>
                 @endforeach
             </div>
-
             <div class="project-column secondcolumn chromecolum" data-count="2">
                 <div class="project-column-heading-02">
                     <h2 class="project-column-heading__title">In Progress</h2>
@@ -135,6 +135,7 @@
                     </div>
                 @endforeach
             </div>
+            @if(!empty($is_tl) || Auth::user()->type == 'manager' || Auth::user()->type == 'admin')
             <div class="project-column fourthcolumn chromecolum" data-count="3">
                 <div class="project-column-heading-04">
                     <h2 class="project-column-heading__title">Completed</h2>
@@ -175,6 +176,48 @@
                     </div>
                 @endforeach
             </div>
+            @else
+            <div class="project-column fourthcolumn chromecolum" data-count="5">
+                <div class="project-column-heading-04">
+                    <h2 class="project-column-heading__title">Need Approval</h2>
+                </div>
+                @foreach ($needapprovals as $needapproval)
+                    <div class="task forthcard" draggable="true" data-id="{{ $needapproval->id}}">
+                        <a href="javascript:"
+                            onclick="taskDetails('{{ url('task-details' . '?id=' . $needapproval->id) }}')">
+                            <div class="uper">
+                                @php $taskname = mb_strimwidth($needapproval->task_name ?? 'null', 0, 20, '...'); @endphp
+                                <h5 class="badge badge-primary" style="background: white;color: #22b59a;font-size: 14px;padding-left: 15px;padding-right: 15px;font-weight: 600;box-shadow: 1px 1px 3px #acacc3;">{{ $needapproval->task_code }}</h5>
+                                <div class="dropdown">
+                                    <button class="dropbtn"><i class="fa-solid fa-bars"></i></button>
+                                    <div class="dropdown-content">
+                                        View Details
+                                        @foreach ($stages as $status)
+                                            @if ($status->status !== 'completed' && $status->status != 'completed')
+                                                <a href="javascript:void(0);"
+                                                    onclick="selectstatus11({{ $needapproval->id }},{{ $status->id }})">{{ ucfirst($status->status) }}</a>
+                                            @endif
+                                        @endforeach
+                                        {{-- <a href="{{ url('sendtask-email', $completedtask->id) }}">SendEmail</a> --}}
+                                    </div>
+                                </div>
+                            </div>
+                            <span style="font-size: 14px; font-weight:bold; color:black;">{{ ucfirst($taskname) }}</span>
+                            <p><span>Start:
+                                </span>{{ \Carbon\Carbon::parse($needapproval->start_date)->format('M d,Y') }}</p>
+                            <div class="preimg">
+                                
+                                <p><span>Compl:</span>{{ \Carbon\Carbon::parse($needapproval->deadline_date)->format('M d,Y') }}</p>
+                               
+                                <div class="imgbox">
+                                    <img src="{{ url($needapproval->userGet->image ?? 'NA') }}" alt="">
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                @endforeach
+            </div>
+            @endif
         </div>
     </main>
 </div>

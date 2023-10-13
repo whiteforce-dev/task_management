@@ -65,10 +65,9 @@ class TeamAllotedController extends Controller
         if (!empty($is_tl) || Auth::user()->type == 'manager' || Auth::user()->type == 'admin') {
             $tasklist = Taskmaster::where('is_approved', 0)->OrderBy('id', 'DESC')->paginate('25');
         } else {
-            $tasklist = Taskmaster::whereIn('is_approved', [0, 2])->where('alloted_to', Auth::user()->id)->OrderBy('id', 'DESC')->paginate('25');
+            $tasklist = Taskmaster::whereIn('is_approved', [0])->where('alloted_to', Auth::user()->id)->OrderBy('id', 'DESC')->paginate('25');
         }
         $users = User::where('software_catagory', Auth::user()->software_catagory)->where('type', '!=', 'admin')->get();
-        $is_tl = checkIsUserTL(Auth::user()->id);
         $status = Status::get();
         return view('approved.need-approval', compact('tasklist',  'users', 'is_tl', 'status'));
     }
@@ -92,8 +91,9 @@ class TeamAllotedController extends Controller
 
     public function approvalTaskSearch(Request $request)
     {
+        $is_tl = checkIsUserTL(Auth::user()->id);
         $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('is_approved', '=', '0');
-        if ($request->created_by) { 
+        if ($request->created_by) {
             $tasklist = $tasklist->where('alloted_to', $request->created_by);
         }
         if ($request->task_code) {
@@ -103,7 +103,19 @@ class TeamAllotedController extends Controller
             $tasklist = $tasklist->where('task_code', $request->task_code)->where('alloted_to', $request->created_by);
         }
         if ($request->approval_id) {
-            $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('is_approved', '=', '2')->where('is_approved', $request->approval_id);
+            if (!empty($tl_id) || Auth::user()->type == 'manager' || Auth::user()->type == 'admin') {
+                if ($request->approval_id == '1') {
+                    $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('is_approved', '0');
+                } else {
+                    $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('is_approved', $request->approval_id);
+                }
+            } else {
+                if ($request->approval_id == '1') {
+                    $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('is_approved', '0')->where('alloted_to', Auth::user()->id);
+                } else {
+                    $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('is_approved', $request->approval_id)->where('alloted_to', Auth::user()->id);
+                } 
+            }
         }
         $tasklist = $tasklist->OrderBy('id', 'DESC')->paginate('25');
         return view('approved.searchresult-approval', compact('tasklist'));
@@ -151,5 +163,4 @@ class TeamAllotedController extends Controller
         $status = Status::get();
         return view('approved.need-approval', compact('tasklist',  'users', 'is_tl', 'status'));
     }
-
 }
