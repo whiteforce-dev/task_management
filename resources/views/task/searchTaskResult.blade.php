@@ -248,7 +248,7 @@ $currentDate = now();
     }
     $dropdownColor = '#cb0c9f';
     if($task->status == 1){
-        $dropdownColor = '#8392ab';
+        $dropdownColor = '#68758b';
     } elseif($task->status == 4){
         $dropdownColor = '#10cfe2';
     } elseif($task->status == 5){
