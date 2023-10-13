@@ -96,7 +96,6 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::post('daily-standup-date-wise-report', [StandupController::class, 'dailyStandupDateWiseReportData']);
 		
 		Route::get('description-more', [TaskManagmentController::class, 'description_more']);
-		Route::get('right-model/{task_id}', [PipelineController::class, 'rightModel']);
 		Route::post('pipeline-card-search', [PipelineController::class, 'pipelineCardSearch']);
 		Route::get('team-allotted-list', [TeamAllotedController::class, 'teamAllottedList']);
 
@@ -119,7 +118,6 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::Post('edit-tl/{tl_id}', [TeamAllotedController::class, 'edit_tlPage']);
 		Route::GET('task-rejected', [TeamAllotedController::class, 'taskRejected']);
 		Route::Post('task-reject/{id}', [TeamAllotedController::class, 'taskReject']);
-		Route::Get('task-rejected-reason', [TeamAllotedController::class, 'taskRejectedReason']);
 
 	});
 	Route::post('loginauth', [SessionsController::class, 'loginauth']);				

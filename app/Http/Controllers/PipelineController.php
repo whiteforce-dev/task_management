@@ -10,183 +10,143 @@ use App\Models\User;
 use App\Models\Status;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Remark;
+
 class PipelineController extends Controller
 {
-   public function pipeline(){
-    if(Auth::user()->type == 'admin'){
-        $pendingtasks = Taskmaster::where('status', '1')->where('is_approved',1)->orderBy('id', 'DESC')->get();
-        $progresstasks = Taskmaster::where('status', '2')->orderBy('id', 'DESC')->get();
-        $completedtasks  = Taskmaster::where('status', '3')->orderBy('id', 'DESC')->get();
-        $holdingtasks = Taskmaster::where('status', '4')->orderBy('id', 'DESC')->get();
-    }elseif(Auth::user()->type == 'manager'){
-        $parentId = User::where('parent_id', Auth::user()->id)->pluck('id')->ToArray();
-        $pendingtasks = Taskmaster::whereIn('alloted_to', $parentId)->where('is_approved',1)->where('status', '1')->orderBy('id', 'DESC')->get();
-        $progresstasks = Taskmaster::whereIn('alloted_to', $parentId)->where('status', '2')->orderBy('id', 'DESC')->get();
-        $completedtasks  = Taskmaster::whereIn('alloted_to', $parentId)->where('status', '3')->orderBy('id', 'DESC')->get(); 
-        $holdingtasks = Taskmaster::whereIn('alloted_to', $parentId)->where('status', '4')->orderBy('id', 'DESC')->get();
-    }else{
-        $pendingtasks = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '1')->where('is_approved',1)->orderBy('id', 'DESC')->get();
-        $progresstasks = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '2')->orderBy('id', 'DESC')->get();
-        $completedtasks  = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '3')->orderBy('id', 'DESC')->get();  
-        $holdingtasks = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '4')->orderBy('id', 'DESC')->get();
+    public function pipeline()
+    {
+        $is_tl = checkIsUserTL(Auth::user()->id);
+        if (!empty($is_tl) || Auth::user()->type == 'admin') {
+            $pendingtasks = Taskmaster::where('status', '1')->where('is_approved', 1)->orderBy('id', 'DESC')->get();
+            $progresstasks = Taskmaster::where('status', '2')->orderBy('id', 'DESC')->get();
+            $completedtasks  = Taskmaster::where('status', '3')->orderBy('id', 'DESC')->get();
+            $holdingtasks = Taskmaster::where('status', '4')->orderBy('id', 'DESC')->get();
+            $needapprovals = Taskmaster::where('status', '5')->orderBy('id', 'DESC')->get();
+        } elseif (Auth::user()->type == 'manager') {
+            $parentId = User::where('parent_id', Auth::user()->id)->pluck('id')->ToArray();
+            $pendingtasks = Taskmaster::whereIn('alloted_to', $parentId)->where('is_approved', 1)->where('status', '1')->orderBy('id', 'DESC')->get();
+            $progresstasks = Taskmaster::whereIn('alloted_to', $parentId)->where('status', '2')->orderBy('id', 'DESC')->get();
+            $completedtasks  = Taskmaster::whereIn('alloted_to', $parentId)->where('status', '3')->orderBy('id', 'DESC')->get();
+            $holdingtasks = Taskmaster::whereIn('alloted_to', $parentId)->where('status', '4')->orderBy('id', 'DESC')->get();
+            $needapprovals = Taskmaster::whereIn('alloted_to', $parentId)->where('status', '5')->orderBy('id', 'DESC')->get();
+        } else {
+            $pendingtasks = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '1')->where('is_approved', 1)->orderBy('id', 'DESC')->get();
+            $progresstasks = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '2')->orderBy('id', 'DESC')->get();
+            $completedtasks  = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '3')->orderBy('id', 'DESC')->get();
+            $holdingtasks = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '4')->orderBy('id', 'DESC')->get();
+            $needapprovals = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '5')->orderBy('id', 'DESC')->get();
+        }
+        $stages = Status::get();
+        $users = User::where('software_catagory', Auth::user()->software_catagory)->where('type', '!=', 'admin')->get();
+        return view('pipeline.pipeline', compact('pendingtasks', 'progresstasks', 'completedtasks', 'users', 'holdingtasks', 'stages', 'needapprovals'));
     }
 
-      $stages = Status::get();
-      $users = User::where('software_catagory', Auth::user()->software_catagory)->where('type','!=', 'admin')->get();
-    return view('pipeline.pipeline', compact('pendingtasks', 'progresstasks', 'completedtasks', 'users', 'holdingtasks', 'stages'));
-   }
-
-   public function pipelinestatus(Request $request, $task_id, $status_id){
-      Taskmaster::where('id', $task_id)->update(array('status' => $status_id));
-      $response = "status change successfully!";
-      return $response;
-   }
-
-   function sendTaskEmail(request $request, $task_id)
-   {
-       $task = Taskmaster::find($task_id);
-       $user = User::where('id', $task->alloted_to)->first();
-       $name = ucwords($user->name);
-       $email = $user->email;
-       $taskname = $task->task_name;
-       $contact = $user->phone;
-       $str = urlencode("Hello $name, Please update your task $taskname .");
-       $info = array(
-         'TaskName' => $taskname,
-         'UserName' => $name,
-         'UserEmail' => $email,          
-         'email' => '$email',
-        );
-        $to_name = 'whiteforce';
-        $to_email = $email;
-        Mail::send('email', $info, function ($message) use ($to_name, $to_email, $info) {
-           $message->to($to_email)
-               ->subject('Job Description for');
-           $message->from('career@white-force.com', 'White Force');
-       });
-       return back()->with('success', 'Mail Has Been Sent To ' . $name);
+    public function pipelinestatus(Request $request, $task_id, $status_id)
+    {
+        Taskmaster::where('id', $task_id)->update(array('status' => $status_id));
+        $response = "status change successfully!";
+        return $response;
     }
 
-   public function updateStatus(request $request){    
-       $cardId = $request->input('cardId');
-       $newStatus = $request->input('newStatus');
-       $card = Taskmaster::find($cardId);
-       if ($card) {
-           $card->status = $newStatus;
-           $card->save();
-        } 
-       return response()->json(['message' => 'Card status updated successfully']);
-   }
+    public function updateStatus(request $request)
+    {
+        $cardId = $request->input('cardId');
+        $newStatus = $request->input('newStatus');
+        $card = Taskmaster::find($cardId);
+        if ($card) {
+            $card->status = $newStatus;
+            $card->save();
+        }
+        return response()->json(['message' => 'Card status updated successfully']);
+    }
 
-   public function taskDetails(Request $request){
+    public function taskDetails(Request $request)
+    {
         $task = Taskmaster::find($request->id);
         $remarks = Remark::where('task_id', $request->id)->get();
-        $users = User::where('software_catagory',Auth::user()->software_catagory)->get();
-        return view('pipeline.pipeline_view_model', compact('task', 'remarks','users')); 
+        $users = User::where('software_catagory', Auth::user()->software_catagory)->get();
+        return view('pipeline.pipeline_view_model', compact('task', 'remarks', 'users'));
     }
-
-    public function rightModel(Request $request, $task_id){
-        if(Auth::user()->type == 'admin'){
-            $pendingtasks = Taskmaster::where('status', '1')->where('is_approved',1)->get();
-            $progresstasks = Taskmaster::where('status', '2')->get();
-            $holdingtasks = Taskmaster::where('status', '3')->get();
-            $completedtasks  = Taskmaster::where('status', '4')->get();
-        }elseif(Auth::user()->type == 'manager'){
-            $parentId = User::where('id', Auth::user()->parent_id)->pluck('id')->ToArray();
-            $pendingtasks = Taskmaster::whereIn('alloted_to', $parentId)->where('is_approved',1)->where('status', '1')->get();
-            $progresstasks = Taskmaster::whereIn('alloted_to', $parentId)->where('status', '2')->get();
-            $holdingtasks = Taskmaster::whereIn('alloted_to', $parentId)->where('status', '3')->get();
-            $completedtasks  = Taskmaster::whereIn('alloted_to', $parentId)->where('status', '4')->get(); 
-        }else{
-            $pendingtasks = Taskmaster::where('alloted_to', Auth::user()->id)->where('is_approved',1)->where('status', '1')->get();
-            $progresstasks = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '2')->get();
-            $holdingtasks = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '3')->get();
-            $completedtasks  = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '4')->get();  
-        }
-          $stages = Status::get();
-          $users = User::where('software_catagory', Auth::user()->software_catagory)->where('type','!=', 'admin')->get();
-          $tasks = Taskmaster::find($request->id);
-          $tasks = Taskmaster::find($task_id);
-        return view('pipeline.rightmodel', compact('tasks','pendingtasks', 'progresstasks', 'completedtasks', 'users', 'holdingtasks', 'stages','tasks'));
-    }
-    
-    public function pipelineCardSearch(Request $request){   
-            $pendingtasks = [];
-            $progresstasks = [];
-            $completedtasks = [];
-            $holdingtasks = [];
-            if(!empty($request->created_by)) {
-                $pendingtasks = Taskmaster::where('status', '1')->where('is_approved',1)->where('alloted_by', $request->created_by)->orderBy('id', 'DESC')->get();
-                $progresstasks = Taskmaster::where('status', '2')->where('alloted_by', $request->created_by)->orderBy('id', 'DESC')->get();
-                $completedtasks  = Taskmaster::where('status', '3')->where('alloted_by', $request->created_by)->orderBy('id', 'DESC')->get();
-                $holdingtasks = Taskmaster::where('status', '4')->where('alloted_by', $request->created_by)->orderBy('id', 'DESC')->get();
-            }
-
-            if(!empty($request->alloted_to)) {
-                $pendingtasks = Taskmaster::where('status', '1')->where('is_approved',1)->where('alloted_to', $request->alloted_to)->orderBy('id', 'DESC')->get();
-                $progresstasks = Taskmaster::where('status', '2')->where('alloted_to', $request->alloted_to)->orderBy('id', 'DESC')->get();
-                $completedtasks  = Taskmaster::where('status', '3')->where('alloted_to', $request->alloted_to)->orderBy('id', 'DESC')->get();
-                $holdingtasks = Taskmaster::where('status', '4')->where('alloted_to', $request->alloted_to)->orderBy('id', 'DESC')->get();
-            }
-
-            if(!empty($request->priority)) {  
-                $pendingtasks = Taskmaster::where('status', '1')->where('is_approved',1)->where('priority', $request->priority)->orderBy('id', 'DESC')->get();
-                $progresstasks = Taskmaster::where('status', '2')->where('priority', $request->priority)->orderBy('id', 'DESC')->get();
-                $completedtasks  = Taskmaster::where('status', '3')->where('priority', $request->priority)->orderBy('id', 'DESC')->get();
-                $holdingtasks = Taskmaster::where('status', '4')->where('priority', $request->priority)->orderBy('id', 'DESC')->get();
-            }
-            if(!empty($request->task_code)) {  
-                $pendingtasks = Taskmaster::where('status', '1')->where('is_approved',1)->where('task_code', $request->task_code)->orderBy('id', 'DESC')->get();
-                $progresstasks = Taskmaster::where('status', '2')->where('task_code', $request->task_code)->orderBy('id', 'DESC')->get();
-                $completedtasks  = Taskmaster::where('status', '3')->where('task_code', $request->task_code)->orderBy('id', 'DESC')->get();
-                $holdingtasks = Taskmaster::where('status', '4')->where('task_code', $request->task_code)->orderBy('id', 'DESC')->get();
-            }
-            if(!empty($request->created_date)){
-                $created_date = explode(' - ',$request->created_date);         
-                $start_created_date_parts = explode('/',$created_date[0]);
-                $end_created_date_parts = explode('/',$created_date[1]);
-                $start_created_date = $start_created_date_parts[2].'-'.$start_created_date_parts[1].'-'.$start_created_date_parts[0];
-                $end_created_date = $end_created_date_parts[2].'-'.$end_created_date_parts[1].'-'.$end_created_date_parts[0];           
-                
-                $pendingtasks = Taskmaster::where('status', '1')->where('is_approved',1)->whereBetween('created_at',[$start_created_date.' 00:00:00',$end_created_date.' 23:59:59'])->orderBy('id', 'DESC')->get();
-                $progresstasks = Taskmaster::where('status', '2')->whereBetween('created_at',[$start_created_date.' 00:00:00',$end_created_date.' 23:59:59'])->orderBy('id', 'DESC')->get();
-                $completedtasks  = Taskmaster::where('status', '3')->whereBetween('created_at',[$start_created_date.' 00:00:00',$end_created_date.' 23:59:59'])->orderBy('id', 'DESC')->get();
-                $holdingtasks = Taskmaster::where('status', '4')->whereBetween('created_at',[$start_created_date.' 00:00:00',$end_created_date.' 23:59:59'])->orderBy('id', 'DESC')->get();
-            }
-            if(!empty($request->deadline_date)){
-                $deadline_date = explode(' - ',$request->deadline_date);
-                $start_deadline_date_parts = explode('/',$deadline_date[0]);
-                $end_deadline_date_parts = explode('/',$deadline_date[1]);
-                $start_dedaline_date = $start_deadline_date_parts[2].'-'.$start_deadline_date_parts[1].'-'.$start_deadline_date_parts[0];
-                $end_dedaline_date = $end_deadline_date_parts[2].'-'.$end_deadline_date_parts[1].'-'.$end_deadline_date_parts[0];                         
-
-                $pendingtasks = Taskmaster::where('status', '1')->where('is_approved',1)->whereBetween('deadline_date',[$start_dedaline_date,$end_dedaline_date])->orderBy('id', 'DESC')->get();
-                $progresstasks = Taskmaster::where('status', '2')->whereBetween('deadline_date',[$start_dedaline_date,$end_dedaline_date])->orderBy('id', 'DESC')->get();
-                $completedtasks  = Taskmaster::where('status', '3')->whereBetween('deadline_date',[$start_dedaline_date,$end_dedaline_date])->orderBy('id', 'DESC')->get();
-                $holdingtasks = Taskmaster::where('status', '4')->whereBetween('deadline_date',[$start_dedaline_date,$end_dedaline_date])->orderBy('id', 'DESC')->get();
-            }
-            $stages = Status::get();
-            $users = User::where('software_catagory', Auth::user()->software_catagory)->where('type','!=', 'admin')->get();
-        return view('pipeline.pipelineSearch', compact('pendingtasks', 'progresstasks', 'completedtasks', 'users', 'holdingtasks', 'stages'));
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
    
+    public function pipelineCardSearch(Request $request)
+    {
+        $is_tl = checkIsUserTL(Auth::user()->id);
+        $pendingtasks = [];
+        $progresstasks = [];
+        $completedtasks = [];
+        $holdingtasks = [];
+        if (!empty($request->created_by)) {
+            $pendingtasks = Taskmaster::where('status', '1')->where('is_approved', 1)->where('alloted_by', $request->created_by);
+            $progresstasks = Taskmaster::where('status', '2')->where('is_approved', 1)->where('alloted_by', $request->created_by);
+            $completedtasks  = Taskmaster::where('status', '3')->where('is_approved', 1)->where('alloted_by', $request->created_by);
+            $holdingtasks = Taskmaster::where('status', '4')->where('is_approved', 1)->where('alloted_by', $request->created_by);
+            $needapprovals = Taskmaster::where('status', '5')->where('is_approved', 1)->where('alloted_by', $request->created_by);
+        }
+
+        if (!empty($request->alloted_to)) {
+            $pendingtasks = Taskmaster::where('status', '1')->where('is_approved', 1)->where('alloted_to', $request->alloted_to);
+            $progresstasks = Taskmaster::where('status', '2')->where('is_approved', 1)->where('alloted_to', $request->alloted_to);
+            $completedtasks  = Taskmaster::where('status', '3')->where('is_approved', 1)->where('alloted_to', $request->alloted_to);
+            $holdingtasks = Taskmaster::where('status', '4')->where('is_approved', 1)->where('alloted_to', $request->alloted_to);
+            $needapprovals = Taskmaster::where('status', '5')->where('is_approved', 1)->where('alloted_to', $request->alloted_to);
+        }
+
+        if (!empty($request->priority)) {
+            $pendingtasks = Taskmaster::where('status', '1')->where('is_approved', 1)->where('priority', $request->priority);
+            $progresstasks = Taskmaster::where('status', '2')->where('is_approved', 1)->where('priority', $request->priority);
+            $completedtasks  = Taskmaster::where('status', '3')->where('is_approved', 1)->where('priority', $request->priority);
+            $holdingtasks = Taskmaster::where('status', '4')->where('is_approved', 1)->where('priority', $request->priority);
+            $needapprovals = Taskmaster::where('status', '5')->where('is_approved', 1)->where('priority', $request->priority);
+        }
+        if (!empty($request->task_code)) {
+            $pendingtasks = Taskmaster::where('status', '1')->where('is_approved', 1)->where('task_code', $request->task_code);
+            $progresstasks = Taskmaster::where('status', '2')->where('is_approved', 1)->where('task_code', $request->task_code);
+            $completedtasks  = Taskmaster::where('status', '3')->where('is_approved', 1)->where('task_code', $request->task_code);
+            $holdingtasks = Taskmaster::where('status', '4')->where('is_approved', 1)->where('task_code', $request->task_code);
+            $needapprovals = Taskmaster::where('status', '5')->where('is_approved', 1)->where('task_code', $request->task_code);
+        }
+        if (!empty($request->created_date)) {
+            $created_date = explode(' - ', $request->created_date);
+            $start_created_date_parts = explode('/', $created_date[0]);
+            $end_created_date_parts = explode('/', $created_date[1]);
+            $start_created_date = $start_created_date_parts[2] . '-' . $start_created_date_parts[1] . '-' . $start_created_date_parts[0];
+            $end_created_date = $end_created_date_parts[2] . '-' . $end_created_date_parts[1] . '-' . $end_created_date_parts[0];
+
+            $pendingtasks = Taskmaster::where('status', '1')->where('is_approved', 1)->whereBetween('created_at', [$start_created_date . ' 00:00:00', $end_created_date . ' 23:59:59']);
+            $progresstasks = Taskmaster::where('status', '2')->where('is_approved', 1)->whereBetween('created_at', [$start_created_date . ' 00:00:00', $end_created_date . ' 23:59:59']);
+            $completedtasks  = Taskmaster::where('status', '3')->where('is_approved', 1)->whereBetween('created_at', [$start_created_date . ' 00:00:00', $end_created_date . ' 23:59:59']);
+            $holdingtasks = Taskmaster::where('status', '4')->where('is_approved', 1)->whereBetween('created_at', [$start_created_date . ' 00:00:00', $end_created_date . ' 23:59:59']);
+            $needapprovals = Taskmaster::where('status', '5')->where('is_approved', 1)->whereBetween('created_at', [$start_created_date . ' 00:00:00', $end_created_date . ' 23:59:59']);
+        }
+        if (!empty($request->deadline_date)) {
+            $deadline_date = explode(' - ', $request->deadline_date);
+            $start_deadline_date_parts = explode('/', $deadline_date[0]);
+            $end_deadline_date_parts = explode('/', $deadline_date[1]);
+            $start_dedaline_date = $start_deadline_date_parts[2] . '-' . $start_deadline_date_parts[1] . '-' . $start_deadline_date_parts[0];
+            $end_dedaline_date = $end_deadline_date_parts[2] . '-' . $end_deadline_date_parts[1] . '-' . $end_deadline_date_parts[0];
+
+            $pendingtasks = Taskmaster::where('status', '1')->where('is_approved', 1)->whereBetween('deadline_date', [$start_dedaline_date, $end_dedaline_date]);
+            $progresstasks = Taskmaster::where('status', '2')->where('is_approved', 1)->whereBetween('deadline_date', [$start_dedaline_date, $end_dedaline_date]);
+            $completedtasks  = Taskmaster::where('status', '3')->where('is_approved', 1)->whereBetween('deadline_date', [$start_dedaline_date, $end_dedaline_date]);
+            $holdingtasks = Taskmaster::where('status', '4')->where('is_approved', 1)->whereBetween('deadline_date', [$start_dedaline_date, $end_dedaline_date]);
+            $needapprovals = Taskmaster::where('status', '4')->where('is_approved', 1)->whereBetween('deadline_date', [$start_dedaline_date, $end_dedaline_date]);
+        }
+        if (!empty($is_tl) || Auth::user()->type == 'admin' || Auth::user()->type == 'manager') {
+            $pendingtasks = $pendingtasks->orderBy('id', 'DESC')->get();
+            $progresstasks = $progresstasks->orderBy('id', 'DESC')->get();
+            $completedtasks = $completedtasks->orderBy('id', 'DESC')->get();
+            $holdingtasks = $holdingtasks->orderBy('id', 'DESC')->get();
+            $needapprovals = $needapprovals->orderBy('id', 'DESC')->get();
+        } else {
+            $pendingtasks = $pendingtasks->where('alloted_to', Auth::user()->id)->orderBy('id', 'DESC')->get();
+            $progresstasks = $progresstasks->where('alloted_to', Auth::user()->id)->orderBy('id', 'DESC')->get();
+            $completedtasks = $completedtasks->where('alloted_to', Auth::user()->id)->orderBy('id', 'DESC')->get();
+            $holdingtasks = $holdingtasks->where('alloted_to', Auth::user()->id)->orderBy('id', 'DESC')->get();
+            $needapprovals = $needapprovals->where('alloted_to', Auth::user()->id)->orderBy('id', 'DESC')->get();
+        }
+        $stages = Status::get();
+        $users = User::where('software_catagory', Auth::user()->software_catagory)->where('type', '!=', 'admin')->get();
+        return view('pipeline.pipelineSearch', compact('pendingtasks', 'progresstasks', 'completedtasks', 'users', 'holdingtasks', 'stages', 'needapprovals'));
+    }
 }
-
-

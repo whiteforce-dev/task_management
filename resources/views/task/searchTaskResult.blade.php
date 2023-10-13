@@ -427,7 +427,7 @@ $currentDate = now();
     </div>
 </section>
 @endforeach
-{{-- {{ $tasklist->links() }} --}}
+{{ $tasklist->links() }}
 <script>
             $(document).ready(function () {
             $('.status-dropdown').on('change', function () {

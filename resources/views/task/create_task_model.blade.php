@@ -6,7 +6,7 @@
         <!-- Modal Header -->
         <div class="modal-header">
             <h5 class="modal-title">Create Task</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal">&#10060;</button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" id="close-button">&#10060;</button>
         </div>
 
 
@@ -134,5 +134,19 @@
             }
         });
     });
+</script>
+
+<script>
+    // Get the element of the model dropdown
+var modelDropdown = document.getElementById('alloted_to');
+
+// Get the element of the close button in the model
+var closeButton = document.getElementById('close-button');
+
+// Add click event listener to the close button
+closeButton.addEventListener('click', function() {
+    // Remove the model dropdown from the DOM
+    modelDropdown.remove();
+});
 </script>
 
