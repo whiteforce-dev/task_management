@@ -114,10 +114,13 @@ class TeamAllotedController extends Controller
                     $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('is_approved', '0')->where('alloted_to', Auth::user()->id);
                 } else {
                     $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('is_approved', $request->approval_id)->where('alloted_to', Auth::user()->id);
-                } 
+                }
             }
         }
         $tasklist = $tasklist->OrderBy('id', 'DESC')->paginate('25');
+        if (is_null($tasklist) || $tasklist->isEmpty()) {     
+                echo '<center><img src="404page/404page3.gif" style="border-radius:10px; border:1px solid #c9d1d5;" height="400" width="700"/></center>';
+        }
         return view('approved.searchresult-approval', compact('tasklist'));
     }
     public function deleteTl($tl_id)
