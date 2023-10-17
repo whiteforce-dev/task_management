@@ -93,7 +93,7 @@
 .comment-one{
     width: 100%;
     display: flex;
-    align-items: center;
+    align-items: start;
     justify-content: center;
     padding: 5px 0;
 }
@@ -192,6 +192,30 @@ a:hover {
     padding-bottom: 9px;
     margin-right: 11px;
 }
+pre{
+    width:81%;
+}
+.remarkbox{
+    position: relative;
+}
+.view-btn{
+    width: 100px;
+    position: absolute;
+    bottom: -11px;
+    right: 9px;
+}
+.lowerbtn{
+    width: 100px;
+    font-size: 0.8rem;
+    color: #ffffff;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+    border: none;
+    height: 28px;
+    border-radius: 5px;
+    background: #eda41b;
+    box-shadow: 1px 1px 4px -1px #f396f3;
+}
 </style>
 @if(!empty($is_allotted_to))
 <div class="cards">
@@ -260,7 +284,14 @@ $currentDate = now();
     <div class="main-card"> 
         <div class="long-width" style="width: 70%;">
             <div class="up-box">
-            <h1><span class="badge badge-primary" style="background: linear-gradient(to right, #f953c6, #b91d73);">{{ $task->task_code }}</span> &nbsp;&nbsp;{{ ucfirst($task->task_name) }}</h1>
+                <div style=" display: flex;
+    align-items: start;
+    justify-content: center; width:100%;  ">
+                <span class="badge badge-primary" style="background: linear-gradient(to right, #f953c6, #b91d73); margin-right:10px; width:100px; width: 65px;
+    height: 30px;">{{ $task->task_code }}</span>
+                <h1 style="width:90%">{{ ucfirst($task->task_name) }}</h1>
+                </div>
+            
                 <hr
                     style="height: 4px; width: 100%; border: none;opacity:unset; margin-top: 10px; margin-bottom: -5px; background-color: #cb0c9f;">
             </div>
@@ -274,7 +305,7 @@ $currentDate = now();
                 <pre>{{ $task->task_details }}</pre>             
             </div>
 
-            <div class="low-box">
+            <div class="low-box remarkbox">
                 <h3><i class="fa-solid fa-user-tag" style="margin-right: 5px; color:#cb0c9f;"></i>Remark</h3>
                 <div class="comments">
                     @foreach($task->getLatedtRemarks as $remark)
@@ -288,6 +319,9 @@ $currentDate = now();
                         </div>
                     </div>
                     @endforeach
+                </div>
+                <div class="view-btn">
+                    <button class="lowerbtn">View More</button>
                 </div>
             </div>
         </div>
