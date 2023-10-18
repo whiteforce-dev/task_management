@@ -34,8 +34,12 @@ class Taskmaster extends Model
         return $this->hasOne('App\Models\Remark', 'task_id')->orderBy('id', 'desc')->whereNotIn('userid', [Auth::user()->id]);
     }
 
-    public function getLatedtRemarks(){
+    public function getLatestRemarks(){
         return $this->hasMany('App\Models\Remark', 'task_id')->limit(3)->orderBy('id', 'desc');
+    }
+
+    public function getAllRemarks(){
+        return $this->hasMany('App\Models\Remark', 'task_id');
     }
 
     public function GetRejectReson()

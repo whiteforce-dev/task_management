@@ -68,11 +68,8 @@ $currentDate = now();
     <div class="main-card"> 
         <div class="long-width" style="width: 70%;">
             <div class="up-box">
-                <div style=" display: flex;
-    align-items: start;
-    justify-content: center; width:100%;  ">
-                <span class="badge badge-primary" style="background: linear-gradient(to right, #f953c6, #b91d73); margin-right:10px; width:100px; width: 65px;
-    height: 30px;">{{ $task->task_code }}</span>
+                <div style=" display: flex;align-items: start;justify-content: center; width:100%;  ">
+                <span class="badge badge-primary" style="background: linear-gradient(to right, #f953c6, #b91d73); margin-right:10px; width:100px; width: 65px;height: 30px;">{{ $task->task_code }}</span>
                 <h1 style="width:90%">{{ ucfirst($task->task_name) }}</h1>
                 </div>
             
@@ -92,7 +89,7 @@ $currentDate = now();
             <div class="low-box remarkbox">
                 <h3><i class="fa-solid fa-user-tag" style="margin-right: 5px; color:#cb0c9f;"></i>Remark</h3>
                 <div class="comments">
-                    @foreach($task->getLatedtRemarks as $remark)
+                     @foreach($task->getLatestRemarks as $remark)
                     <div class="comment-one">
                         <div class="proimg">
                             <img src="{{ !empty($remark->GetUser->image) ? url($remark->GetUser->image) : '' }}" alt="" width="100%">
@@ -104,9 +101,11 @@ $currentDate = now();
                     </div>
                     @endforeach
                 </div>
+                @if(count($task->getAllRemarks) > 3)
                 <div class="view-btn">
-                    <button class="lowerbtn">View More</button>
+                    <a href="javascript:" onclick="managerRemark('{{ url('managerremark' . '?id=' . $task->id) }}')" class="dropdown-item border-radius-md lowerbtn" href="javascript:;">View More</a>
                 </div>
+                @endif
             </div>
         </div>
         <div class="short-width" style="width: 30%;">
