@@ -238,21 +238,21 @@ $currentDate = now();
    
    $card_color_class = '';
    if($task->status != 3){
-        if($differenceInDays <= 2){
-            $card_color_class = 'warning';
-        } elseif($currentDate > $deadlineDate){
+        if($currentDate > $deadlineDate){
             $card_color_class = 'danger';
+        } elseif($differenceInDays <= 2){
+            $card_color_class = 'warning';
         } elseif($daydiffapprovaldate >= 3){
             $card_color_class = 'outdated';
         }
     }
     $dropdownColor = '#cb0c9f';
     if($task->status == 1){
-        $dropdownColor = '#68758b';
+        $dropdownColor = '#475c7e';
     } elseif($task->status == 4){
         $dropdownColor = '#10cfe2';
     } elseif($task->status == 5){
-        $dropdownColor = '#fbcf33e3';
+        $dropdownColor = '#23e4ff';
     }
 @endphp
 
