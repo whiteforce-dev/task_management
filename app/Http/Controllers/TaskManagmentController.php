@@ -16,7 +16,7 @@ use App\Models\Priority;
 use App\Models\Attachment;
 use Illuminate\Support\Facades\Session;
 use Storage;
-use League\Flysystem\AwsS3V3\PortableVisibilityConverter;
+use App\Models\Tag;
 
 class TaskManagmentController extends Controller
 {
@@ -32,6 +32,11 @@ class TaskManagmentController extends Controller
 
         $newtask = new Taskmaster();
         $newtask->task_name = $request->task_name;
+
+        if (!empty($request->tag)) {
+            $newtask->tag = implode(',', $request->tag);
+        }
+
         $newtask->task_code = getTaskCode();
         if (isset($request->alloted_to)) {
             $newtask->alloted_to = implode(',', $request->alloted_to);
@@ -79,6 +84,7 @@ class TaskManagmentController extends Controller
         $managerId = [];
         $EmployeeId = [];
         $priority = "";
+        $tags = "";
 
         $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('is_approved', '=', '1');
         if (Auth::user()->type == "employee" && empty($is_tl)) { 
@@ -93,7 +99,8 @@ class TaskManagmentController extends Controller
         $users = User::where('software_catagory', Auth::user()->software_catagory)->where('type', '!=', 'admin')->get();
         $statuss = Status::get();
         $prioritys = Priority::get();
-        return view('task.taskList', compact('tasklist', 'managerId', 'EmployeeId', 'status_search', 'from', 'to', 'priority', 'statuss', 'users', 'prioritys'));
+        $tags = Tag::where('software_catagory', Auth::user()->software_catagory)->get();
+        return view('task.taskList', compact('tags', 'tasklist', 'managerId', 'EmployeeId', 'status_search', 'from', 'to', 'priority', 'statuss', 'users', 'prioritys'));
     }
 
     public function searchTask(Request $request)
@@ -164,6 +171,9 @@ class TaskManagmentController extends Controller
         if (!empty($request->multiple_status)) {
             $tasklist = $tasklist->whereIn('status', $request->multiple_status);
         }
+        if (!empty($request->tag)) {
+            $tasklist = $tasklist->whereIn('tag', $request->tag);
+        }
         $tasklist = $tasklist->orderBy('id', 'Desc')->paginate(25);      
         return view('task.searchTaskResult', compact('tasklist','is_allotted_to','alloted_summary_array','alloted_array'));
     }
@@ -173,8 +183,9 @@ class TaskManagmentController extends Controller
         $taskId = $request->id;
         $task = Taskmaster::find($taskId);
         $status = Status::get();
-        $users = User::get();
-        return view('task.edit_task', compact('task', 'status', 'users'));
+        $users = User::where('software_catagory', Auth::user()->software_catagory)->get();
+        $tags = Tag::where('software_catagory', Auth::user()->software_catagory)->get();
+        return view('task.edit_task', compact('task', 'status', 'users', 'tags'));
     }
 
     public function UpdateTask(request $request, $id)
@@ -184,6 +195,9 @@ class TaskManagmentController extends Controller
 
         if (isset($request->alloted_to)) {
             $newtask->alloted_to = implode(',', $request->alloted_to);
+        }
+        if (!empty($request->tag)) {
+            $newtask->tag = implode(',', $request->tag);
         }
 
         $newtask->task_details = $request->task_details;
@@ -383,14 +397,14 @@ class TaskManagmentController extends Controller
     }
 
     public function dashbordtotaltask($id)
-    {
+    { 
         if (Auth::user()->type == 'admin') {
-            $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->orderBy('id', 'DESC')->get();
+            $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('is_approved', '1')->orderBy('id', 'DESC')->get();
         } elseif (Auth::user()->type == 'manager') {
             $teamId = User::where('software_catagory', Auth::user()->software_catagory)->where('id', Auth::user()->id)->orwhere('parent_id', Auth::user()->id)->pluck('id')->ToArray();
-            $tasklist = Taskmaster::whereIn('alloted_to', $teamId)->get();
+            $tasklist = Taskmaster::whereIn('alloted_to', $teamId)->where('is_approved', '1')->get();
         } else {
-            $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('is_approved', '=', '1')
+            $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('is_approved', '1')
                 ->orderBy('id', 'DESC')
                 ->where('alloted_to', Auth::user()->id)
                 ->get();
@@ -400,14 +414,14 @@ class TaskManagmentController extends Controller
     public function dashbordcompletetask($id)
     {
         if (Auth::user()->type == 'admin') {
-            $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('status', '3')->orderBy('id', 'DESC')->get();
+            $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('status', '3')->where('is_approved', '1')->orderBy('id', 'DESC')->get();
         } elseif (Auth::user()->type == 'manager') {
             $team_id = User::where('software_catagory', Auth::user()->software_catagory)->where('id', Auth::user()->id)->orwhere('parent_id', Auth::user()->id)->pluck('id')->ToArray();
-            $tasklist = Taskmaster::whereIn('alloted_to', $team_id)->where('status', '3')->get();
+            $tasklist = Taskmaster::whereIn('alloted_to', $team_id)->where('is_approved', '1')->where('status', '3')->get();
         } else {
-            $tasklist = Taskmaster::where('status', '3')
+            $tasklist = Taskmaster::where('status', '3')->where('is_approved', '1')
                 ->where('alloted_to', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)
-                ->orderBy('id', 'DESC')
+                ->orderBy('id', 'DESC')->where('is_approved', '1')
                 ->get();
         }
         return view('laravel-examples.dashboardcompleted', compact('tasklist'));
@@ -415,13 +429,13 @@ class TaskManagmentController extends Controller
     public function dashboardpending($id)
     {
         if (Auth::user()->type == 'admin') {
-            $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->orderBy('id', 'desc')->where('status', '1')->get();
+            $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->orderBy('id', 'desc')->where('is_approved', '1')->where('status', '1')->get();
         } elseif (Auth::user()->type == 'manager') {
             $team_id = User::where('software_catagory', Auth::user()->software_catagory)->where('id', Auth::user()->id)->orwhere('parent_id', Auth::user()->id)->pluck('id')->ToArray();
-            $tasklist = Taskmaster::whereIn('alloted_to', $team_id)->where('status', '1')->get();
+            $tasklist = Taskmaster::whereIn('alloted_to', $team_id)->where('is_approved', '1')->where('status', '1')->get();
         } else {
             $tasklist = Taskmaster::where('status', '1')
-                ->orderBy('id', 'DESC')
+                ->orderBy('id', 'DESC')->where('is_approved', '1')
                 ->where('alloted_to', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)
                 ->get();
         }
@@ -430,12 +444,12 @@ class TaskManagmentController extends Controller
     public function dashboardproccess($id)
     {
         if (Auth::user()->type == 'admin') {
-            $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->orderBy('id', 'desc')->where('status', '2')->get();
+            $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('is_approved', '1')->orderBy('id', 'desc')->where('status', '2')->get();
         } elseif (Auth::user()->type == 'manager') {
             $team_id = User::where('software_catagory', Auth::user()->software_catagory)->where('id', Auth::user()->id)->orwhere('parent_id', Auth::user()->id)->pluck('id')->ToArray();
-            $tasklist = Taskmaster::whereIn('alloted_to', $team_id)->where('status', '2')->get();
+            $tasklist = Taskmaster::whereIn('alloted_to', $team_id)->where('is_approved', '1')->where('status', '2')->get();
         } else {
-            $tasklist = Taskmaster::where('status', '2')
+            $tasklist = Taskmaster::where('status', '2')->where('is_approved', '1')
                 ->where('alloted_to', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)
                 ->get();
         }
@@ -499,7 +513,8 @@ class TaskManagmentController extends Controller
     {
         $users = User::where('type', '!=', 'admin')->where('software_catagory', Auth::user()->software_catagory)->get();
         $prioritys = Priority::get();
-        return view('task.create_task_model', compact('users', 'prioritys'));
+        $tags = Tag::get();
+        return view('task.create_task_model', compact('users', 'prioritys', 'tags'));
     }
 
     public function task_delete($id)
@@ -627,10 +642,6 @@ class TaskManagmentController extends Controller
         if ($request->today_deadline) {
             $tasklist = $tasklist->whereDate('deadline_date', $request->today_deadline);
         }
-
-        // if ($request->EmployeeId == "" && $request->from_deadline == "" && $request->to_deadline == "" && $request->status == "" && $request->from_enddate == "" && $request->to_enddate == "" && $request->today_assigned == "" && $request->today_deadline == "" && $request->priority == "" && $request->fromdate == "" && $request->todate == "") {
-        //     return redirect('report')->back()->with(['success' => 'please fill any one filter .']);
-        // }
 
         $tasklist = $tasklist->OrderBy('id', 'DESC')->paginate('25');
         if ($request->ajax()) {

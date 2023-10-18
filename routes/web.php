@@ -14,6 +14,7 @@ use App\Http\Controllers\PipelineController;
 use App\Http\Controllers\StandupController;
 use App\Http\Controllers\TeamAllotedController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\TagmanagementController;
 
 date_default_timezone_set("Asia/kolkata");
 Route::group(['middleware' => 'auth'], function ()
@@ -21,9 +22,8 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::get('/', function(){
 			return redirect('dashboard');
 		});
-		Route::get('dashboard', function () {
-			return view('dashboard');
-		})->name('dashboard');
+		// Route::get('dashboard', function () {return view('dashboard');})->name('dashboard');
+		Route::get('dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
 
 		Route::get('user-management', [InfoUserController::class, 'user_Management']);
 
@@ -108,7 +108,7 @@ Route::group(['middleware' => 'auth'], function ()
 
 		Route::get('select-team', [TeamAllotedController::class, 'selectTeam']);
 		Route::Post('selected-team', [TeamAllotedController::class, 'selectedTeam']);
-		Route::get('need-approval', [TeamAllotedController::class, 'needApproval']);
+		Route::Get('need-approval', [TeamAllotedController::class, 'needApproval']);
 		Route::POST('task-approval', [TeamAllotedController::class, 'taskApproval']);
 		Route::POST('approval-task-search', [TeamAllotedController::class, 'approvalTaskSearch']);
 		
@@ -118,7 +118,14 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::Post('edit-tl/{tl_id}', [TeamAllotedController::class, 'edit_tlPage']);
 		Route::GET('task-rejected', [TeamAllotedController::class, 'taskRejected']);
 		Route::Post('task-reject/{id}', [TeamAllotedController::class, 'taskReject']);
-
+		Route::Get('tag-management', [TagmanagementController::class, 'tagManagement']);
+		Route::POST('tag-store', [TagmanagementController::class, 'tagStore']);
+		Route::get('tag-list', [TagmanagementController::class, 'tagList']);
+		Route::get('edit-tag/{id}', [TagmanagementController::class, 'editTag']);
+		Route::POST('tag-edit/{id}', [TagmanagementController::class, 'TagEdit']);
+		Route::get('delete-tag/{id}', [TagmanagementController::class, 'deleteTag']);
+		Route::post('check-name', [TagmanagementController::class, 'checkName']);
+		Route::get('need-approvalDashboard/{id}', [TeamAllotedController::class, 'needApprovalDashboard']);
 	});
 	Route::post('loginauth', [SessionsController::class, 'loginauth']);				
 	Route::group(['middleware' => 'guest'], function () 

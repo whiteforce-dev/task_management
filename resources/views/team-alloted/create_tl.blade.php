@@ -37,7 +37,7 @@
     </div>
     @endif
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
-        <div class="container-fluid py-4">
+        <div class="container-fluid py-2">
             <div class="alert alert-secondary mx-1" role="alert">
                 <span class="text-white">
                     <strong>Team Allotment!</strong>

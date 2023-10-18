@@ -71,7 +71,7 @@
     </style>
 
     <main class="main-content position-relative h-100 border-radius-lg ">
-        <div class="container-fluid py-4">
+        <div class="container-fluid py-5">
             <div class="row" style="margin-left: 20px;">
                 @if (!empty($is_tl) || Auth::user()->type == 'manager' || Auth::user()->type == 'admin')
                     <div class="col-sm-4">
@@ -109,11 +109,9 @@
                     <button type="button" class="btn btn-primary" id="submitButton" onclick="searchTask()">Search</button>
                 </div>
             </div>
-
             <div id="searchResults">
-                @include('approved.searchresult-approval')
+                    @include('approved.searchresult-approval')
             </div>
-            {{-- {{ $tasklist->links() }} --}}
         </div>
     </main>
 
@@ -158,17 +156,17 @@
     <script src="{{ url('assets/js/core/bootstrap.min.js') }}"></script>
 
     <script>
-        function searchTask(){ 
+        function searchTask() {
             $.ajax({
-                type : 'POST',
-                url : "{{ url('approval-task-search') }}",
-                data : {
-                    created_by : $('#created_by').val(),
-                    task_code : $('#task_code').val(),
-                    approval_id : $('#approval_id').val(),
-                    '_token' : "{{ csrf_token() }}"
+                type: 'POST',
+                url: "{{ url('approval-task-search') }}",
+                data: {
+                    created_by: $('#created_by').val(),
+                    task_code: $('#task_code').val(),
+                    approval_id: $('#approval_id').val(),
+                    '_token': "{{ csrf_token() }}"
                 },
-                success : function(response){
+                success: function(response) {
                     $('#searchResults').html(response)
                 }
             })

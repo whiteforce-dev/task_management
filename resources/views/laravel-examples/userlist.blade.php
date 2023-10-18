@@ -23,7 +23,7 @@
     <link href="assets/table/css/style.css" rel="stylesheet">
 
     <div class="container-fluid">
-        <div class="page-header min-height-300 border-radius-xl mt-4"
+        <div class="page-header min-height-300 border-radius-xl"
         style= "background-position-y: 1%;">
         <img src="{{ url('assets/img/curved-images/curved0.jpg') }}" height="300">
             <span class="mask bg-gradient-primary opacity-6"></span>
@@ -52,7 +52,7 @@
     </div>
  
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg ">
-        <div class="container-fluid py-4">
+        <div class="container-fluid py-2">
             <div class="alert alert-secondary mx-1" role="alert">
                 <span class="text-white">
                     <strong>Show All Uesr List!</strong>

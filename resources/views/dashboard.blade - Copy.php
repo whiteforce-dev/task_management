@@ -8,7 +8,7 @@
                         <div class="col-8">
                             <div class="numbers">
                                 <a href="{{ url('dashbordtotaltask', Auth::user()->id) }}">
-                                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Total</p>
+                                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Total Task</p>
                                     <h5 class="font-weight-bolder mb-0">
                                         {{ $totaltask ?? 'Na' }}
                                         <span class="text-success text-sm font-weight-bolder">+100%</span>
@@ -25,14 +25,14 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4">
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
             <div class="card">
                 <div class="card-body p-3">
                     <div class="row">
                         <div class="col-8">
                             <div class="numbers">
                                 <a href="{{ url('dashbordcompletetask', Auth::user()->id) }}">
-                                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Completed</p>
+                                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Completed Task</p>
                                     <h5 class="font-weight-bolder mb-0">
                                         {{ $complettask ?? 'Na' }}
                                         <span class="text-danger text-sm font-weight-bolder">
@@ -51,13 +51,13 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4">
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
             <div class="card">
                 <div class="card-body p-3">
                     <div class="row">
                         <div class="col-8">
                             <a href="{{ url('dashboardpending', Auth::user()->id) }}">
-                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Pending</p>
+                                <p class="text-sm mb-0 text-capitalize font-weight-bold">Pending Task</p>
                                 <h5 class="font-weight-bolder mb-0">
                                     {{ $pendingtask ?? 'Na' }}
                                     <span class="text-success text-sm font-weight-bolder">+{{ $per_p ?? '0' }}%</span>
@@ -73,41 +73,17 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-2 col-sm-6">
+        <div class="col-xl-3 col-sm-6">
             <div class="card">
                 <div class="card-body p-3">
                     <div class="row">
                         <div class="col-8">
                             <div class="numbers">
                                 <a href="{{ url('dashboardproccess', Auth::user()->id) }}">
-                                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Progress</p>
+                                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Progress Task</p>
                                     <h5 class="font-weight-bolder mb-0">
                                         {{ $proccesstask ?? 'Na' }}
                                         <span class="text-success text-sm font-weight-bolder">+{{ $per_PP ?? '0' }}%</span>
-                                    </h5>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-4 text-end">
-                            <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                                <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-         <div class="col-xl-3 col-sm-6">
-            <div class="card">
-                <div class="card-body p-3">
-                    <div class="row">
-                        <div class="col-8">
-                            <div class="numbers">
-                                <a href="{{ url('need-approvalDashboard', Auth::user()->id) }}">
-                                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Need Approval</p>
-                                    <h5 class="font-weight-bolder mb-0">
-                                        {{ $needApproval ?? 'Na' }}
-                                        <span class="text-success text-sm font-weight-bolder">+{{ $needApp ?? '0' }}%</span>
                                     </h5>
                                 </a>
                             </div>

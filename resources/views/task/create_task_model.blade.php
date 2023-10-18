@@ -15,9 +15,17 @@
             <form action="{{ url('create-task') }}" method="POST"  enctype="multipart/form-data" id="createdtask">
                 @csrf
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <label>Task name</label>
                         <input class="form-control" value="" type="text" placeholder="Task Name" id="task_name" name="task_name">
+                    </div>
+                    <div class="col-md-6">
+                        <label>Select Tag</label>
+                        <select class="form-control selectpicker" multiple data-live-search="true" name="tag[]" id="tag">
+                            @foreach ($tags as $tag)
+                                <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div> 
                 <br>
