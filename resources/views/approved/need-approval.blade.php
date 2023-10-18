@@ -71,7 +71,7 @@
     </style>
 
     <main class="main-content position-relative h-100 border-radius-lg ">
-        <div class="container-fluid py-4">
+        <div class="container-fluid py-5">
             <div class="row" style="margin-left: 20px;">
                 @if (!empty($is_tl) || Auth::user()->type == 'manager' || Auth::user()->type == 'admin')
                     <div class="col-sm-4">

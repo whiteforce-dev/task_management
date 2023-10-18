@@ -28,7 +28,7 @@
                 </div>
             </div>
         </div>
-        <div class="container-fluid py-4">
+        <div class="container-fluid py-2">
             <div class="card">
                 <div class="card-header pb-0 px-3">
                     <h6 class="mb-0">{{ __('Account Details') }}</h6>

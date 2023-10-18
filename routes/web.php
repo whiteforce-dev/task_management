@@ -22,9 +22,8 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::get('/', function(){
 			return redirect('dashboard');
 		});
-		Route::get('dashboard', function () {
-			return view('dashboard');
-		})->name('dashboard');
+		// Route::get('dashboard', function () {return view('dashboard');})->name('dashboard');
+		Route::get('dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
 
 		Route::get('user-management', [InfoUserController::class, 'user_Management']);
 
@@ -125,6 +124,8 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::get('edit-tag/{id}', [TagmanagementController::class, 'editTag']);
 		Route::POST('tag-edit/{id}', [TagmanagementController::class, 'TagEdit']);
 		Route::get('delete-tag/{id}', [TagmanagementController::class, 'deleteTag']);
+		Route::post('check-name', [TagmanagementController::class, 'checkName']);
+		Route::get('need-approvalDashboard/{id}', [TeamAllotedController::class, 'needApprovalDashboard']);
 	});
 	Route::post('loginauth', [SessionsController::class, 'loginauth']);				
 	Route::group(['middleware' => 'guest'], function () 

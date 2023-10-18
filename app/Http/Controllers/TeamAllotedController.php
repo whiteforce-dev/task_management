@@ -166,4 +166,12 @@ class TeamAllotedController extends Controller
         $status = Status::get();
         return view('approved.need-approval', compact('tasklist',  'users', 'is_tl', 'status'));
     }
+    public function needApprovalDashboard($id){
+        if(Auth::user()->type == 'admin' || Auth::user()->type == 'manager'){
+            $needApprovals = Taskmaster::where('status', '5')->where('is_approved', '1')->get();
+        }else{
+            $needApprovals = Taskmaster::where('status', '5')->where('is_approved', '1')->where('alloted_to', Auth::user()->id)->get();  
+        }
+        return view('laravel-examples.need-approval', compact('needApprovals'));
+    }
 }
