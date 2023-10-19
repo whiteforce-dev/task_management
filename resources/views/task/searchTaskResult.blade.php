@@ -144,13 +144,13 @@ $currentDate = now();
 
             <div class="box-one">
                 <i class="fa-solid fa-circle"
-                    style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Created Date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :
+                    style="margin-right: 8px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Created Date &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :
                 </span>
                 <p>{{ \Carbon\Carbon::parse($task->created_at)->format('M d H:i') }}</p>
             </div>
             <div class="box-one">
                 <i class="fa-solid fa-circle"
-                    style="margin-right:10px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Priority  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                    style="margin-right:8px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Priority  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
                 </span>
                 @if ($task->priority == '1')
                     <P class="priorty" style="background-color: #900; color:#fff;">Highest</P>
@@ -164,7 +164,7 @@ $currentDate = now();
             </div>
             <div class="box-one" style="position: relative;">
                 <i class="fa-solid fa-circle"
-                    style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i> <span>Deadline Date &nbsp;&nbsp;&nbsp; &nbsp;:
+                    style="margin-right: 6px; color:#cb0c9f; font-size: 0.5rem;"></i> <span>Deadline Date &nbsp;&nbsp;&nbsp; &nbsp;:
                 </span>
                 <p style="margin-left: 0px;">
                     {{ \Carbon\Carbon::parse($task->deadline_date)->format('M d,Y') }} </p>
@@ -178,7 +178,7 @@ $currentDate = now();
             </div>
             <div class="box-one">
                 <i class="fa-solid fa-circle"
-                    style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i> <span>Approval Date &nbsp;&nbsp;&nbsp;&nbsp; :
+                    style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i> <span>Approval Date &nbsp;&nbsp;&nbsp; :
                 </span>
                 @if(!empty($task->sent_to_approval_date))
                 <P>{{ \Carbon\Carbon::parse($task->sent_to_approval_date)->format('M d,Y') }}</P>
@@ -197,7 +197,7 @@ $currentDate = now();
             </div>
             <div class="box-one">
                 <i class="fa-solid fa-circle"
-                    style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i> <span>Total Hours&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
+                    style="margin-right: 5px; color:#cb0c9f; font-size: 0.5rem;"></i> <span>Total Hours&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
                 </span>
                 @php
                 $spent_hours = \App\Models\CheckoutDetails::where('task_id',$task->id)->pluck('hours')->toArray();
@@ -209,15 +209,22 @@ $currentDate = now();
             @php 
             $alloted_to_ids = explode(',', $task->alloted_to);
             $get_user_names_arr = \App\Models\User::whereIn('id', $alloted_to_ids)->pluck('name')->toArray();
-            $user_names = implode(',',$get_user_names_arr);
+            $user_names = implode(', ',$get_user_names_arr);
             @endphp
             
             <div class="box-one" style="position: relative; margin-left:13px;">
             <i class="fa-solid fa-circle"
-                    style="margin-right:7px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Allotted To &nbsp;  &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; :
+                    style="margin-right:7px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Allotted To &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; :
                 </span>
                 &nbsp;<P>{{ $user_names ?? 'N/A' }}</P>                                                                              
             </div>
+
+            <div class="box-one" style="position: relative; margin-left:13px;">
+                <i class="fa-solid fa-circle"
+                        style="margin-right:7px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Tag &nbsp;&nbsp;  &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :
+                    </span><?php $tag = \App\Models\Tag::where('id', $task->tag)->value('name') ?>
+                    &nbsp;<P>{{ $tag ?? 'N/A' }}</P>                                                                              
+                </div>
             
             <div class="box-one"
                 style="width:90%; display:flex; align-items:center; justify-contect:center;">
@@ -225,13 +232,11 @@ $currentDate = now();
                 @foreach ($taskss as $taskk)
                     <?php $userimg = \App\Models\User::where('id', $taskk)->value('image'); ?>
                     <img src="{{ url($userimg ?? 'NA') }}" alt="" width="50" height="50"
-                        style="margin:10px 5px; border-radius:50px">
+                        style="margin:3px 2px; border-radius:50px">
                 @endforeach
                 <img src="{{ url($task->GetManagerName->image) }}" alt="" width="50"
                     height="50"
                     style="margin:10px 5px; border-radius:50px; border:2px solid #cb0c9f; ">
-                    <?php $tag = \App\Models\Tag::where('id', $task->tag)->value('name') ?>
-                    <div style="padding:20px;">&nbsp;Tag:&nbsp;{{ $tag ?? 'NA' }}</div>
             </div>
         </div>
     </div>

@@ -51,8 +51,7 @@
                         @endforeach
                     </select>
                 </div>
-                @endif
-                @if(Auth::user()->can_allot_to_others)
+
                 <div class="col-3">
                     <label>Allotted To</label>
                     <select class="selectpicker form-control" multiple data-live-search="true" name="alloted_to[]" id="alloted_to">
@@ -61,11 +60,21 @@
                             <option value="{{ $user->id }}">{{ ucfirst($user->name) }}</option>
                         @endforeach
                     </select>
-                </div>    
+                </div> 
+                
+                <div class="col-sm-3">
+                    <label>Select Tag</label>
+                    <select class="selectpicker form-control" multiple data-live-search="true" name="tag[]" id="tag">
+                        <option value="">Select</option>
+                        @foreach ($tags as $tag)
+                            <option value="{{ $tag->id }}">{{ ucfirst($tag->name) }}</option>
+                        @endforeach
+                    </select>
+                </div>
                 @endif                          
 
                        
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                     <label>Priority</label>
                     <select name="priority" id="priority" class="form-control" style="border:1px solid #cb0c9f;">
                         <option value="">Select</option>
@@ -90,8 +99,8 @@
                     <label>Task Code</label>
                     <input name="task_code" id="task_code" class="form-control" style="border:1px solid #cb0c9f;" placeholder="Enter Task Code">
                 </div>
+
                 <div class="col-sm-1">
-                    {{-- <button type="submit">submit</button> --}}
                     <button type="button" class="btn btn-primary" style="margin-top:31px;" id="submitButton" onclick="searchTask()">Search</button> 
                 </div>
                 <div class="col-sm-1">
@@ -183,6 +192,7 @@
                         created_date : $('#created_date').val(),
                         deadline_date : $('#deadline_date').val(),
                         task_code : $('#task_code').val(),
+                        tag : $('#tag').val(),
                         '_token' : "{{ csrf_token() }}"
                     },
                     success : function(response){

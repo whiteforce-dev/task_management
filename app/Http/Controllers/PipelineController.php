@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Status;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Remark;
+use App\Models\Tag;
 
 class PipelineController extends Controller
 {
@@ -36,9 +37,10 @@ class PipelineController extends Controller
             $holdingtasks = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '4')->orderBy('id', 'DESC')->get();
             $needapprovals = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '5')->orderBy('id', 'DESC')->get();
         }
+        $tags = Tag::where('software_catagory', Auth::user()->software_catagory)->get();
         $stages = Status::get();
         $users = User::where('software_catagory', Auth::user()->software_catagory)->where('type', '!=', 'admin')->get();
-        return view('pipeline.pipeline', compact('pendingtasks', 'progresstasks', 'completedtasks', 'users', 'holdingtasks', 'stages', 'needapprovals'));
+        return view('pipeline.pipeline', compact('pendingtasks', 'progresstasks', 'completedtasks', 'users', 'holdingtasks', 'stages', 'needapprovals', 'tags'));
     }
 
     public function pipelinestatus(Request $request, $task_id, $status_id)
@@ -132,6 +134,15 @@ class PipelineController extends Controller
             $holdingtasks = Taskmaster::where('status', '4')->where('is_approved', 1)->whereBetween('deadline_date', [$start_dedaline_date, $end_dedaline_date]);
             $needapprovals = Taskmaster::where('status', '4')->where('is_approved', 1)->whereBetween('deadline_date', [$start_dedaline_date, $end_dedaline_date]);
         }
+
+        if (!empty($request->tag)) {
+            $pendingtasks = Taskmaster::where('status', '1')->where('is_approved', 1)->where('tag', $request->tag);
+            $progresstasks = Taskmaster::where('status', '2')->where('is_approved', 1)->where('tag', $request->tag);
+            $completedtasks  = Taskmaster::where('status', '3')->where('is_approved', 1)->where('tag', $request->tag);
+            $holdingtasks = Taskmaster::where('status', '4')->where('is_approved', 1)->where('tag', $request->tag);
+            $needapprovals = Taskmaster::where('status', '5')->where('is_approved', 1)->where('tag', $request->tag);
+        }
+
         if (!empty($is_tl) || Auth::user()->type == 'admin' || Auth::user()->type == 'manager') {
             $pendingtasks = $pendingtasks->orderBy('id', 'DESC')->get();
             $progresstasks = $progresstasks->orderBy('id', 'DESC')->get();
@@ -145,8 +156,10 @@ class PipelineController extends Controller
             $holdingtasks = $holdingtasks->where('alloted_to', Auth::user()->id)->orderBy('id', 'DESC')->get();
             $needapprovals = $needapprovals->where('alloted_to', Auth::user()->id)->orderBy('id', 'DESC')->get();
         }
+        
         $stages = Status::get();
+        $tasg = Tag::where('software_catagory', Auth::user()->software_catagory)->get();
         $users = User::where('software_catagory', Auth::user()->software_catagory)->where('type', '!=', 'admin')->get();
-        return view('pipeline.pipelineSearch', compact('pendingtasks', 'progresstasks', 'completedtasks', 'users', 'holdingtasks', 'stages', 'needapprovals'));
+        return view('pipeline.pipelineSearch', compact('pendingtasks', 'progresstasks', 'completedtasks', 'users', 'holdingtasks', 'stages', 'needapprovals', 'tasg'));
     }
 }
