@@ -10,7 +10,7 @@
             <div class="container-fluid py-4">
                 <div class="row">
                     @if (auth::user()->type !== 'employee')
-                        <div class="col-2">
+                        <div class="col-3">
                             <label>Created By</label>
                             <select name="created_by" id="created_by" class="form-control" style="border:1px solid #cb0c9f;"
                                 id="dataField">
@@ -32,6 +32,16 @@
                                 @endforeach
                             </select>
                         </div>
+
+                        <div class="col-sm-3">
+                            <label>Tag</label>
+                            <select class="selectpicker form-control" multiple data-live-search="true" name="tag[]"
+                                id="tag">
+                                @foreach ($tags as $tag)
+                                    <option value="{{ $tag->id }}">{{ ucfirst($tag->name) }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     @endif
 
                     <div class="col-sm-3">
@@ -44,17 +54,7 @@
                         </select>
                     </div>
 
-                    <div class="col-sm-2">
-                        <label>Tag</label>
-                        <select class="selectpicker form-control" multiple data-live-search="true" name="tag[]" id="tag">
-                            @foreach ($tags as $tag)
-                                <option value="{{ $tag->id }}">{{ ucfirst($tag->name) }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-
-                    <div class="col-sm-2">
+                    <div class="col-sm-3">
                         <label>Priority</label>
                         <select name="priority" id="priority" class="form-control" style="border:1px solid #cb0c9f;">
                             <option value="">Select</option>
@@ -75,14 +75,11 @@
                         <input name="deadline_date" id="deadline_date" class="form-control datepicker" autocomplete="off"
                             style="border:1px solid #cb0c9f;" value="" placeholder="Select Deadline Date">
                     </div>
-                    <div class="col-sm-2">
+                    <div class="col-sm-3">
                         <label>Task Code</label>
                         <input name="task_code" id="task_code" class="form-control" style="border:1px solid #cb0c9f;"
                             placeholder="Enter Task Code">
                     </div>
-
-
-
                     <div class="col-sm-1">
                         <button type="button" class="btn btn-primary" style="margin-top:31px;" id="submitButton"
                             onclick="searchTask()"
@@ -97,7 +94,6 @@
                             style="margin-top:30px; margin-left:30px;">New task</a>
                     </div>
                 </div>
-
                 <div id="searchResults">
                     @include('task/searchTaskResult')
                 </div>

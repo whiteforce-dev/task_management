@@ -8,27 +8,17 @@
             <h5 class="modal-title">Create Task</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" id="close-button">&#10060;</button>
         </div>
-
-
         <!-- Modal body -->
         <div class="modal-body">
             <form action="{{ url('create-task') }}" method="POST"  enctype="multipart/form-data" id="createdtask">
                 @csrf
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <label>Task name</label>
                         <input class="form-control" value="" type="text" placeholder="Task Name" id="task_name" name="task_name">
                     </div>
-                    <div class="col-md-6">
-                        <label>Select Tag</label>
-                        <select class="form-control selectpicker" multiple data-live-search="true" name="tag[]" id="tag">
-                            @foreach ($tags as $tag)
-                                <option value="{{ $tag->id }}">{{ $tag->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div> 
-                <br>
+                </div>
+                
                 <div class="row">
                     @if(!empty(Auth::user()->can_allot_to_others))
                     <div class="col-md-6">
@@ -74,7 +64,16 @@
                         <textarea class="form-control" id="about" rows="3" placeholder="Description..." name="task_details" id="task_details"></textarea>
                     </div>
                 </div>
-
+                <div class="row">   
+                    <div class="col-md-12">
+                        <label>Select Tag</label>
+                        <select class="form-control selectpicker" multiple data-live-search="true" name="tag[]" id="tag">
+                            @foreach ($tags as $tag)
+                                <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div> 
                 <div class="row" style="margin-top:25px;">
                     <div class="col-sm-6">
                         <label>Images</label>

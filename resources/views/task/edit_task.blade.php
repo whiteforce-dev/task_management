@@ -28,9 +28,9 @@
                     </div>
                 @endif
 
-                @if (Auth::user()->can_allot_to_others == '1')
+                
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-group">
                                 <label for="user-name" class="form-control-label">{{ __('Task name') }}</label>
                                 <div class="@error('user.name')border border-danger rounded-3 @enderror">
@@ -42,6 +42,8 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    @if (Auth::user()->can_allot_to_others == '1')    
                         @php
                             $selectedIDs = explode(',', $task->alloted_to);
                             $users = \App\Models\User::select('id', 'name')->get();
@@ -53,6 +55,7 @@
                                 ];
                             }
                         @endphp
+                    <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="user.type" class="form-control-label">{{ __('Alloted to') }}</label>
@@ -72,22 +75,17 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                @else<div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="user-name" class="form-control-label">{{ __('Task name') }}</label>
-                                <div class="@error('user.name')border border-danger rounded-3 @enderror">
-                                    <input class="form-control" value="{{ $task->task_name }}" type="text"
-                                        placeholder="Task Name" id="task-name" name="task_name">
-                                    @error('task_name')
-                                        <p class="text-danger text-xs mt-2">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                            </div>
+
+                        <div class="col-sm-6">
+                            <label>Select Tag</label>
+                            <select class="form-control selectpicker" multiple data-live-search="true" name="tag[]" id="tag">
+                                @foreach ($tags as $tag)
+                                    <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
-                @endif
+                    @endif
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -189,20 +187,6 @@
                         </div>
                     @endif
 
-
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <label>Select Tag</label>
-                            <select name="tag[]" class="form-control" >
-                            @foreach ($tags as $tag)
-                                <option
-                                    value="{{ $tag->id }}"{{ $tag->id == $task->tag ? 'selected' : '' }}>{{ $tag->name }}
-                                </option>
-                            @endforeach
-                           </select>
-                        </div>
-                    </div>
-
                     <input type="hidden" name="managerId" value="{{ $task->alloted_by }}">
                     <div class="row">
                         <div class="col-md-12">
@@ -219,7 +203,7 @@
 <link rel="stylesheet" href="{{ url('assets/css/multiselect.css') }}">
 <link rel="stylesheet" href="{{ url('assets/css/multiselectdrop.css') }}">
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>
 <script src="{{ url('assets/jquery-validation/jquery.validate.min.js') }}"></script>
 <script>
