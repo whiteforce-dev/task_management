@@ -36,9 +36,16 @@ document.addEventListener("DOMContentLoaded", (event) => {
         this.classList.remove("task-hover");
         if (dragSrcEl != this) {
             dragSrcEl.remove();
-            console.log(this.dataset.count, dragSrcEl.dataset.id);
+            // console.log(this.dataset.count, dragSrcEl.dataset.id);
             updateCardStatus(dragSrcEl.dataset.id, this.dataset.count);
-            this.innerHTML += e.dataTransfer.getData("text/html");
+            let newDiv = document.createElement("div")
+            newDiv.innerHTML =e.dataTransfer.getData("text/html");
+            newDiv.className = newDiv.querySelector("& > div").className
+            newDiv.setAttribute("draggable", true)
+            newDiv.setAttribute("data-id",newDiv.querySelector("& > div").dataset.id )
+            newDiv.innerHTML = newDiv.querySelector("& > div").innerHTML;
+            this.insertBefore(newDiv, this.childNodes[2])
+            // this.innerHTML += e.dataTransfer.getData("text/html");
         }
         attachEvent();
         return false;
@@ -80,3 +87,5 @@ document.addEventListener("DOMContentLoaded", (event) => {
     }
     attachEvent();
 });
+
+
