@@ -13,12 +13,12 @@
         </div>
         <div class="col-md-2 summaryfisrtdiv">
             <span class="summarySpan">Pending Task :</span>
-            <span class="badge badge-primary" style="background: linear-gradient(to right, #ff8585, #f60909);font-size: 14px">
+            <span class="badge badge-primary" style="background: linear-gradient(to right, #ba2121, #ff0000);font-size: 14px">
             {{ !empty($alloted_summary_array[$allotted]['data'][1]) ? $alloted_summary_array[$allotted]['data'][1] : 0}}</span>
         </div>
         <div class="col-md-3 summarydiv">
             <span class="summarySpan" style="margin-left:44px">Progress Task :</span>
-            <span class="badge badge-primary" style="background:linear-gradient(310deg, #8508e0, #ff00fa);font-size: 14px">
+            <span class="badge badge-primary" style="background:linear-gradient(310deg, #ed60eb, #9a0a98);font-size: 14px">
             {{ !empty($alloted_summary_array[$allotted]['data'][2]) ? $alloted_summary_array[$allotted]['data'][2] : 0}}</span>
         </div>
         <div class="col-md-3 summarydiv">
