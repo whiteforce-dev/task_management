@@ -25,7 +25,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4">
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
             <div class="card">
                 <div class="card-body p-3">
                     <div class="row">
@@ -51,7 +51,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-2 col-sm-6 mb-xl-0 mb-4">
+        <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
             <div class="card">
                 <div class="card-body p-3">
                     <div class="row">
@@ -73,7 +73,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-2 col-sm-6">
+        <div class="col-xl-3 col-sm-6">
             <div class="card">
                 <div class="card-body p-3">
                     <div class="row">
@@ -97,30 +97,7 @@
                 </div>
             </div>
         </div>
-         <div class="col-xl-3 col-sm-6">
-            <div class="card">
-                <div class="card-body p-3">
-                    <div class="row">
-                        <div class="col-8">
-                            <div class="numbers">
-                                <a href="{{ url('need-approvalDashboard', Auth::user()->id) }}">
-                                    <p class="text-sm mb-0 text-capitalize font-weight-bold">Need Approval</p>
-                                    <h5 class="font-weight-bolder mb-0">
-                                        {{ $needApproval ?? 'Na' }}
-                                        <span class="text-success text-sm font-weight-bolder">+{{ $needApp ?? '0' }}%</span>
-                                    </h5>
-                                </a>
-                            </div>
-                        </div>
-                        <div class="col-4 text-end">
-                            <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                                <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+         
     </div>
     <div class="row mt-4">
         <div class="col-lg-9 mb-lg-0 mb-4">

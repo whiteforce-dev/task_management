@@ -155,6 +155,7 @@ position: absolute;
     transform: rotate(0deg);
   }
 }
+
 </style>
 
 <div class="modal-dialog modal-xl" style="max-height:calc(100vh - 56px);">
@@ -177,7 +178,7 @@ position: absolute;
                             <div class="msg-bubble" style="margin-left:8px;">
                                 <div class="msg-info">
                                     <div class="msg-info-name">{{ ucfirst($managerData->name) }}</div>
-                                    <div class="msg-info-time">{{ $remark->created_at->format('d,M Y / h:i A') }}</div>
+                                    <div class="msg-info-time">{{ $remark->created_at->format('dM, Y / h:i A') }}</div>
                                 </div>
                                 <div class="msg-text"><pre>{{ $remark->remark }}</pre></div>
                                 <div id="response1"></div>
@@ -194,7 +195,7 @@ position: absolute;
                         <div class="msg-bubble">
                             <div class="msg-info">
                                 <div class="msg-info-name">{{ ucfirst($remark->GetUser->name) }}</div>
-                                <div class="msg-info-time">{{ $remark->created_at->format('d,M Y / h:i A') }}</div>
+                                <div class="msg-info-time">{{ $remark->created_at->format('dM, Y / h:i A') }}</div>
                             </div>
                             <div class="msg-text"> <pre>{{ $remark->remark }}</pre></div>                     
                         </div>

@@ -146,6 +146,8 @@ class HomeController extends Controller
                 ->where('status', '5')->where('is_approved', '1')
                 ->count();
         }
+        
+        $per_T = $per_p = $per_PP = $needApp = 0;
         if ($totaltask > 0) {
             $per_T = ($complettask / $totaltask) * 100;
             $per_T = number_format($per_T, 2);

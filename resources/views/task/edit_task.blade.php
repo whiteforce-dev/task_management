@@ -28,33 +28,33 @@
                     </div>
                 @endif
 
-                
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="user-name" class="form-control-label">{{ __('Task name') }}</label>
-                                <div class="@error('user.name')border border-danger rounded-3 @enderror">
-                                    <input class="form-control" value="{{ $task->task_name }}" type="text"
-                                        placeholder="Task Name" id="task-name" name="task_name">
-                                    @error('task_name')
-                                        <p class="text-danger text-xs mt-2">{{ $message }}</p>
-                                    @enderror
-                                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="user-name" class="form-control-label">{{ __('Task name') }}</label>
+                            <div class="@error('user.name')border border-danger rounded-3 @enderror">
+                                <input class="form-control" value="{{ $task->task_name }}" type="text"
+                                    placeholder="Task Name" id="task-name" name="task_name">
+                                @error('task_name')
+                                    <p class="text-danger text-xs mt-2">{{ $message }}</p>
+                                @enderror
                             </div>
                         </div>
                     </div>
-                    @if (Auth::user()->can_allot_to_others == '1')    
-                        @php
-                            $selectedIDs = explode(',', $task->alloted_to);
-                            $users = \App\Models\User::select('id', 'name')->get();
-                            foreach ($users as $user) {
-                                $options[] = [
-                                    'id' => $user->id,
-                                    'name' => $user->name,
-                                    'selected' => in_array($user->id, $selectedIDs),
-                                ];
-                            }
-                        @endphp
+                </div>
+                @if (Auth::user()->can_allot_to_others == '1')
+                    @php
+                        $selectedIDs = explode(',', $task->alloted_to);
+                        $users = \App\Models\User::select('id', 'name')->get();
+                        foreach ($users as $user) {
+                            $options[] = [
+                                'id' => $user->id,
+                                'name' => $user->name,
+                                'selected' => in_array($user->id, $selectedIDs),
+                            ];
+                        }
+                    @endphp
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
@@ -64,8 +64,7 @@
                                         name="alloted_to[]">
                                         @foreach ($options as $option)
                                             <option value="{{ $option['id'] }}"
-                                                {{ $option['selected'] ? 'selected' : '' }}>
-                                                {{ $option['name'] }}
+                                                {{ $option['selected'] ? 'selected' : '' }}>{{ $option['name'] }}
                                             </option>
                                         @endforeach
                                     </select>
@@ -76,16 +75,31 @@
                             </div>
                         </div>
 
+                        @php
+                        $selectedtagId = explode(',', $task->tag);
+                        $tags = \App\Models\Tag::select('id', 'name')->get();
+                        foreach ($tags as $tag) {
+                            $tagdata[] = [
+                                'id' => $tag->id,
+                                'name' => $tag->name,
+                                'selected' => in_array($tag->id, $selectedtagId),
+                            ];
+                        }
+                       @endphp
+
                         <div class="col-sm-6">
                             <label>Select Tag</label>
                             <select class="form-control selectpicker" multiple data-live-search="true" name="tag[]" id="tag">
-                                @foreach ($tags as $tag)
-                                    <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                                @foreach ($tagdata as $data)
+                                            <option value="{{ $data['id'] }}"
+                                                {{ $data['selected'] ? 'selected' : '' }}>{{ $data['name'] }}
+                                            </option>
                                 @endforeach
                             </select>
                         </div>
+
                     </div>
-                    @endif
+                @endif
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -153,19 +167,16 @@
 
                     <div class="row">
                         <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="user.team_comments"
-                                    class="form-control-label">{{ __('Task details') }}</label>
-                                <div class="@error('user.team_comments')border border-danger rounded-3 @enderror">
-                                    <textarea class="form-control" rows="3" placeholder="Task deatils..." name="task_details">{{ $task->task_details }}</textarea>
-                                    @error('phone')
-                                        <p class="text-danger text-xs mt-2">{{ $message }}</p>
-                                    @enderror
-                                </div>
-                            </div>
+                            <label>Check List</label>
+                            <select class="form-control js-example-tokenizer select2"  id="js-example-basic-multiple" type="text" name="checklist[]" multiple="multiple" >
+                                @foreach ($checklists as $list)
+                                <option value="{{ $list->id }}" selected>{{ ucfirst($list->checklist) }}</option>   
+                                @endforeach                                
+                            </select>
                         </div>
                     </div>
 
+                </div>
                     @if ($task->images > 0)
                         <div class="row">
                             <div class="col-sm-6">
@@ -202,6 +213,25 @@
 </div>
 <link rel="stylesheet" href="{{ url('assets/css/multiselect.css') }}">
 <link rel="stylesheet" href="{{ url('assets/css/multiselectdrop.css') }}">
+
+<script>
+    $(document).ready(function() {
+        $('.select2').select2({
+            tags: true,
+            tokenSeparators: [',', ' ']
+            })
+        $('.select3').select2({
+            placeholder: "Enter Tag",
+        });
+    });
+</script>
+
+<script>
+  $(".js-example-tokenizer").select2({
+tags: true,
+tokenSeparators: [',', ' ']
+})
+</script>
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>
@@ -240,3 +270,6 @@
         });
     });
 </script>
+
+
+

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\User;
 use App\Models\Managerremark;
 use App\Models\Remark;
+use App\Models\TaskChecklist;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
 use Illuminate\Support\Facades\Auth;
 class Taskmaster extends Model
@@ -42,5 +43,9 @@ class Taskmaster extends Model
     {
         return $this->belongsTo('App\Models\User', 'approve_reject_by');
     }
-
+    public function GetcheckList()
+    {  
+        return $this->hasOne('App\Models\TaskChecklist', 'task_id');
+    }
+    
 }

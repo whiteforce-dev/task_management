@@ -17,26 +17,24 @@ use App\Models\Attachment;
 use Illuminate\Support\Facades\Session;
 use Storage;
 use App\Models\Tag;
+use App\Models\TaskChecklist;
 
 class TaskManagmentController extends Controller
 {
     public function createdTask(request $request)
-    {
+    {   
         $attributes = request()->validate([
             'task_name' => ['required'],
             'start_date'  =>  ['required'],
             'deadline_Date' => ['required'],
-            'task_details' => ['required'],
             'priority' => ['required'],
         ]);
 
         $newtask = new Taskmaster();
         $newtask->task_name = $request->task_name;
-
         if (!empty($request->tag)) {
             $newtask->tag = implode(',', $request->tag);
         }
-
         $newtask->task_code = getTaskCode();
         if (isset($request->alloted_to)) {
             $newtask->alloted_to = implode(',', $request->alloted_to);
@@ -51,7 +49,6 @@ class TaskManagmentController extends Controller
         if(Auth::user()->type == 'manager' || !empty(checkIsUserTL(Auth::user()->id))){
             $newtask->is_approved = 1;
         }
-
         if ($request->images) {
             $image_code = $request->images;
             foreach ($image_code as $i => $file) {
@@ -72,6 +69,19 @@ class TaskManagmentController extends Controller
         if (!empty($notification_users)) {
             $message = "alloted a task&nbsp;&nbsp;<span class='badge badge-primary taskcodebadge'>" . $newtask->task_code . "</span>&nbsp;&nbsp;to you";
             sendNotification($notification_users, Auth::user()->id, $newtask->id, $message);
+        }
+
+        if (!empty($request->checklist)) {
+            foreach ($request->checklist as $i => $checklistData) {
+                $checklist = new TaskChecklist(); 
+                $checklist->task_id = $newtask->id ?? '0';
+                $checklist->checklist = $checklistData;
+                $checklist->is_checked = '0';
+                $checklist->created_by = Auth::user()->id;
+                $checklist->action_teken_by = Auth::user()->id; 
+                $checklist->software_catagory = Auth::user()->software_catagory; 
+                $checklist->save();
+            }
         }
         return redirect('task-list')->with(['success' => 'Your task successfully save.']);
     }
@@ -180,27 +190,26 @@ class TaskManagmentController extends Controller
     }
 
     public function taskEditPage(Request $request)
-    {
+    { 
         $taskId = $request->id;
         $task = Taskmaster::find($taskId);
         $status = Status::get();
         $users = User::where('software_catagory', Auth::user()->software_catagory)->get();
         $tags = Tag::where('software_catagory', Auth::user()->software_catagory)->get();
-        return view('task.edit_task', compact('task', 'status', 'users', 'tags'));
+        $checklists = TaskChecklist::whereIn('task_id', $request)->get();
+        return view('task.edit_task', compact('task', 'status', 'users', 'tags', 'checklists'));
     }
 
     public function UpdateTask(request $request, $id)
-    {   //return $request;
+    {   
         $newtask = Taskmaster::find($id);
         $newtask->task_name = $request->task_name;
-
         if (isset($request->alloted_to)) {
             $newtask->alloted_to = implode(',', $request->alloted_to);
         }
         if (!empty($request->tag)) {
             $newtask->tag = implode(',', $request->tag);
         }
-
         $newtask->task_details = $request->task_details;
         $newtask->start_date = $request->task_date;
         $newtask->deadline_date = $request->deadline_date;
@@ -219,6 +228,11 @@ class TaskManagmentController extends Controller
             $newtask->images = $imagedata;
         }
         $newtask->update();
+        foreach($request->checklist_id as $i=> $id){
+            $checkdata = TaskChecklist::where('id', $id)->first();
+            $checkdata->checklist = $request->checklist[$i];
+            $checkdata->save();
+        }
         return redirect('task-list')->with(['success' => 'Your task successfully updated.']);
     }
 
