@@ -9,7 +9,7 @@
         <form id="taskform">
             <div class="container-fluid py-4">
                 <div class="row">
-                    @if (auth::user()->type !== 'employee')
+                    @if (checkIfAuthorized())
                         <div class="col-3">
                             <label>Created By</label>
                             <select name="created_by" id="created_by" class="form-control" style="border:1px solid #cb0c9f;"
@@ -32,7 +32,7 @@
                                 @endforeach
                             </select>
                         </div>
-
+                    @endif
                         <div class="col-sm-3">
                             <label>Tag</label>
                             <select class="selectpicker form-control" multiple data-live-search="true" name="tag[]"
@@ -42,7 +42,7 @@
                                 @endforeach
                             </select>
                         </div>
-                    @endif
+                   
 
                     <div class="col-sm-3">
                         <label>Status</label>

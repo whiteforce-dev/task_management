@@ -108,6 +108,7 @@ class TaskManagmentController extends Controller
         $is_allotted_to = false;
         $is_tl = checkIsUserTL(Auth::user()->id);
         $alloted_summary_array = $alloted_array = [];
+       
         $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('is_approved', '=', '1');
         if (Auth::user()->type == "employee" && empty($is_tl)) {
             $tasklist = $tasklist->where(function ($query) {
@@ -129,11 +130,12 @@ class TaskManagmentController extends Controller
         if (!empty($request->alloted_to)) {
             $alloted_array = explode(',', implode(',', $request->alloted_to));
             $pattern = implode('|', array_map('preg_quote', $alloted_array));
+            $pattern = "(^|,)($pattern)(,|\$)";
             $tasklist = $tasklist->whereRaw("alloted_to REGEXP '{$pattern}'");
             //forsummary
             $is_allotted_to = true;
             foreach($alloted_array as $alloted){
-                $tasksummry = Taskmaster::where('alloted_to',$alloted)->select('status', \DB::raw('count(id) as task_count'))->groupBy('status')->pluck('task_count', 'status')->toArray();
+                $tasksummry = Taskmaster::whereRaw("FIND_IN_SET(" . $alloted . ", alloted_to)")->where('is_approved',1)->select('status', \DB::raw('count(id) as task_count'))->groupBy('status')->pluck('task_count', 'status')->toArray();
                 if(!empty($tasksummry)){
                     $alloted_summary_array[$alloted]['user_image'] = User::where('id',$alloted)->value('image');
                     $alloted_summary_array[$alloted]['data'] = $tasksummry;
@@ -174,7 +176,8 @@ class TaskManagmentController extends Controller
         if (!empty($request->tag)) {
             $tasklist = $tasklist->whereIn('tag', $request->tag);
         }
-        $tasklist = $tasklist->orderBy('id', 'Desc')->paginate(25);      
+        $tasklist = $tasklist->orderBy('id', 'Desc')->paginate(25);  
+           
         return view('task.searchTaskResult', compact('tasklist','is_allotted_to','alloted_summary_array','alloted_array'));
     }
 

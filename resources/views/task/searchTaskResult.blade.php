@@ -229,10 +229,15 @@ $currentDate = now();
             </div>
 
             <div class="box-one" style="position: relative; margin-left:13px;">
-                <i class="fa-solid fa-circle"
-                        style="margin-right:7px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Tag &nbsp;&nbsp;  &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :
-                    </span><?php $tag = \App\Models\Tag::where('id', $task->tag)->value('name') ?>
-                    &nbsp;<P>{{ $tag ?? 'N/A' }}</P>                                                                              
+                    <i class="fa-solid fa-circle"
+                        style="margin-right:7px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Tag &nbsp;&nbsp; &nbsp;
+                        &nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        :
+                    </span>
+                    <?php $tagName = \App\Models\Tag::whereIn('id', explode(',', $task->tag))->pluck('name')->toArray();
+                    $tagName = implode(', ', $tagName); ?>
+                    <P>{{ $tagName ?? 'N/A' }}</P>
                 </div>
             
             <div class="box-one"
