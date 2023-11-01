@@ -182,7 +182,7 @@
                             <div class="msg-bubble" style="margin-left:8px;">
                                 <div class="msg-info">
                                     <div class="msg-info-name">{{ ucfirst($managerData->name) }}</div>
-                                    <div class="msg-info-time">{{ $remark->created_at->format('d,M Y / h:i A') }}</div>
+                                    <div class="msg-info-time">{{ $remark->created_at->format('dM, Y / h:i A') }}</div>
                                 </div>
                                 <div class="msg-text"><pre>{{ $remark->remark }}</pre></div>
                                 <div id="response1"></div>
@@ -199,7 +199,7 @@
                         <div class="msg-bubble">
                             <div class="msg-info">
                                 <div class="msg-info-name">{{ ucfirst($remark->GetUser->name) }}</div>
-                                <div class="msg-info-time">{{ $remark->created_at->format('d,M Y / h:i A') }}</div>
+                                <div class="msg-info-time">{{ $remark->created_at->format('dM, Y / h:i A') }}</div>
                             </div>
                             <div class="msg-text"> <pre>{{ $remark->remark }}</pre></div>                     
                         </div>

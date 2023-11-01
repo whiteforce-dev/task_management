@@ -1,3 +1,4 @@
+<?php  $is_tl = checkIsUserTL(Auth::user()->id);   ?>
 @extends('layouts.user_type.auth')
 @section('content')
     <link href="assets/table/vendor/simple-datatables/style.css" rel="stylesheet">
@@ -35,7 +36,7 @@
             <div class="alert alert-secondary mx-1" role="alert">
                 <span class="text-white">
                     <strong>Tag List!</strong>
-                    @if (Auth::user()->type == 'admin')
+                    @if (Auth::user()->type == 'admin' || Auth::user()->type == 'manager' || !empty($is_tl))
                         <a href="{{ url('tag-management') }}" class="btn bg-gradient-primary btn-sm mb-0" type="button"
                             style="float:right;">+&nbsp; Create New Tag</a>
                     @endif
