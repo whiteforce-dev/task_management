@@ -13,10 +13,19 @@
             <form action="{{ url('create-task') }}" method="POST" enctype="multipart/form-data" id="createdtask">
                 @csrf
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <label>Task name</label>
                         <input class="form-control" value="" type="text" placeholder="Task Name" id="task_name"
                             name="task_name">
+                    </div>
+
+                    <div class="col-md-6">
+                        <label>Reporter</label>
+                        <select name="reporter" class="form-control">
+                        @foreach ($users as $user)
+                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                        @endforeach
+                        </select>
                     </div>
                 </div>
 
@@ -108,7 +117,7 @@
     $(document).ready(function() {
         $('.select2').select2({
             tags: true,
-            tokenSeparators: [',', ' ']
+            tokenSeparators: [',', '']
             })
         $('.select3').select2({
             placeholder: "Enter Tag",
@@ -118,9 +127,9 @@
 
 <script>
   $(".js-example-tokenizer").select2({
-tags: true,
-tokenSeparators: [',', ' ']
-})
+    tags: true,
+    tokenSeparators: [',', '']
+    })
 </script>
 <link rel="stylesheet" href="{{ url('assets/css/multiselect.css') }}">
 <link rel="stylesheet" href="{{ url('assets/css/multiselectdrop.css') }}">

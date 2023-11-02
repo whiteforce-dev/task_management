@@ -30,7 +30,7 @@
 
 
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label for="user-name" class="form-control-label">{{ __('Task name') }}</label>
                             <div class="@error('user.name')border border-danger rounded-3 @enderror">
@@ -42,6 +42,20 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="user-name" class="form-control-label">{{ __('Reporter') }}</label>
+                            <div class="@error('user.reporter')border border-danger rounded-3 @enderror">
+                               <select name="reporter" class="form-control">
+                                @foreach ($users as $user)                                  
+                                <option value="{{ $user->id }}" {{ $user->id == $task->reporter ? 'selected' :'' }}>{{ ucfirst($user->name) }}</option>
+                                @endforeach
+                               </select>
+                            </div>
+                        </div>  
+                    </div>
+
                 </div>
                 @if (Auth::user()->can_allot_to_others == '1')
                     @php
@@ -168,9 +182,12 @@
                     <div class="row">
                         <div class="col-md-12">
                             <label>Check List</label>
+                            @foreach ($checklists as $lists)
+                            <input type="hidden" value="{{ $lists->id }}" name="list_id[]">
+                            @endforeach 
                             <select class="form-control js-example-tokenizer select2"  id="js-example-basic-multiple" type="text" name="checklist[]" multiple="multiple" >
                                 @foreach ($checklists as $list)
-                                <option value="{{ $list->id }}" selected>{{ ucfirst($list->checklist) }}</option>   
+                                <option value="{{ $list->checklist }}" selected>{{ ucfirst($list->checklist) }}</option>  
                                 @endforeach                                
                             </select>
                         </div>
@@ -218,7 +235,7 @@
     $(document).ready(function() {
         $('.select2').select2({
             tags: true,
-            tokenSeparators: [',', ' ']
+            tokenSeparators: [',', '']
             })
         $('.select3').select2({
             placeholder: "Enter Tag",
@@ -229,7 +246,7 @@
 <script>
   $(".js-example-tokenizer").select2({
 tags: true,
-tokenSeparators: [',', ' ']
+tokenSeparators: [',', '']
 })
 </script>
 

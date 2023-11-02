@@ -127,6 +127,19 @@ body {
   width: max-content;
   grid-column-gap: 1.5rem;
 }
+.project-tasks-admin {
+  display: grid;
+  grid-template-columns: repeat(5, 250px);
+  width: max-content;
+  grid-column-gap: 1.5rem;
+}
+
+.project-tasks-employee {
+  display: grid;
+  grid-template-columns: repeat(4, 300px);
+  width: max-content;
+  grid-column-gap: 1.5rem;
+}
 .project-column-heading {
   display: flex;
   align-items: center;
@@ -141,7 +154,7 @@ body {
   top: -0px;
   margin-bottom: 25px;
   border: 2px dashed transparent;
-  z-index: 2000;
+  z-index: 1000;
 }
 .uper {
   display: flex;
@@ -215,7 +228,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  z-index: 2000;
+  z-index: 1000;
 }
 .project-column-heading-03 {
   width: 100%;
@@ -229,7 +242,7 @@ body {
   margin-top: 10px;
   position: sticky;
   top: -0px;
-  z-index: 2000;
+  z-index: 1000;
 }
 .project-column-heading-04 {
   width: 100%;
@@ -243,7 +256,7 @@ body {
   margin-top: 10px;
   position: sticky;
   top: -0px;
-  z-index: 2000;
+  z-index: 1000;
 }
 /* .project-column-heading-05 {
   width: 100%;
@@ -271,7 +284,7 @@ body {
   margin-top: 10px;
   position: sticky;
   top: -0px;
-  z-index: 2000;
+  z-index: 1000;
 }
 .project-column-heading__title {
   width: 90% !important;

@@ -123,7 +123,7 @@ $currentDate = now();
                         @else
                             <select class="dropbtn1 status-dropdown" style="background:{{ $dropdownColor }} !important"  name="selectstatus" data-task-id="{{ $task->id }}">
                             @foreach ($status as $statuss)
-                            @if($statuss->status != 'completed')
+                            @if($statuss->status != 'completed' && $statuss->status != 'hold')
                             <option value="{{ $statuss->id }}" {{ $statuss->id == $task->status ? 'selected' : '' }}>{{ ucfirst($statuss->status) }}</option>   
                             @endif
                             @endforeach
@@ -215,6 +215,15 @@ $currentDate = now();
                 @endphp
                 <P>{{ array_sum($spent_hours) + floor($total_spent_mins / 60) }}h {{  ($total_spent_mins % 60) }}m</P>
             </div>
+
+            <div class="box-one" style="position: relative; margin-left:13px;">
+                <i class="fa-solid fa-circle"
+                        style="margin-right:7px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Reporter &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; :
+                    </span>
+                    &nbsp;<P>{{ $task->GetReporter->name ?? 'N/A' }}</P>                                                                              
+                </div>
+
+
             @php 
             $alloted_to_ids = explode(',', $task->alloted_to);
             $get_user_names_arr = \App\Models\User::whereIn('id', $alloted_to_ids)->pluck('name')->toArray();
@@ -223,7 +232,7 @@ $currentDate = now();
             
             <div class="box-one" style="position: relative; margin-left:13px;">
             <i class="fa-solid fa-circle"
-                    style="margin-right:7px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Allotted To &nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; :
+                    style="margin-right:7px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Allotted To &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; :
                 </span>
                 &nbsp;<P>{{ $user_names ?? 'N/A' }}</P>                                                                              
             </div>
@@ -232,7 +241,7 @@ $currentDate = now();
                     <i class="fa-solid fa-circle"
                         style="margin-right:7px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Tag &nbsp;&nbsp; &nbsp;
                         &nbsp;&nbsp;
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         :
                     </span>
                     <?php $tagName = \App\Models\Tag::whereIn('id', explode(',', $task->tag))->pluck('name')->toArray();
@@ -248,9 +257,13 @@ $currentDate = now();
                     <img src="{{ url($userimg ?? 'NA') }}" alt="" width="50" height="50"
                         style="margin:3px 2px; border-radius:50px">
                 @endforeach
-                <img src="{{ url($task->GetManagerName->image) }}" alt="" width="50"
+                <img src="{{ url($task->GetManagerName->image ?? 'N/A') }}" alt="" width="50"
                     height="50"
                     style="margin:10px 5px; border-radius:50px; border:2px solid #cb0c9f; ">
+
+                    <img src="{{ url($task->GetReporter->image ?? 'N/A') }}" alt="" width="50"
+                    height="50"
+                    style="margin:10px 5px; border-radius:50px; border:2px solid #289f30; ">    
             </div>
         </div>
     </div>

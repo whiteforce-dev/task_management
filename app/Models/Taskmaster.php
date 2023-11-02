@@ -51,5 +51,10 @@ class Taskmaster extends Model
     {  
         return $this->hasOne('App\Models\TaskChecklist', 'task_id');
     }
+
+    public function GetReporter()
+    {
+        return $this->belongsTo('App\Models\User', 'reporter');
+    }
     
 }
