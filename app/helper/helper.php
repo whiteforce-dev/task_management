@@ -76,4 +76,17 @@ function checkIsUserTL($user_id){
    return false;
 }
 
+function checkIfAuthorized(){
+    if(Auth::user()->type == 'admin' || Auth::user()->type == 'manager'){
+        return true;
+    } elseif(Auth::user()->type == 'employee'){
+        $is_tl = Team::where('tl_id',Auth::user()->id)->first();
+        if(!empty($is_tl)){
+         return true;
+        }
+        return false; 
+    }
+    return false;
+}
+
 

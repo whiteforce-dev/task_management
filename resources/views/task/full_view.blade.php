@@ -49,6 +49,7 @@
     }
     .msg-bubble {
         max-width: 450px;
+        width: 84%;
         padding: 15px;
         border-radius: 15px;
         background: var(--left-msg-bg);
@@ -102,60 +103,63 @@
 
 
 
-       .image-input {
-text-align: center;
-width: 140px;
-position: absolute;
-    right: 24px;
-    bottom: 12px;
-}
-.image-input input {
-  display: none;
-}
-.image-input label {
-    display: block;
-    color: #FFF;
-    background: #cb0c9f;
-    padding: 0.3rem 0.6rem;
-    font-size: 0.84rem;
-    cursor: pointer;
-    border-radius: 7px;
-}
-.image-input label i {
-  font-size: 0.92rem;
-  margin-right: 0.3rem;
-}
-.image-input label:hover i {
-  animation: shake 0.35s;
-}
-.image-input img {
-  max-width: 175px;
-  display: none;
-}
-.image-input span {
-  display: none;
-  text-align: center;
-  cursor: pointer;
-}
+    .image-input {
+        text-align: center;
+        width: 140px;
+        position: absolute;
+        right: 24px;
+        bottom: 12px;
+    }
+    .image-input input {
+        display: none;
+    }
+    .image-input label {
+        display: block;
+        color: #FFF;
+        background: #cb0c9f;
+        padding: 0.3rem 0.6rem;
+        font-size: 0.84rem;
+        cursor: pointer;
+        border-radius: 7px;
+    }
+    .image-input label i {
+        font-size: 0.92rem;
+        margin-right: 0.3rem;
+    }
+    .image-input label:hover i {
+        animation: shake 0.35s;
+    }
+    .image-input img {
+        max-width: 175px;
+        display: none;
+    }
+    .image-input span {
+        display: none;
+        text-align: center;
+        cursor: pointer;
+    }
 
-@keyframes shake {
-  0% {
-    transform: rotate(0deg);
-  }
-  25% {
-    transform: rotate(10deg);
-  }
-  50% {
-    transform: rotate(0deg);
-  }
-  75% {
-    transform: rotate(-10deg);
-  }
-  100% {
-    transform: rotate(0deg);
-  }
-}
-
+    @keyframes shake {
+    0% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(10deg);
+    }
+    50% {
+        transform: rotate(0deg);
+    }
+    75% {
+        transform: rotate(-10deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+    }
+    .col-sm-5 {
+        flex: 0 0 auto;
+        width: 46.666667%;
+    }
 </style>
 
 <div class="modal-dialog modal-xl" style="max-height:calc(100vh - 56px);">
@@ -207,7 +211,8 @@ position: absolute;
                             @endforeach
                         @endif
                         @endif
-                    </div>                                        
+                    </div> 
+                                                       
                 </div>                                    
             @endforeach
         </div>

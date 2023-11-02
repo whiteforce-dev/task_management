@@ -59,8 +59,19 @@ body {
     width: calc(100vw - 17.125rem - 60px);
     z-index: 1000;
 }
+
+#navbarBlur.navbar::before {
+    content: '';
+    position:absolute;
+    width:110%;
+    height: 50px;
+    top: 0;
+    left: -5%;
+    transform:translate(0, -50px);
+    background: #f8f9fa;
+  }
 .py-4{
-    margin-top:100px !important;
+    margin-top:130px;
 }
 
 hr {
@@ -5764,16 +5775,16 @@ fieldset:disabled .btn {
 }
 
 .badge {
-    border-radius: .45rem;
+    border-radius: 0.45rem;
     color: #fff;
     display: inline-block;
-    font-size: .75em;
+    font-size: .9em;
     font-weight: 700;
     line-height: 1;
-    padding: .55em .9em;
+    padding: 0.52em 0.8em;
     text-align: center;
     vertical-align: baseline;
-    white-space: nowrap
+    white-space: nowrap;
 }
 
 .badge:empty {

@@ -260,7 +260,7 @@ pre {
     font-size: .875em;
     margin-bottom: 1rem;
     margin-top: 0;
-    overflow: auto
+    overflow: auto;
 }
 
 pre code {
