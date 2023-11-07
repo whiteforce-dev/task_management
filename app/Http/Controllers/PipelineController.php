@@ -18,24 +18,24 @@ class PipelineController extends Controller
     {
         $is_tl = checkIsUserTL(Auth::user()->id);
         if (!empty($is_tl) || Auth::user()->type == 'admin') {
-            $pendingtasks = Taskmaster::where('status', '1')->where('is_approved', 1)->orderBy('id', 'DESC')->get();
-            $progresstasks = Taskmaster::where('status', '2')->orderBy('id', 'DESC')->get();
-            $completedtasks  = Taskmaster::where('status', '3')->orderBy('id', 'DESC')->get();
-            $holdingtasks = Taskmaster::where('status', '4')->orderBy('id', 'DESC')->get();
-            $needapprovals = Taskmaster::where('status', '5')->orderBy('id', 'DESC')->get();
+            $pendingtasks = Taskmaster::where('status', '1')->where('is_approved', 1)->orderBy('id', 'DESC')->where('software_catagory', Auth::user()->software_catagory)->get();
+            $progresstasks = Taskmaster::where('status', '2')->orderBy('id', 'DESC')->where('software_catagory', Auth::user()->software_catagory)->get();
+            $completedtasks  = Taskmaster::where('status', '3')->orderBy('id', 'DESC')->where('software_catagory', Auth::user()->software_catagory)->get();
+            $holdingtasks = Taskmaster::where('status', '4')->orderBy('id', 'DESC')->where('software_catagory', Auth::user()->software_catagory)->get();
+            $needapprovals = Taskmaster::where('status', '5')->orderBy('id', 'DESC')->where('software_catagory', Auth::user()->software_catagory)->get();
         } elseif (Auth::user()->type == 'manager') {
-            $parentId = User::where('parent_id', Auth::user()->id)->pluck('id')->ToArray();
-            $pendingtasks = Taskmaster::whereIn('alloted_to', $parentId)->where('is_approved', 1)->where('status', '1')->orderBy('id', 'DESC')->get();
-            $progresstasks = Taskmaster::whereIn('alloted_to', $parentId)->where('status', '2')->orderBy('id', 'DESC')->get();
-            $completedtasks  = Taskmaster::whereIn('alloted_to', $parentId)->where('status', '3')->orderBy('id', 'DESC')->get();
-            $holdingtasks = Taskmaster::whereIn('alloted_to', $parentId)->where('status', '4')->orderBy('id', 'DESC')->get();
-            $needapprovals = Taskmaster::whereIn('alloted_to', $parentId)->where('status', '5')->orderBy('id', 'DESC')->get();
+            $parentId = User::where('parent_id', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)->pluck('id')->ToArray();
+            $pendingtasks = Taskmaster::whereIn('alloted_to', $parentId)->where('is_approved', 1)->where('status', '1')->orderBy('id', 'DESC')->where('software_catagory', Auth::user()->software_catagory)->get();
+            $progresstasks = Taskmaster::whereIn('alloted_to', $parentId)->where('status', '2')->orderBy('id', 'DESC')->where('software_catagory', Auth::user()->software_catagory)->get();
+            $completedtasks  = Taskmaster::whereIn('alloted_to', $parentId)->where('status', '3')->orderBy('id', 'DESC')->where('software_catagory', Auth::user()->software_catagory)->get();
+            $holdingtasks = Taskmaster::whereIn('alloted_to', $parentId)->where('status', '4')->orderBy('id', 'DESC')->where('software_catagory', Auth::user()->software_catagory)->get();
+            $needapprovals = Taskmaster::whereIn('alloted_to', $parentId)->where('status', '5')->orderBy('id', 'DESC')->where('software_catagory', Auth::user()->software_catagory)->get();
         } else {
-            $pendingtasks = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '1')->where('is_approved', 1)->orderBy('id', 'DESC')->get();
-            $progresstasks = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '2')->orderBy('id', 'DESC')->get();
-            $completedtasks  = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '3')->orderBy('id', 'DESC')->get();
-            $holdingtasks = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '4')->orderBy('id', 'DESC')->get();
-            $needapprovals = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '5')->orderBy('id', 'DESC')->get();
+            $pendingtasks = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '1')->where('is_approved', 1)->orderBy('id', 'DESC')->where('software_catagory', Auth::user()->software_catagory)->get();
+            $progresstasks = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '2')->orderBy('id', 'DESC')->where('software_catagory', Auth::user()->software_catagory)->get();
+            $completedtasks  = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '3')->orderBy('id', 'DESC')->where('software_catagory', Auth::user()->software_catagory)->get();
+            $holdingtasks = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '4')->orderBy('id', 'DESC')->where('software_catagory', Auth::user()->software_catagory)->get();
+            $needapprovals = Taskmaster::where('alloted_to', Auth::user()->id)->where('status', '5')->orderBy('id', 'DESC')->where('software_catagory', Auth::user()->software_catagory)->get();
         }
         $tags = Tag::where('software_catagory', Auth::user()->software_catagory)->get();
         $stages = Status::get();
@@ -52,13 +52,27 @@ class PipelineController extends Controller
 
     public function updateStatus(request $request)
     {
+        $is_tl = checkIsUserTL(Auth::user()->id);
         $cardId = $request->input('cardId');
         $newStatus = $request->input('newStatus');
-        $card = Taskmaster::find($cardId);
-        if ($card) {
-            $card->status = $newStatus;
-            $card->save();
+        if (empty($is_tl)) {
+            if ($newStatus !== '4' && $newStatus !== '3') { 
+                $card = Taskmaster::find($cardId);
+                if ($card) {
+                    $card->status = $newStatus;
+                    $card->save();
+                }
+            } else {
+                return response()->json(['message' => 'Card status not updated']);
+            }
+        } elseif (!empty($is_tl) || Auth::user()->type == 'manager' || Auth::user()->type == 'admin') {
+            $card = Taskmaster::find($cardId);
+            if ($card) {
+                $card->status = $newStatus;
+                $card->save();
+            }
         }
+
         return response()->json(['message' => 'Card status updated successfully']);
     }
 
@@ -70,7 +84,7 @@ class PipelineController extends Controller
         return view('pipeline.pipeline_view_model', compact('task', 'remarks', 'users'));
     }
 
-   
+
     public function pipelineCardSearch(Request $request)
     {
         $is_tl = checkIsUserTL(Auth::user()->id);
@@ -144,19 +158,19 @@ class PipelineController extends Controller
         }
 
         if (!empty($is_tl) || Auth::user()->type == 'admin' || Auth::user()->type == 'manager') {
-            $pendingtasks = $pendingtasks->orderBy('id', 'DESC')->get();
-            $progresstasks = $progresstasks->orderBy('id', 'DESC')->get();
-            $completedtasks = $completedtasks->orderBy('id', 'DESC')->get();
-            $holdingtasks = $holdingtasks->orderBy('id', 'DESC')->get();
-            $needapprovals = $needapprovals->orderBy('id', 'DESC')->get();
+            $pendingtasks = $pendingtasks->orderBy('id', 'DESC')->where('software_catagory', Auth::user()->software_catagory)->get();
+            $progresstasks = $progresstasks->orderBy('id', 'DESC')->where('software_catagory', Auth::user()->software_catagory)->get();
+            $completedtasks = $completedtasks->orderBy('id', 'DESC')->where('software_catagory', Auth::user()->software_catagory)->get();
+            $holdingtasks = $holdingtasks->orderBy('id', 'DESC')->where('software_catagory', Auth::user()->software_catagory)->get();
+            $needapprovals = $needapprovals->orderBy('id', 'DESC')->where('software_catagory', Auth::user()->software_catagory)->get();
         } else {
-            $pendingtasks = $pendingtasks->where('alloted_to', Auth::user()->id)->orderBy('id', 'DESC')->get();
-            $progresstasks = $progresstasks->where('alloted_to', Auth::user()->id)->orderBy('id', 'DESC')->get();
-            $completedtasks = $completedtasks->where('alloted_to', Auth::user()->id)->orderBy('id', 'DESC')->get();
-            $holdingtasks = $holdingtasks->where('alloted_to', Auth::user()->id)->orderBy('id', 'DESC')->get();
-            $needapprovals = $needapprovals->where('alloted_to', Auth::user()->id)->orderBy('id', 'DESC')->get();
+            $pendingtasks = $pendingtasks->where('alloted_to', Auth::user()->id)->orderBy('id', 'DESC')->where('software_catagory', Auth::user()->software_catagory)->get();
+            $progresstasks = $progresstasks->where('alloted_to', Auth::user()->id)->orderBy('id', 'DESC')->where('software_catagory', Auth::user()->software_catagory)->get();
+            $completedtasks = $completedtasks->where('alloted_to', Auth::user()->id)->orderBy('id', 'DESC')->where('software_catagory', Auth::user()->software_catagory)->get();
+            $holdingtasks = $holdingtasks->where('alloted_to', Auth::user()->id)->orderBy('id', 'DESC')->where('software_catagory', Auth::user()->software_catagory)->get();
+            $needapprovals = $needapprovals->where('alloted_to', Auth::user()->id)->orderBy('id', 'DESC')->where('software_catagory', Auth::user()->software_catagory)->get();
         }
-        
+
         $stages = Status::get();
         $tasg = Tag::where('software_catagory', Auth::user()->software_catagory)->get();
         $users = User::where('software_catagory', Auth::user()->software_catagory)->where('type', '!=', 'admin')->get();

@@ -13,7 +13,7 @@
                         <div class="col-3">
                             <label>Created By</label>
                             <select name="created_by" id="created_by" class="form-control" style="border:1px solid #cb0c9f;"
-                                id="dataField">
+                                >
                                 <option value="">Select</option>
                                 @foreach ($users as $user)
                                     <option value="{{ $user->id }}" {{ $user->id == $managerId ? 'selected' : '' }}>
@@ -80,6 +80,15 @@
                         <input name="task_code" id="task_code" class="form-control" style="border:1px solid #cb0c9f;"
                             placeholder="Enter Task Code">
                     </div>
+                    <div class="col-sm-3">
+                        <label>Reporter</label>
+                        <select name="reporter" id="reporter" class="form-control" style="border:1px solid #cb0c9f;">
+                                <option value="">Select Reporter</option>
+                                @foreach ($reporters as $reporter)
+                                    <option value="{{ $reporter->id }}">{{ ucfirst($reporter->name) }}</option>
+                                @endforeach
+                            </select>
+                    </div>
                     <div class="col-sm-1">
                         <button type="button" class="btn btn-primary" style="margin-top:31px;" id="submitButton"
                             onclick="searchTask()"
@@ -133,6 +142,7 @@
                     task_code: $('#task_code').val(),
                     multiple_status: $('#multiple_status').val(),
                     tag: $('#tag').val(),
+                    reporter: $('#reporter').val(),
                     '_token': "{{ csrf_token() }}"
                 },
                 success: function(response) {

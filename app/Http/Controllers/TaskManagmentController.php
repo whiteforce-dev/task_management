@@ -18,11 +18,12 @@ use Illuminate\Support\Facades\Session;
 use Storage;
 use App\Models\Tag;
 use App\Models\TaskChecklist;
+use App\Models\Team;
 
 class TaskManagmentController extends Controller
 {
     public function createdTask(request $request)
-    {   
+    {
         $attributes = request()->validate([
             'task_name' => ['required'],
             'start_date'  =>  ['required'],
@@ -45,8 +46,10 @@ class TaskManagmentController extends Controller
         $newtask->deadline_date = $request->deadline_Date;
         $newtask->software_catagory = Auth::user()->software_catagory;
         $newtask->priority = $request->priority;
+        $newtask->reporter = $request->reporter;
 
-        if(Auth::user()->type == 'manager' || !empty(checkIsUserTL(Auth::user()->id))){
+
+        if (Auth::user()->type == 'manager' || !empty(checkIsUserTL(Auth::user()->id))) {
             $newtask->is_approved = 1;
         }
         if ($request->images) {
@@ -73,13 +76,13 @@ class TaskManagmentController extends Controller
 
         if (!empty($request->checklist)) {
             foreach ($request->checklist as $i => $checklistData) {
-                $checklist = new TaskChecklist(); 
+                $checklist = new TaskChecklist();
                 $checklist->task_id = $newtask->id ?? '0';
                 $checklist->checklist = $checklistData;
                 $checklist->is_checked = '0';
                 $checklist->created_by = Auth::user()->id;
-                $checklist->action_teken_by = Auth::user()->id; 
-                $checklist->software_catagory = Auth::user()->software_catagory; 
+                $checklist->action_teken_by = Auth::user()->id;
+                $checklist->software_catagory = Auth::user()->software_catagory;
                 $checklist->save();
             }
         }
@@ -97,20 +100,23 @@ class TaskManagmentController extends Controller
         $tags = "";
 
         $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('is_approved', '=', '1');
-        if (Auth::user()->type == "employee" && empty($is_tl)) { 
+        if (Auth::user()->type == "employee" && empty($is_tl)) {
             $tasklist = $tasklist->where('alloted_by', Auth::user()->id)->orWhereRaw("FIND_IN_SET(" . Auth::user()->id . ", alloted_to)");
-        } elseif (Auth::user()->type == "manager") { 
+        } elseif (Auth::user()->type == "manager") {
             $teamId = User::where('software_catagory', Auth::user()->software_catagory)->where('parent_id', Auth::user()->id)->pluck('id')->toArray();
             $all_users_ids = [Auth::user()->id, ...$teamId];
             $pattern = implode('|', array_map('preg_quote', explode(',', implode(',', $all_users_ids))));
             $tasklist = $tasklist->whereIn('alloted_by', $all_users_ids)->orWhereRaw("alloted_to REGEXP '{$pattern}'");
-        } 
+        }
         $tasklist = $tasklist->orderBy('id', 'Desc')->where('is_approved', '=', '1')->paginate(25);
         $users = User::where('software_catagory', Auth::user()->software_catagory)->where('type', '!=', 'admin')->get();
         $statuss = Status::get();
         $prioritys = Priority::get();
         $tags = Tag::where('software_catagory', Auth::user()->software_catagory)->get();
-        return view('task.taskList', compact('tags', 'tasklist', 'managerId', 'EmployeeId', 'status_search', 'from', 'to', 'priority', 'statuss', 'users', 'prioritys'));
+
+         $reportersId = Team::pluck('tl_id')->toArray();  
+         $reporters = User::whereIn('id', $reportersId)->get(); 
+        return view('task.taskList', compact('tags', 'tasklist', 'managerId', 'EmployeeId', 'status_search', 'from', 'to', 'priority', 'statuss', 'users', 'prioritys', 'reporters'));
     }
 
     public function searchTask(Request $request)
@@ -186,13 +192,16 @@ class TaskManagmentController extends Controller
         if (!empty($request->tag)) {
             $tasklist = $tasklist->whereIn('tag', $request->tag);
         }
-        $tasklist = $tasklist->orderBy('id', 'Desc')->paginate(25);  
-           
-        return view('task.searchTaskResult', compact('tasklist','is_allotted_to','alloted_summary_array','alloted_array'));
+        if (!empty($request->reporter)) {
+            $tasklist = $tasklist->where('reporter', $request->reporter);
+        }
+        $tasklist = $tasklist->orderBy('id', 'Desc')->paginate(25);
+
+        return view('task.searchTaskResult', compact('tasklist', 'is_allotted_to', 'alloted_summary_array', 'alloted_array'));
     }
 
     public function taskEditPage(Request $request)
-    { 
+    {
         $taskId = $request->id;
         $task = Taskmaster::find($taskId);
         $status = Status::get();
@@ -203,7 +212,7 @@ class TaskManagmentController extends Controller
     }
 
     public function UpdateTask(request $request, $id)
-    {   
+    {
         $newtask = Taskmaster::find($id);
         $newtask->task_name = $request->task_name;
         if (isset($request->alloted_to)) {
@@ -219,6 +228,7 @@ class TaskManagmentController extends Controller
         $newtask->status = $request->status;
         $newtask->software_catagory = Auth::user()->software_catagory;
         $newtask->priority = $request->priority;
+        $newtask->reporter = $request->reporter;
         if ($request->images) {
             $image_code = $request->images;
             foreach ($image_code as $i => $file) {
@@ -230,10 +240,26 @@ class TaskManagmentController extends Controller
             $newtask->images = $imagedata;
         }
         $newtask->update();
-        foreach($request->checklist_id as $i=> $id){
-            $checkdata = TaskChecklist::where('id', $id)->first();
-            $checkdata->checklist = $request->checklist[$i];
-            $checkdata->save();
+
+        if ($request->checklist) {
+            $checklistItems = $request->checklist;
+            $checklistId = $request->list_id;
+            foreach ($checklistItems as $i => $item) {
+                if (!empty($checklistId[$i]) && (!empty($item[$i]))) {
+                    $checkdata = TaskChecklist::findOrFail($checklistId[$i]);
+                    $checkdata->checklist = $checklistItems[$i];
+                    $checkdata->save();
+                }else{
+                    $checklist = new TaskChecklist();
+                    $checklist->task_id = $newtask->id ?? '0';
+                    $checklist->checklist = $item;
+                    $checklist->is_checked = '0';
+                    $checklist->created_by = Auth::user()->id;
+                    $checklist->action_teken_by = Auth::user()->id;
+                    $checklist->software_catagory = Auth::user()->software_catagory;
+                    $checklist->save();
+                }
+            }
         }
         return redirect('task-list')->with(['success' => 'Your task successfully updated.']);
     }
@@ -414,7 +440,7 @@ class TaskManagmentController extends Controller
     }
 
     public function dashbordtotaltask($id)
-    { 
+    {
         if (Auth::user()->type == 'admin') {
             $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('is_approved', '1')->orderBy('id', 'DESC')->get();
         } elseif (Auth::user()->type == 'manager') {
@@ -497,8 +523,8 @@ class TaskManagmentController extends Controller
         $comments->task_id = $request->task_id;
         $comments->remark = $request->manager_comments;
         $comments->userid = Auth::user()->id;
-        $comments->software_catagory = Auth::user()->software_catagory;      
-        if ($request['screenshort']) {  
+        $comments->software_catagory = Auth::user()->software_catagory;
+        if ($request['screenshort']) {
             $image_code = $request['screenshort'];
             foreach ($image_code as $i => $file) {
                 $filepath = time() . '.png';
@@ -506,7 +532,7 @@ class TaskManagmentController extends Controller
                 $data[] = $filepath;
             }
             $imagedata = implode(',', $data);
-            $comments->screenshort = $imagedata;  
+            $comments->screenshort = $imagedata;
         }
         $comments->save();
         if (!empty($request->notify_to)) {
@@ -545,12 +571,12 @@ class TaskManagmentController extends Controller
     {
         $taskId = $request->input('taskId');
         $newStatus = $request->input('newStatus');
-        
+
         $taskmaster = Taskmaster::where('id', $taskId)->first();
         $taskmaster->status = $newStatus;
-        if($newStatus == 5){
+        if ($newStatus == 5) {
             $taskmaster->sent_to_approval_date = date('y-m-d');
-        } elseif($newStatus == 3){
+        } elseif ($newStatus == 3) {
             $taskmaster->end_date = date('y-m-d');
         }
         $taskmaster->save();
