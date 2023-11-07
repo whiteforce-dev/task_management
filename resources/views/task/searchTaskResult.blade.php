@@ -216,7 +216,37 @@ pre{
     background: #eda41b;
     box-shadow: 1px 1px 4px -1px #f396f3;
 }
+
+.highOne {
+    position: relative;
+    /* padding: 10px; */
+    cursor: pointer;
+    overflow: hidden;
+    z-index: 2;
+    color:black;
+}
+
+.highOne::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+     background: #f3f2ef;
+    transition: width 0.8s ease-in-out;
+    z-index: -1;
+    color: black;
+}
+
+.highOne:hover::before {
+    width: 100%;
+    color:white;
+}
+
+
 </style>
+
 @if(!empty($is_allotted_to))
 <div class="cards">
     <h6 style="padding-left: 11px;padding-bottom: 1px;padding-top: 4px;font-weight: 900;">Task Summary -</h6>
@@ -281,6 +311,7 @@ $currentDate = now();
 @endphp
 
 <section class="cards {{$card_color_class}}" id="result">
+
     <div class="main-card"> 
         <div class="long-width" style="width: 70%;">
             <div class="up-box">
@@ -299,12 +330,10 @@ $currentDate = now();
             <div class="low-box" style="position:relative;height:95px;overflow:hidden;">
             <span onclick="this.parentElement.style.height='max-content'" style="cursor:pointer;position:absolute;right:20px;bottom:0;font-size:14px;font-weight:bold;">Read More
             </span>
-                <h3><i class="fa-solid fa-user-tag" style="margin-right: 5px; color:#cb0c9f;"></i>
-                    Description</h3>
+                <h3><i class="fa-solid fa-user-tag" style="margin-right: 5px; color:#cb0c9f;"></i>Description</h3>
                     <?php $taskDetails = mb_strimwidth($task->task_details ?? 'null', 0, 150, '...'); ?>
-                <pre>{{ $task->task_details }}</pre>             
+                <pre class="highOne">{{ $task->task_details }}</pre>         
             </div>
-
             <div class="low-box remarkbox">
                 <h3><i class="fa-solid fa-user-tag" style="margin-right: 5px; color:#cb0c9f;"></i>Remark</h3>
                 <div class="comments">
@@ -313,7 +342,7 @@ $currentDate = now();
                         <div class="proimg">
                             <img src="{{ !empty($remark->GetUser->image) ? url($remark->GetUser->image) : '' }}" alt="" width="100%">
                         </div>
-                        <p>{{ $remark->remark }}</p>
+                        <p class="highOne">{{ $remark->remark }}</p>
                         <div class="numdate">
                             <span>{{ date('M d,Y H:i:s',strtotime($remark->created_at)) }}</span>
                         </div>
@@ -484,4 +513,20 @@ $currentDate = now();
                 });
             });
         });
+</script>
+
+<script>
+//     document.addEventListener("DOMContentLoaded", function() {
+//     const lines = document.querySelectorAll(".highlight-line");
+
+//     lines.forEach(function(line) {
+//         line.addEventListener("mouseenter", function() {
+//             line.classList.add("highlighted");
+//         });
+
+//         line.addEventListener("mouseleave", function() {
+//             line.classList.remove("highlighted");
+//         });
+//     });
+// });
 </script>
