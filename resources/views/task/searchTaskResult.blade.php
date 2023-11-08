@@ -113,7 +113,7 @@ $currentDate = now();
                     @if($task->status == '3')
                         <span  class="badge badge-primary completedBadge" style="width: 105% !important">Completed</span>
                     @else
-                        @if(Auth::user()->type != 'employee' || checkIsUserTL(Auth::user()->id))
+                        @if(Auth::user()->type != 'employee' || checkIsUserTL(Auth::user()->id) || checkTaskCreatedBy($task->id, Auth::user()->id))
                             <select class="dropbtn1 status-dropdown" style="background:{{ $dropdownColor }} !important" name="selectstatus" data-task-id="{{ $task->id }}">
                             @foreach ($status as $statuss)
                             <option value="{{ $statuss->id }}" {{ $statuss->id == $task->status ? 'selected' : '' }}>{{ ucfirst($statuss->status) }}</option>   
@@ -259,10 +259,11 @@ $currentDate = now();
                 <img src="{{ url($task->GetManagerName->image ?? 'N/A') }}" alt="" width="50"
                     height="50"
                     style="margin:10px 5px; border-radius:50px; border:2px solid #cb0c9f; ">
-
+                    @if(!empty($task->GetReporter))
                     <img src="{{ url($task->GetReporter->image ?? 'N/A') }}" alt="" width="50"
                     height="50"
-                    style="margin:10px 5px; border-radius:50px; border:2px solid #289f30; ">    
+                    style="margin:10px 5px; border-radius:50px; border:2px solid #289f30; "> 
+                    @endif  
             </div>
         </div>
     </div>
