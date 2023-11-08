@@ -1,4 +1,73 @@
+<style>
+    <style>
+    * {
+        transition: all 0.4s ease !important;
+    }
 
+    aside#sidenav-main {
+        padding: 7px 5px;
+    }
+
+    aside#sidenav-main.hide {
+        width: 75px;
+        padding: 7px 5px;
+    }
+
+    aside#sidenav-main .nav-link {
+        gap: 10px;
+    }
+
+    aside#sidenav-main.hide .nav-link {
+        margin-inline: 0;
+        gap: 25px;
+    }
+
+    .sidenav.hide+.main-content {
+        margin-left: 6.125rem;
+    }
+
+    #navbarBlur {
+        width: calc(100vw - 140px)
+    }
+
+    body:not(:has(aside.sidenav.hide)) #navbarBlur.navbar {
+        width: 77%;
+    }
+
+    .col-sm-3 {
+        flex: 0 0 auto;
+        width: 22%;
+    }
+
+    .col-3 {
+        flex: 0 0 auto;
+        width: 22%;
+    }
+
+    .sidenav .navbar-brand {
+        padding: 0.5rem 0.4rem;
+        text-align: center;
+    width: 100%;
+    display: flex !important;
+    justify-content: center;
+    }
+    .sidenav .navbar-brand img{
+        margin-left: 13px;
+    }
+
+    footer {
+        display: none;
+    }
+
+    .py-4 {
+        padding-bottom: 0.5rem !important;
+    }
+
+    ::-webkit-scrollbar {
+        display: none;
+    }
+</style>
+</style>
 
 <link rel="stylesheet" href="{{ url('assets/css/tasklist.css') }}">
 @if(!empty($is_allotted_to))
@@ -83,7 +152,31 @@ $currentDate = now();
             </span>
                 <h3><i class="fa-solid fa-user-tag" style="margin-right: 5px; color:#cb0c9f;"></i>Description</h3>
                     <?php $taskDetails = mb_strimwidth($task->task_details ?? 'null', 0, 150, '...'); ?>
-                <pre class="highOne">{{ $task->task_details }}</pre>         
+                <!-- <pre class="highOne">{{ $task->task_details }}</pre>          -->
+
+                <div class="checkbox">
+        <form>
+          <p>
+            <input type="checkbox" id="checkbox1">
+            <label for="checkbox1" class="parachecked">
+              <span class="" >1) Unable to open Add new enquiry showing "View [Master.master] not found."</span>
+            </label>
+          </p>
+          <p>
+            <input type="checkbox" id="checkbox2">
+            <label for="checkbox2" class="parachecked">
+              <span class="" >2) Unable to open Enquiry List showing "SQLSTATE[42S22]: Column not found: 1054 Unknown column 'manager_id' in 'where clause'."</span>
+            </label>
+          </p>
+        </form>
+      </div>
+               
+
+
+
+
+
+
             </div>
             <div class="low-box remarkbox">
                 <h3><i class="fa-solid fa-user-tag" style="margin-right: 5px; color:#cb0c9f;"></i>Remark</h3>
@@ -292,3 +385,35 @@ $currentDate = now();
             });
         });
 </script>
+<script>
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+checkboxes.forEach((checkbox, index) => {
+  checkbox.addEventListener('change', function () {
+    const textSpan = document.querySelector(`#checkbox${index + 1} + label span`);
+ 
+    if (checkbox.checked) {
+        textSpan.classList.add('text-background-animation');
+            }
+            else{
+                textSpan.classList.remove('text-background-animation');
+            }
+  
+  });
+});
+
+      </script>
+
+<script>
+                let sidebar = document.querySelector("aside.sidenav.navbar");
+                let logo = document.querySelector(".navbar-brand-img");
+
+                sidebar.addEventListener("mouseenter", () => {
+                    sidebar.classList.remove("hide")
+                    logo.src = "https://white-force.com/task-management/assets/img/white-force-logo.png"
+                })
+                sidebar.addEventListener("mouseleave", () => {
+                    sidebar.classList.add("hide")
+                    logo.src = "http://127.0.0.1:8000/assets/img/w.png"
+                })
+            </script>

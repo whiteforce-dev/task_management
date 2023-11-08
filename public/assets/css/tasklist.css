@@ -185,7 +185,7 @@
       padding-bottom: 9px;
       margin-right: 11px;
   }
-  pre{
+  .checkbox{
       width:81%;
   }
   .remarkbox{
@@ -212,4 +212,61 @@
 
   .dropdown-toggle{
     border: 1px solid #cb0c9f !important;
+  }
+
+  .highOne {
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    z-index: 2;
+    color:black;
+}
+.highOne::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+     background: linear-gradient(to right, #b5dcfb 0%, #f8c4ef 100%);
+    transition: width 0.8s ease-in-out;
+    z-index: -1;
+    color: white !important;
+}
+.highOne:hover::before {
+    width: 100%;
+    color:white;
+}
+
+
+.checkbox p{
+    display: flex;
+    align-items: start;
+}
+
+.checkbox p input{
+    margin-top: 5px;
+    margin-right: 6px;
+}
+
+@keyframes colorIncrease {
+    0% {
+      background-size: 0% 100%;
+    }
+    100% {
+      background-size: 100% 100%;
+    }
+  }
+
+  .text-background-animation {
+    background-image: linear-gradient(to right, #0e63a9 0%, #e909c3 100%);
+    background-size: lightgreen;
+    background-repeat: no-repeat;
+    /* animation: colorIncrease 3s linear; */
+    animation: colorIncrease 3s linear 1 forwards;
+color: white;
+  }
+  .parachecked{
+    font-weight: 400;
+    color: #464748;
   }
