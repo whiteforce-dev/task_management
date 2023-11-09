@@ -259,12 +259,12 @@
   }
 
   .text-background-animation {
-    background-image: linear-gradient(to right, #0e63a9 0%, #e909c3 100%);
+    background-image: linear-gradient(to right, #ddf7e1 0%, #ddf7e1 100%);
     background-size: lightgreen;
     background-repeat: no-repeat;
     /* animation: colorIncrease 3s linear; */
-    animation: colorIncrease 3s linear 1 forwards;
-color: white;
+    animation: colorIncrease 0.5s linear 1 forwards;
+color: rgb(0, 0, 0);
   }
   .parachecked{
     font-weight: 400;
