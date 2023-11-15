@@ -1,5 +1,4 @@
 <style>
-    <style>
     * {
         transition: all 0.4s ease !important;
     }
@@ -66,6 +65,158 @@
     ::-webkit-scrollbar {
         display: none;
     }
+
+
+    /*checkbox css start  */
+
+    .card-left .labelone {
+    position: relative;
+    font-family: sans-serif;
+    display: block;
+    padding-left: 60px;
+    font-size: 22px;
+    user-select: none;
+    margin: 30px 30px;
+}
+
+
+    .card-left .labelone .rightbox:checked + .check-mark {
+    background-color: #9691F4;
+    transition: .1s;
+}
+
+.card-left .check-mark {
+    width: 30px;
+    height: 30px;
+    background-color: #E9F1FA;
+    position: absolute;
+    left: 0;
+    display: inline-block;
+    top: 0;
+    border-radius: 50%;
+}
+
+.card-left .rightbox {
+    display: none;
+}
+
+input [type="checkbox" i] {
+    background-color: initial;
+    cursor: default;
+    appearance: auto;
+    box-sizing: border-box;
+    margin: 3px 3px 3px 4px;
+    padding: initial;
+    border: initial;
+}
+
+.card-right .rightbox{
+  display: none;
+}
+.card-right .labelone{
+  position: relative;
+  font-family:sans-serif;
+  display: block;
+  padding-left: 60px;
+  font-size: 22px;
+  user-select: none;
+  margin: 30px 30px;  
+}
+.card-right .check-mark{
+  width: 30px;
+  height: 30px;
+  background-color: #E9F1FA ;
+  position: absolute;
+  left:0;
+  display: inline-block;
+  top: 0;
+  border-radius: 3px;
+}
+ .card-right .labelone .rightbox:checked + .check-mark{
+  background-color: #00116A  ;
+  transition: .1s;
+}
+.card-right .labelone .rightbox:checked + .check-mark:after{
+  content: "";
+  position: absolute;
+  width: 10px;
+    transition: .1s;
+  height: 5px;
+  background: #00116A   ;
+  top:45%;
+  left:50%;
+  border-left: 2px solid #fff;
+  border-bottom: 2px solid #fff;
+  transform: translate(-50%, -50%) rotate(-45deg);  
+}
+/* checkbox circle / Card Left */
+.card-left .rightbox{
+  display: none;
+}
+.card-left .labelone{
+    position: relative;
+    /* font-family: sans-serif; */
+    display: block;
+    padding-left: 37px;
+    font-size: 15px;
+    user-select: none;
+    font-weight: 500;
+    color: #4c4c56;
+    margin: 2px 0px; 
+}
+.card-left .check-mark{
+  width: 25px;
+  height: 25px;
+  background-color: #f0f3f7;
+    position: absolute;
+    border: 1px solid #f7c2f5;
+  left:0;
+  display: inline-block;
+  top: 2px;
+  border-radius: 50%;
+}
+ .card-left .labelone .rightbox:checked + .check-mark{
+    border: none;
+    background: linear-gradient(310deg, #7928ca, #ff0080);
+  transition: .1s;
+}
+.card-left .labelone .rightbox:checked + .check-mark:after{
+    content: "";
+    position: absolute;
+    width: 11px;
+    transition: .1s;
+    height: 6px;
+    top: 45%;
+    left: 50%;
+    border-left: 2px solid #fff;
+    border-bottom: 2px solid #fff;
+    transform: translate(-50%, -50%) rotate(-45deg); 
+}
+.upperwidth{
+   
+}
+@keyframes colorIncrease {
+            0% {
+                background-size: 0% 100%;
+            }
+            100% {
+                background-size: 100% 100%;
+            }
+        }
+
+        .text-background-animation {
+          background-image: linear-gradient(to right, #c0f5da 0%, #c0f5da 100%);
+    background-size: lightgreen;
+    background-repeat: no-repeat;
+    /* animation: colorIncrease 3s linear; */
+    animation: colorIncrease 5s linear 1 forwards !important;
+color: black !important;
+        }
+.checkbox{
+    width:86%;
+}
+
+/* checkbox css end  */
 </style>
 </style>
 
@@ -155,20 +306,25 @@ $currentDate = now();
                 <!-- <pre class="highOne">{{ $task->task_details }}</pre>          -->
 
                 <div class="checkbox">
-        <form>
-          <p>
-            <input type="checkbox" id="checkbox1">
-            <label for="checkbox1" class="parachecked">
-              <span class="" >1) Unable to open Add new enquiry showing "View [Master.master] not found."</span>
-            </label>
-          </p>
-          <p>
-            <input type="checkbox" id="checkbox2">
-            <label for="checkbox2" class="parachecked">
-              <span class="" >2) Unable to open Enquiry List showing "SQLSTATE[42S22]: Column not found: 1054 Unknown column 'manager_id' in 'where clause'."</span>
-            </label>
-          </p>
-        </form>
+                <form class="upperwidth">
+        <p class="card-left">
+        <label class="labelone" >
+  <span class="febspan">1) Unable to open Add new enquiry showing "View [Master.master] not found."</span>
+  <input type="checkbox" class="rightbox" >
+  <span class="check-mark"></span>
+</label>
+        </p>
+
+        <p class="card-left">
+        <label class="labelone">
+  <span class="febspan">2) Unable to open Enquiry List showing "SQLSTATE[42S22]: Column not found: 1054 Unknown column 'manager_id' in 'where clause'."</span>
+  <input type="checkbox" class="rightbox" >
+  <span class="check-mark"></span>
+</label>
+
+</p>
+      
+      </form>
       </div>
                
 
@@ -387,34 +543,46 @@ $currentDate = now();
         });
 </script>
 <script>
-        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+ const checkboxes = document.querySelectorAll('.rightbox');
 
-checkboxes.forEach((checkbox, index) => {
+checkboxes.forEach((checkbox) => {
   checkbox.addEventListener('change', function () {
-    const textSpan = document.querySelector(`#checkbox${index + 1} + label span`);
- 
-    if (checkbox.checked) {
-        textSpan.classList.add('text-background-animation');
-            }
-            else{
-                textSpan.classList.remove('text-background-animation');
-            }
-  
+    const paragraph = this.closest('.labelone').querySelector('.febspan');
+
+    if (this.checked) {
+      paragraph.classList.add('text-background-animation');
+    } else {
+      paragraph.classList.remove('text-background-animation');
+    }
   });
 });
 
       </script>
 
 <script>
-                let sidebar = document.querySelector("aside.sidenav.navbar");
-                let logo = document.querySelector(".navbar-brand-img");
 
-                sidebar.addEventListener("mouseenter", () => {
-                    sidebar.classList.remove("hide")
-                    logo.src = "https://white-force.com/task-management/assets/img/white-force-logo.png"
-                })
-                sidebar.addEventListener("mouseleave", () => {
-                    sidebar.classList.add("hide")
-                    logo.src = "http://127.0.0.1:8000/assets/img/w.png"
-                })
+                document.addEventListener("DOMContentLoaded", () => {
+    let sidebar = document.querySelector("aside.sidenav.navbar");
+    let logo = document.querySelector(".navbar-brand-img");
+
+    // Check if the flag is set in local storage
+    const isSidebarHidden = localStorage.getItem("sidebarHidden") === "true";
+
+    if (isSidebarHidden) {
+        sidebar.classList.add("hide");
+        logo.src = "http://127.0.0.1:8000/assets/img/w.png";
+    }
+
+    sidebar.addEventListener("mouseenter", () => {
+        sidebar.classList.remove("hide");
+        logo.src = "https://white-force.com/task-management/assets/img/white-force-logo.png";
+    });
+
+    sidebar.addEventListener("mouseleave", () => {
+        sidebar.classList.add("hide");
+        logo.src = "http://127.0.0.1:8000/assets/img/w.png";
+        // Set the flag in local storage when the sidebar is hidden
+        localStorage.setItem("sidebarHidden", "true");
+    });
+});
             </script>
