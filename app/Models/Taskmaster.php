@@ -10,6 +10,7 @@ use App\Models\Remark;
 use App\Models\TaskChecklist;
 use Illuminate\Support\Facades\Auth as FacadesAuth;
 use Illuminate\Support\Facades\Auth;
+
 class Taskmaster extends Model
 {
     public function userGet()
@@ -20,26 +21,30 @@ class Taskmaster extends Model
     public function GetManagerName()
     {
         return $this->belongsTo('App\Models\User', 'alloted_by');
-    } 
+    }
 
     public function GetEmployee()
     {
-         return $this->hasOne('App\Models\Remark', 'task_id')->orderBy('id', 'desc')->where('userid', Auth::user()->id);
+        return $this->hasOne('App\Models\Remark', 'task_id')->orderBy('id', 'desc')->where('userid', Auth::user()->id);
     }
 
-    public function Getparent(){
+    public function Getparent()
+    {
         return $this->hasOne('App\Models\Remark', 'task_id')->orderBy('id', 'desc')->whereNotIn('userid', [Auth::user()->id]);
     }
 
-    public function GetmanagerData(){
+    public function GetmanagerData()
+    {
         return $this->hasOne('App\Models\Remark', 'task_id')->orderBy('id', 'desc')->whereNotIn('userid', [Auth::user()->id]);
     }
 
-    public function getLatestRemarks(){
+    public function getLatestRemarks()
+    {
         return $this->hasMany('App\Models\Remark', 'task_id')->limit(3)->orderBy('id', 'desc');
     }
 
-    public function getAllRemarks(){
+    public function getAllRemarks()
+    {
         return $this->hasMany('App\Models\Remark', 'task_id');
     }
 
@@ -48,7 +53,7 @@ class Taskmaster extends Model
         return $this->belongsTo('App\Models\User', 'approve_reject_by');
     }
     public function GetcheckList()
-    {  
+    {
         return $this->hasOne('App\Models\TaskChecklist', 'task_id');
     }
 
@@ -56,5 +61,6 @@ class Taskmaster extends Model
     {
         return $this->belongsTo('App\Models\User', 'reporter');
     }
-    
+
+
 }

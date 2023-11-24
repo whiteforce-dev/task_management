@@ -752,4 +752,11 @@ class TaskManagmentController extends Controller
         $reporters = User::whereIn('id', $reportersId)->get();
         return view('task.taskList', compact('tags', 'tasklist', 'managerId', 'EmployeeId', 'status_search', 'from', 'to', 'priority', 'statuss', 'users', 'prioritys', 'reporters'));
     }
+    public function updateCheckbox(request $request){
+       $checkdata = TaskChecklist::where('is_checked', $request->checklistID)->first();
+       $checkdata->is_checked = '1';
+       $checkdata->save();
+       return;
+    }
+
 }

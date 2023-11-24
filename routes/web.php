@@ -143,6 +143,7 @@ Route::group(['middleware' => 'auth'], function ()
 	Route::Post('comment-bymanager', [TaskManagmentController::class, 'commentBYmanager']);
 	Route::get('software-catagory', [TaskManagmentController::class, 'softwareCatagory']);
 	Route::post('attachment-file/{id}', [TaskManagmentController::class, 'attachmentFile']);
+	Route::GET('updateCheckbox', [TaskManagmentController::class, 'updateCheckbox']);
 	
 
 

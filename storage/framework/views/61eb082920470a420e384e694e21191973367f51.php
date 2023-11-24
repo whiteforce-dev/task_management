@@ -16,7 +16,7 @@
                 <?php if(url()->current() == url('task-list') || url()->current() == url('top-search')): ?>
                     <div class="input-group" id="searchResults" style="margin-top:12px;">
                         <input type="text" name="searchInput" id="searchInput" class="form-control"
-                            placeholder="Search By task name" style="width: 560px; height: 52px;">
+                            placeholder="Search By task name" style="width:760px; height: 52px;">
                         <button class="btn btn-secondary" type="submit">
                             <i class="fa fa-search" style="height: 25px"></i>
                         </button>
