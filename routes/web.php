@@ -126,6 +126,7 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::get('delete-tag/{id}', [TagmanagementController::class, 'deleteTag']);
 		Route::post('check-name', [TagmanagementController::class, 'checkName']);
 		Route::get('need-approvalDashboard/{id}', [TeamAllotedController::class, 'needApprovalDashboard']);
+		Route::post('top-search', [TaskManagmentController::class, 'topSearch']);
 	});
 	Route::post('loginauth', [SessionsController::class, 'loginauth']);				
 	Route::group(['middleware' => 'guest'], function () 

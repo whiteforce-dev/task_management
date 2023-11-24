@@ -114,8 +114,8 @@ class TaskManagmentController extends Controller
         $prioritys = Priority::get();
         $tags = Tag::where('software_catagory', Auth::user()->software_catagory)->get();
 
-         $reportersId = Team::pluck('tl_id')->toArray();  
-         $reporters = User::whereIn('id', $reportersId)->get(); 
+        $reportersId = Team::pluck('tl_id')->toArray();
+        $reporters = User::whereIn('id', $reportersId)->get();
         return view('task.taskList', compact('tags', 'tasklist', 'managerId', 'EmployeeId', 'status_search', 'from', 'to', 'priority', 'statuss', 'users', 'prioritys', 'reporters'));
     }
 
@@ -124,7 +124,7 @@ class TaskManagmentController extends Controller
         $is_allotted_to = false;
         $is_tl = checkIsUserTL(Auth::user()->id);
         $alloted_summary_array = $alloted_array = [];
-       
+
         $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('is_approved', '=', '1');
         if (Auth::user()->type == "employee" && empty($is_tl)) {
             $tasklist = $tasklist->where(function ($query) {
@@ -150,10 +150,10 @@ class TaskManagmentController extends Controller
             $tasklist = $tasklist->whereRaw("alloted_to REGEXP '{$pattern}'");
             //forsummary
             $is_allotted_to = true;
-            foreach($alloted_array as $alloted){
-                $tasksummry = Taskmaster::whereRaw("FIND_IN_SET(" . $alloted . ", alloted_to)")->where('is_approved',1)->select('status', \DB::raw('count(id) as task_count'))->groupBy('status')->pluck('task_count', 'status')->toArray();
-                if(!empty($tasksummry)){
-                    $alloted_summary_array[$alloted]['user_image'] = User::where('id',$alloted)->value('image');
+            foreach ($alloted_array as $alloted) {
+                $tasksummry = Taskmaster::whereRaw("FIND_IN_SET(" . $alloted . ", alloted_to)")->where('is_approved', 1)->select('status', \DB::raw('count(id) as task_count'))->groupBy('status')->pluck('task_count', 'status')->toArray();
+                if (!empty($tasksummry)) {
+                    $alloted_summary_array[$alloted]['user_image'] = User::where('id', $alloted)->value('image');
                     $alloted_summary_array[$alloted]['data'] = $tasksummry;
                 }
             }
@@ -249,7 +249,7 @@ class TaskManagmentController extends Controller
                     $checkdata = TaskChecklist::findOrFail($checklistId[$i]);
                     $checkdata->checklist = $checklistItems[$i];
                     $checkdata->save();
-                }else{
+                } else {
                     $checklist = new TaskChecklist();
                     $checklist->task_id = $newtask->id ?? '0';
                     $checklist->checklist = $item;
@@ -519,29 +519,39 @@ class TaskManagmentController extends Controller
 
     public function commentBYmanager(Request $request)
     {
+        if (!is_null($request->manager_comments) || !empty($request['screenshort'])) {
         $comments = new Remark();
         $comments->task_id = $request->task_id;
         $comments->remark = $request->manager_comments;
         $comments->userid = Auth::user()->id;
         $comments->software_catagory = Auth::user()->software_catagory;
-        if ($request['screenshort']) {
-            $image_code = $request['screenshort'];
-            foreach ($image_code as $i => $file) {
-                $filepath = time() . '.png';
-                Storage::disk('s3')->put('task_management/task_attachments/' . $filepath, file_get_contents($file), 'public');
-                $data[] = $filepath;
+
+            if ($request['screenshort']) {
+                $image_code = $request['screenshort'];
+                foreach ($image_code as $i => $file) {
+                    $filepath = time() . '.png';
+                    // Storage::disk('s3')->put('task_management/task_attachments/' . $filepath, file_get_contents($file), 'public');
+                    Storage::disk('s3')->put($filepath, file_get_contents($file), 'public');
+                    $data[] = $filepath;
+                }
+                $imagedata = implode(',', $data);
+                $comments->screenshort = $imagedata;
             }
-            $imagedata = implode(',', $data);
-            $comments->screenshort = $imagedata;
+
+            $comments->save();
+
+            if (!empty($request->notify_to)) {
+                $task_code = Taskmaster::where('id', $request->task_id)->value('task_code');
+                $message = "mentioned you in a task&nbsp;&nbsp;<span class='badge badge-primary taskcodebadge'>" . $task_code . "</span>";
+                sendNotification($request->notify_to, Auth::user()->id, $request->task_id, $message);
+            }
+
+            $response = $request->input('manager_comments');
+            return $response;
+        } else {
+            // Handle the case where both fields are null (e.g., return an error message)
+            return "Both manager_comments and screenshort are required.";
         }
-        $comments->save();
-        if (!empty($request->notify_to)) {
-            $task_code = Taskmaster::where('id', $request->task_id)->value('task_code');
-            $message = "mentioned you in a task&nbsp;&nbsp;<span class='badge badge-primary taskcodebadge'>" . $task_code . "</span>";
-            sendNotification($request->notify_to, Auth::user()->id, $request->task_id, $message);
-        }
-        $response = $request->input('manager_comments');
-        return $response;
     }
 
     public function softwareCatagory(Request $request)
@@ -715,5 +725,31 @@ class TaskManagmentController extends Controller
             $filedata->save();
             return redirect('task-list')->with(['success' => 'Your image successfuly inserted']);
         }
+    }
+
+    public function topSearch(request $request)
+    {
+        $is_tl = checkIsUserTL(Auth::user()->id);
+        $to = "";
+        $from = "";
+        $status_search = "";
+        $managerId = [];
+        $EmployeeId = [];
+        $priority = "";
+        $tags = "";
+
+        $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('is_approved', '=', '1');
+        if (!empty($request->searchInput)) {
+            $tasklist = Taskmaster::where('task_name', 'like', '%' . $request->searchInput . '%');
+        }
+        $tasklist = $tasklist->orderBy('id', 'Desc')->where('is_approved', '=', '1')->paginate(25);
+        $users = User::where('software_catagory', Auth::user()->software_catagory)->where('type', '!=', 'admin')->get();
+        $statuss = Status::get();
+        $prioritys = Priority::get();
+        $tags = Tag::where('software_catagory', Auth::user()->software_catagory)->get();
+
+        $reportersId = Team::pluck('tl_id')->toArray();
+        $reporters = User::whereIn('id', $reportersId)->get();
+        return view('task.taskList', compact('tags', 'tasklist', 'managerId', 'EmployeeId', 'status_search', 'from', 'to', 'priority', 'statuss', 'users', 'prioritys', 'reporters'));
     }
 }
