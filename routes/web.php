@@ -126,6 +126,7 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::get('delete-tag/{id}', [TagmanagementController::class, 'deleteTag']);
 		Route::post('check-name', [TagmanagementController::class, 'checkName']);
 		Route::get('need-approvalDashboard/{id}', [TeamAllotedController::class, 'needApprovalDashboard']);
+		Route::post('top-search', [TaskManagmentController::class, 'topSearch']);
 	});
 	Route::post('loginauth', [SessionsController::class, 'loginauth']);				
 	Route::group(['middleware' => 'guest'], function () 
@@ -142,6 +143,7 @@ Route::group(['middleware' => 'auth'], function ()
 	Route::Post('comment-bymanager', [TaskManagmentController::class, 'commentBYmanager']);
 	Route::get('software-catagory', [TaskManagmentController::class, 'softwareCatagory']);
 	Route::post('attachment-file/{id}', [TaskManagmentController::class, 'attachmentFile']);
+	Route::GET('updateCheckbox', [TaskManagmentController::class, 'updateCheckbox']);
 	
 
 

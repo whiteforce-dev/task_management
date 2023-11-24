@@ -232,15 +232,15 @@
 </style>
 
 
-<link rel="stylesheet" href="{{ url('assets/css/tasklist.css') }}">
-@if (!empty($is_allotted_to))
+<link rel="stylesheet" href="<?php echo e(url('assets/css/tasklist.css')); ?>">
+<?php if(!empty($is_allotted_to)): ?>
     <div class="cards">
         <h6 style="padding-left: 11px;padding-bottom: 1px;padding-top: 4px;font-weight: 900;">Task Summary -</h6>
-        @foreach ($alloted_array as $allotted)
+        <?php $__currentLoopData = $alloted_array; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $allotted): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
             <div class="row col-md-12" style="padding-left: 11px;padding-bottom: 9px;">
                 <div class="col-md-1">
                     <div class="summryproimg">
-                        <img src="{{ !empty($alloted_summary_array[$allotted]['user_image']) ? url($alloted_summary_array[$allotted]['user_image']) : '' }}"
+                        <img src="<?php echo e(!empty($alloted_summary_array[$allotted]['user_image']) ? url($alloted_summary_array[$allotted]['user_image']) : ''); ?>"
                             alt="" width="100%">
                     </div>
                 </div>
@@ -248,32 +248,32 @@
                     <span class="summarySpan">Pending Task :</span>
                     <span class="badge badge-primary"
                         style="background: linear-gradient(to right, #ba2121, #ff0000);font-size: 14px">
-                        {{ !empty($alloted_summary_array[$allotted]['data'][1]) ? $alloted_summary_array[$allotted]['data'][1] : 0 }}</span>
+                        <?php echo e(!empty($alloted_summary_array[$allotted]['data'][1]) ? $alloted_summary_array[$allotted]['data'][1] : 0); ?></span>
                 </div>
                 <div class="col-md-3 summarydiv">
                     <span class="summarySpan" style="margin-left:44px">Progress Task :</span>
                     <span class="badge badge-primary"
                         style="background:linear-gradient(310deg, #ed60eb, #9a0a98);font-size: 14px">
-                        {{ !empty($alloted_summary_array[$allotted]['data'][2]) ? $alloted_summary_array[$allotted]['data'][2] : 0 }}</span>
+                        <?php echo e(!empty($alloted_summary_array[$allotted]['data'][2]) ? $alloted_summary_array[$allotted]['data'][2] : 0); ?></span>
                 </div>
                 <div class="col-md-3 summarydiv">
                     <span class="summarySpan">Need Approval :</span>
                     <span class="badge badge-primary"
                         style="background: linear-gradient(to right, #07e4f8, #00a9b8);font-size: 14px">
-                        {{ !empty($alloted_summary_array[$allotted]['data'][5]) ? $alloted_summary_array[$allotted]['data'][5] : 0 }}</span>
+                        <?php echo e(!empty($alloted_summary_array[$allotted]['data'][5]) ? $alloted_summary_array[$allotted]['data'][5] : 0); ?></span>
                 </div>
                 <div class="col-md-3 summarydiv">
                     <span class="summarySpan">Completed Task :</span>
                     <span class="badge badge-primary"
                         style="background: linear-gradient(to right, #8fff62, #3dd103);font-size: 14px">
-                        {{ !empty($alloted_summary_array[$allotted]['data'][3]) ? $alloted_summary_array[$allotted]['data'][3] : 0 }}</span>
+                        <?php echo e(!empty($alloted_summary_array[$allotted]['data'][3]) ? $alloted_summary_array[$allotted]['data'][3] : 0); ?></span>
                 </div>
             </div>
-        @endforeach
+        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
     </div>
-@endif
-@foreach ($tasklist as $i => $task)
-    @php
+<?php endif; ?>
+<?php $__currentLoopData = $tasklist; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => $task): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+    <?php
         $currentDate = now();
         $status = \App\Models\Status::get();
         $deadlineDate = \Carbon\Carbon::parse($task->deadline_date);
@@ -299,17 +299,17 @@
         } elseif ($task->status == 5) {
             $dropdownColor = '#23e4ff';
         }
-    @endphp
+    ?>
 
-    <section class="cards {{ $card_color_class }}" id="result">
+    <section class="cards <?php echo e($card_color_class); ?>" id="result">
 
         <div class="main-card">
             <div class="long-width" style="width: 70%;">
                 <div class="up-box">
                     <div style=" display: flex;align-items: start;justify-content: center; width:100%;  ">
                         <span class="badge badge-primary"
-                            style="background: linear-gradient(to right, #f953c6, #b91d73); margin-right:10px; width:100px; width: 65px;height: 30px;">{{ $task->task_code }}</span>
-                        <h1 style="width:90%">{{ ucfirst($task->task_name) }}</h1>
+                            style="background: linear-gradient(to right, #f953c6, #b91d73); margin-right:10px; width:100px; width: 65px;height: 30px;"><?php echo e($task->task_code); ?></span>
+                        <h1 style="width:90%"><?php echo e(ucfirst($task->task_name)); ?></h1>
                     </div>
 
                     <hr
@@ -322,107 +322,107 @@
                         More
                     </span>
                     <h3><i class="fa-solid fa-user-tag" style="margin-right: 5px; color:#cb0c9f;"></i>Description</h3>
-                    @if (!empty($task->task_details))
+                    <?php if(!empty($task->task_details)): ?>
                         <?php $taskDetails = mb_strimwidth($task->task_details ?? 'null', 0, 150, '...'); ?>
-                        <pre class="highOne">{{ $task->task_details }}</pre>
-                    @else
+                        <pre class="highOne"><?php echo e($task->task_details); ?></pre>
+                    <?php else: ?>
                     <?php $checklist = \App\Models\TaskChecklist::where('task_id', $task->id)->get(); ?>
-                        @foreach ($checklist as $list)
+                        <?php $__currentLoopData = $checklist; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $list): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <div class="checkbox">
                                 <form class="upperwidth">
                                     <p class="card-left">
                                         <label class="labelone">
-                                            <span class="febspan">1) {{ $list->checklist ?? 'NA' }}"</span>
-                                            @if($list->is_checked == '1')
+                                            <span class="febspan">1) <?php echo e($list->checklist ?? 'NA'); ?>"</span>
+                                            <?php if($list->is_checked == '1'): ?>
                                             <input type="checkbox" class="rightbox" checked readonly value="1" id="checklist" onclick="toggleCheckbox()">
-                                            @else
+                                            <?php else: ?>
                                             <input type="checkbox" class="rightbox" readonly value="0" id="checklist" onclick="toggleCheckbox()">
-                                            @endif
+                                            <?php endif; ?>
                                             <span class="check-mark"></span>
-                                            <input type="hidden" value="{{ $list->id }}" name="checklistId" id="checklistId">
+                                            <input type="hidden" value="<?php echo e($list->id); ?>" name="checklistId" id="checklistId">
                                         </label>
                                     </p>
                                 </form>
                             </div>
-                        @endforeach
-                    @endif
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <?php endif; ?>
 
                 </div>
                 <div class="low-box remarkbox">
                     <h3><i class="fa-solid fa-user-tag" style="margin-right: 5px; color:#cb0c9f;"></i>Remark</h3>
                     <div class="comments">
-                        @foreach ($task->getLatestRemarks as $remark)
+                        <?php $__currentLoopData = $task->getLatestRemarks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $remark): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <div class="comment-one">
                                 <div class="proimg">
-                                    <img src="{{ !empty($remark->GetUser->image) ? url($remark->GetUser->image) : '' }}"
+                                    <img src="<?php echo e(!empty($remark->GetUser->image) ? url($remark->GetUser->image) : ''); ?>"
                                         alt="" width="100%">
                                 </div>
-                                <p class="highOne">{{ $remark->remark }}</p>
+                                <p class="highOne"><?php echo e($remark->remark); ?></p>
                                 <div class="numdate">
-                                    <span>{{ date('M d,Y H:i:s', strtotime($remark->created_at)) }}</span>
+                                    <span><?php echo e(date('M d,Y H:i:s', strtotime($remark->created_at))); ?></span>
                                 </div>
                             </div>
-                        @endforeach
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </div>
-                    @if (count($task->getAllRemarks) > 3)
+                    <?php if(count($task->getAllRemarks) > 3): ?>
                         <div class="view-btn">
                             <a href="javascript:"
-                                onclick="managerRemark('{{ url('managerremark' . '?id=' . $task->id) }}')"
+                                onclick="managerRemark('<?php echo e(url('managerremark' . '?id=' . $task->id)); ?>')"
                                 class="dropdown-item border-radius-md lowerbtn" href="javascript:;">View More</a>
                         </div>
-                    @endif
+                    <?php endif; ?>
                 </div>
             </div>
             <div class="short-width" style="width: 30%;">
                 <div class="box-one box-btn">
                     <div class="dropdown" style=" margin-right: 10px;">
-                        @if ($task->status == '3')
+                        <?php if($task->status == '3'): ?>
                             <span class="badge badge-primary completedBadge"
                                 style="width: 105% !important">Completed</span>
-                        @else
-                            @if (Auth::user()->type != 'employee' ||
+                        <?php else: ?>
+                            <?php if(Auth::user()->type != 'employee' ||
                                     checkIsUserTL(Auth::user()->id) ||
-                                    checkTaskCreatedBy($task->id, Auth::user()->id))
+                                    checkTaskCreatedBy($task->id, Auth::user()->id)): ?>
                                 <select class="dropbtn1 status-dropdown"
-                                    style="background:{{ $dropdownColor }} !important" name="selectstatus"
-                                    data-task-id="{{ $task->id }}">
-                                    @foreach ($status as $statuss)
-                                        <option value="{{ $statuss->id }}"
-                                            {{ $statuss->id == $task->status ? 'selected' : '' }}>
-                                            {{ ucfirst($statuss->status) }}</option>
-                                    @endforeach
+                                    style="background:<?php echo e($dropdownColor); ?> !important" name="selectstatus"
+                                    data-task-id="<?php echo e($task->id); ?>">
+                                    <?php $__currentLoopData = $status; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $statuss): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option value="<?php echo e($statuss->id); ?>"
+                                            <?php echo e($statuss->id == $task->status ? 'selected' : ''); ?>>
+                                            <?php echo e(ucfirst($statuss->status)); ?></option>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </select>
-                            @else
+                            <?php else: ?>
                                 <select class="dropbtn1 status-dropdown"
-                                    style="background:{{ $dropdownColor }} !important" name="selectstatus"
-                                    data-task-id="{{ $task->id }}">
-                                    @foreach ($status as $statuss)
-                                        @if ($statuss->status != 'completed' && $statuss->status != 'hold')
-                                            <option value="{{ $statuss->id }}"
-                                                {{ $statuss->id == $task->status ? 'selected' : '' }}>
-                                                {{ ucfirst($statuss->status) }}</option>
-                                        @endif
-                                    @endforeach
+                                    style="background:<?php echo e($dropdownColor); ?> !important" name="selectstatus"
+                                    data-task-id="<?php echo e($task->id); ?>">
+                                    <?php $__currentLoopData = $status; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $statuss): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <?php if($statuss->status != 'completed' && $statuss->status != 'hold'): ?>
+                                            <option value="<?php echo e($statuss->id); ?>"
+                                                <?php echo e($statuss->id == $task->status ? 'selected' : ''); ?>>
+                                                <?php echo e(ucfirst($statuss->status)); ?></option>
+                                        <?php endif; ?>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                 </select>
-                            @endif
-                        @endif
+                            <?php endif; ?>
+                        <?php endif; ?>
                     </div>
                     <div class="dropdown btn-card">
                         <a class="dropbtn aaa" href="javascript:void(0)">Action<i
                                 style="font-size:0.75rem; margin-left: 5px;" class="fa-solid fa-chevron-down"></i></a>
                         <div class="dropdown-content">
-                            @if (Auth::user()->id == $task->alloted_by || Auth::user()->type == 'admin')
-                                <a onclick="EditTask('{{ url('task-edit-page' . '?id=' . $task->id) }}')"
+                            <?php if(Auth::user()->id == $task->alloted_by || Auth::user()->type == 'admin'): ?>
+                                <a onclick="EditTask('<?php echo e(url('task-edit-page' . '?id=' . $task->id)); ?>')"
                                     class="dropdown-item border-radius-md" href="javascript:;">Edit Task
                                 </a>
-                                <a href="{{ url('task-delete', $task->id) }}"
+                                <a href="<?php echo e(url('task-delete', $task->id)); ?>"
                                     class="dropdown-item border-radius-md">Delete
                                 </a>
-                            @endif
+                            <?php endif; ?>
                             <a href="javascript:"
-                                onclick="managerRemark('{{ url('managerremark' . '?id=' . $task->id) }}')"
+                                onclick="managerRemark('<?php echo e(url('managerremark' . '?id=' . $task->id)); ?>')"
                                 class="dropdown-item border-radius-md" href="javascript:;">Remarks</a>
-                            <a onclick="statushistory('{{ url('statushistory' . '?id=' . $task->id) }}')"
+                            <a onclick="statushistory('<?php echo e(url('statushistory' . '?id=' . $task->id)); ?>')"
                                 class="dropdown-item border-radius-md" href="javascript:;">Status History
                             </a>
                         </div>
@@ -434,61 +434,61 @@
                         style="margin-right: 8px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Created Date
                         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; :
                     </span>
-                    <p>{{ \Carbon\Carbon::parse($task->created_at)->format('M d H:i') }}</p>
+                    <p><?php echo e(\Carbon\Carbon::parse($task->created_at)->format('M d H:i')); ?></p>
                 </div>
                 <div class="box-one">
                     <i class="fa-solid fa-circle"
                         style="margin-right:8px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Priority &nbsp; &nbsp;
                         &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
                     </span>
-                    @if ($task->priority == '1')
+                    <?php if($task->priority == '1'): ?>
                         <P class="priorty" style="background-color: #900; color:#fff;">Highest</P>
-                    @elseif($task->priority == '2')
+                    <?php elseif($task->priority == '2'): ?>
                         <P class="priorty" style="background-color:#F63; color:#fff;">High</P>
-                    @elseif($task->priority == '3')
+                    <?php elseif($task->priority == '3'): ?>
                         <P class="priorty" style="background-color: #fc0; color:#fff;">Medium</P>
-                    @else
+                    <?php else: ?>
                         <P class="priorty" style="background-color: #036; color:#fff;">Low</P>
-                    @endif
+                    <?php endif; ?>
                 </div>
                 <div class="box-one" style="position: relative;">
                     <i class="fa-solid fa-circle" style="margin-right: 6px; color:#cb0c9f; font-size: 0.5rem;"></i>
                     <span>Deadline Date &nbsp;&nbsp;&nbsp; &nbsp;:
                     </span>
                     <p style="margin-left: 0px;">
-                        {{ \Carbon\Carbon::parse($task->deadline_date)->format('M d,Y') }} </p>
+                        <?php echo e(\Carbon\Carbon::parse($task->deadline_date)->format('M d,Y')); ?> </p>
 
-                    @if ($task->status != '3')
-                        @if ($currentDate > $deadlineDate)
+                    <?php if($task->status != '3'): ?>
+                        <?php if($currentDate > $deadlineDate): ?>
                             <div class="dott" style="position: absolute; right:-10px; top:0;">
-                                {{ $daysDifference }}</div>
-                        @endif
-                    @endif
+                                <?php echo e($daysDifference); ?></div>
+                        <?php endif; ?>
+                    <?php endif; ?>
                 </div>
                 <div class="box-one">
                     <i class="fa-solid fa-circle" style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i>
                     <span>Approval Date &nbsp;&nbsp;&nbsp; :
                     </span>
-                    @if (!empty($task->sent_to_approval_date))
-                        <P>{{ \Carbon\Carbon::parse($task->sent_to_approval_date)->format('M d,Y') }}</P>
-                    @else
+                    <?php if(!empty($task->sent_to_approval_date)): ?>
+                        <P><?php echo e(\Carbon\Carbon::parse($task->sent_to_approval_date)->format('M d,Y')); ?></P>
+                    <?php else: ?>
                         <p>-</p>
-                    @endif
+                    <?php endif; ?>
                 </div>
                 <div class="box-one">
                     <i class="fa-solid fa-circle" style="margin-right: 7px; color:#cb0c9f; font-size: 0.5rem;"></i>
                     <span>Completed Date :
                     </span>
-                    @if ($task->status == 3)
-                        <P>{{ \Carbon\Carbon::parse($task->end_date)->format('M d,Y') }}</P>
-                    @else<p>-</p>
-                    @endif
+                    <?php if($task->status == 3): ?>
+                        <P><?php echo e(\Carbon\Carbon::parse($task->end_date)->format('M d,Y')); ?></P>
+                    <?php else: ?><p>-</p>
+                    <?php endif; ?>
                 </div>
                 <div class="box-one">
                     <i class="fa-solid fa-circle" style="margin-right: 5px; color:#cb0c9f; font-size: 0.5rem;"></i>
                     <span>Total Hours&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:
                     </span>
-                    @php
+                    <?php
                         $spent_hours = \App\Models\CheckoutDetails::where('task_id', $task->id)
                             ->pluck('hours')
                             ->toArray();
@@ -496,8 +496,8 @@
                             ->pluck('minutes')
                             ->toArray();
                         $total_spent_mins = array_sum($spent_mins);
-                    @endphp
-                    <P>{{ array_sum($spent_hours) + floor($total_spent_mins / 60) }}h {{ $total_spent_mins % 60 }}m
+                    ?>
+                    <P><?php echo e(array_sum($spent_hours) + floor($total_spent_mins / 60)); ?>h <?php echo e($total_spent_mins % 60); ?>m
                     </P>
                 </div>
 
@@ -506,24 +506,24 @@
                         style="margin-right:7px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Reporter
                         &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp; :
                     </span>
-                    &nbsp;<P>{{ $task->GetReporter->name ?? 'N/A' }}</P>
+                    &nbsp;<P><?php echo e($task->GetReporter->name ?? 'N/A'); ?></P>
                 </div>
 
 
-                @php
+                <?php
                     $alloted_to_ids = explode(',', $task->alloted_to);
                     $get_user_names_arr = \App\Models\User::whereIn('id', $alloted_to_ids)
                         ->pluck('name')
                         ->toArray();
                     $user_names = implode(', ', $get_user_names_arr);
-                @endphp
+                ?>
 
                 <div class="box-one" style="position: relative; margin-left:13px;">
                     <i class="fa-solid fa-circle"
                         style="margin-right:7px; color:#cb0c9f; font-size: 0.5rem;"></i><span>Allotted To
                         &nbsp;&nbsp;&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; :
                     </span>
-                    &nbsp;<P>{{ $user_names ?? 'N/A' }}</P>
+                    &nbsp;<P><?php echo e($user_names ?? 'N/A'); ?></P>
                 </div>
 
                 <div class="box-one" style="position: relative; margin-left:13px;">
@@ -537,28 +537,29 @@
                         ->pluck('name')
                         ->toArray();
                     $tagName = implode(', ', $tagName); ?>
-                    <P>{{ $tagName ?? 'N/A' }}</P>
+                    <P><?php echo e($tagName ?? 'N/A'); ?></P>
                 </div>
 
                 <div class="box-one" style="width:90%; display:flex; align-items:center; justify-contect:center;">
                     <?php $taskss = explode(',', $task->alloted_to); ?>
-                    @foreach ($taskss as $taskk)
+                    <?php $__currentLoopData = $taskss; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $taskk): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                         <?php $userimg = \App\Models\User::where('id', $taskk)->value('image'); ?>
-                        <img src="{{ url($userimg ?? 'NA') }}" alt="" width="50" height="50"
+                        <img src="<?php echo e(url($userimg ?? 'NA')); ?>" alt="" width="50" height="50"
                             style="margin:3px 2px; border-radius:50px">
-                    @endforeach
-                    <img src="{{ url($task->GetManagerName->image ?? 'N/A') }}" alt="" width="50"
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                    <img src="<?php echo e(url($task->GetManagerName->image ?? 'N/A')); ?>" alt="" width="50"
                         height="50" style="margin:10px 5px; border-radius:50px; border:2px solid #cb0c9f; ">
-                    @if (!empty($task->GetReporter))
-                        <img src="{{ url($task->GetReporter->image ?? 'N/A') }}" alt="" width="50"
+                    <?php if(!empty($task->GetReporter)): ?>
+                        <img src="<?php echo e(url($task->GetReporter->image ?? 'N/A')); ?>" alt="" width="50"
                             height="50" style="margin:10px 5px; border-radius:50px; border:2px solid #289f30; ">
-                    @endif
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
     </section>
-@endforeach
-{{ $tasklist->links() }}
+<?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+<?php echo e($tasklist->links()); ?>
+
 <script>
     $(document).ready(function() {
         $('.status-dropdown').on('change', function() {
@@ -570,7 +571,7 @@
                 data: {
                     taskId: taskId,
                     newStatus: newStatus,
-                    _token: '{{ csrf_token() }}'
+                    _token: '<?php echo e(csrf_token()); ?>'
                 },
                 success: function(response) {
                     console.log('Status updated successfully');
@@ -635,15 +636,17 @@
 
         $.ajax({
             type: 'GET',
-            url: '{{ url("updateCheckbox") }}',
+            url: '<?php echo e(url("updateCheckbox")); ?>',
             data: {
                 checklistID: checklistID,
                 isChecked: !isChecked,
+                // Add any other data you want to send to the server
             },
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             success: function (data) {
+                // Update the checkbox state based on the server response
                 $('#checklist').prop('checked', !isChecked);
                 console.log(data);
             },
@@ -655,3 +658,4 @@
 </script>
 
 
+<?php /**PATH C:\xampp\htdocs\task_management\resources\views/task/searchTaskResult.blade.php ENDPATH**/ ?>
