@@ -332,14 +332,9 @@
                                 <form class="upperwidth">
                                     <p class="card-left">
                                         <label class="labelone">
-                                            <span class="febspan">1) <?php echo e($list->checklist ?? 'NA'); ?>"</span>
-                                            <?php if($list->is_checked == '1'): ?>
-                                            <input type="checkbox" class="rightbox" checked readonly value="1" id="checklist" onclick="toggleCheckbox()">
-                                            <?php else: ?>
-                                            <input type="checkbox" class="rightbox" readonly value="0" id="checklist" onclick="toggleCheckbox()">
-                                            <?php endif; ?>
+                                            <span class="febspan"><?php echo e($list->checklist ?? 'NA'); ?>"</span>
+                                            <input type="checkbox" class="rightbox" readonly value="1" id="checklist_<?php echo e($list->id); ?>" onclick="toggleCheckbox(<?php echo e($list->id); ?>)" <?php echo e(!empty($list->is_checked) ? 'checked' : ''); ?>>
                                             <span class="check-mark"></span>
-                                            <input type="hidden" value="<?php echo e($list->id); ?>" name="checklistId" id="checklistId">
                                         </label>
                                     </p>
                                 </form>
@@ -547,12 +542,13 @@
                         <img src="<?php echo e(url($userimg ?? 'NA')); ?>" alt="" width="50" height="50"
                             style="margin:3px 2px; border-radius:50px">
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                    <img src="<?php echo e(url($task->GetManagerName->image ?? 'N/A')); ?>" alt="" width="50"
-                        height="50" style="margin:10px 5px; border-radius:50px; border:2px solid #cb0c9f; ">
                     <?php if(!empty($task->GetReporter)): ?>
                         <img src="<?php echo e(url($task->GetReporter->image ?? 'N/A')); ?>" alt="" width="50"
-                            height="50" style="margin:10px 5px; border-radius:50px; border:2px solid #289f30; ">
+                            height="50" style="margin:10px 5px; border-radius:50px; border:3.5px solid #289f30; ">
                     <?php endif; ?>
+                    <img src="<?php echo e(url($task->GetManagerName->image ?? 'N/A')); ?>" alt="" width="50"
+                        height="50" style="margin:10px 5px; border-radius:50px; border:3.5px solid #cb0c9f; ">
+                    
                 </div>
             </div>
         </div>
@@ -630,29 +626,19 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 <script>
- function toggleCheckbox() {
-        var checklistID = $('#checklist').val();
-        var isChecked = $('#checklist').prop('checked');
+ function toggleCheckbox(checklistId) {
+        var isChecked = $('#checklist_'+checklistId).prop('checked');
 
         $.ajax({
-            type: 'GET',
-            url: '<?php echo e(url("updateCheckbox")); ?>',
+            type: 'POST',
+            url: '<?php echo e(url("updateChecklist")); ?>',
             data: {
-                checklistID: checklistID,
-                isChecked: !isChecked,
-                // Add any other data you want to send to the server
+                checklistId: checklistId,
+                isChecked: isChecked,
+                '_token' : "<?php echo e(csrf_token()); ?>"
             },
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function (data) {
-                // Update the checkbox state based on the server response
-                $('#checklist').prop('checked', !isChecked);
-                console.log(data);
-            },
-            error: function (error) {
-                console.log('Error:', error);
-            }
+            success: function (data) {},
+            error: function (error) {}
         });
     }
 </script>

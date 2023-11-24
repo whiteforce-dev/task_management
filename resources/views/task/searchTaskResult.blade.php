@@ -542,12 +542,13 @@
                         <img src="{{ url($userimg ?? 'NA') }}" alt="" width="50" height="50"
                             style="margin:3px 2px; border-radius:50px">
                     @endforeach
-                    <img src="{{ url($task->GetManagerName->image ?? 'N/A') }}" alt="" width="50"
-                        height="50" style="margin:10px 5px; border-radius:50px; border:2px solid #cb0c9f; ">
                     @if (!empty($task->GetReporter))
                         <img src="{{ url($task->GetReporter->image ?? 'N/A') }}" alt="" width="50"
-                            height="50" style="margin:10px 5px; border-radius:50px; border:2px solid #289f30; ">
+                            height="50" style="margin:10px 5px; border-radius:50px; border:3.5px solid #289f30; ">
                     @endif
+                    <img src="{{ url($task->GetManagerName->image ?? 'N/A') }}" alt="" width="50"
+                        height="50" style="margin:10px 5px; border-radius:50px; border:3.5px solid #cb0c9f; ">
+                    
                 </div>
             </div>
         </div>
