@@ -89,4 +89,15 @@ function checkIfAuthorized(){
     return false;
 }
 
+function checkTaskCreatedBy($task_id, $user_id){
+    $task = Taskmaster::where('id', $task_id)->where('alloted_by', $user_id)->first();
+    if(empty($task)){
+       return false; 
+    }
+    if(in_array($user_id,explode(',', $task->alloted_to))){
+        return false;
+    }
+    return true;
+}
+
 

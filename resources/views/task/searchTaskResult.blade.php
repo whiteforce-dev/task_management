@@ -65,6 +65,7 @@ $currentDate = now();
 @endphp
 
 <section class="cards {{$card_color_class}}" id="result">
+
     <div class="main-card"> 
         <div class="long-width" style="width: 70%;">
             <div class="up-box">
@@ -80,12 +81,10 @@ $currentDate = now();
             <div class="low-box" style="position:relative;height:95px;overflow:hidden;">
             <span onclick="this.parentElement.style.height='max-content'" style="cursor:pointer;position:absolute;right:20px;bottom:0;font-size:14px;font-weight:bold;">Read More
             </span>
-                <h3><i class="fa-solid fa-user-tag" style="margin-right: 5px; color:#cb0c9f;"></i>
-                    Description</h3>
+                <h3><i class="fa-solid fa-user-tag" style="margin-right: 5px; color:#cb0c9f;"></i>Description</h3>
                     <?php $taskDetails = mb_strimwidth($task->task_details ?? 'null', 0, 150, '...'); ?>
-                <pre>{{ $task->task_details }}</pre>             
+                <pre class="highOne">{{ $task->task_details }}</pre>         
             </div>
-
             <div class="low-box remarkbox">
                 <h3><i class="fa-solid fa-user-tag" style="margin-right: 5px; color:#cb0c9f;"></i>Remark</h3>
                 <div class="comments">
@@ -94,7 +93,7 @@ $currentDate = now();
                         <div class="proimg">
                             <img src="{{ !empty($remark->GetUser->image) ? url($remark->GetUser->image) : '' }}" alt="" width="100%">
                         </div>
-                        <p>{{ $remark->remark }}</p>
+                        <p class="highOne">{{ $remark->remark }}</p>
                         <div class="numdate">
                             <span>{{ date('M d,Y H:i:s',strtotime($remark->created_at)) }}</span>
                         </div>
@@ -114,7 +113,7 @@ $currentDate = now();
                     @if($task->status == '3')
                         <span  class="badge badge-primary completedBadge" style="width: 105% !important">Completed</span>
                     @else
-                        @if(Auth::user()->type != 'employee' || checkIsUserTL(Auth::user()->id))
+                        @if(Auth::user()->type != 'employee' || checkIsUserTL(Auth::user()->id) || checkTaskCreatedBy($task->id, Auth::user()->id))
                             <select class="dropbtn1 status-dropdown" style="background:{{ $dropdownColor }} !important" name="selectstatus" data-task-id="{{ $task->id }}">
                             @foreach ($status as $statuss)
                             <option value="{{ $statuss->id }}" {{ $statuss->id == $task->status ? 'selected' : '' }}>{{ ucfirst($statuss->status) }}</option>   
@@ -260,10 +259,11 @@ $currentDate = now();
                 <img src="{{ url($task->GetManagerName->image ?? 'N/A') }}" alt="" width="50"
                     height="50"
                     style="margin:10px 5px; border-radius:50px; border:2px solid #cb0c9f; ">
-
+                    @if(!empty($task->GetReporter))
                     <img src="{{ url($task->GetReporter->image ?? 'N/A') }}" alt="" width="50"
                     height="50"
-                    style="margin:10px 5px; border-radius:50px; border:2px solid #289f30; ">    
+                    style="margin:10px 5px; border-radius:50px; border:2px solid #289f30; "> 
+                    @endif  
             </div>
         </div>
     </div>
