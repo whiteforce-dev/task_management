@@ -88,7 +88,7 @@ class TaskManagmentController extends Controller
         }
         return redirect('task-list')->with(['success' => 'Your task successfully save.']);
     }
-    public function taskList()
+    public function taskList(Request $request)
     {
         $is_tl = checkIsUserTL(Auth::user()->id);
         $to = "";
@@ -100,22 +100,32 @@ class TaskManagmentController extends Controller
         $tags = "";
 
         $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('is_approved', '=', '1');
+        if (!empty($request->input('searchInput'))) {
+            $tasklist = $tasklist->where('task_name', 'like', '%' . $request->input('searchInput') . '%');
+        }
         if (Auth::user()->type == "employee" && empty($is_tl)) {
-            $tasklist = $tasklist->where('alloted_by', Auth::user()->id)->orWhereRaw("FIND_IN_SET(" . Auth::user()->id . ", alloted_to)");
+            $tasklist = $tasklist->where(function ($query) {
+                $query->where('alloted_by', Auth::user()->id)
+                ->orWhereRaw("FIND_IN_SET(" . Auth::user()->id . ", alloted_to)");
+            });
         } elseif (Auth::user()->type == "manager") {
             $teamId = User::where('software_catagory', Auth::user()->software_catagory)->where('parent_id', Auth::user()->id)->pluck('id')->toArray();
             $all_users_ids = [Auth::user()->id, ...$teamId];
             $pattern = implode('|', array_map('preg_quote', explode(',', implode(',', $all_users_ids))));
-            $tasklist = $tasklist->whereIn('alloted_by', $all_users_ids)->orWhereRaw("alloted_to REGEXP '{$pattern}'");
+            $tasklist = $tasklist->where(function ($query) use ($all_users_ids, $pattern) {
+                $query->whereIn('alloted_by', $all_users_ids)
+                ->orWhereRaw("alloted_to REGEXP '{$pattern}'");
+            });
         }
-        $tasklist = $tasklist->orderBy('id', 'Desc')->where('is_approved', '=', '1')->paginate(25);
+        $tasklist = $tasklist->orderBy('id', 'Desc')->paginate(25);
         $users = User::where('software_catagory', Auth::user()->software_catagory)->where('type', '!=', 'admin')->get();
         $statuss = Status::get();
         $prioritys = Priority::get();
         $tags = Tag::where('software_catagory', Auth::user()->software_catagory)->get();
-
+        
         $reportersId = Team::pluck('tl_id')->toArray();
         $reporters = User::whereIn('id', $reportersId)->get();
+        session(['searchInput' => $request->input('searchInput')]);
         return view('task.taskList', compact('tags', 'tasklist', 'managerId', 'EmployeeId', 'status_search', 'from', 'to', 'priority', 'statuss', 'users', 'prioritys', 'reporters'));
     }
 
@@ -126,6 +136,9 @@ class TaskManagmentController extends Controller
         $alloted_summary_array = $alloted_array = [];
 
         $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('is_approved', '=', '1');
+        if (!empty(session('searchInput'))) {
+            $tasklist = $tasklist->where('task_name', 'like', '%' . session('searchInput') . '%');
+        }
         if (Auth::user()->type == "employee" && empty($is_tl)) {
             $tasklist = $tasklist->where(function ($query) {
                 $query->where('alloted_by', Auth::user()->id)
@@ -752,11 +765,10 @@ class TaskManagmentController extends Controller
         $reporters = User::whereIn('id', $reportersId)->get();
         return view('task.taskList', compact('tags', 'tasklist', 'managerId', 'EmployeeId', 'status_search', 'from', 'to', 'priority', 'statuss', 'users', 'prioritys', 'reporters'));
     }
-    public function updateCheckbox(request $request){
-       $checkdata = TaskChecklist::where('is_checked', $request->checklistID)->first();
-       $checkdata->is_checked = '1';
-       $checkdata->save();
-       return;
+    public function updateChecklist(Request $request){
+       $is_checked = !empty($request->isChecked == "true") ? 1 : 0;
+       $checkdata = TaskChecklist::where('id', $request->checklistId)->update(['is_checked' => $is_checked, 'action_teken_by' => Auth::user()->id]);
+       return 1;
     }
 
 }

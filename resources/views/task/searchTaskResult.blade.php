@@ -332,14 +332,9 @@
                                 <form class="upperwidth">
                                     <p class="card-left">
                                         <label class="labelone">
-                                            <span class="febspan">1) {{ $list->checklist ?? 'NA' }}"</span>
-                                            @if($list->is_checked == '1')
-                                            <input type="checkbox" class="rightbox" checked readonly value="1" id="checklist" onclick="toggleCheckbox()">
-                                            @else
-                                            <input type="checkbox" class="rightbox" readonly value="0" id="checklist" onclick="toggleCheckbox()">
-                                            @endif
+                                            <span class="febspan">{{ $list->checklist ?? 'NA' }}"</span>
+                                            <input type="checkbox" class="rightbox" readonly value="1" id="checklist_{{ $list->id }}" onclick="toggleCheckbox({{ $list->id }})" {{ !empty($list->is_checked) ? 'checked' : '' }}>
                                             <span class="check-mark"></span>
-                                            <input type="hidden" value="{{ $list->id }}" name="checklistId" id="checklistId">
                                         </label>
                                     </p>
                                 </form>
@@ -629,27 +624,19 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 <script>
- function toggleCheckbox() {
-        var checklistID = $('#checklist').val();
-        var isChecked = $('#checklist').prop('checked');
+ function toggleCheckbox(checklistId) {
+        var isChecked = $('#checklist_'+checklistId).prop('checked');
 
         $.ajax({
-            type: 'GET',
-            url: '{{ url("updateCheckbox") }}',
+            type: 'POST',
+            url: '{{ url("updateChecklist") }}',
             data: {
-                checklistID: checklistID,
-                isChecked: !isChecked,
+                checklistId: checklistId,
+                isChecked: isChecked,
+                '_token' : "{{ csrf_token() }}"
             },
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function (data) {
-                $('#checklist').prop('checked', !isChecked);
-                console.log(data);
-            },
-            error: function (error) {
-                console.log('Error:', error);
-            }
+            success: function (data) {},
+            error: function (error) {}
         });
     }
 </script>

@@ -5,19 +5,18 @@
     $users = \App\Models\User::get();
 @endphp
 
-
 <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur"
     navbar-scroll="true">
     <div class="container-fluid py-1 px-3">
         <nav aria-label="breadcrumb">
         </nav>
-        <form action="{{ url('top-search') }}" method="post">@csrf
+        <form action="{{ url('task-list') }}">
             <nav aria-label="breadcrumb">
                 @if (url()->current() == url('task-list') || url()->current() == url('top-search'))
-                    <div class="input-group" id="searchResults" style="margin-top:12px;">
+                    <div class="input-group" id="nav-search" style="margin-top:12px;">
                         <input type="text" name="searchInput" id="searchInput" class="form-control"
-                            placeholder="Search By task name" style="width:760px; height: 52px;">
-                        <button class="btn btn-secondary" type="submit">
+                            placeholder="Search By task name" style="width:760px; height: 52px;" value="{{ !empty(session('searchInput')) ? session('searchInput') : '' }}">
+                        <button class="btn btn-secondary" type="submit" style="background: linear-gradient(310deg, #7928ca, #ff0080)">
                             <i class="fa fa-search" style="height: 25px"></i>
                         </button>
                     </div>
