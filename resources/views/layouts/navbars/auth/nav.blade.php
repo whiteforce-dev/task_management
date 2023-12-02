@@ -8,14 +8,12 @@
 <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur"
     navbar-scroll="true">
     <div class="container-fluid py-1 px-3">
-        <nav aria-label="breadcrumb">
-        </nav>
-        <form action="{{ url('task-list') }}">
+        <form action="{{ url('task-list') }}" style="width: 62%;">
             <nav aria-label="breadcrumb">
                 @if (url()->current() == url('task-list') || url()->current() == url('top-search'))
                     <div class="input-group" id="nav-search" style="margin-top:12px;">
                         <input type="text" name="searchInput" id="searchInput" class="form-control"
-                            placeholder="Search By task name" style="width:760px; height: 52px;" value="{{ !empty(session('searchInput')) ? session('searchInput') : '' }}">
+                            placeholder="Search By task name" style="width:73%; height: 52px;" value="{{ !empty(session('searchInput')) ? session('searchInput') : '' }}">
                         <button class="btn btn-secondary" type="submit" style="background: linear-gradient(310deg, #7928ca, #ff0080)">
                             <i class="fa fa-search" style="height: 25px"></i>
                         </button>
@@ -24,8 +22,6 @@
             </nav>
         </form>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4 d-flex justify-content-end" id="navbar">
-
-
             <li class="nav-item d-flex align-items-center">
                 @if (Auth::user()->type == 'admin')
                     <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5 ">
@@ -59,17 +55,14 @@
             &nbsp;
             &nbsp;
             <li class="nav-item dropdown pe-2 d-flex align-items-center">&nbsp;
-
                 <a href="javascript:;" class="nav-link text-body p-0 nav-link text-body font-weight-bold px-0"
                     id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                     <span class="d-sm-inline d-none"
                         style="margin-right: 15px;color:#E4088F;"><b>{{ ucfirst(Auth::user()->name) }}</b></span>
                     <img src="{{ url(Auth::user()->image) }}" class="avatar">
-
                 </a>
 
                 <ul class="dropdown-menu  dropdown-menu-end  px-2 py-3 me-sm-n4" aria-labelledby="dropdownMenuButton">
-
                     <li class="mb-2">
                         <a class="dropdown-item border-radius-md" href="{{ url('edituser', Auth::user()->id) }}">
                             <div class="d-flex py-1">
@@ -95,7 +88,6 @@
                     </li>
                 </ul>
             </li>
-
         </div>
     </div>
 </nav>

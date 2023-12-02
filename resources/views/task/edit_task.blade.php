@@ -132,7 +132,7 @@
                             <label for="about">{{ 'Deadline date' }}</label>
                             <div class="@error('user.EndDate')border border-danger rounded-3 @enderror">
                                 <input class="form-control" value="{{ $task->deadline_date }}" type="date"
-                                    placeholder="@example.com" id="deadline_date" name="deadline_date">
+                                    placeholder="@example.com" id="deadline_date" name="deadline_date" readonly>
                                 @error('enddate')
                                     <p class="text-danger text-xs mt-2">{{ $message }}</p>
                                 @enderror

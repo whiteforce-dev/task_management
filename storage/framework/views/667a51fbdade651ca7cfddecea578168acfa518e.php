@@ -210,82 +210,81 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal">&#10060;</button>
         </div>
         <div class="modal-body" id="response" style="overflow-x:hidden; overflow-y: auto;height: 700px;">
-            @foreach ($remarks as $i => $remark)
-                @php $managerData = \App\Models\User::where('id', $remark->userid)->first(); @endphp
+            <?php $__currentLoopData = $remarks; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => $remark): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <?php $managerData = \App\Models\User::where('id', $remark->userid)->first(); ?>
                 <div class="row">
                     <div class="col-sm-5">
                         <div class="msg left-msg mt-3">
-                            @if ($remark->userid !== Auth::user()->id)
+                            <?php if($remark->userid !== Auth::user()->id): ?>
                                 <div class="msg-img">
-                                    <img src="{{ url($managerData->image) }}" class="avatar avatar-lg me-3"
+                                    <img src="<?php echo e(url($managerData->image)); ?>" class="avatar avatar-lg me-3"
                                         height="100" width="100" />
                                 </div>
                                 <div class="msg-bubble" style="margin-left:8px;">
                                     <div class="msg-info">
-                                        <div class="msg-info-name">{{ ucfirst($managerData->name) }}</div>
-                                        <div class="msg-info-time">{{ $remark->created_at->format('dM, Y / h:i A') }}
+                                        <div class="msg-info-name"><?php echo e(ucfirst($managerData->name)); ?></div>
+                                        <div class="msg-info-time"><?php echo e($remark->created_at->format('dM, Y / h:i A')); ?>
+
                                         </div>
                                     </div>
-                                    {{-- <div class="msg-text">
-                                        <pre>{{ $remark->remark ?? 'No Comments' }}</pre>
-                                    </div> --}}
+                                    
                                     <div class="msg-text">
-                                        <pre>{{ $remark->remark ?? 'No Comments' }}</pre><br>
-                                        @if (!empty($remark->screenshort))
+                                        <pre><?php echo e($remark->remark ?? 'No Comments'); ?></pre><br>
+                                        <?php if(!empty($remark->screenshort)): ?>
                                             <?php $imgg = explode(',', $remark->screenshort); ?>
-                                            @foreach ($imgg as $img)
+                                            <?php $__currentLoopData = $imgg; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $img): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                                 <?php $disk = Storage::disk('s3');
                                                 $image = $disk->temporaryUrl($img, now()->addMinutes(5)); ?>
                                                 <div class="tz-gallery">
-                                                    <a class="lightbox" href="{{ $image }}">
-                                                        <img src="{{ $image }}" style="border-radius:10px;"width="110" height="90">
+                                                    <a class="lightbox" href="<?php echo e($image); ?>">
+                                                        <img src="<?php echo e($image); ?>" style="border-radius:10px;"width="110" height="90">
                                                     </a>
                                                 </div>&nbsp;
-                                            @endforeach
-                                        @endif
+                                            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                        <?php endif; ?>
                                     </div>
                                     <div id="response1"></div>
                                 </div>
-                            @endif
+                            <?php endif; ?>
                         </div>
                     </div>
 
                     <div class="msg right-msg mt-3">
-                        @if ($remark->userid == Auth::user()->id)
+                        <?php if($remark->userid == Auth::user()->id): ?>
                             <div class="msg-img">
-                                <img src="{{ url($managerData->image) }}" class="avatar avatar-lg me-3" height="100"
+                                <img src="<?php echo e(url($managerData->image)); ?>" class="avatar avatar-lg me-3" height="100"
                                     width="100" />
                             </div>
                             <div class="msg-bubble">
                                 <div class="msg-info">
-                                    <div class="msg-info-name">{{ ucfirst($remark->GetUser->name) }}</div>
-                                    <div class="msg-info-time">{{ $remark->created_at->format('dM, Y / h:i A') }}</div>
+                                    <div class="msg-info-name"><?php echo e(ucfirst($remark->GetUser->name)); ?></div>
+                                    <div class="msg-info-time"><?php echo e($remark->created_at->format('dM, Y / h:i A')); ?></div>
                                 </div>
                                 <div class="msg-text">
-                                    <pre>{{ $remark->remark ?? 'No Comments' }}</pre><br>
-                                    @if (!empty($remark->screenshort))
+                                    <pre><?php echo e($remark->remark ?? 'No Comments'); ?></pre><br>
+                                    <?php if(!empty($remark->screenshort)): ?>
                                         <?php $imgg = explode(',', $remark->screenshort); ?>
-                                        @foreach ($imgg as $img)
+                                        <?php $__currentLoopData = $imgg; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $img): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                             <?php $disk = Storage::disk('s3');
                                             $image = $disk->temporaryUrl($img, now()->addMinutes(5)); ?>
                                             <div class="tz-gallery">
-                                                {{-- <img src="{{ $image }}" width="50" height="50" class="" style="border-radius:10px;"> --}}
-                                                <a class="lightbox" href="{{ $image }}"><img
-                                                        src="{{ $image }}" style="border-radius:10px;"
+                                                
+                                                <a class="lightbox" href="<?php echo e($image); ?>"><img
+                                                        src="<?php echo e($image); ?>" style="border-radius:10px;"
                                                         width="110" height="90"></a>
                                             </div>&nbsp;
-                                        @endforeach
-                                    @endif
+                                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                    <?php endif; ?>
                                 </div>
                             </div>
-                        @endif
+                        <?php endif; ?>
                     </div>
                 </div>
-            @endforeach
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
         </div>
 
         <form id="myForm" enctype="multipart/form-data">
-            @csrf
+            <?php echo csrf_field(); ?>
             <div class="row" style="margin-bottom: 9px;">
                 <div class="col-sm-7" style="width: 60%; position: relative; margin-left: 7px;">
                     <textarea id="manager_comments" name="manager_comments" class="form-control" style="padding-right:140px;"></textarea>
@@ -295,14 +294,14 @@
                         <img src="" class="image-preview">
                         <span class="change-image">Upload different image</span>
                     </div>
-                    <input type="hidden" value="{{ $task_id }}" name="task_id" id="task_id">
+                    <input type="hidden" value="<?php echo e($task_id); ?>" name="task_id" id="task_id">
                 </div>
                 <div class="col-sm-3" style="width: 30%; padding-top: 17px;">
                     <select class="form-control select2" multiple data-live-search="true" name="notify_to[]"
                         id="notify_to" data-placement="top">
-                        @foreach ($users as $user)
-                            <option value="{{ $user->id }}">{{ $user->name }}</option>
-                        @endforeach
+                        <?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                            <option value="<?php echo e($user->id); ?>"><?php echo e($user->name); ?></option>
+                        <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                     </select>
                 </div>
                 <div class="col-sm-2" style="width: 7%">
@@ -367,19 +366,19 @@
             var formData = new FormData(this);
             $.ajax({
                 type: 'POST',
-                url: "{{ url('comment-bymanager') }}",
+                url: "<?php echo e(url('comment-bymanager')); ?>",
                 data: formData,
                 processData: false,
                 contentType: false,
                 success: function(response) {
                     let html = `<div class="row"></div><div class="msg right-msg mt-3">
                         <div class="msg-img">
-                            <img src="{{ url(Auth::user()->image) }}" class="avatar avatar-lg me-3" height="100" width="100" />
+                            <img src="<?php echo e(url(Auth::user()->image)); ?>" class="avatar avatar-lg me-3" height="100" width="100" />
                         </div>
                         <div class="msg-bubble">
                             <div class="msg-info">
-                                <div class="msg-info-name">{{ Auth::user()->name }}</div>
-                                <div class="msg-info-time">{{ date('d,M Y / h:i A') }}</div>
+                                <div class="msg-info-name"><?php echo e(Auth::user()->name); ?></div>
+                                <div class="msg-info-time"><?php echo e(date('d,M Y / h:i A')); ?></div>
                             </div>    
                             <div class="msg-text">
                                         <pre>${formData.get('manager_comments')}</pre><br>
@@ -405,3 +404,4 @@
 <script>
     baguetteBox.run('.tz-gallery');
 </script>
+<?php /**PATH C:\xampp\htdocs\task_management\resources\views/task/full_view.blade.php ENDPATH**/ ?>

@@ -63,9 +63,9 @@ class TeamAllotedController extends Controller
     {
         $is_tl = checkIsUserTL(Auth::user()->id);
         if (!empty($is_tl) || Auth::user()->type == 'manager' || Auth::user()->type == 'admin') {
-            $tasklist = Taskmaster::where('is_approved', 0)->OrderBy('id', 'DESC')->paginate('25');
+            $tasklist = Taskmaster::where('is_approved', 0)->where('software_catagory', Auth::user()->software_catagory)->OrderBy('id', 'DESC')->paginate('25');
         } else {
-            $tasklist = Taskmaster::whereIn('is_approved', [0])->where('alloted_to', Auth::user()->id)->OrderBy('id', 'DESC')->paginate('25');
+            $tasklist = Taskmaster::whereIn('is_approved', [0])->where('alloted_to', Auth::user()->id)->where('software_catagory', Auth::user()->software_catagory)->OrderBy('id', 'DESC')->paginate('25');
         }
         $users = User::where('software_catagory', Auth::user()->software_catagory)->where('type', '!=', 'admin')->get();
         $status = Status::get();

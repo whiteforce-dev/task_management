@@ -26,7 +26,8 @@
     }
 
     #navbarBlur {
-        width: calc(100vw - 140px)
+        width: calc(100vw - 180px);
+        height: 75px;
     }
 
     body:not(:has(aside.sidenav.hide)) #navbarBlur.navbar {
@@ -332,7 +333,7 @@
                                 <form class="upperwidth">
                                     <p class="card-left">
                                         <label class="labelone">
-                                            <span class="febspan">{{ $list->checklist ?? 'NA' }}"</span>
+                                            <span class="febspan">{{ $list->checklist ?? 'NA' }}</span>
                                             <input type="checkbox" class="rightbox" readonly value="1" id="checklist_{{ $list->id }}" onclick="toggleCheckbox({{ $list->id }})" {{ !empty($list->is_checked) ? 'checked' : '' }}>
                                             <span class="check-mark"></span>
                                         </label>

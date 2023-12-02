@@ -1,5 +1,7 @@
 @extends('layouts.user_type.auth')
 @section('content')
+<style>
+</style>
     <link rel="stylesheet" href="{{ url('assets/css/cards.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{ url('assets/css/tasklist.css') }}">
