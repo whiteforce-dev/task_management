@@ -1,238 +1,4 @@
-<style>
-    * {
-        transition: all 0.4s ease !important;
-    }
-
-    aside#sidenav-main {
-        padding: 7px 5px;
-    }
-
-    aside#sidenav-main.hide {
-        width: 75px;
-        padding: 7px 5px;
-    }
-
-    aside#sidenav-main .nav-link {
-        gap: 10px;
-    }
-
-    aside#sidenav-main.hide .nav-link {
-        margin-inline: 0;
-        gap: 25px;
-    }
-
-    .sidenav.hide+.main-content {
-        margin-left: 6.125rem;
-    }
-
-    #navbarBlur {
-        width: calc(100vw - 180px);
-        height: 75px;
-    }
-
-    body:not(:has(aside.sidenav.hide)) #navbarBlur.navbar {
-        width: 77%;
-    }
-
-    .col-sm-3 {
-        flex: 0 0 auto;
-        width: 22%;
-    }
-
-    .col-3 {
-        flex: 0 0 auto;
-        width: 22%;
-    }
-
-    .sidenav .navbar-brand {
-        padding: 0.5rem 0.4rem;
-        text-align: center;
-        width: 100%;
-        display: flex !important;
-        justify-content: center;
-    }
-
-    .sidenav .navbar-brand img {
-        margin-left: 13px;
-    }
-
-    footer {
-        display: none;
-    }
-
-    .py-4 {
-        padding-bottom: 0.5rem !important;
-    }
-
-    ::-webkit-scrollbar {
-        display: none;
-    }
-
-
-    /*checkbox css start  */
-
-    .card-left .labelone {
-        position: relative;
-        font-family: sans-serif;
-        display: block;
-        padding-left: 60px;
-        font-size: 22px;
-        user-select: none;
-        margin: 30px 30px;
-    }
-
-
-    .card-left .labelone .rightbox:checked+.check-mark {
-        background-color: #9691F4;
-        transition: .1s;
-    }
-
-    .card-left .check-mark {
-        width: 30px;
-        height: 30px;
-        background-color: #E9F1FA;
-        position: absolute;
-        left: 0;
-        display: inline-block;
-        top: 0;
-        border-radius: 50%;
-    }
-
-    .card-left .rightbox {
-        display: none;
-    }
-
-    input [type="checkbox" i] {
-        background-color: initial;
-        cursor: default;
-        appearance: auto;
-        box-sizing: border-box;
-        margin: 3px 3px 3px 4px;
-        padding: initial;
-        border: initial;
-    }
-
-    .card-right .rightbox {
-        display: none;
-    }
-
-    .card-right .labelone {
-        position: relative;
-        font-family: sans-serif;
-        display: block;
-        padding-left: 60px;
-        font-size: 22px;
-        user-select: none;
-        margin: 30px 30px;
-    }
-
-    .card-right .check-mark {
-        width: 30px;
-        height: 30px;
-        background-color: #E9F1FA;
-        position: absolute;
-        left: 0;
-        display: inline-block;
-        top: 0;
-        border-radius: 3px;
-    }
-
-    .card-right .labelone .rightbox:checked+.check-mark {
-        background-color: #00116A;
-        transition: .1s;
-    }
-
-    .card-right .labelone .rightbox:checked+.check-mark:after {
-        content: "";
-        position: absolute;
-        width: 10px;
-        transition: .1s;
-        height: 5px;
-        background: #00116A;
-        top: 45%;
-        left: 50%;
-        border-left: 2px solid #fff;
-        border-bottom: 2px solid #fff;
-        transform: translate(-50%, -50%) rotate(-45deg);
-    }
-
-    /* checkbox circle / Card Left */
-    .card-left .rightbox {
-        display: none;
-    }
-
-    .card-left .labelone {
-        position: relative;
-        /* font-family: sans-serif; */
-        display: block;
-        padding-left: 37px;
-        font-size: 15px;
-        user-select: none;
-        font-weight: 500;
-        color: #4c4c56;
-        margin: 2px 0px;
-    }
-
-    .card-left .check-mark {
-        width: 25px;
-        height: 25px;
-        background-color: #f0f3f7;
-        position: absolute;
-        border: 1px solid #f7c2f5;
-        left: 0;
-        display: inline-block;
-        top: 2px;
-        border-radius: 50%;
-    }
-
-    .card-left .labelone .rightbox:checked+.check-mark {
-        border: none;
-        background: linear-gradient(310deg, #7928ca, #ff0080);
-        transition: .1s;
-    }
-
-    .card-left .labelone .rightbox:checked+.check-mark:after {
-        content: "";
-        position: absolute;
-        width: 11px;
-        transition: .1s;
-        height: 6px;
-        top: 45%;
-        left: 50%;
-        border-left: 2px solid #fff;
-        border-bottom: 2px solid #fff;
-        transform: translate(-50%, -50%) rotate(-45deg);
-    }
-
-    .upperwidth {}
-
-    @keyframes colorIncrease {
-        0% {
-            background-size: 0% 100%;
-        }
-
-        100% {
-            background-size: 100% 100%;
-        }
-    }
-
-    .text-background-animation {
-        background-image: linear-gradient(to right, #c0f5da 0%, #c0f5da 100%);
-        background-size: lightgreen;
-        background-repeat: no-repeat;
-        /* animation: colorIncrease 3s linear; */
-        animation: colorIncrease 5s linear 1 forwards !important;
-        color: black !important;
-    }
-
-    .checkbox {
-        width: 86%;
-    }
-
-    /* checkbox css end  */
-</style>
-
-
+<link rel="stylesheet" href="<?php echo e(url('assets/css/checkboc_tasksearch_page.css')); ?>">
 <link rel="stylesheet" href="<?php echo e(url('assets/css/tasklist.css')); ?>">
 <?php if(!empty($is_allotted_to)): ?>
     <div class="cards">
@@ -311,6 +77,18 @@
                         <span class="badge badge-primary"
                             style="background: linear-gradient(to right, #f953c6, #b91d73); margin-right:10px; width:100px; width: 65px;height: 30px;"><?php echo e($task->task_code); ?></span>
                         <h1 style="width:90%"><?php echo e(ucfirst($task->task_name)); ?></h1>
+
+                        <div class="checkbox-wrapper-19" style="display:flex;">
+                            <?php if($task->status == '6'): ?>
+                                <input type="checkbox" id="cbtest-<?php echo e($task->id); ?>"
+                                    data-id="<?php echo e($task->id); ?>" class="status-checkbox" checked />
+                            <?php else: ?>
+                                <input type="checkbox" id="cbtest-<?php echo e($task->id); ?>"
+                                    data-id="<?php echo e($task->id); ?>" class="status-checkbox" />
+                            <?php endif; ?>
+                            <label for="cbtest-<?php echo e($task->id); ?>" class="check-box"></label>
+                        </div>
+
                     </div>
 
                     <hr
@@ -327,14 +105,17 @@
                         <?php $taskDetails = mb_strimwidth($task->task_details ?? 'null', 0, 150, '...'); ?>
                         <pre class="highOne"><?php echo e($task->task_details); ?></pre>
                     <?php else: ?>
-                    <?php $checklist = \App\Models\TaskChecklist::where('task_id', $task->id)->get(); ?>
+                        <?php $checklist = \App\Models\TaskChecklist::where('task_id', $task->id)->get(); ?>
                         <?php $__currentLoopData = $checklist; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $list): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <div class="checkbox">
                                 <form class="upperwidth">
                                     <p class="card-left">
                                         <label class="labelone">
                                             <span class="febspan"><?php echo e($list->checklist ?? 'NA'); ?></span>
-                                            <input type="checkbox" class="rightbox" readonly value="1" id="checklist_<?php echo e($list->id); ?>" onclick="toggleCheckbox(<?php echo e($list->id); ?>)" <?php echo e(!empty($list->is_checked) ? 'checked' : ''); ?>>
+                                            <input type="checkbox" class="rightbox" readonly value="1"
+                                                id="checklist_<?php echo e($list->id); ?>"
+                                                onclick="toggleCheckbox(<?php echo e($list->id); ?>)"
+                                                <?php echo e(!empty($list->is_checked) ? 'checked' : ''); ?>>
                                             <span class="check-mark"></span>
                                         </label>
                                     </p>
@@ -422,7 +203,7 @@
                                 class="dropdown-item border-radius-md" href="javascript:;">Status History
                             </a>
                         </div>
-                    </div>
+                    </div>    
                 </div>
 
                 <div class="box-one">
@@ -505,7 +286,6 @@
                     &nbsp;<P><?php echo e($task->GetReporter->name ?? 'N/A'); ?></P>
                 </div>
 
-
                 <?php
                     $alloted_to_ids = explode(',', $task->alloted_to);
                     $get_user_names_arr = \App\Models\User::whereIn('id', $alloted_to_ids)
@@ -549,11 +329,13 @@
                     <?php endif; ?>
                     <img src="<?php echo e(url($task->GetManagerName->image ?? 'N/A')); ?>" alt="" width="50"
                         height="50" style="margin:10px 5px; border-radius:50px; border:3.5px solid #cb0c9f; ">
-                    
+
                 </div>
+
             </div>
         </div>
     </section>
+
 <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 <?php echo e($tasklist->links()); ?>
 
@@ -571,7 +353,7 @@
                     _token: '<?php echo e(csrf_token()); ?>'
                 },
                 success: function(response) {
-                    console.log('Status updated successfully');
+                   
                 },
                 error: function(xhr) {
                     console.log('Error updating status');
@@ -582,11 +364,9 @@
 </script>
 <script>
     const checkboxes = document.querySelectorAll('.rightbox');
-
     checkboxes.forEach((checkbox) => {
         checkbox.addEventListener('change', function() {
             const paragraph = this.closest('.labelone').querySelector('.febspan');
-
             if (this.checked) {
                 paragraph.classList.add('text-background-animation');
             } else {
@@ -627,22 +407,52 @@
 <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 <script>
- function toggleCheckbox(checklistId) {
-        var isChecked = $('#checklist_'+checklistId).prop('checked');
+    function toggleCheckbox(checklistId) {
+        var isChecked = $('#checklist_' + checklistId).prop('checked');
 
         $.ajax({
             type: 'POST',
-            url: '<?php echo e(url("updateChecklist")); ?>',
+            url: '<?php echo e(url('updateChecklist')); ?>',
             data: {
                 checklistId: checklistId,
                 isChecked: isChecked,
-                '_token' : "<?php echo e(csrf_token()); ?>"
+                '_token': "<?php echo e(csrf_token()); ?>"
             },
-            success: function (data) {},
-            error: function (error) {}
+            success: function(data) {},
+            error: function(error) {}
         });
     }
 </script>
+<script>
+    $(document).ready(function() {
+        $(document).on('change', '.status-checkbox', function() {
+            var id = $(this).data('id');
+            var status = $(this).prop('checked') ? 6 : 3;
+            var confirmUpdate = window.confirm(
+                'Thanks, this task will be deleted after 30 days. Do you want to proceed?');
 
-
+            if (confirmUpdate) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/boos-approvel',
+                    data: {
+                        id: id,
+                        status: status,
+                        '_token': "<?php echo e(csrf_token()); ?>"
+                    },
+                    success: function(response) {
+                        alert('Task updated successfully!');
+                    },
+                    error: function(error) {
+                        console.log(error);
+                        // Handle error, if needed
+                    }
+                });
+            } else {
+                // User clicked "Cancel," reset the checkbox state
+                $(this).prop('checked', !$(this).prop('checked'));
+            }
+        });
+    });
+</script>
 <?php /**PATH C:\xampp\htdocs\task_management\resources\views/task/searchTaskResult.blade.php ENDPATH**/ ?>

@@ -58,6 +58,7 @@ body {
     top: 0 !important;
     width: calc(100vw - 17.125rem - 60px);
     z-index: 1000;
+    
 }
 
 #navbarBlur.navbar::before {

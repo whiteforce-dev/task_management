@@ -96,7 +96,6 @@ unset($__errorArgs, $__bag); ?>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
         $(".toggle-password").click(function() {
-      
           $(this).toggleClass("fa-eye fa-eye-slash");
           var input = $($(this).attr("toggle"));
           if (input.attr("type") == "password") {

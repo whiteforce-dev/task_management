@@ -321,8 +321,9 @@ unset($__errorArgs, $__bag); ?>
     $(document).ready(function() {
         $('.select2').select2({
             tags: true,
-            tokenSeparators: [',', '']
-            })
+            tokenSeparators: ['']
+        });
+
         $('.select3').select2({
             placeholder: "Enter Tag",
         });

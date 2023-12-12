@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        \App\Console\Commands\DeleteExpiredTasks::class,
     ];
 
     /**
@@ -25,6 +25,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('send:daily-report')->dailyAt('21:00');
+        $schedule->command('tasks:delete-expired')->daily(); // Adjust the frequency as needed
     }
 
     /**

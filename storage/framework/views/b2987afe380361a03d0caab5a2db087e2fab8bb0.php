@@ -151,6 +151,11 @@
             </div>
         </div>
     </div>
+    <div class="sticky">
+        <?php if(url()->current() !== url('task-list') && Auth::user()->type == 'admin'): ?>
+        <a class="btn btn-primary" href="<?php echo e(url('video/task.mp4')); ?>" target="_blank">Help </a>
+    <?php endif; ?>
+    </div>
     <div class="row mt-4">
         <div class="col-lg-12 mb-lg-0 mb-4">
             <div class="card z-index-2">

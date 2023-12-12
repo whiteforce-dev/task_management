@@ -4,17 +4,36 @@
     use Illuminate\Support\Facades\Route;
     $users = \App\Models\User::get();
 @endphp
+<style>
+    .sticky {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 100px;
+        height: 6vh;
+        background-color: #f1f1f1;
+        overflow-x: hidden;
+        margin-top: 650px;
+    }
+</style>
+@if (url()->current() == url('task-list') || url()->current() == url('top-search'))
+<div style="margin-left:21px;">
+@else
+<div></div>
+@endif
 
 <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur"
-    navbar-scroll="true">
+    navbar-scroll="true" style="margin-left: 21px !important;">
     <div class="container-fluid py-1 px-3">
         <form action="{{ url('task-list') }}" style="width: 62%;">
             <nav aria-label="breadcrumb">
                 @if (url()->current() == url('task-list') || url()->current() == url('top-search'))
                     <div class="input-group" id="nav-search" style="margin-top:12px;">
                         <input type="text" name="searchInput" id="searchInput" class="form-control"
-                            placeholder="Search By task name" style="width:73%; height: 52px;" value="{{ !empty(session('searchInput')) ? session('searchInput') : '' }}">
-                        <button class="btn btn-secondary" type="submit" style="background: linear-gradient(310deg, #7928ca, #ff0080)">
+                            placeholder="Search By task name" style="width:73%; height: 52px;"
+                            value="{{ !empty(session('searchInput')) ? session('searchInput') : '' }}">
+                        <button class="btn btn-secondary" type="submit"
+                            style="background: linear-gradient(310deg, #7928ca, #ff0080)">
                             <i class="fa fa-search" style="height: 25px"></i>
                         </button>
                     </div>
@@ -91,6 +110,8 @@
         </div>
     </div>
 </nav>
+
+</div>
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"
     integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
 <script>
@@ -105,4 +126,3 @@
         });
     }
 </script>
-
