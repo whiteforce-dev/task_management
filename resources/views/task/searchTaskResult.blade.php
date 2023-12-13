@@ -220,12 +220,18 @@
         background-size: lightgreen;
         background-repeat: no-repeat;
         /* animation: colorIncrease 3s linear; */
-        animation: colorIncrease 5s linear 1 forwards !important;
         color: black !important;
+        animation: colorIncrease 2s linear 1 forwards !important;
     }
-
+    .checkcolor{
+        background-color: #ddf7e1;
+    }
+    
     .checkbox {
         width: 86%;
+    }
+    .remarkbox{
+        margin-top: 13px;
     }
 
     /* checkbox css end  */
@@ -261,11 +267,11 @@
                     <span class="badge badge-primary"
                         style="background: linear-gradient(to right, #07e4f8, #00a9b8);font-size: 14px">
                         {{ !empty($alloted_summary_array[$allotted]['data'][5]) ? $alloted_summary_array[$allotted]['data'][5] : 0 }}</span>
-                </div>
-                <div class="col-md-3 summarydiv">
-                    <span class="summarySpan">Completed Task :</span>
-                    <span class="badge badge-primary"
                         style="background: linear-gradient(to right, #8fff62, #3dd103);font-size: 14px">
+                    </div>
+                    <div class="col-md-3 summarydiv">
+                        <span class="summarySpan">Completed Task :</span>
+                        <span class="badge badge-primary"
                         {{ !empty($alloted_summary_array[$allotted]['data'][3]) ? $alloted_summary_array[$allotted]['data'][3] : 0 }}</span>
                 </div>
             </div>
@@ -544,10 +550,10 @@
                     @endforeach
                     @if (!empty($task->GetReporter))
                         <img src="{{ url($task->GetReporter->image ?? 'N/A') }}" alt="" width="50"
-                            height="50" style="margin:10px 5px; border-radius:50px; border:3.5px solid #289f30; ">
+                            height="50" style="margin:10px 5px; border-radius:50px; border:3.2px solid #289f30; ">
                     @endif
                     <img src="{{ url($task->GetManagerName->image ?? 'N/A') }}" alt="" width="50"
-                        height="50" style="margin:10px 5px; border-radius:50px; border:3.5px solid #cb0c9f; ">
+                        height="50" style="margin:10px 5px; border-radius:50px; border:3.2px solid #cb0c9f; ">
                     
                 </div>
             </div>
@@ -578,21 +584,53 @@
         });
     });
 </script>
-<script>
-    const checkboxes = document.querySelectorAll('.rightbox');
+<!-- <script>
+    const checkboxess = document.querySelectorAll('.rightbox');
 
-    checkboxes.forEach((checkbox) => {
+    checkboxess.forEach((checkbox) => {
         checkbox.addEventListener('change', function() {
             const paragraph = this.closest('.labelone').querySelector('.febspan');
 
             if (this.checked) {
                 paragraph.classList.add('text-background-animation');
+                paragraph.classList.add(`checkcolor`);
             } else {
                 paragraph.classList.remove('text-background-animation');
+                paragraph.classList.remove(`checkcolor`);
             }
         });
     });
+</script> -->
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const checkboxes = document.querySelectorAll('.rightbox');
+
+    checkboxes.forEach((checkbox) => {
+        checkbox.addEventListener('change', function() {
+            updateStyles(this);
+        });
+
+        // Trigger the change event on page load
+        updateStyles(checkbox);
+    });
+
+    function updateStyles(checkbox) {
+        const paragraph = checkbox.closest('.labelone').querySelector('.febspan');
+
+        if (checkbox.checked) {
+            paragraph.classList.add('text-background-animation');
+            paragraph.classList.add('checkcolor');
+        } else {
+            paragraph.classList.remove('text-background-animation');
+            paragraph.classList.remove('checkcolor');
+        }
+    }
+});
+
 </script>
+
 
 <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -622,7 +660,7 @@
 </script>
 
 
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
 
 <script>
  function toggleCheckbox(checklistId) {
