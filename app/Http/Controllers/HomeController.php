@@ -115,7 +115,7 @@ class HomeController extends Controller
             $needApproval = Taskmaster::whereIn('alloted_by', $teamId)
                 ->where('status', '5')->where('is_approved', '1')
                 ->count();
-        } else {
+        } else { 
             $totaltask = Taskmaster::where('alloted_to', Auth::user()->id)->where('is_approved', '1')->count();
 
             $pendingtask = Taskmaster::where('alloted_to', Auth::user()->id)

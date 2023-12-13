@@ -1,5 +1,6 @@
 @extends('layouts.user_type.auth')
 @section('content')
+
     <link rel="stylesheet" href="{{ url('assets/css/cards.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{ url('assets/css/tasklist.css') }}">
@@ -43,7 +44,6 @@
                             </select>
                         </div>
                    
-
                     <div class="col-sm-3">
                         <label>Status</label>
                         <select class="selectpicker form-control" multiple data-live-search="true" name="multiple_status[]"
@@ -108,17 +108,13 @@
                 </div>
                 {{-- {{ $tasklist->links() }}  --}}
             </div>
-
         </form>
     </main>
 
-
-
     <link rel="stylesheet" href="{{ url('assets/css/multiselect.css') }}">
     <link rel="stylesheet" href="{{ url('assets/css/multiselectdrop.css') }}">
-    <a class="dribbble" href="https://dribbble.com/shots/6772849--Loader" target="_blank"><img
-            src="https://dribbble.com/assets/logo-small-2x-9fe74d2ad7b25fba0f50168523c15fda4c35534f9ea0b1011179275383035439.png"
-            alt=""></a>
+    <a class="dribbble" href="https://dribbble.com/shots/6772849--Loader" target="_blank">
+    <img src="https://dribbble.com/assets/logo-small-2x-9fe74d2ad7b25fba0f50168523c15fda4c35534f9ea0b1011179275383035439.png" alt=""></a>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.8.1/js/bootstrap-select.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}

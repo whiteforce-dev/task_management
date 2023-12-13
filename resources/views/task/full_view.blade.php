@@ -72,10 +72,12 @@
     .msg-info-name {
         margin-right: 10px;
         font-weight: bold;
+        color:#000;
     }
 
     .msg-info-time {
         font-size: 0.85em;
+        color:#000;
     }
 
     .left-msg .msg-bubble {
@@ -117,8 +119,6 @@
         height: 50px !important;
         width: 100% !important;
     }
-
-
 
     .image-input {
         text-align: center;
@@ -189,14 +189,6 @@
         width: 46.666667%;
     }
 
-/* #previous-button{
-    display: block !important;
-}
-
-#next-button{
-    display: block !important;
-} */
-
 </style>
 
 
@@ -228,9 +220,18 @@
                                         </div>
                                     </div>
                                     <div class="msg-text">
-                                        <pre>{{ $remark->remark ?? 'No Comments' }}</pre>
+                                        <pre style="color:#000;">{{ $remark->remark ?? 'No Comments' }}</pre><br>
+                                        @if (!empty($remark->screenshort))
+                                            <?php $imgg = explode(',', $remark->screenshort); ?>
+                                            @foreach ($imgg as $img)
+                                                <?php $disk = Storage::disk('s3');
+                                                $image = $disk->temporaryUrl($img, now()->addMinutes(5)); ?>
+                                             <div class="tz-gallery">                          
+                                                <a class="lightbox" href="{{ $image }}"><img src="{{ $image }}" style="border-radius:10px;" width="110" height="90"></a> 
+                                             </div>&nbsp;
+                                             @endforeach                        
+                                        @endif
                                     </div>
-                                    <div id="response1"></div>
                                 </div>
                             @endif
                         </div>
@@ -254,8 +255,7 @@
                                         @foreach ($imgg as $img)
                                             <?php $disk = Storage::disk('s3');
                                             $image = $disk->temporaryUrl($img, now()->addMinutes(5)); ?>
-                                         <div class="tz-gallery">    
-                                            {{-- <img src="{{ $image }}" width="50" height="50" class="" style="border-radius:10px;"> --}}
+                                         <div class="tz-gallery">                                             
                                             <a class="lightbox" href="{{ $image }}"><img src="{{ $image }}" style="border-radius:10px;" width="110" height="90"></a> 
                                          </div>&nbsp;
                                          @endforeach                        

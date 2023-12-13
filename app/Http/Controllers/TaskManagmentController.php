@@ -20,6 +20,7 @@ use App\Models\Tag;
 use App\Models\TaskChecklist;
 use App\Models\Team;
 
+
 class TaskManagmentController extends Controller
 {
     public function createdTask(request $request)
@@ -538,31 +539,30 @@ class TaskManagmentController extends Controller
         $comments->remark = $request->manager_comments;
         $comments->userid = Auth::user()->id;
         $comments->software_catagory = Auth::user()->software_catagory;
-
             if ($request['screenshort']) {
                 $image_code = $request['screenshort'];
                 foreach ($image_code as $i => $file) {
-                    $filepath = time() . '.png';
-                    // Storage::disk('s3')->put('task_management/task_attachments/' . $filepath, file_get_contents($file), 'public');
+                    $filepath = time() . '.png';                   
                     Storage::disk('s3')->put($filepath, file_get_contents($file), 'public');
                     $data[] = $filepath;
                 }
                 $imagedata = implode(',', $data);
                 $comments->screenshort = $imagedata;
             }
-
             $comments->save();
-
             if (!empty($request->notify_to)) {
                 $task_code = Taskmaster::where('id', $request->task_id)->value('task_code');
                 $message = "mentioned you in a task&nbsp;&nbsp;<span class='badge badge-primary taskcodebadge'>" . $task_code . "</span>";
                 sendNotification($request->notify_to, Auth::user()->id, $request->task_id, $message);
             }
-
             $response = $request->input('manager_comments');
             return $response;
+            // $response = [
+            //     'manager_comments' => $request->input('manager_comments'),
+            //     'images' => $request['screenshort'],
+            // ];
+            // return $response;
         } else {
-            // Handle the case where both fields are null (e.g., return an error message)
             return "Both manager_comments and screenshort are required.";
         }
     }
@@ -769,6 +769,14 @@ class TaskManagmentController extends Controller
        $is_checked = !empty($request->isChecked == "true") ? 1 : 0;
        $checkdata = TaskChecklist::where('id', $request->checklistId)->update(['is_checked' => $is_checked, 'action_teken_by' => Auth::user()->id]);
        return 1;
+    }
+
+    public function boosApprovel(Request $request)
+    {  
+        $id = $request->input('id');
+        $status = $request->input('status'); // Add this line to get the status from the request
+        Taskmaster::where('id', $id)->update(['status' => $status]);
+        return response()->json(['success' => true]);
     }
 
 }

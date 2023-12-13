@@ -316,6 +316,18 @@
                         <span class="badge badge-primary"
                             style="background: linear-gradient(to right, #f953c6, #b91d73); margin-right:10px; width:100px; width: 65px;height: 30px;">{{ $task->task_code }}</span>
                         <h1 style="width:90%">{{ ucfirst($task->task_name) }}</h1>
+
+                        <div class="checkbox-wrapper-19" style="display:flex;">
+                            @if ($task->status == '6')
+                                <input type="checkbox" id="cbtest-{{ $task->id }}"
+                                    data-id="{{ $task->id }}" class="status-checkbox" checked />
+                            @else
+                                <input type="checkbox" id="cbtest-{{ $task->id }}"
+                                    data-id="{{ $task->id }}" class="status-checkbox" />
+                            @endif
+                            <label for="cbtest-{{ $task->id }}" class="check-box"></label>
+                        </div>
+
                     </div>
 
                     <hr
@@ -332,14 +344,17 @@
                         <?php $taskDetails = mb_strimwidth($task->task_details ?? 'null', 0, 150, '...'); ?>
                         <pre class="highOne">{{ $task->task_details }}</pre>
                     @else
-                    <?php $checklist = \App\Models\TaskChecklist::where('task_id', $task->id)->get(); ?>
+                        <?php $checklist = \App\Models\TaskChecklist::where('task_id', $task->id)->get(); ?>
                         @foreach ($checklist as $list)
                             <div class="checkbox">
                                 <form class="upperwidth">
                                     <p class="card-left">
                                         <label class="labelone">
-                                            <span class="febspan">{{ $list->checklist ?? 'NA' }}"</span>
-                                            <input type="checkbox" class="rightbox" readonly value="1" id="checklist_{{ $list->id }}" onclick="toggleCheckbox({{ $list->id }})" {{ !empty($list->is_checked) ? 'checked' : '' }}>
+                                            <span class="febspan">{{ $list->checklist ?? 'NA' }}</span>
+                                            <input type="checkbox" class="rightbox" readonly value="1"
+                                                id="checklist_{{ $list->id }}"
+                                                onclick="toggleCheckbox({{ $list->id }})"
+                                                {{ !empty($list->is_checked) ? 'checked' : '' }}>
                                             <span class="check-mark"></span>
                                         </label>
                                     </p>
@@ -427,7 +442,7 @@
                                 class="dropdown-item border-radius-md" href="javascript:;">Status History
                             </a>
                         </div>
-                    </div>
+                    </div>    
                 </div>
 
                 <div class="box-one">
@@ -510,7 +525,6 @@
                     &nbsp;<P>{{ $task->GetReporter->name ?? 'N/A' }}</P>
                 </div>
 
-
                 @php
                     $alloted_to_ids = explode(',', $task->alloted_to);
                     $get_user_names_arr = \App\Models\User::whereIn('id', $alloted_to_ids)
@@ -556,9 +570,11 @@
                         height="50" style="margin:10px 5px; border-radius:50px; border:3.2px solid #cb0c9f; ">
                     
                 </div>
+
             </div>
         </div>
     </section>
+
 @endforeach
 {{ $tasklist->links() }}
 <script>
@@ -575,7 +591,7 @@
                     _token: '{{ csrf_token() }}'
                 },
                 success: function(response) {
-                    console.log('Status updated successfully');
+                   
                 },
                 error: function(xhr) {
                     console.log('Error updating status');
@@ -590,7 +606,6 @@
     checkboxess.forEach((checkbox) => {
         checkbox.addEventListener('change', function() {
             const paragraph = this.closest('.labelone').querySelector('.febspan');
-
             if (this.checked) {
                 paragraph.classList.add('text-background-animation');
                 paragraph.classList.add(`checkcolor`);
@@ -663,21 +678,51 @@
 
 
 <script>
- function toggleCheckbox(checklistId) {
-        var isChecked = $('#checklist_'+checklistId).prop('checked');
+    function toggleCheckbox(checklistId) {
+        var isChecked = $('#checklist_' + checklistId).prop('checked');
 
         $.ajax({
             type: 'POST',
-            url: '{{ url("updateChecklist") }}',
+            url: '{{ url('updateChecklist') }}',
             data: {
                 checklistId: checklistId,
                 isChecked: isChecked,
-                '_token' : "{{ csrf_token() }}"
+                '_token': "{{ csrf_token() }}"
             },
-            success: function (data) {},
-            error: function (error) {}
+            success: function(data) {},
+            error: function(error) {}
         });
     }
 </script>
+<script>
+    $(document).ready(function() {
+        $(document).on('change', '.status-checkbox', function() {
+            var id = $(this).data('id');
+            var status = $(this).prop('checked') ? 6 : 3;
+            var confirmUpdate = window.confirm(
+                'Thanks, this task will be deleted after 30 days. Do you want to proceed?');
 
-
+            if (confirmUpdate) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/boos-approvel',
+                    data: {
+                        id: id,
+                        status: status,
+                        '_token': "{{ csrf_token() }}"
+                    },
+                    success: function(response) {
+                        alert('Task updated successfully!');
+                    },
+                    error: function(error) {
+                        console.log(error);
+                        // Handle error, if needed
+                    }
+                });
+            } else {
+                // User clicked "Cancel," reset the checkbox state
+                $(this).prop('checked', !$(this).prop('checked'));
+            }
+        });
+    });
+</script>
