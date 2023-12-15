@@ -267,11 +267,11 @@
                     <span class="badge badge-primary"
                         style="background: linear-gradient(to right, #07e4f8, #00a9b8);font-size: 14px">
                         {{ !empty($alloted_summary_array[$allotted]['data'][5]) ? $alloted_summary_array[$allotted]['data'][5] : 0 }}</span>
-                        style="background: linear-gradient(to right, #8fff62, #3dd103);font-size: 14px">
+                        
                     </div>
                     <div class="col-md-3 summarydiv">
                         <span class="summarySpan">Completed Task :</span>
-                        <span class="badge badge-primary"
+                        <span class="badge badge-primary" style="background: linear-gradient(to right, #8fff62, #3dd103);font-size: 14px">
                         {{ !empty($alloted_summary_array[$allotted]['data'][3]) ? $alloted_summary_array[$allotted]['data'][3] : 0 }}</span>
                 </div>
             </div>
@@ -281,7 +281,8 @@
 @foreach ($tasklist as $i => $task)
     @php
         $currentDate = now();
-        $status = \App\Models\Status::get();
+        $status = \App\Models\Status::where('id','!=',6)->get();
+        $completed_status = \App\Models\Status::whereIn('id',[3,6])->get();
         $deadlineDate = \Carbon\Carbon::parse($task->deadline_date);
         $daysDifference = $currentDate->diffInDays($deadlineDate);
         $differenceInDays = $deadlineDate->diffInDays($currentDate);
@@ -301,9 +302,13 @@
         if ($task->status == 1) {
             $dropdownColor = '#475c7e';
         } elseif ($task->status == 4) {
-            $dropdownColor = '#10cfe2';
+            $dropdownColor = '#edda10';
         } elseif ($task->status == 5) {
-            $dropdownColor = '#23e4ff';
+            $dropdownColor = '#10cfe2';
+        } elseif($task->status == 3) {
+            $dropdownColor = 'linear-gradient(to right, #05fd8d, #008a4c)';
+        } elseif($task->status == 6) {
+            $dropdownColor = 'linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(45,85,253,1) 100%)';
         }
     @endphp
 
@@ -316,18 +321,6 @@
                         <span class="badge badge-primary"
                             style="background: linear-gradient(to right, #f953c6, #b91d73); margin-right:10px; width:100px; width: 65px;height: 30px;">{{ $task->task_code }}</span>
                         <h1 style="width:90%">{{ ucfirst($task->task_name) }}</h1>
-
-                        <div class="checkbox-wrapper-19" style="display:flex;">
-                            @if ($task->status == '6')
-                                <input type="checkbox" id="cbtest-{{ $task->id }}"
-                                    data-id="{{ $task->id }}" class="status-checkbox" checked />
-                            @else
-                                <input type="checkbox" id="cbtest-{{ $task->id }}"
-                                    data-id="{{ $task->id }}" class="status-checkbox" />
-                            @endif
-                            <label for="cbtest-{{ $task->id }}" class="check-box"></label>
-                        </div>
-
                     </div>
 
                     <hr
@@ -392,16 +385,26 @@
             <div class="short-width" style="width: 30%;">
                 <div class="box-one box-btn">
                     <div class="dropdown" style=" margin-right: 10px;">
-                        @if ($task->status == '3')
-                            <span class="badge badge-primary completedBadge"
-                                style="width: 105% !important">Completed</span>
+                        @if ($task->status == '3' || $task->status == 6)
+                        <select class="dropbtn1 status-dropdown"
+                                    style="background:{{ $dropdownColor }} !important" name="selectstatus"
+                                    data-task-id="{{ $task->id }}" id="status_dropdown_{{ $task->id }}">
+                                    @foreach ($completed_status as $statuss)
+                                    @if (Auth::user()->type != 'employee' ||
+                                    !(checkIsUserTL(Auth::user()->id)) && $statuss->id != 6)
+                                        <option value="{{ $statuss->id }}"
+                                            {{ $statuss->id == $task->status ? 'selected' : '' }}>
+                                            {{ ucfirst($statuss->status) }}</option>
+                                    @endif
+                                    @endforeach
+                                </select>
                         @else
                             @if (Auth::user()->type != 'employee' ||
                                     checkIsUserTL(Auth::user()->id) ||
                                     checkTaskCreatedBy($task->id, Auth::user()->id))
                                 <select class="dropbtn1 status-dropdown"
                                     style="background:{{ $dropdownColor }} !important" name="selectstatus"
-                                    data-task-id="{{ $task->id }}">
+                                    data-task-id="{{ $task->id }}" id="status_dropdown_{{ $task->id }}">
                                     @foreach ($status as $statuss)
                                         <option value="{{ $statuss->id }}"
                                             {{ $statuss->id == $task->status ? 'selected' : '' }}>
@@ -411,7 +414,7 @@
                             @else
                                 <select class="dropbtn1 status-dropdown"
                                     style="background:{{ $dropdownColor }} !important" name="selectstatus"
-                                    data-task-id="{{ $task->id }}">
+                                    data-task-id="{{ $task->id }}" id="status_dropdown_{{ $task->id }}">
                                     @foreach ($status as $statuss)
                                         @if ($statuss->status != 'completed' && $statuss->status != 'hold')
                                             <option value="{{ $statuss->id }}"
@@ -582,6 +585,7 @@
         $('.status-dropdown').on('change', function() {
             var taskId = $(this).data('task-id');
             var newStatus = $(this).val();
+            
             $.ajax({
                 url: 'selectstatus',
                 method: 'POST',
@@ -591,7 +595,20 @@
                     _token: '{{ csrf_token() }}'
                 },
                 success: function(response) {
-                   
+                    var statusDropdownId = '#status_dropdown_'+taskId;
+                    if(newStatus == 1){
+                        $(statusDropdownId).css("background","#475c7e");
+                    } else if(newStatus == 2){
+                        $(statusDropdownId).css("background","#cb0c9f");
+                    } else if(newStatus == 3){
+                        $(statusDropdownId).css("background","linear-gradient(to right, #05fd8d, #008a4c)");
+                    } else if(newStatus == 4){
+                        $(statusDropdownId).css("background","#edda10");
+                    } else if(newStatus == 5){
+                        $(statusDropdownId).css("background","#10cfe2");
+                    } else if(newStatus == 6){
+                        $(statusDropdownId).css("background","linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(45,85,253,1) 100%)");
+                    }
                 },
                 error: function(xhr) {
                     console.log('Error updating status');
@@ -694,35 +711,4 @@
         });
     }
 </script>
-<script>
-    $(document).ready(function() {
-        $(document).on('change', '.status-checkbox', function() {
-            var id = $(this).data('id');
-            var status = $(this).prop('checked') ? 6 : 3;
-            var confirmUpdate = window.confirm(
-                'Thanks, this task will be deleted after 30 days. Do you want to proceed?');
 
-            if (confirmUpdate) {
-                $.ajax({
-                    type: 'POST',
-                    url: '/boos-approvel',
-                    data: {
-                        id: id,
-                        status: status,
-                        '_token': "{{ csrf_token() }}"
-                    },
-                    success: function(response) {
-                        alert('Task updated successfully!');
-                    },
-                    error: function(error) {
-                        console.log(error);
-                        // Handle error, if needed
-                    }
-                });
-            } else {
-                // User clicked "Cancel," reset the checkbox state
-                $(this).prop('checked', !$(this).prop('checked'));
-            }
-        });
-    });
-</script>

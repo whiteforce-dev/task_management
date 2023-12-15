@@ -118,7 +118,7 @@ class TaskManagmentController extends Controller
                 ->orWhereRaw("alloted_to REGEXP '{$pattern}'");
             });
         }
-        $tasklist = $tasklist->orderBy('id', 'Desc')->paginate(25);
+        $tasklist = $tasklist->where('status','!=',6)->orderBy('id', 'Desc')->paginate(25);
         $users = User::where('software_catagory', Auth::user()->software_catagory)->where('type', '!=', 'admin')->get();
         $statuss = Status::get();
         $prioritys = Priority::get();
@@ -136,7 +136,7 @@ class TaskManagmentController extends Controller
         $is_tl = checkIsUserTL(Auth::user()->id);
         $alloted_summary_array = $alloted_array = [];
 
-        $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('is_approved', '=', '1');
+        $tasklist = Taskmaster::where('software_catagory', Auth::user()->software_catagory)->where('is_approved', '=', '1')->where('status','!=',6);
         if (!empty(session('searchInput'))) {
             $tasklist = $tasklist->where('task_name', 'like', '%' . session('searchInput') . '%');
         }
