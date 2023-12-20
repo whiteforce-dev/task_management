@@ -697,7 +697,6 @@ class TaskManagmentController extends Controller
             $tasklist = $tasklist->where('status', $request->status);
         }
 
-
         if ($request->EmployeeId && $request->status) {
             $tasklist = $tasklist->where('alloted_to', $request->EmployeeId)->where('status', $request->status);
         }

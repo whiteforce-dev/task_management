@@ -397,7 +397,6 @@
         sidebar.addEventListener("mouseleave", () => {
             sidebar.classList.add("hide");
             logo.src = "http://127.0.0.1:8000/assets/img/w.png";
-            // Set the flag in local storage when the sidebar is hidden
             localStorage.setItem("sidebarHidden", "true");
         });
     });
@@ -423,36 +422,40 @@
         });
     }
 </script>
+
 <script>
     $(document).ready(function() {
-        $(document).on('change', '.status-checkbox', function() {
-            var id = $(this).data('id');
-            var status = $(this).prop('checked') ? 6 : 3;
-            var confirmUpdate = window.confirm(
-                'Thanks, this task will be deleted after 30 days. Do you want to proceed?');
+    $(document).on('change', '.status-checkbox', function() {
+        var id = $(this).data('id');
+        var status = $(this).prop('checked') ? 6 : 3;
 
-            if (confirmUpdate) {
-                $.ajax({
-                    type: 'POST',
-                    url: '/boos-approvel',
-                    data: {
-                        id: id,
-                        status: status,
-                        '_token': "<?php echo e(csrf_token()); ?>"
-                    },
-                    success: function(response) {
-                        alert('Task updated successfully!');
-                    },
-                    error: function(error) {
-                        console.log(error);
-                        // Handle error, if needed
-                    }
-                });
-            } else {
-                // User clicked "Cancel," reset the checkbox state
-                $(this).prop('checked', !$(this).prop('checked'));
-            }
-        });
+        // Unbind the change event temporarily
+        $(document).off('change', '.status-checkbox');
+
+        var confirmUpdate = window.confirm(
+            'Thanks, This task will be deleted after 30 days. Do you want to proceed?');
+        
+        if (confirmUpdate) {
+            $.ajax({
+                type: 'POST',
+                url: '/boos-approvel',
+                data: {
+                    id: id,
+                    status: status,
+                    '_token': "<?php echo e(csrf_token()); ?>"
+                },
+                success: function(response) {
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        } else {
+            // Restore the change event
+            $(document).on('change', '.status-checkbox', arguments.callee);
+        }
     });
+});
+
 </script>
 <?php /**PATH C:\xampp\htdocs\task_management\resources\views/task/searchTaskResult.blade.php ENDPATH**/ ?>

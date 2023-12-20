@@ -1,4 +1,17 @@
 
+<style>
+    .sticky {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 100px;
+        height: 6vh;
+        background-color: #f1f1f1;
+        overflow-x: hidden;
+        margin-top: 590px;
+        z-index: 5000;
+    }
+</style>
 <?php $__env->startSection('content'); ?>
     <div class="row">
         <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
@@ -152,8 +165,8 @@
         </div>
     </div>
     <div class="sticky">
-        <?php if(url()->current() !== url('task-list') && Auth::user()->type == 'admin'): ?>
-        <a class="btn btn-primary" href="<?php echo e(url('video/task.mp4')); ?>" target="_blank">Help </a>
+    <?php if(url()->current() !== url('task-list') && Auth::user()->type == 'admin'): ?>
+        <a class="btn btn-primary" href="<?php echo e(url('https://www.youtube.com/watch?v=BFCi4323OCQ')); ?>" target="_blank">Help </a>
     <?php endif; ?>
     </div>
     <div class="row mt-4">

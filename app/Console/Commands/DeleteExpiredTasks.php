@@ -13,9 +13,10 @@ class DeleteExpiredTasks extends Command
 
     public function handle()
     {
-        $thresholdDate = Carbon::now()->subDays(30);
-        Taskmaster::where('status', 6)
-            ->where('created_at', '<', $thresholdDate)
+        $thresholdDate = Carbon::now()->subDays(90);
+        Taskmaster::where('status', 3)
+            ->where('end_date', '<', $thresholdDate)
+            ->where('software_catagory', 'IT')
             ->delete();
         $this->info('Expired tasks deleted successfully.');
     }

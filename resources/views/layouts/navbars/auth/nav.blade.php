@@ -4,18 +4,7 @@
     use Illuminate\Support\Facades\Route;
     $users = \App\Models\User::get();
 @endphp
-<style>
-    .sticky {
-        position: fixed;
-        top: 0;
-        right: 0;
-        width: 100px;
-        height: 6vh;
-        background-color: #f1f1f1;
-        overflow-x: hidden;
-        margin-top: 650px;
-    }
-</style>
+
 @if (url()->current() == url('task-list') || url()->current() == url('top-search'))
 <div style="margin-left:21px;">
 @else

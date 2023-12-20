@@ -1,4 +1,17 @@
-@extends('layouts.user_type.auth')
+
+<style>
+    .sticky {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 100px;
+        height: 6vh;
+        background-color: #f1f1f1;
+        overflow-x: hidden;
+        margin-top: 590px;
+        z-index: 5000;
+    }
+</style>@extends('layouts.user_type.auth')
 @section('content')
     <div class="row">
         <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
@@ -148,8 +161,8 @@
         </div>
     </div>
     <div class="sticky">
-        @if (url()->current() !== url('task-list') && Auth::user()->type == 'admin')
-        <a class="btn btn-primary" href="{{ url('video/task.mp4') }}" target="_blank">Help </a>
+    @if (url()->current() !== url('task-list') && Auth::user()->type == 'admin')
+        <a class="btn btn-primary" href="{{ url('https://www.youtube.com/watch?v=BFCi4323OCQ') }}" target="_blank">Help </a>
     @endif
     </div>
     <div class="row mt-4">
