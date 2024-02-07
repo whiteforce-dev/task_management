@@ -19,6 +19,7 @@ use Storage;
 use App\Models\Tag;
 use App\Models\TaskChecklist;
 use App\Models\Team;
+use Log;
 
 
 class TaskManagmentController extends Controller
@@ -211,7 +212,17 @@ class TaskManagmentController extends Controller
         }
         $tasklist = $tasklist->orderBy('id', 'Desc')->paginate(25);
 
-        return view('task.searchTaskResult', compact('tasklist', 'is_allotted_to', 'alloted_summary_array', 'alloted_array'));
+        $tasklist->appends($request->all());
+        $users = User::where('software_catagory', Auth::user()->software_catagory)->get();
+        $managerId = [];
+        $tags = [];
+        $statuss = [];
+        $reporters = [];
+        if ($request->has('page') && $request->page > 0) {
+            return view('task.taskList', compact('reporters', 'statuss', 'tags', 'managerId', 'users', 'tasklist', 'is_allotted_to', 'alloted_summary_array', 'alloted_array'));
+        }
+
+        return view('task.searchTaskResult', compact('users', 'tasklist', 'is_allotted_to', 'alloted_summary_array', 'alloted_array'));
     }
 
     public function taskEditPage(Request $request)

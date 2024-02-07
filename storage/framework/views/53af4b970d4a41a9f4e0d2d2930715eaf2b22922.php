@@ -1,6 +1,6 @@
 
 <?php $__env->startSection('content'); ?>
-
+<link rel="stylesheet" href="<?php echo e(url('assets/css/checkboc_tasksearch_page.css')); ?>">
     <link rel="stylesheet" href="<?php echo e(url('assets/css/cards.css')); ?>">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="<?php echo e(url('assets/css/tasklist.css')); ?>">
@@ -104,9 +104,8 @@
                     </div>
                 </div>
                 <div id="searchResults">
-                    <?php echo $__env->make('task/searchTaskResult', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>
+                    <?php echo $__env->make('task/searchTaskResult', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?>                   
                 </div>
-                
             </div>
         </form>
     </main>
@@ -123,6 +122,24 @@
     <script src="https://cdn.jsdelivr.net/npm/daterangepicker@3.1.0/daterangepicker.min.js"></script>
     
 
+   
+
+    <div class="modal" id="myModal10">
+    </div>
+    <div class="modal" id="myModal8">
+    </div>
+    <div class="modal" id="myModal">
+    </div>
+    <div class="modal" id="myModal4">
+    </div>
+    <div class="modal" id="myModalEdit">
+    </div>
+    <div class="modal" id="myModalDmore">
+    </div>
+    <script src="<?php echo e(url('assets/js/core/popper.min.js')); ?>"></script>
+    <script src="<?php echo e(url('assets/js/core/bootstrap.min.js')); ?>"></script>
+    <script src="<?php echo e(url('assets/js/core/popper.min.js')); ?>"></script>
+    <script src="<?php echo e(url('assets/js/core/bootstrap.min.js')); ?>"></script>
     <script>
         function searchTask() {
             $.ajax({
@@ -198,8 +215,6 @@
             });
         }
 
-
-
         $('.datepicker').daterangepicker({
             autoUpdateInput: false,
             locale: {
@@ -216,22 +231,124 @@
         });
     </script>
 
-    <div class="modal" id="myModal10">
-    </div>
-    <div class="modal" id="myModal8">
-    </div>
-    <div class="modal" id="myModal">
-    </div>
-    <div class="modal" id="myModal4">
-    </div>
-    <div class="modal" id="myModalEdit">
-    </div>
-    <div class="modal" id="myModalDmore">
-    </div>
-    <script src="<?php echo e(url('assets/js/core/popper.min.js')); ?>"></script>
-    <script src="<?php echo e(url('assets/js/core/bootstrap.min.js')); ?>"></script>
-    <script src="<?php echo e(url('assets/js/core/popper.min.js')); ?>"></script>
-    <script src="<?php echo e(url('assets/js/core/bootstrap.min.js')); ?>"></script>
+<script>
+    $(document).ready(function() {
+        $('.status-dropdown').on('change', function() {
+            var taskId = $(this).data('task-id');
+            var newStatus = $(this).val();
+            $.ajax({
+                url: 'selectstatus',
+                method: 'POST',
+                data: {
+                    taskId: taskId,
+                    newStatus: newStatus,
+                    _token: '<?php echo e(csrf_token()); ?>'
+                },
+                success: function(response) {
+                
+                },
+                error: function(xhr) {
+                    console.log('Error updating status');
+                }
+            });
+        });
+    });
+</script>
+<script>
+    const checkboxes = document.querySelectorAll('.rightbox');
+    checkboxes.forEach((checkbox) => {
+        checkbox.addEventListener('change', function() {
+            const paragraph = this.closest('.labelone').querySelector('.febspan');
+            if (this.checked) {
+                paragraph.classList.add('text-background-animation');
+            } else {
+                paragraph.classList.remove('text-background-animation');
+            }
+        });
+    });
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        let sidebar = document.querySelector("aside.sidenav.navbar");
+        let logo = document.querySelector(".navbar-brand-img");
+
+        // Check if the flag is set in local storage
+        const isSidebarHidden = localStorage.getItem("sidebarHidden") === "true";
+
+        if (isSidebarHidden) {
+            sidebar.classList.add("hide");
+            logo.src = "http://127.0.0.1:8000/assets/img/w.png";
+        }
+
+        sidebar.addEventListener("mouseenter", () => {
+            sidebar.classList.remove("hide");
+            logo.src = "https://white-force.com/task-management/assets/img/white-force-logo.png";
+        });
+
+        sidebar.addEventListener("mouseleave", () => {
+            sidebar.classList.add("hide");
+            logo.src = "http://127.0.0.1:8000/assets/img/w.png";
+            localStorage.setItem("sidebarHidden", "true");
+        });
+    });
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+<script>
+    function toggleCheckbox(checklistId) {
+        var isChecked = $('#checklist_' + checklistId).prop('checked');
+
+        $.ajax({
+            type: 'POST',
+            url: '<?php echo e(url('updateChecklist')); ?>',
+            data: {
+                checklistId: checklistId,
+                isChecked: isChecked,
+                '_token': "<?php echo e(csrf_token()); ?>"
+            },
+            success: function(data) {},
+            error: function(error) {}
+        });
+    }
+</script>
+
+<script>
+    $(document).ready(function() {
+    $(document).on('change', '.status-checkbox', function() {
+        var id = $(this).data('id');
+        var status = $(this).prop('checked') ? 6 : 3;
+
+        // Unbind the change event temporarily
+        $(document).off('change', '.status-checkbox');
+
+        var confirmUpdate = window.confirm(
+            'Thanks, This task will be deleted after 30 days. Do you want to proceed?');
+        
+        if (confirmUpdate) {
+            $.ajax({
+                type: 'POST',
+                url: '/boos-approvel',
+                data: {
+                    id: id,
+                    status: status,
+                    '_token': "<?php echo e(csrf_token()); ?>"
+                },
+                success: function(response) {
+                },
+                error: function(error) {
+                    console.log(error);
+                }
+            });
+        } else {
+            // Restore the change event
+            $(document).on('change', '.status-checkbox', arguments.callee);
+        }
+    });
+});
+</script>
+
 
 <?php $__env->stopSection(); ?>
 

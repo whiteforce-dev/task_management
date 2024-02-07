@@ -33,7 +33,8 @@ Route::group(['middleware' => 'auth'], function ()
 		Route::get('task-list', [TaskManagmentController::class, 'taskList']);
 		Route::get('create-task', [TaskManagmentController::class, 'created_Task']);
 		Route::post('create-task', [TaskManagmentController::class, 'createdTask']);
-		Route::post('search-task', [TaskManagmentController::class, 'searchTask']);
+		//Route::post('search-task', [TaskManagmentController::class, 'searchTask']);
+		Route::match(['get', 'post'], 'search-task', [TaskManagmentController::class, 'searchTask']);
 		Route::get('task-edit-page', [TaskManagmentController::class, 'taskEditPage']);
 		Route::post('update-task/{id}', [TaskManagmentController::class, 'UpdateTask']);
 		Route::get('manager-remark', [TaskManagmentController::class, 'managerRemark']);

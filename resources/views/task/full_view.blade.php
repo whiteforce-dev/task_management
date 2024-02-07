@@ -201,6 +201,7 @@
         <div class="modal-header">
             <h6 class="modal-title">Remark </h6>
             <button type="button" class="btn-close" data-bs-dismiss="modal">&#10060;</button>
+            
         </div>
         <div class="modal-body" id="response" style="overflow-x:hidden; overflow-y: auto;height: 700px;">
             @foreach ($remarks as $i => $remark)
